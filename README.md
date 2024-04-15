@@ -2,7 +2,7 @@
 
 ## Project description
 ```
-Library with UI vue-components for oyur web site projects.
+Library with UI vue3-components for your web-based projects.
 The library is based on comand-frontend-framework which is a required dependency.
 The components use the same html/css-structure and variables.
 ```
