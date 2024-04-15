@@ -9,119 +9,85 @@
         <template v-else>
             <!-- begin cmd-headline -->
             <CmdHeadline
-                v-if="cmdHeadline?.headlineText || editModeContext"
-                v-bind="cmdHeadline"
+                v-if="cmdHeadline?.headlineText || editModeContext" v-bind="cmdHeadline"
             />
             <!-- end cmd-headline -->
 
             <!-- begin address-data in vCard microformat -->
             <address class="adr">
                 <!-- begin list with labels -->
-                <template v-if="showLabels && !showIconsOnly">
+                <template v-if="showLabels && (showLabelTexts|| showLabelIcons) && !showIconsOnly">
                     <!-- begin default view -->
                     <dl v-if="!editModeContext">
+                        <!-- begin cmd-address-data-item -->
                         <CmdAddressDataItem
                             v-for="(entry, index) in addressData"
-                            :key="index"
-                            :addressEntry="entry"
+                            :key="index" :addressEntry="entry"
+                            :showLabelIcons="showLabelIcons"
+                            :showLabelTexts="showLabelTexts"
                         />
+                        <!-- end cmd-address-data-item -->
                     </dl>
                     <!-- end default view -->
 
                     <!-- begin edit-mode -->
-                    <button v-if="addressData.length === 0" type="button" class="button confirm small"
-                            @click="onAddItem">
-                        <span class="icon-plus"></span>
-                        <span>Add new entry</span>
-                    </button>
-                    <EditComponentWrapper
-                        v-else
-                        v-for="(entry, index) in addressData"
-                        :key="'x' + index"
-                        class="edit-items"
-                        :showComponentName="false"
-                        :allowedComponentTypes="[]"
-                        componentName="CmdAddressDataItem"
-                        :componentProps="entry"
-                        :componentPath="['props', 'addressData', index]"
-                    >
-                        <dl>
-                            <CmdAddressDataItem
-                                :addressEntry="entry"
-                                :showLabelIcons="showLabelIcons"
-                                :showLabelTexts="showLabelTexts"
-                            />
-                        </dl>
-                    </EditComponentWrapper>
+                    <template v-else>
+                        <button v-if="addressData.length === 0" type="button" class="button confirm small" @click="onAddItem">
+                            <span class="icon-plus"></span>
+                            <span>Add new entry</span>
+                        </button>
+                        <EditComponentWrapper
+                            v-for="(entry, index) in addressData"
+                            :key="'x' + index"
+                            class="edit-items"
+                            :showComponentName="false"
+                            :allowedComponentTypes="[]"
+                            componentName="CmdAddressDataItem"
+                            :componentProps="entry"
+                            :componentPath="['props', 'addressData', index]"
+                        >
+                            <dl>
+                                <!-- begin cmd-address-data-item -->
+                                <CmdAddressDataItem
+                                    :addressEntry="entry"
+                                    :showLabelIcons="showLabelIcons"
+                                    :showLabelTexts="showLabelTexts"
+                                />
+                                <!-- end cmd-address-data-item -->
+                            </dl>
+                        </EditComponentWrapper>
+                    </template>
                 </template>
                 <!-- end list with labels -->
 
                 <!-- begin list without labels -->
                 <ul v-else :class="['flex-container', {'vertical': !showIconsOnly}]">
                     <template v-for="(entry, index) in addressData" :key="index">
-                        <template v-if="entry.href || entry.type === 'address' || !showIconsOnly">
-                            <li :class="{'no-flex' : showIconsOnly}">
-                                <!-- begin all entries except address (which has no href) -->
-                                <a v-if="entry.href" :href="getHref(entry)"
-                                   :target="{'_blank' : entry.type === 'url'}"
-                                   :title="entry.tooltip">
+                        <li v-if="entry.href || (entry.name === 'address' && entry.linkGoogleMaps) || !showIconsOnly"
+                            :class="{'no-flex' : showIconsOnly}">
+                            <!-- begin all entries except address (which has no href) -->
+                            <a v-if="entry.href" :href="getHref(entry)" :target="entry.name === 'url' ? '_blank' : null" :title="entry.tooltip">
+                                <template v-if="showIconsOnly">
+                                    <!-- begin CmdIcon -->
+                                    <CmdIcon v-if="entry.iconClass" :iconClass="entry.iconClass" :type="entry.iconType"/>
+                                    <!-- end CmdIcon -->
+                                </template>
+                                <template v-else>{{ entry.href }}</template>
+                            </a>
+                            <span v-else-if="!showIconsOnly" v-html="entry.data"></span>
+                            <!-- end all entries except address -->
+
+                            <!-- begin address -->
+                            <template v-if="entry.name === 'address'">
+                                <!-- begin linked address -->
+                                <a v-if="entry.linkGoogleMaps" :href="locateAddress(entry)" target="google-maps" :title="entry.tooltip">
                                     <template v-if="showIconsOnly">
                                         <!-- begin CmdIcon -->
-                                        <CmdIcon
-                                            v-if="entry.iconClass"
-                                            :iconClass="entry.iconClass"
-                                            :type="entry.iconType"
-                                        />
+                                        <CmdIcon v-if="entry.iconClass" :iconClass="entry.iconClass"
+                                                 :type="entry.iconType"/>
                                         <!-- end CmdIcon -->
                                     </template>
-                                    <template v-else>{{ entry.href }}</template>
-                                </a>
-                                <span v-else-if="!showIconsOnly" v-html="entry.data"></span>
-                                <!-- end all entries except address -->
-
-                                <!-- begin address -->
-                                <template v-if="entry.type === 'address'">
-                                    <!-- begin linked address -->
-                                    <a v-if="entry.linkGoogleMaps" :href="locateAddress(entry)" target="google-maps"
-                                       :title="entry.tooltip">
-                                        <template v-if="showIconsOnly">
-                                            <!-- begin CmdIcon -->
-                                            <CmdIcon
-                                                v-if="entry.iconClass"
-                                                :iconClass="entry.iconClass"
-                                                :type="entry.iconType"
-                                            />
-                                            <!-- end CmdIcon -->
-                                        </template>
-                                        <template v-else>
-                                            <!-- begin street/number -->
-                                            <template v-if="entry.streetNo">
-                                                <span class="street-address">{{ entry.streetNo }}</span><br/>
-                                            </template>
-                                            <!-- end street/number -->
-
-                                            <!-- begin zip/city -->
-                                            <template v-if="entry.zip || entry.city">
-                                                <span class="postal-code">{{ entry.zip }}&nbsp;</span>
-                                                <span class="locality">{{ entry.city }}</span><br/>
-                                            </template>
-                                            <!-- end zip/city -->
-
-                                            <!-- begin miscInfo -->
-                                            <template v-if="entry.miscInfo">
-                                                <span>{{ entry.miscInfo }}</span><br/>
-                                            </template>
-                                            <!-- end miscInfo -->
-
-                                            <!-- begin country -->
-                                            <span v-if="entry.country" class="country-name">{{ entry.country }}</span>
-                                            <!-- end country -->
-                                        </template>
-                                    </a>
-                                    <!-- end linked address -->
-
-                                    <!-- begin unlinked address -->
-                                    <template v-if="!entry.linkGoogleMaps && !showIconsOnly">
+                                    <template v-else>
                                         <!-- begin street/number -->
                                         <template v-if="entry.streetNo">
                                             <span class="street-address">{{ entry.streetNo }}</span><br/>
@@ -145,11 +111,38 @@
                                         <span v-if="entry.country" class="country-name">{{ entry.country }}</span>
                                         <!-- end country -->
                                     </template>
-                                    <!-- end unlinked address -->
+                                </a>
+                                <!-- end linked address -->
+
+                                <!-- begin unlinked address -->
+                                <template v-if="!entry.linkGoogleMaps && !showIconsOnly">
+                                    <!-- begin street/number -->
+                                    <template v-if="entry.streetNo">
+                                        <span class="street-address">{{ entry.streetNo }}</span><br/>
+                                    </template>
+                                    <!-- end street/number -->
+
+                                    <!-- begin zip/city -->
+                                    <template v-if="entry.zip || entry.city">
+                                        <span class="postal-code">{{ entry.zip }}&nbsp;</span>
+                                        <span class="locality">{{ entry.city }}</span><br/>
+                                    </template>
+                                    <!-- end zip/city -->
+
+                                    <!-- begin miscInfo -->
+                                    <template v-if="entry.miscInfo">
+                                        <span>{{ entry.miscInfo }}</span><br/>
+                                    </template>
+                                    <!-- end miscInfo -->
+
+                                    <!-- begin country -->
+                                    <span v-if="entry.country" class="country-name">{{ entry.country }}</span>
+                                    <!-- end country -->
                                 </template>
-                                <!-- end address -->
-                            </li>
-                        </template>
+                                <!-- end unlinked address -->
+                            </template>
+                            <!-- end address -->
+                        </li>
                         <!-- end all entries except address -->
                     </template>
                     <!-- end v-for -->
@@ -251,13 +244,13 @@ export default {
             return "https://www.google.com/maps/place/" + entry.streetNo + ", " + entry.zip + " " + entry.city
         },
         getHref(entry) {
-            if (entry.type === "phone") {
+            if (entry.name === "phone") {
                 return "tel:" + entry.href
             }
-            if (entry.type === "email") {
+            if (entry.name === "email") {
                 return "mailto:" + entry.href
             }
-            if (entry.type === "url") {
+            if (entry.name === "url") {
                 return entry.href
             }
             return null
@@ -279,7 +272,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-address-data ---------------------------------------------------------------------------------------- */
 .cmd-address-data {
     dl {
@@ -287,7 +280,7 @@ export default {
 
         dt {
             display: flex;
-            align-items: center;
+            top: 0.2rem;
 
             &.address {
                 align-self: flex-start;
@@ -301,6 +294,7 @@ export default {
 
     ul {
         gap: calc(var(--default-gap) / 2);
+        margin-left: 0;
 
         li {
             margin-left: 0;

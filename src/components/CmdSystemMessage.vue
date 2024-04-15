@@ -57,7 +57,13 @@ export default {
          */
         validationStatus: {
             type: String,
-            required: true
+            required: true,
+            validator(value) {
+                return value === "error" ||
+                    value === "warning" ||
+                    value === "success" ||
+                    value === "info"
+            }
         },
         /**
          * activate to stretch message-box as wide as parent container (else message-box is as wide as message (+padding))
@@ -130,9 +136,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-system-message ---------------------------------------------------------------------------------------- */
 .cmd-system-message {
+    display: inline-flex;
     margin: var(--default-margin) 0;
     align-items: center;
 
@@ -158,31 +165,35 @@ export default {
         text-decoration: none;
         z-index: 100;
         line-height: 1;
+        background: var(--pure-white);
+        border-radius: var(--full-circle);
 
         [class*="icon-"] {
-            color: var(--pure-white);
+            color: var(--default-text-color);
         }
 
         &:hover, &:active, &:focus {
+            background: none;
+
             [class*="icon-"] {
-                color: var(--hyperlink-color);
+                color: var(--pure-white);
             }
         }
     }
 
     &.warning {
         > a:not(.button) {
-            border-color: var(--text-color);
+            border-color: var(--default-text-color);
 
             [class*="icon-"] {
-                color: var(--text-color);
+                color: var(--default-text-color);
             }
 
             &:hover, &:active, &:focus {
                 border-color: var(--hyperlink-color);
 
                 [class*="icon-"] {
-                    color: var(--hyperlink-color);
+                    color: var(--pure-white);
                 }
             }
         }

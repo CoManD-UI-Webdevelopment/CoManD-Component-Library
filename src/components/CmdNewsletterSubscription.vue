@@ -72,6 +72,13 @@ export default {
             }
         },
         /**
+         * toggle legend visibility
+         */
+        showLegend: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * text used as legend for login-fieldset
          *
          * @requiredForAccessibility: true
@@ -79,13 +86,6 @@ export default {
         textLegend: {
             type: String,
             default: "Stay up-to-date"
-        },
-        /**
-         * toggle legend visibility
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
         },
         /**
          * properties for CmdInputGroup-component
@@ -172,10 +172,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-/* begin cmd-newsletter-subscription ---------------------------------------------------------------------------------------- */
-
-
-/* cmd-newsletter-subscription------------------------------------------------------------------------------------------ */
-</style>

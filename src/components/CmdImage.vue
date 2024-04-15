@@ -369,11 +369,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-image ------------------------------------------------------------------------------------------ */
 .cmd-image {
     img {
         display: block;
+    }
+
+    figcaption {
+        border-bottom-left-radius: var(--default-border-radius);
+        border-bottom-right-radius: var(--default-border-radius);
     }
 
     &.text-center {
@@ -401,7 +406,7 @@ export default {
             transform: translateX(-50%) translateY(-50%);
             font-size: 10rem;
             color: var(--pure-white);
-            text-shadow: var(--text-shadow);
+            text-shadow: var(--default-text-shadow);
             z-index: 10;
         }
 

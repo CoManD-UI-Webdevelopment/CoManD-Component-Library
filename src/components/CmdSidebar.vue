@@ -122,13 +122,23 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
+/* begin cmd-sidebar ---------------------------------------------------------------------------------------- */
 .cmd-sidebar {
     display: flex;
     height: 100%;
 
     &.box {
         padding: 0;
+    }
+
+    .cmd-box-wrapper > .grid-container-create-columns {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .cmd-box {
+        border-left: 0;
+        border-right: 0;
     }
 
     .inner-sidebar-wrapper {
@@ -157,11 +167,12 @@ export default {
 
     &.collapse-to-right {
         flex-direction: row-reverse;
+        border-right: 0;
 
         > a {
-            border-left: 0;
             border-right: var(--default-border);
         }
     }
 }
+/* end cmd-sidebar ---------------------------------------------------------------------------------------- */
 </style>

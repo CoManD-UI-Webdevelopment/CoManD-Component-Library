@@ -18,12 +18,12 @@
         <div class="page-index">
             <div class="flex-container">
                 <a :href="getHref(page)"
-                   :class="{'disabled': currentPage === index + 1, 'button': linkType === 'button'}"
+                   :class="{'disabled': currentPage === index + 1, 'button': linkType === 'button', 'hidden': !showPageNumbers}"
                    :title="currentPage !== index + 1 ? getMessage('cmdpager.tooltip.go_to_page', index + 1) : getMessage('cmdpager.tooltip.not_possible')"
                    v-for="(page, index) in pages"
                    :key="index"
                    @click.stop.prevent="showPage(page)" aria-live="polite">
-                   <span :class="{hidden: !showPageNumbers}">{{ index + 1 }}</span>
+                    <span>{{ index + 1 }}</span>
                 </a>
             </div>
         </div>
@@ -48,11 +48,12 @@
 // import mixins
 import I18n from "../mixins/I18n"
 import DefaultMessageProperties from "../mixins/CmdPager/DefaultMessageProperties"
+
 export default {
     name: "CmdPager",
     mixins: [
-      I18n,
-      DefaultMessageProperties
+        I18n,
+        DefaultMessageProperties
     ],
     emits: ['click'],
     data() {
@@ -89,7 +90,11 @@ export default {
          */
         linkType: {
             type: String,
-            default: "href"
+            default: "href",
+            validator(value) {
+                return value === "href" ||
+                    value === "button"
+            }
         },
         /**
          * link to switch to previous page
@@ -165,10 +170,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-pagination ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-pager {
     display: flex;
     justify-content: space-between;
@@ -208,7 +211,14 @@ export default {
         }
     }
 
-    @media only screen and (max-width: $medium-max-width) {
+}
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-pager {
         > a.button {
             span {
                 margin: 0;
@@ -218,16 +228,16 @@ export default {
                 }
             }
         }
-    }
 
-    @media only screen and (max-width: $small-max-width) {
-        .button {
-            width: auto; /* overwrite default settings from framework.css */
-        }
+        @media only screen and (max-width: $small-max-width) {
+            .button {
+                width: auto; /* overwrite default settings from framework.css */
+            }
 
-        .page-index {
-            .flex-container {
-                flex-direction: row; /* overwrite default settings from framework.css */
+            .page-index {
+                .flex-container {
+                    flex-direction: row; /* overwrite default settings from framework.css */
+                }
             }
         }
     }

@@ -83,7 +83,7 @@ export default {
     data() {
         return {
             showTableData: true,
-            fullWidth: this.fullWidthOnDefault,
+            fullWidth: false,
             hasOverflow: false
         }
     },
@@ -258,11 +258,19 @@ export default {
             // this.$refs.table.previousElementSibling.style.right = `${newLeft}px`;
         }
 
+    },
+    watch: {
+        fullWidthOnDefault: {
+            handler() {
+                this.fullWidth = this.fullWidthOnDefault
+            },
+            immediate: true
+        }
     }
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-table-wrapper ---------------------------------------------------------------------------------------- */
 .cmd-table-wrapper {
     display: inline-flex;
@@ -308,11 +316,11 @@ export default {
 
         .cmd-slide-button {
             left: 0;
-        }
 
-        .cmd-slide-button:last-child {
-            right: 0;
-            left: auto;
+            &:last-child {
+                right: 0;
+                left: auto;
+            }
         }
 
         table {
@@ -344,7 +352,7 @@ export default {
 
     &.has-overflow {
         .cmd-slide-button {
-            display: block;
+            display: flex;
         }
     }
 }

@@ -21,12 +21,17 @@
 
         <!-- begin list of networks -->
         <ul v-if="validNetworks.length > 0" :class="['button-wrapper', {'no-gap': !useGap}]">
+            <!-- begin cmd-social-networks (default view) -->
             <CmdSocialNetworksItem
                 v-if="!editModeContext"
                 v-for="(entry, index) in validNetworks"
                 :key="index"
                 :network="entry"
-                    />
+                :userMustAcceptDataPrivacy="userMustAcceptDataPrivacy"
+                :buttonTextAlign="buttonTextAlign"
+                :dataPrivacyAccepted="dataPrivacyAccepted"
+            />
+            <!-- end cmd-social-networks (default view) -->
 
             <!-- begin edit-mode -->
             <EditComponentWrapper
@@ -83,7 +88,12 @@ export default {
          */
         align: {
             type: String,
-            default: "left"
+            default: "left",
+            validator(value) {
+                return value === "left" ||
+                    value === "center" ||
+                    value === "right"
+            }
         },
         /**
          * activate if gap between buttons should appear
@@ -145,7 +155,11 @@ export default {
          */
         buttonTextAlign: {
             type: String,
-            default: "left"
+            default: "left",
+            validator(value) {
+                return value === "left" ||
+                    value === "right"
+            }
         },
         /**
          * properties for cmdFormElement
@@ -254,8 +268,6 @@ export default {
 
 <style lang="scss">
 /* begin cmd-social-networks -------------------------------------------------------------------------------------------- */
-@import "../assets/styles/variables";
-
 .cmd-social-networks {
     display: flex;
     flex-direction: column;
@@ -285,7 +297,7 @@ export default {
                 margin: 0;
             }
 
-          &.text-align-right {
+            &.text-align-right {
                 flex-direction: row-reverse;
             }
         }
@@ -298,15 +310,15 @@ export default {
 
                 &:first-of-type {
                     .button {
-                        border-top-left-radius: var(--border-radius);
-                        border-bottom-left-radius: var(--border-radius);
+                        border-top-left-radius: var(--default-border-radius);
+                        border-bottom-left-radius: var(--default-border-radius);
                     }
                 }
 
                 &:last-of-type {
                     .button {
-                        border-top-right-radius: var(--border-radius);
-                        border-bottom-right-radius: var(--border-radius);
+                        border-top-right-radius: var(--default-border-radius);
+                        border-bottom-right-radius: var(--default-border-radius);
                     }
                 }
             }
@@ -319,22 +331,18 @@ export default {
     }
 
     &.align-right {
-        .share-button-wrapper {
+        .button-wrapper {
             justify-content: flex-end;
         }
     }
 
     &.align-center {
-        .cmd-headline > * {
-            text-align: center;
+        .button-wrapper {
+            justify-content: center;
         }
 
         .toggle-switch {
             margin: auto;
-        }
-
-        .share-button-wrapper {
-            justify-content: center;
         }
     }
 
@@ -401,6 +409,10 @@ export default {
         --social-network-color: #0077b5;
     }
 }
+</style>
+
+<style lang="scss">
+@import "../assets/styles/variables";
 
 @container (max-width: #{$small-max-width}) {
     .button-wrapper {

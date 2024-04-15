@@ -1,17 +1,17 @@
 <template>
-    <div class="cmd-company-logo">
+    <div class="cmd-company-logo company-logo">
         <router-link v-if="link?.type === 'router'" :to="link?.path" :title="link?.tooltip">
             <!-- begin CmdImage -->
-            <CmdImage :image="image" />
+            <CmdImage :image="image"/>
             <!-- end CmdImage -->
         </router-link>
         <a v-else-if="link?.type === 'href'" :href="link?.path" :title="link?.tooltip">
             <!-- begin CmdImage -->
-            <CmdImage :image="image" />
+            <CmdImage :image="image"/>
             <!-- end CmdImage -->
         </a>
         <!-- begin CmdImage -->
-        <CmdImage v-else :image="image" />
+        <CmdImage v-else :image="image"/>
         <!-- end CmdImage -->
     </div>
 </template>
@@ -92,8 +92,8 @@ export default {
             this.prefersColorScheme = event.matches ? "light" : "dark"
         },
         observeDom(mutationList) {
-            for(let i = 0; i < mutationList.length; i++) {
-                if(mutationList[i].type === 'attributes') {
+            for (let i = 0; i < mutationList.length; i++) {
+                if (mutationList[i].type === 'attributes') {
                     this.toggleColorScheme()
                     break
                 }
@@ -105,7 +105,7 @@ export default {
         toggleColorScheme() {
             if (document.querySelector("html").classList.contains("light-mode")) {
                 this.prefersColorScheme = "light"
-            } else if(document.querySelector("html").classList.contains("dark-mode")) {
+            } else if (document.querySelector("html").classList.contains("dark-mode")) {
                 this.prefersColorScheme = "dark"
             } else if (matchMedia("(prefers-color-scheme: light)").matches) {
                 this.prefersColorScheme = "light"
@@ -117,10 +117,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-company-logo ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-company-logo {
     img {
         display: block;
@@ -134,9 +132,14 @@ export default {
             border: 0;
         }
     }
+}
+</style>
 
+<style lang="scss">
+@import '../assets/styles/variables';
 
-    @media only screen and (max-width: $medium-max-width) {
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-company-logo {
         img {
             max-width: 100%;
             max-height: 7.5rem;

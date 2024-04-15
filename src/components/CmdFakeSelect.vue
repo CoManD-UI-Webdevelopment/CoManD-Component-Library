@@ -20,8 +20,8 @@
             <span class="label-text">
                 <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined">*</sup></span>
 
-                <!-- begin CmdTooltipForInputElements -->
-                <CmdTooltipForInputElements
+                <!-- begin CmdTooltipForFormElements -->
+                <CmdTooltipForFormElements
                     v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
                     ref="tooltip"
                     :validationStatus="validationStatus"
@@ -30,9 +30,9 @@
                     :cmdListOfRequirements="listOfRequirements"
                     :role="validationStatus === 'error' ? 'alert' : 'dialog'"
                 />
-                <!-- end CmdTooltipForInputElements -->
+                <!-- end CmdTooltipForFormElements -->
 
-                <a v-if="$attrs.required || inputRequirements.length"
+                <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                    href="#"
                    @click.prevent
                    :title="!useCustomTooltip ? getValidationMessage : ''"
@@ -40,8 +40,8 @@
                    aria-live="assertive"
                    :id="tooltipId">
                    <!-- begin CmdIcon -->
-                   <CmdIcon :iconClass="getStatusIconClass" />
-                   <!-- end CmdIcon -->
+                   <CmdIcon :iconClass="getStatusIconClass"/>
+                    <!-- end CmdIcon -->
                 </a>
             </span>
             <!-- end label -->
@@ -51,7 +51,8 @@
                 <!-- begin default/selected-option -->
                 <a href="#" @click.prevent="toggleOptions" @blur="onBlur" :title="optionIcon?.tooltip">
                     <!-- begin show flag -->
-                    <img v-if="type === 'country' && optionCountry" :src="pathFlag(optionCountry)" :alt="optionCountry" :class="['flag', optionCountry]"/>
+                    <img v-if="type === 'country' && optionCountry" :src="pathFlag(optionCountry)" :alt="optionCountry"
+                         :class="['flag', optionCountry]"/>
                     <!-- end show flag -->
 
                     <!-- begin show color-box -->
@@ -60,7 +61,8 @@
 
                     <!-- begin optional icon -->
                     <!-- begin CmdIcon -->
-                    <CmdIcon v-if="optionIcon?.iconClass" :type="optionIcon?.iconType" :iconClass="optionIcon?.iconClass" />
+                    <CmdIcon v-if="optionIcon?.iconClass" :type="optionIcon?.iconType"
+                             :iconClass="optionIcon?.iconClass"/>
                     <!-- end CmdIcon -->
                     <!-- end optional icon -->
 
@@ -83,7 +85,8 @@
 
                 <!-- begin default dropdown (incl. optional icon) -->
                 <ul v-if="type === 'default' && showOptions" role="listbox">
-                    <li v-for="(option, index) in selectData" :key="index" role="option" :aria-selected="option.value === modelValue">
+                    <li v-for="(option, index) in selectData" :key="index" role="option"
+                        :aria-selected="option.value === modelValue">
                         <!-- begin type 'href' -->
                         <a v-if="optionLinkType === 'href'"
                            href="#" @click.prevent="selectOption(option.value)"
@@ -91,16 +94,18 @@
                            :title="option.tooltip"
                         >
                             <!-- begin CmdIcon -->
-                            <CmdIcon v-if="option.iconClass" :iconClass="option.iconClass" :type="option.iconType" />
+                            <CmdIcon v-if="option.iconClass" :iconClass="option.iconClass" :type="option.iconType"/>
                             <!-- end CmdIcon -->
                             <span v-if="option.text">{{ option.text }}</span>
                         </a>
                         <!-- end type 'href' -->
 
                         <!-- begin type 'router' -->
-                        <router-link v-if="optionLinkType === 'router'" to="#" @click.prevent="selectOption(option.value)" :class="{'active' : option.value === modelValue}">
+                        <router-link v-if="optionLinkType === 'router'" to="#"
+                                     @click.prevent="selectOption(option.value)"
+                                     :class="{'active' : option.value === modelValue}">
                             <!-- begin CmdIcon -->
-                            <CmdIcon v-if="option.iconClass" :iconClass="option.iconClass" :type="option.iconType" />
+                            <CmdIcon v-if="option.iconClass" :iconClass="option.iconClass" :type="option.iconType"/>
                             <!-- end CmdIcon -->
                             <span>{{ option.text }}</span>
                         </router-link>
@@ -110,10 +115,12 @@
                 <!-- end default dropdown (incl. optional icon) -->
 
                 <!-- begin dropdown with checkboxes/countries/colors -->
-                <ul v-else-if="type !== 'default' && type !== 'content' && showOptions" :class="{'checkbox-options': type === 'checkboxOptions'}" :aria-expanded="showOptions">
+                <ul v-else-if="type !== 'default' && type !== 'content' && showOptions"
+                    :class="{'checkbox-options': type === 'checkboxOptions'}" :aria-expanded="showOptions">
                     <li v-for="(option, index) in selectData" :key="index">
                         <!-- begin checkboxes -->
-                        <label v-if="type === 'checkboxOptions'" :for="'option-' + (index + 1)" :class="{'active' : modelValue.includes(`${option.value}`)}">
+                        <label v-if="type === 'checkboxOptions'" :for="'option-' + (index + 1)"
+                               :class="{'active' : modelValue.includes(`${option.value}`)}">
                             <input type="checkbox" :value="option.value" @change="optionSelect"
                                    :checked="compareValues(option.value)" :id="'option-' + (index + 1)"/>
                             <span>{{ option.text }}</span>
@@ -122,7 +129,8 @@
 
                         <!-- begin country-flags -->
                         <a v-else-if="type === 'country'" href="#"
-                           @click.prevent="selectOption(option.value)" :class="{'active' : option.value === modelValue}">
+                           @click.prevent="selectOption(option.value)"
+                           :class="{'active' : option.value === modelValue}">
                             <img class="flag" :src="pathFlag(option.value)"
                                  :alt="option.text"/>
                             <span>{{ option.text }}</span>
@@ -130,7 +138,8 @@
                         <!-- end country-flags -->
 
                         <!-- begin color-boxes -->
-                        <a v-else-if="type === 'color'" href="#" @click.prevent="selectOption(option.value)" :class="{'active' : option.value === modelValue}">
+                        <a v-else-if="type === 'color'" href="#" @click.prevent="selectOption(option.value)"
+                           :class="{'active' : option.value === modelValue}">
                             <span class="color" :style="'background: ' + option.value"></span>
                             <span>{{ option.text }}</span>
                         </a>
@@ -141,8 +150,10 @@
                     <li v-if="showSelectAllOptions && type === 'checkboxOptions'" class="select-all-options">
                         <a href="#" @click.prevent="toggleAllOptions">
                             <!-- begin CmdIcon -->
-                            <CmdIcon v-if="!allOptionsSelected" :iconClass="iconSelectAllOptions.iconClass" :type="iconSelectAllOptions.iconType" />
-                            <CmdIcon v-else :iconClass="iconDeselectAllOptions.iconClass" :type="iconDeselectAllOptions.iconType" />
+                            <CmdIcon v-if="!allOptionsSelected" :iconClass="iconSelectAllOptions.iconClass"
+                                     :type="iconSelectAllOptions.iconType"/>
+                            <CmdIcon v-else :iconClass="iconDeselectAllOptions.iconClass"
+                                     :type="iconDeselectAllOptions.iconType"/>
                             <!-- end CmdIcon -->
                             <span>{{ selectAllOptionsText }}</span>
                         </a>
@@ -191,11 +202,18 @@ export default {
         /**
          * set different default selectbox-types for
          *
-         * @allowedValues: default, color, country, checkboxOptions
+         * @allowedValues: default, color, country, content, checkboxOptions
          */
         type: {
             type: String,
-            default: "default"
+            default: "default",
+            validator(value) {
+                return value === "default" ||
+                    value === "color" ||
+                    value === "country" ||
+                    value === "content" ||
+                    value === "checkboxOptions"
+            }
         },
         /**
          * set type of option-links
@@ -204,7 +222,11 @@ export default {
          */
         optionLinkType: {
             type: String,
-            default: "href"
+            default: "href",
+            validator(value) {
+                return value === "href" ||
+                    value === "router"
+            }
         },
         /**
          * set default v-model (must be named modelValue in Vue3)
@@ -234,12 +256,19 @@ export default {
         /**
          * status (i.e. for validation)
          *
-         * @allowedValues: error, warning, success, info
+         * @allowedValues: "" , error, warning, success, info
          * @affectsStyling: true
          */
         status: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "" ||
+                    value === "error" ||
+                    value === "warning" ||
+                    value === "success" ||
+                    value === "info"
+            }
         },
         /**
          * icon for dropdown-icon (i.e. an angle/arrow)
@@ -274,6 +303,13 @@ export default {
             default: true
         },
         /**
+         * activate if interactive status-icon (to show requirements) should be shown inline with label
+         */
+        showStatusIcon: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * path to flag-files (will be combined with flag isoCode to load svg)
          */
         pathFlags: {
@@ -284,8 +320,8 @@ export default {
          * default text if no option is selected (and first option is not used)
          */
         textPleaseSelect: {
-           type: String,
-           default: "Please select\u2026"
+            type: String,
+            default: "Please select\u2026"
         },
         /**
          * set icon for "select all"-option
@@ -334,7 +370,7 @@ export default {
 
                 // if find() returns some data, return this data
                 if (result) {
-                   return result.text
+                    return result.text
                 }
             }
 
@@ -369,7 +405,7 @@ export default {
         },
         optionCountry() {
             if (this.type === "country") {
-                   return this.modelValue || this.selectData?.[0]?.value
+                return this.modelValue || this.selectData?.[0]?.value
             }
             return null
         },
@@ -498,17 +534,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-fake-select ------------------------------------------------------------------------------------------ */
-@mixin disabled-styles {
-    color: var(--disabled-color);
-    border-color: var(--disabled-color);
-    background: var(--disabled-background-color);
-}
-
 .cmd-fake-select {
     align-self: flex-end;
-    border-radius: var(--border-radius);
+    border-radius: var(--default-border-radius);
 
     > span:first-child {
         a {
@@ -522,10 +552,11 @@ export default {
         display: block;
         min-width: 0;
         box-shadow: none;
-        border-radius: var(--border-radius);
+        border-radius: var(--default-border-radius);
 
         > li {
             height: 100%;
+            border-radius: var(--default-border-radius);
 
             &:first-child {
                 > a {
@@ -533,6 +564,7 @@ export default {
                     border: var(--default-border);
                     background: var(--color-scheme-background-color);
                     color: var(--color-scheme-text-color);
+                    border-radius: var(--default-border-radius);
 
                     span, [class*="icon"] {
                         color: var(--color-scheme-text-color);
@@ -562,11 +594,27 @@ export default {
 
         &.open {
             border-bottom: 0;
+            ul {
+                border-bottom-left-radius: var(--default-border-radius);
+                border-bottom-right-radius: var(--default-border-radius);
 
-            > li {
-                &:first-child {
+                > li {
+                    &:first-child {
+                        > a {
+                            border-color: var(--primary-color);
+                            border-bottom-left-radius: 0;
+                            border-bottom-right-radius: 0;
+                        }
+                    }
+                }
+
+                > li:last-child {
+                    border-bottom-left-radius: inherit;
+                    border-bottom-right-radius: inherit;
+
                     > a {
-                        border-color: var(--primary-color);
+                        border-bottom-left-radius: inherit;
+                        border-bottom-right-radius: inherit;
                     }
                 }
             }
@@ -585,7 +633,6 @@ export default {
             outline: none;
             border-bottom: var(--default-border);
             text-decoration: none;
-
 
             &:hover, &:active, &:focus {
                 background: var(--primary-color);
@@ -638,8 +685,8 @@ export default {
             z-index: 10;
             min-width: 100%;
             margin: 0;
-            border-bottom-right-radius: var(--border-radius);
-            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--default-border-radius);
+            border-bottom-left-radius: var(--default-border-radius);
             background: var(--color-scheme-background-color);
             border: var(--primary-border);
 
@@ -672,10 +719,24 @@ export default {
         }
     }
 
-    // use additional class in selector to gain high specificity
+    /* use additional class in selector to gain high specificity */
     &.has-state.label {
+        &.error * {
+            --status-color: var(--error-color);
+        }
+
+        &.success * {
+            --status-color: var(--success-color);
+        }
+
+        .label-text {
+            > span, [class*="icon-"] {
+                color: var(--status-color);
+            }
+        }
+
         > ul {
-            > li {
+            > li:first-child {
                 > a {
                     border-color: var(--status-color);
 
@@ -688,29 +749,6 @@ export default {
 
                         span {
                             color: var(--status-color);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    &.disabled {
-        > ul {
-            > li {
-                > a {
-                    @include disabled-styles;
-
-                    span {
-                        color: var(--disabled-color);
-                    }
-
-                    &:hover, &:active, &:focus {
-                        cursor: not-allowed;
-                        @include disabled-styles;
-
-                        span {
-                            color: var(--disabled-color);
                         }
                     }
                 }
@@ -742,6 +780,39 @@ export default {
 
                     &[style=""] {
                         display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>
+
+<style lang="scss">
+@mixin disabled-styles {
+    color: var(--disabled-color);
+    border-color: var(--disabled-color);
+    background: var(--disabled-background-color);
+}
+
+.cmd-fake-select {
+    &.disabled {
+        > ul {
+            > li {
+                > a {
+                    @include disabled-styles;
+
+                    span {
+                        color: var(--disabled-color);
+                    }
+
+                    &:hover, &:active, &:focus {
+                        cursor: not-allowed;
+                        @include disabled-styles;
+
+                        span {
+                            color: var(--disabled-color);
+                        }
                     }
                 }
             }

@@ -1,5 +1,7 @@
 {
   "offcanvasPosition": "right",
+  "stretchMainItems": false,
+  "persistOnMobile": false,
   "navigationEntries": [
     {
       "type": "href",

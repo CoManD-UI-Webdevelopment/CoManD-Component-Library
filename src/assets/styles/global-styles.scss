@@ -47,27 +47,31 @@ html {
 
 /* ---------------------------------------------- BEGIN COMPONENTS AND GLOBAL STYLES -------------------------------------------------- */
 /* begin styles for main structure --------------------------------------------------------------------------------------------------------------------------------------------------- */
-body {
-    overflow: hidden;
-}
-
 #page-wrapper {
-    scroll-padding-top: 10.5rem;
     display: flex;
     flex-direction: column;
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
-    width: 100dvw;
     height: 100dvh;
     scroll-behavior: smooth;
+    scroll-padding-top: 11.7rem;
+}
 
-    .cmd-site-footer {
-        margin-top: auto;
-    }
+main {
+    flex: 1 0 auto;
+}
+
+html {
+    height: auto;
+    scroll-behavior: unset;
+}
+
+
+body {
+    height: auto;
 }
 
 #component-library {
-    /*scroll-padding-top: unset !important;*/
     scroll-snap-type: unset !important;
 }
 

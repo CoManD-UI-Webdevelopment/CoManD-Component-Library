@@ -1,7 +1,7 @@
 <template>
     <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}">
-        <section v-if="innerWrapper" :class="setInnerClass">
-            <a v-if="anchorId" :id="anchorId"></a>
+        <!-- begin slot-content in section -->
+        <section v-if="innerWrapper" :class="setInnerClass" :id="anchorId">
             <!-- begin cmd-headline -->
             <CmdHeadline
                 v-if="cmdHeadline"
@@ -15,12 +15,16 @@
             <slot></slot>
             <!-- end slot-content -->
         </section>
+        <!-- end slot-content in section -->
+
+        <!-- begin slot-content without section -->
         <template v-else>
             <!-- begin slot-content -->
             <a v-if="anchorId" :id="anchorId"></a>
             <slot></slot>
             <!-- end slot-content -->
         </template>
+        <!-- end slot-content without section -->
     </div>
 </template>
 
@@ -113,7 +117,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-width-limitation-wrapper ---------------------------------------------------------------------------------------- */
 .cmd-width-limitation-wrapper {
     > * {

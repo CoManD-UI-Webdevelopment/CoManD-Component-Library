@@ -5,17 +5,11 @@
         <dd>
             <span v-if="day.am" class="am">
                 <template v-if="day.am.displayText">{{ day.am.displayText }}</template>
-                <template
-                    v-else>{{ getTime(day.am.fromTime) }} {{ separator }} {{
-                        getTime(day.am.tillTime)
-                    }}</template>
+                <template v-else>{{ getTime(day.am.fromTime, abbreviationTextAm) }} {{ separator }} {{getTime(day.am.tillTime)}}</template>
             </span>
             <span v-if="day.pm" class="pm">
                 <template v-if="day.pm.displayText">{{ day.pm.displayText }}</template>
-                <template
-                    v-else>{{ getTime(day.pm.fromTime) }} {{ separator }} {{
-                        getTime(day.pm.tillTime)
-                    }}</template>
+                <template v-else>{{ getTime(day.pm.fromTime, abbreviationTextPm) }} {{ separator }} {{getTime(day.pm.tillTime)}}</template>
             </span>
         </dd>
     </template>
@@ -178,11 +172,18 @@ export default {
             default: "–"
         },
         /**
-         *  abbreviation text for 'hours' (as a unit after displayed times)
+         * abbreviation (behind time) for morning
          */
-        abbreviationText: {
+        abbreviationTextAm: {
             type: String,
-            default: "h"
+            default: "am"
+        },
+        /**
+         * abbreviation (behind time) for afternoon
+         */
+        abbreviationTextPm: {
+            type: String,
+            default: "pm"
         },
         /**
          * option to set custom time format by function
@@ -200,7 +201,8 @@ export default {
             if (this.timeFormatter) {
                 return this.timeFormatter(time.hours, time.mins)
             }
-            return timeFormatting(":", " " + this.abbreviationText, "", false)(time.hours, time.mins)
+
+            return timeFormatting(":", " " + this.abbreviationTextAm, " " + this.abbreviationTextPm, false)(time.hours, time.mins)
         },
         updateHandlerProvider() {
             const data = this.editableDay
@@ -246,8 +248,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .edit-mode-opening-hours-item {
+    dt {
+        min-width: 3ch;
+    }
+
     .am-wrapper, .pm-wrapper {
         align-items: center;
         gap: calc(var(--default-gap) / 2);

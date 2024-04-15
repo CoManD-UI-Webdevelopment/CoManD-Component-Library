@@ -21,7 +21,13 @@ export default {
          */
         slideButtonType: {
           type: String,
-          default: "next"
+          default: "next",
+            validator(value) {
+                return value === "next" ||
+                    value === "prev" ||
+                    value === "up" ||
+                    value === "down"
+            }
         },
         /**
          * default slide-buttons
@@ -66,8 +72,6 @@ export default {
 
 <style lang="scss">
 /* begin cmd-slide-button ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-slide-button {
     &.button {
         font-size: 2rem;
@@ -107,7 +111,15 @@ export default {
         }
     }
 
-    @media only screen and (max-width: $small-max-width) {
+
+}
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $small-max-width) {
+    .cmd-slide-button {
         &.button {
             width: auto; /* overwrite button-behavior for small-devices from frontend-framework */
         }

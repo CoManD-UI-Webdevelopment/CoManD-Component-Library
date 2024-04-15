@@ -1,5 +1,7 @@
 <template>
-    <div :class="['cmd-site-header', {sticky: sticky, 'navigation-inline': navigationInline, 'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'}]" role="banner">
+    <div
+        :class="['cmd-site-header site-header', {sticky: sticky, 'navigation-inline': navigationInline, 'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'}]"
+        role="banner">
         <!-- begin slot for elements above header -->
         <div v-if="$slots.topheader" class="top-header">
             <slot name="topheader"></slot>
@@ -33,6 +35,7 @@
                     v-if="cmdMainNavigation?.navigationEntries?.length && navigationInline"
                     :navigationEntries="cmdMainNavigation.navigationEntries"
                     :offcanvasPosition="cmdMainNavigation.offcanvasPosition"
+                    :stretchMainItems="cmdMainNavigation.stretchMainItems"
                     :closeOffcanvas="closeOffcanvas"
                     @offcanvas="emitOffcanvasStatus"
                 />
@@ -47,6 +50,7 @@
             :navigationEntries="cmdMainNavigation.navigationEntries"
             :offcanvasPosition="cmdMainNavigation.offcanvasPosition"
             :closeOffcanvas="closeOffcanvas"
+            :stretchMainItems="cmdMainNavigation.stretchMainItems"
             @offcanvas="emitOffcanvasStatus"
         />
         <!-- end CmdMainNavigation -->
@@ -106,7 +110,7 @@ export default {
         }
     },
     methods: {
-        emitOffcanvasStatus(event){
+        emitOffcanvasStatus(event) {
             this.$emit("offcanvas", event)
         }
     }
@@ -115,12 +119,11 @@ export default {
 
 <style lang="scss">
 /* begin cmd-site-header ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-site-header {
     grid-area: site-header;
     display: flex;
     flex-direction: column;
+    flex: none;
     border-bottom: var(--default-border);
     background: var(--color-scheme-background-color);
 
@@ -152,7 +155,7 @@ export default {
         border-bottom: 0;
     }
 
-    // use id to ensure high specificity
+    /* use id to ensure high specificity */
     > .cmd-main-navigation#main-navigation-wrapper:last-child {
         border-bottom: 0;
     }
@@ -160,6 +163,7 @@ export default {
     header {
         padding-top: calc(var(--default-padding) * 2);
         padding-bottom: calc(var(--default-padding) * 2);
+        row-gap: 0;
 
         &.has-navigation {
             grid-template-rows: 1fr min-content;
@@ -183,14 +187,10 @@ export default {
         .cmd-main-navigation,
         nav ul li {
             border-bottom: 0;
-            background: none;
-        }
-
-        .cmd-company-logo {
-            grid-column: span var(--grid-small-span);
         }
     }
 
+    /* begin inline-navigation (shares spaces with company-logo */
     &.navigation-inline {
         header {
             &.has-navigation {
@@ -209,26 +209,7 @@ export default {
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
-                border: 0;
                 grid-column: span var(--grid-large-span);
-                background: none;
-
-                :where(nav, .nav) {
-                    margin-right: 0;
-
-                    > ul {
-                        border: 0;
-                        background: none;
-
-                        li {
-                            border: 0;
-
-                            ul {
-                                border-top: var(--default-border);
-                            }
-                        }
-                    }
-                }
 
                 &:not(.persist-on-mobile) {
                     padding-left: 0 !important;
@@ -244,7 +225,13 @@ export default {
             }
         }
     }
+
+    /* end inline-navigation (shares spaces with company-logo */
 }
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
 
 @media only screen and (max-width: $medium-max-width) {
     .cmd-site-header {

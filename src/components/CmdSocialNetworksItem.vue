@@ -10,11 +10,7 @@
             :title="tooltip(network.tooltip)">
 
             <!-- begin CmdIcon -->
-            <CmdIcon
-                v-if="network.iconClass"
-                :iconClass="network.iconClass"
-                :type="network.iconType"
-            />
+            <CmdIcon v-if="network.iconClass" :iconClass="network.iconClass" :type="network.iconType" />
             <!-- end CmdIcon -->
 
             <span v-if="network.linkText">{{ network.linkText }}</span>
@@ -46,8 +42,7 @@ export default {
          * toggle if user has to accept that anonymous data will be send while sharing
          */
         userMustAcceptDataPrivacy: {
-            type: Boolean,
-            default: true
+            type: Boolean
         },
         /**
          * alignment for buttons
@@ -56,7 +51,11 @@ export default {
          */
         buttonTextAlign: {
             type: String,
-            default: "left"
+            default: "left",
+            validator(value) {
+                return value === "left" ||
+                    value === "right"
+            }
         },
         /**
          * information if the user has accepted the data privacy (by checking the checkbox)

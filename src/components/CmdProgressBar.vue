@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-progressbar ---------------------------------------------------------------------------------------- */
 .cmd-progressbar {
     .progressbar {

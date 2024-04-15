@@ -1,5 +1,5 @@
 <template>
-    <ol class="cmd-multistep-form-progress-bar">
+    <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap}]">
         <li v-for="(step, index) in multisteps" :key="index" :class="{active : activeLink === index}">
             <!-- begin type === href -->
             <a v-if="step.type === 'href'"
@@ -86,6 +86,10 @@ export default {
             default() {
                 return "icon-single-arrow-right"
             }
+        },
+        useGap: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {
@@ -100,20 +104,67 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-multistep-form-progress-bar ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
 
 .cmd-multistep-form-progress-bar {
     display: flex;
     justify-content: space-around;
     border: var(--default-border);
+    margin: 0;
+    border-radius: var(--default-border-radius);
+
+    &.use-gap {
+        border: 0;
+        gap: var(--default-gap);
+
+        li {
+            border: var(--default-border);
+            border-color: var(--primary-color-reduced-opacity);
+            border-radius: var(--default-border-radius);;
+
+            a, a.active {
+                border: 0;
+                border-radius: inherit;
+
+                :is(span, [class*="icon-"]) + [class*="icon-"]:last-child {
+                    border: 0;
+                    right: -1rem;
+                    background: none;
+                }
+            }
+
+            a {
+                :is(span, [class*="icon-"]) + [class*="icon-"]:last-child {
+                    color: var(--default-text-color) !important;
+                }
+            }
+
+            &.active {
+                border-color: var(--primary-color);
+
+                & ~li {
+                    border-color: var(--border-color);
+                }
+            }
+        }
+    }
 
     li {
         display: flex;
         flex: 1;
         list-style-type: none;
         margin: 0;
+
+        &:first-child, &:first-child > a {
+            border-top-left-radius: inherit;
+            border-bottom-left-radius: inherit;
+        }
+
+        &:last-child, &:last-child > a {
+            border-top-right-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
 
         a {
             display: flex;
@@ -132,7 +183,7 @@ export default {
                         border: var(--default-border);
                         border-radius: var(--full-circle);
                         background: var(--pure-white);
-                        color: var(--text-color);
+                        color: var(--default-text-color);
                         margin: 0;
                         position: absolute;
                         right: 0;
@@ -177,10 +228,6 @@ export default {
             }
         }
 
-        &:not(:first-child) {
-            border-left: .2rem solid var(--border-color);
-        }
-
         &:last-child {
             a {
                 [class*="icon-"] {
@@ -205,7 +252,7 @@ export default {
 
                         & + [class*="icon-"] {
                             &:last-child {
-                                color: var(--text-color);
+                                color: var(--default-text-color);
                             }
                         }
                     }
@@ -263,6 +310,10 @@ export default {
         }
     }
 }
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
 
 @media only screen and (width < #{$small-max-width}) {
     .cmd-multistep-form-progress-bar {
@@ -274,7 +325,7 @@ export default {
             }
 
             a {
-                span, [class*="icon-"] {
+                :is(span, [class*="icon-"]) {
                     & + [class*="icon-"] {
                         &:last-child {
                             left: auto;

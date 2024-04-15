@@ -242,7 +242,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-toggle-dark-mode ---------------------------------------------------------------------------------------- */
 .cmd-toggle-dark-mode {
     &.styled-layout {

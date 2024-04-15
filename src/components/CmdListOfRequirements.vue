@@ -2,7 +2,7 @@
     <div class="cmd-list-of-requirements">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="showHeadline" :headline-level="cmdHeadline.headlineLevel">
-            {{ headlineRequirements }}<template v-if="labelText"><br/><em>{{ labelText }}</em></template>
+             {{ headlineRequirements }}<template v-if="labelText"><br/><em>{{ labelText }}</em></template>
         </CmdHeadline>
         <!-- end CmdHeadline -->
 
@@ -150,31 +150,31 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-list-of-requirements ------------------------------------------------------------------------------------------ */
 .cmd-list-of-requirements {
     dl {
-        .error {
+        span[class*="icon-"] {
+            color: var(--status-color);
+        }
+
+        .error, .error span {
             --status-color: var(--error-color);
         }
 
-        .warning {
+        .warning, .warning span {
             --status-color: var(--warning-color);
         }
 
-        .success {
+        .success, .success span {
             --status-color: var(--success-color);
         }
 
-        .info {
+        .info, .info span {
             --status-color: var(--info-color);
         }
 
         dt {
-            color: var(--status-color);
-        }
-
-        [class*="icon-"] {
             color: var(--status-color);
         }
 

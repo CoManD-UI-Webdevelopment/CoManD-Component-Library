@@ -19,7 +19,7 @@
     "location": ""
   },
   {
-    "name": "telephone",
+    "name": "phone",
     "iconClass": "icon-phone",
     "data": "Your phone number",
     "labelText": "Telephone",
@@ -27,7 +27,7 @@
     "href": "0123456789"
   },
   {
-    "name": "mobilephone",
+    "name": "phone",
     "iconClass": "icon-device-smartphone",
     "data": "Your mobile phone number",
     "labelText": "Mobile phone",
@@ -49,7 +49,7 @@
     "href": "mail@provider.de"
   },
   {
-    "name": "website",
+    "name": "url",
     "iconClass": "icon-globe",
     "data": "Your web site",
     "labelText": "Web site",

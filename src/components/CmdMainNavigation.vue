@@ -182,6 +182,15 @@ export default {
             default: false
         },
         /**
+         * toggle if overlay over content should be shown if off-canvas is open
+         *
+         * @affectsStyling: true
+         */
+        showContentOverlay: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * list of all navigation-entries (incl. sub-entries)
          */
         navigationEntries: {
@@ -203,12 +212,23 @@ export default {
                 }
             }
         },
+        /**
+         * position for offcanvas-navigation
+         *
+         * @allowedValues: "right", "left"
+         */
         offcanvasPosition: {
             type: String,
-            default: "right"
+            default: "right",
+            validator(value) {
+                return value === "right" ||
+                    value === "left"
+            }
         },
         /**
          * button to open off-canvas-navigation
+         *
+         * (persistOnMobile-property must be false)
          *
          * @requiredForAccessibility: partial
          */
@@ -235,15 +255,6 @@ export default {
         subSubentriesIconClass: {
             type: String,
             default: "icon-single-arrow-right"
-        },
-        /**
-         * toggle if overlay over content should be shown if off-canvas is open
-         *
-         * @affectsStyling: true
-         */
-        showContentOverlay: {
-            type: Boolean,
-            default: true
         }
     },
     methods: {
@@ -307,10 +318,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-main-navigation ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-main-navigation {
     &.hide-sub-navigation {
         ul {
@@ -366,9 +375,27 @@ export default {
     }
 }
 
+/* keep outside of .cmd-main-navigation to keep specificity */
+.off-canvas-right {
+    #toggle-offcanvas {
+        margin-right: 0;
+        margin-left: auto;
+    }
+}
+
+#toggle-offcanvas {
+    margin-left: 0;
+    display: none;
+}
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+
 @media only screen and (max-width: $medium-max-width) {
     .cmd-main-navigation#main-navigation-wrapper {
         --nav-transition: all .5s linear;
+
         display: flex;
         background: none; /* overwrite framework-css */
         border: 0; /* overwrite framework-css */
@@ -386,11 +413,14 @@ export default {
 
             &.open-off-canvas {
                 nav {
+                    height: 100%;
+                    background: var(--default-background);
                     left: 0;
                     opacity: 1;
                     padding: 0 !important;
                     transition: var(--nav-transition);
                     border-right: var(--default-border);
+                    display: block;
                 }
 
                 &.show-content-overlay {
@@ -530,19 +560,5 @@ export default {
         }
     }
 }
-
-/* keep outside of .cmd-main-navigation to keep specificity */
-.off-canvas-right {
-    #toggle-offcanvas {
-        margin-right: 0;
-        margin-left: auto;
-    }
-}
-
-#toggle-offcanvas {
-    margin-left: 0;
-    display: none;
-}
-
 /* end cmd-main-navigation ------------------------------------------------------------------------------------------ */
 </style>

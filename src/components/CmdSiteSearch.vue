@@ -69,7 +69,7 @@
         <!-- end form-elements -->
 
         <!-- begin filters -->
-        <template v-if="cmdFakeSelect?.show">
+        <template v-if="useFilters">
             <a href="#" @click.prevent="showFilters = !showFilters">
                 <!-- begin CmdIcon -->
                 <CmdIcon
@@ -97,8 +97,9 @@
         </template>
         <!-- end filters -->
     </fieldset>
+
     <!-- begin CmdFormFilters -->
-    <CmdFormFilters v-if="cmdFakeSelect?.show" v-model="searchFilters" :selectedOptionsName="getOptionName"/>
+    <CmdFormFilters v-if="useFilters" v-model="searchFilters" :selectedOptionsName="getOptionName"/>
     <!-- end CmdFormFilters -->
 </template>
 
@@ -159,15 +160,6 @@ export default {
             default: true
         },
         /**
-         * text for legend
-         *
-         * @requiredForAccessibility: true
-         */
-        textLegend: {
-            type: String,
-            required: false
-        },
-        /**
          * toggle legend visibility
          *
          * textLegend must be set
@@ -175,6 +167,15 @@ export default {
         showLegend: {
             type: Boolean,
             default: true
+        },
+        /**
+         * text for legend
+         *
+         * @requiredForAccessibility: true
+         */
+        textLegend: {
+            type: String,
+            required: false
         },
         /**
          * send search result from outside to display inside this component

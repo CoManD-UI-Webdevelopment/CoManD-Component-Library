@@ -30,7 +30,7 @@
     "name": "form-element-password-name",
     "htmlClass": "form-element-password-class",
     "id": "form-element-password-id",
-    "value": "default value",
+    "value": "",
     "fieldIconClass": "icon-cogs",
     "labelText": "Password input",
     "placeholder": "Placeholdertext",

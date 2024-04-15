@@ -68,7 +68,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-breadcrumbs ---------------------------------------------------------------------------------------- */
 .cmd-breadcrumbs {
     display: flex;

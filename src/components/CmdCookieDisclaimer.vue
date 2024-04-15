@@ -273,7 +273,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-cookie-disclaimer ---------------------------------------------------------------------------------------- */
 .cmd-cookie-disclaimer {
     width: 100%;

@@ -56,8 +56,12 @@
         <!-- end default header with slot -->
 
         <!-- begin box-body -->
-        <div v-show="open" class="box-body" aria-expanded="true" role="article">
-            <div v-if="useSlots?.includes('body')" :class="{'default-padding': useDefaultPadding}">
+        <div v-show="open" :class="['box-body', boxBodyClass]" aria-expanded="true" role="article">
+            <div v-if="useSlots?.includes('body')"
+                 :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}"
+                 ref="boxBody"
+                 :style="'max-height: ' + calculatedBodyHeight"
+            >
                 <!-- begin slot 'body' -->
                 <slot name="body">
                     <transition-group :name="toggleTransition">
@@ -69,7 +73,9 @@
                             {{ textBody }}
                         </p>
                         <a v-if="cutoffTextLines > 0" href="#" @click.prevent="toggleCutOffText">
-                            {{ showCutOffText ? getMessage("cmdbox.contentbox.collapse_text") : getMessage("cmdbox.contentbox.expand_text") }}
+                            {{
+                                showCutOffText ? getMessage("cmdbox.contentbox.collapse_text") : getMessage("cmdbox.contentbox.expand_text")
+                            }}
                         </a>
                     </transition-group>
                 </slot>
@@ -79,7 +85,7 @@
             <template v-else>
                 <img v-if="image" :src="image.src" :alt="image.altText"/>
 
-                <div :class="{'default-padding': useDefaultPadding}">
+                <div :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
                     <!-- begin CmdHeadline -->
                     <CmdHeadline
                         v-if="cmdHeadline?.headlineText && repeatHeadlineInBoxBody"
@@ -123,7 +129,9 @@
             <!-- end ribbons -->
         </div>
         <div class="box-body">
-            <p v-if="product.articleNumber">{{ getMessage("cmdbox.productbox.article_no") }} {{ product.articleNumber }}</p>
+            <p v-if="product.articleNumber">{{ getMessage("cmdbox.productbox.article_no") }} {{
+                    product.articleNumber
+                }}</p>
             <p v-if="product.price" class="price">
                 <span>{{ product.price }}</span><span :title="globalCurrency.name">{{ globalCurrency.symbol }}</span>
             </p>
@@ -146,7 +154,7 @@
         <div class="box-header flex-container vertical">
             <figure v-if="user.image">
                 <img :src="user.image.src" :alt="user.image.alt"/>
-                <figcaption>{{ user.name }} <span v-if="user.age">, {{user.age}}</span></figcaption>
+                <figcaption>{{ user.name }} <span v-if="user.age">, {{ user.age }}</span></figcaption>
             </figure>
             <div v-else>
                 <span :class="defaultProfileIconClass" :title="user.name"></span>
@@ -161,7 +169,7 @@
         </div>
         <ul class="tags">
             <li v-for="(tag, index) in user.tags" :key="index">
-                {{tag}}
+                {{ tag }}
             </li>
         </ul>
         <div v-if="user.links" class="box-footer">
@@ -189,7 +197,8 @@ export default {
         return {
             open: this.collapsible ? this.openCollapsedBox : true,
             active: true,
-            showCutOffText: false
+            showCutOffText: false,
+            calculatedBodyHeight: this.maxBoxBodyHeight
         }
     },
     props: {
@@ -217,7 +226,28 @@ export default {
          */
         boxType: {
             type: String,
-            default: "content"
+            default: "content",
+            validator(value) {
+                return value === "content" ||
+                    value === "product" ||
+                    value === "user"
+            }
+        },
+        /**
+         * set if content (in box-body) should scroll
+         *
+         * (maxBoxBodyHeight must be set)
+         */
+        allowContentToScroll: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * set max-height for body (should only be used it allowContentToScroll-property is active)
+         */
+        maxBoxBodyHeight: {
+            type: String,
+            default: "100rem"
         },
         /**
          * activate if box should be collapsible
@@ -261,11 +291,18 @@ export default {
         /**
          * use transition to expand and collapse box-body
          *
-         * boyType must be 'content' and 'collapsible' must be activated
+         * 'boyType-property' must be set to 'content' and 'collapsible-property' must be activated
          */
         useTransition: {
             type: Boolean,
             default: true
+        },
+        /**
+         * custom class placed on box-body-container
+         */
+        boxBodyClass: {
+            type: String,
+            required: false
         },
         /**
          * set default profile-icon (will eb shown if no user-image exists)
@@ -301,7 +338,12 @@ export default {
          */
         profileType: {
             type: String,
-            default: "business"
+            default: "business",
+            validator(value) {
+                return value === "business" ||
+                    value === "influencer" ||
+                    value === "dating"
+            }
         },
         /**
          * activated if all content (incl. headline) is given by slot
@@ -382,6 +424,12 @@ export default {
             required: false
         }
     },
+    mounted() {
+        if (this.allowContentToScroll && this.$refs.boxBody) {
+            const topPosition = this.$refs.boxBody.getBoundingClientRect().top
+            this.calculatedBodyHeight = (document.documentElement.clientHeight - topPosition) + "px"
+        }
+    },
     computed: {
         toggleTransition() {
             if (this.useTransition) {
@@ -419,7 +467,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-box ---------------------------------------------------------------------------------------- */
 .cmd-box {
     display: inline-flex;
@@ -436,28 +484,38 @@ export default {
         height: 100%;
     }
 
-    > .cmd-headline {
+    .box-header .cmd-headline {
         margin-bottom: 0;
     }
 
-    // collapsible box only
+    /* collapsible box only */
     &.collapsible {
         a.box-header {
             justify-content: space-between;
-            background: var(--primary-color);
-            border: var(--primary-border);
+            background: var(--hyperlink-color);
+            border-radius: var(--default-border-radius);
 
             &:hover, &:active, &:focus {
                 background: var(--pure-white);
 
                 * {
-                    color: var(--primary-color);
+                    color: var(--hyperlink-color);
                 }
             }
         }
     }
 
-    // boyType === 'content'
+    .box-body {
+        .allow-scroll {
+            overflow-y: auto;
+
+            & * {
+              flex-shrink: 0;
+            }
+        }
+    }
+
+    /* boyType === 'content' */
     &.content {
         > * {
             *:last-child {
@@ -473,12 +531,6 @@ export default {
         }
 
         > .box-header {
-            display: flex;
-            align-items: center;
-            border-radius: var(--border-radius);
-            padding: calc(var(--default-padding) / 2) var(--default-padding);
-            background: var(--secondary-color);
-            color: var(--pure-white);
             text-decoration: none;
 
             > .cmd-custom-headline {
@@ -501,6 +553,7 @@ export default {
 
         .box-body {
             flex-grow: 1;
+            border-top: var(--default-border);
 
             p.cutoff-text {
                 padding: var(--default-padding);
@@ -563,16 +616,9 @@ export default {
                 }
             }
         }
-
-        .box-footer {
-            border-bottom-left-radius: var(--border-radius);
-            border-bottom-right-radius: var(--border-radius);
-            padding: var(--default-padding);
-            border-top: var(--default-border);
-        }
     }
 
-    // boyType === 'product' and boxType === 'user'
+    /* boyType === 'product' and boxType === 'user' */
     &.product, &.user {
         > div {
             > .cmd-custom-headline {
@@ -582,7 +628,7 @@ export default {
         }
     }
 
-    // boyType === 'product'
+    /* boyType === 'product' */
     &.product {
         text-decoration: none;
         overflow: hidden;
@@ -638,12 +684,14 @@ export default {
             figcaption {
                 font-size: 2rem;
                 font-weight: bold;
-                padding-top: var(--default-padding)
+                padding: var(--default-padding);
+                padding-bottom: 0;
             }
         }
 
         .box-body {
             flex-grow: 1;
+            padding: 0 var(--default-padding);
 
             > * {
                 text-align: center;
@@ -664,12 +712,14 @@ export default {
         }
     }
 
-    // boxType === 'user'
+    /* boxType === 'user' */
     &.user {
         > .box-header {
-            --icon-size: 6rem;
+            --default-icon-size: 6rem;
 
             padding: var(--default-padding);
+            border-radius: var(--full-circle);
+
 
             .cmd-headline {
                 > * {
@@ -696,17 +746,20 @@ export default {
 
             img {
                 padding: 0;
-                width: calc(var(--icon-size) * 2);
+                width: calc(var(--default-icon-size) * 2);
                 aspect-ratio: 1/1;
             }
 
             > div:first-child > [class*="icon-"] {
-                font-size: var(--icon-size);
+                margin: 0;
+                font-size: var(--default-icon-size);
             }
         }
 
         .box-body {
             flex-grow: 1;
+            padding: var(--default-padding);
+            padding-top: 0;
 
             p {
                 text-align: center;
@@ -733,6 +786,7 @@ export default {
 
                     li {
                         flex: 1;
+                        border-radius: var(--default-border-radius);
 
                         a {
                             flex: 1;
@@ -740,6 +794,7 @@ export default {
                             text-align: center;
                             background: var(--color-scheme-background-color);
                             border-left: var(--default-border);
+                            border-radius: var(--default-border-radius);
                         }
 
                         &:hover, &:active, &:focus {
@@ -765,7 +820,7 @@ export default {
 
         &.row-view {
             [class*="icon"] {
-                --icon-size: 3rem;
+                --default-icon-size: 3rem;
             }
 
             .box-header > div:first-child > [class*="icon-"] {

@@ -2,18 +2,22 @@
     <dt :class="['cmd-address-data-item', {'address': addressEntry.type === 'address'}]">
         <!-- begin CmdIcon -->
         <CmdIcon
-                v-if="addressEntry.iconClass && showLabelIcons"
-                :iconClass="addressEntry.iconClass"
-                :type="addressEntry.iconType"
-                :tooltip="addressEntry.labelText"
+            v-if="addressEntry.iconClass && showLabelIcons"
+            :iconClass="addressEntry.iconClass"
+            :type="addressEntry.iconType"
+            :tooltip="addressEntry.labelText"
         />
         <!-- end CmdIcon -->
+
+        <!-- begin show label-texts -->
         <span v-if="showLabelTexts">{{ addressEntry.labelText }}</span>
+        <!-- end show label-texts -->
     </dt>
     <!-- end labels -->
 
     <!-- begin data (except for address) -->
     <dd v-if="addressEntry.type !== 'address' && (addressEntry.data || addressEntry.href)" :class="vCardClass(addressEntry)">
+        <!-- begin default-view -->
         <template v-if="!editing">
             <a v-if="addressEntry.href"
                :href="getHref(addressEntry)"
@@ -25,28 +29,26 @@
             </a>
             <span v-else v-html="addressEntry.data"></span>
         </template>
+        <!-- end default-view -->
 
         <!-- begin edit-mode -->
         <CmdFormElement
-                v-else
-                element="input"
-                :type="inputType(addressEntry)"
-                class="edit-mode"
-                :show-label="false"
-                :labelText="addressEntry.labelText"
-                :placeholder="addressEntry.labelText"
-                v-model="editableAddressEntry"
+            v-else
+            element="input"
+            :type="inputType(addressEntry)"
+            class="edit-mode"
+            :show-label="false"
+            :labelText="addressEntry.labelText"
+            :placeholder="addressEntry.labelText"
+            v-model="editableAddressEntry"
         />
         <!-- end edit-mode -->
     </dd>
 
     <!-- begin data for address -->
-    <dd v-else-if="addressEntry.type === 'address'">
+    <dd v-else-if="addressEntry.name === 'address'">
         <!-- begin linked address -->
-        <a v-if="linkGoogleMaps && !editing"
-           :href="locateAddress(addressEntry)"
-           target="google-maps"
-           :title="addressEntry.tooltip">
+        <a v-if="linkGoogleMaps && !editing" :href="locateAddress(addressEntry)" target="google-maps" :title="addressEntry.tooltip">
             <!-- begin street/number -->
             <template v-if="addressEntry.streetNo">
                 <span class="street-address">{{ addressEntry.streetNo }}</span><br/>
@@ -103,59 +105,59 @@
             <template v-else>
                 <!-- begin street/number -->
                 <CmdFormElement
-                        element="input"
-                        type="text"
-                        class="edit-mode"
-                        :show-label="false"
-                        :labelText="addressEntry.labelText"
-                        :placeholder="addressEntry.labelText"
-                        v-model="editableAddressEntry.streetNo"
+                    element="input"
+                    type="text"
+                    class="edit-mode"
+                    :show-label="false"
+                    :labelText="addressEntry.labelText"
+                    :placeholder="addressEntry.labelText"
+                    v-model="editableAddressEntry.streetNo"
                 />
                 <!-- end street/number -->
 
                 <!-- begin zip/city -->
                 <div class="input-wrapper">
                     <CmdFormElement
-                            element="input"
-                            type="text"
-                            class="edit-mode"
-                            :show-label="false"
-                            :labelText="addressEntry.labelText"
-                            :placeholder="addressEntry.labelText"
-                            v-model="editableAddressEntry.zip"
-                    />
-                    <CmdFormElement
-                            element="input"
-                            type="text"
-                            class="edit-mode"
-                            :show-label="false"
-                            :labelText="addressEntry.labelText"
-                            :placeholder="addressEntry.labelText"
-                            v-model="editableAddressEntry.city"
-                    />
-                </div>
-                <!-- end zip/city -->
-
-                <!-- begin miscInfo -->
-                <CmdFormElement
                         element="input"
                         type="text"
                         class="edit-mode"
                         :show-label="false"
                         :labelText="addressEntry.labelText"
                         :placeholder="addressEntry.labelText"
-                        v-model="editableAddressEntry.miscInfo"
+                        v-model="editableAddressEntry.zip"
+                    />
+                    <CmdFormElement
+                        element="input"
+                        type="text"
+                        class="edit-mode"
+                        :show-label="false"
+                        :labelText="addressEntry.labelText"
+                        :placeholder="addressEntry.labelText"
+                        v-model="editableAddressEntry.city"
+                    />
+                </div>
+                <!-- end zip/city -->
+
+                <!-- begin miscInfo -->
+                <CmdFormElement
+                    element="input"
+                    type="text"
+                    class="edit-mode"
+                    :show-label="false"
+                    :labelText="addressEntry.labelText"
+                    :placeholder="addressEntry.labelText"
+                    v-model="editableAddressEntry.miscInfo"
                 />
                 <!-- end miscInfo -->
 
                 <!-- begin country -->
                 <CmdFormElement
-                        element="select"
-                        class="edit-mode"
-                        :show-label="false"
-                        :labelText="addressEntry.labelText"
-                        :selectOptions="[{text: 'Germany', value: 'de'}, {text: 'United Kingdom', value: 'uk'}]"
-                        v-model="editableAddressEntry.country"
+                    element="select"
+                    class="edit-mode"
+                    :show-label="false"
+                    :labelText="addressEntry.labelText"
+                    :selectOptions="[{text: 'Germany', value: 'de'}, {text: 'United Kingdom', value: 'uk'}]"
+                    v-model="editableAddressEntry.country"
                 />
                 <!-- end country -->
             </template>
@@ -169,7 +171,7 @@
 <!-- end data (except for address) -->
 <script>
 import EditMode from "../mixins/EditMode.vue"
-import {updateHandlerProvider} from "../utils/editmode.js";
+import {updateHandlerProvider} from "../utils/editmode.js"
 
 export default {
     name: "CmdAddressDataItem",
@@ -180,6 +182,9 @@ export default {
         }
     },
     props: {
+        /**
+         * one single address-entry
+         */
         addressEntry: {
             type: Object,
             default: {}
@@ -198,6 +203,9 @@ export default {
             type: Boolean,
             default: false
         },
+        /**
+         * activate if physical address should be linked with GoogleMaps
+         */
         linkGoogleMaps: {
             type: Boolean,
             default: false

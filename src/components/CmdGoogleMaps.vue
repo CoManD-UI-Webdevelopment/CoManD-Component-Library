@@ -30,10 +30,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-google-maps ---------------------------------------------------------------------------------------- */
 .cmd-google-maps {
     border: var(--default-border);
+    border-radius: var(--default-border-radius);
+
+    iframe {
+        border-radius: inherit;
+    }
 }
 /* end cmd-google-maps ------------------------------------------------------------------------------------------ */
 </style>

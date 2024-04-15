@@ -2,19 +2,22 @@
     <div :class="[
         'cmd-input-group label',
         validationStatus,
-        {inline: labelInline,
-        'multiple-switch': multipleSwitch,
-        disabled: disabled,
-        'toggle-switch': toggleSwitch,
-        'has-state': validationStatus
+        {
+            inline: labelInline,
+            'multiple-switch': multipleSwitch,
+            disabled: disabled,
+            'toggle-switch': toggleSwitch,
+            'has-state': validationStatus
         }
         ]"
          :aria-labelledby="htmlId">
-        <span v-show="showLabel" class="label-text">
-             <span :id="htmlId">{{ labelText }}<sup v-if="required">*</sup></span>
 
-            <!-- begin CmdTooltipForInputElements -->
-            <CmdTooltipForInputElements
+        <!-- begin label -->
+        <span v-show="showLabel" class="label-text">
+            <span :id="htmlId">{{ labelText }}<sup v-if="required">*</sup></span>
+
+            <!-- begin CmdTooltipForFormElements -->
+            <CmdTooltipForFormElements
                 v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
                 ref="tooltip"
                 :showRequirements="showRequirements"
@@ -27,9 +30,10 @@
                 :relatedId="tooltipId"
                 :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             />
-            <!-- end CmdTooltipForInputElements -->
+            <!-- end CmdTooltipForFormElements -->
 
-            <a v-if="required || inputRequirements.length"
+            <!-- begin status-icon -->
+            <a v-if="(required || inputRequirements.length > 0) && showStatusIcon"
                href="#"
                @click.prevent
                :title="validationTooltip"
@@ -37,10 +41,14 @@
                aria-live="assertive"
                :id="tooltipId">
                <!-- begin CmdIcon -->
-               <CmdIcon :iconClass="getStatusIconClass" />
-               <!-- end CmdIcon -->
+               <CmdIcon :iconClass="getStatusIconClass"/>
+                <!-- end CmdIcon -->
             </a>
+            <!-- end status-icon -->
         </span>
+        <!-- end label -->
+
+        <!-- begin view without slot -->
         <span v-if="!useSlot" :class="['flex-container', {'no-flex': !stretchHorizontally, 'no-gap': multipleSwitch}]">
             <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id">
                 <input
@@ -53,11 +61,16 @@
                     :class="{'replace-input-type': replaceInputType, 'toggle-switch': toggleSwitch}"
                 />
                 <!-- begin CmdIcon -->
-                <CmdIcon v-if="multipleSwitch && inputElement.iconClass" :iconClass="inputElement.iconClass" :type="inputElement.iconType" />
+                <CmdIcon
+                    v-if="multipleSwitch && inputElement.iconClass"
+                    :iconClass="inputElement.iconClass"
+                    :type="inputElement.iconType"
+                />
                 <!-- end CmdIcon -->
-                <span v-if="inputElement.labelText">{{ inputElement.labelText }}</span>
+                <span v-if="inputElement.labelText" class="label-text">{{ inputElement.labelText }}</span>
             </label>
         </span>
+        <!-- end view without slot -->
 
         <!-- begin useSlot -->
         <div v-else class="flex-container no-flex">
@@ -81,11 +94,6 @@ export default {
         Identifier,
         Tooltip
     ],
-    data() {
-        return {
-            value: ""
-        }
-    },
     props: {
         /**
          * set value for v-model (must be named modelValue in vue3 if default v-model should be used)
@@ -100,6 +108,13 @@ export default {
         required: {
             type: Boolean,
             default: false
+        },
+        /**
+         * activate if interactive status-icon (to show requirements) should be shown inline with label
+         */
+        showStatusIcon: {
+            type: Boolean,
+            default: true
         },
         /**
          * list of input-elements inside group
@@ -117,18 +132,29 @@ export default {
          */
         inputTypes: {
             type: String,
-            default: "radio"
+            default: "radio",
+            validator(value) {
+                return value === "checkbox" ||
+                    value === "radio"
+            }
         },
         /**
          * set status for label and inner form-elements
          *
-         * @allowedValues: error, warning, success, info
+         * @allowedValues: "", error, warning, success, info
          *
          * @affectsStyling: true
          */
         status: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "" ||
+                    value === "error" ||
+                    value === "warning" ||
+                    value === "success" ||
+                    value === "info"
+            }
         },
         /**
          * for replacing native checkboxes/radio-buttons by custom ones (based on frontend-framework)
@@ -213,11 +239,11 @@ export default {
     methods: {
         updateStatus() {
             if (this.required) {
-                if(this.inputValue?.length) {
+                if (this.inputValue?.length) {
                     this.validationStatus = ""
                     return
                 }
-                this.validationStatus =  "error"
+                this.validationStatus = "error"
                 return
             }
             this.validationStatus = this.status
@@ -265,7 +291,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
+/* begin cmd-input-group ------------------------------------------------------------------------------------------ */
 .cmd-input-group {
     &.inline {
         display: flex;
@@ -278,24 +305,50 @@ export default {
     }
 
     /* overwrite default behavior from frontend-framework */
-    .label-text {
+    > .label-text {
         display: inline-flex;
+        margin-bottom: calc(var(--default-margin) / 2);
 
-        > [class*="icon-"] {
+        > span + a:has([class*="icon-"]) {
             margin-left: calc(var(--default-margin) / 2);
+        }
+
+        &:hover, &:active, &:focus {
+            span {
+                color: var(--hyperlink-color-highlighted)
+            }
+
+            & + .flex-container {
+                label:not(:has(input:checked)) .label-text {
+                    color: var(--default-text-color);
+                }
+
+                input {
+                    border-color: var(--default-border-color);
+                }
+            }
         }
     }
 
     &.has-state {
-        label {
+        &.error {
+            --status-color: var(--error-color);
+        }
+
+        label, [class*="icon-"]  {
             color: var(--status-color);
         }
 
         &.multiple-switch {
             label {
                 border-color: var(--status-color);
+
+                > * {
+                    color: var(--status-color);
+                }
             }
         }
     }
 }
+/* end cmd-input-group ------------------------------------------------------------------------------------------ */
 </style>

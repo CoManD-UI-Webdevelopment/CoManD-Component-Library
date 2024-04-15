@@ -10,13 +10,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-copyright-information ---------------------------------------------------------------------------------------- */
 .cmd-copyright-information {
-    background: var(--text-color);
+    background: var(--default-text-color);
     border-top: var(--border-width) var(--border-style) var(--pure-white);
     text-align: center;
     padding: var(--default-padding);
+    margin-top: auto;
+    flex: none;
 
     a {
         text-decoration: none;

@@ -109,7 +109,7 @@ function clamp(value, min, max) {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-imagezoom ---------------------------------------------------------------------------------------- */
 .cmd-imagezoom {
     overflow: hidden;

@@ -78,10 +78,17 @@ export default {
         },
         /**
          * text-alignment for paragraph/continuous text
+         *
+         * @allowedValues: "left", "center", "right"
          */
         paragraphTextAlign: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "left" ||
+                value === "center" ||
+                value === "right"
+            }
         },
         /**
          * position for headline
@@ -90,7 +97,11 @@ export default {
          */
         headlinePosition: {
             type: String,
-            default: "aboveImage"
+            default: "aboveImage",
+            validator(value) {
+                return value === "aboveImage" ||
+                    value === "belowImage"
+            }
         },
         /**
          * properties for CmdHeadline-component
@@ -151,7 +162,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .edit-mode .cmd-text-image-block textarea {
     width: 100%;
 }

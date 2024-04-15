@@ -15,13 +15,13 @@
                href="#"
                @click.prevent="showFancyBox(index)"
                :title="getMessage('cmdimagegallery.tooltip.open_large_image')">
-                <CmdImage :image="image.image" :figcaption="image.figcaption"/>
+                <CmdImage :image="image.image" :figcaption="figcaption(image)"/>
             </a>
             <!-- end images linked to fancybox -->
 
             <!-- begin images not linked to fancybox -->
             <div v-else v-for="(image, index) in images" :key="`i${index}`" class="image-wrapper">
-                <CmdImage :image="image.image" :figcaption="image.figcaption"/>
+                <CmdImage :image="image.image" :figcaption="figcaption(image)"/>
             </div>
             <!-- end images not linked to fancybox -->
         </template>
@@ -89,7 +89,11 @@ export default {
          */
         figcaptionPosition: {
             type: String,
-            default: "bottom"
+            required: false,
+            validator(value) {
+                return value === "top" ||
+                    value === "bottom"
+            }
         }
     },
     methods: {
@@ -106,6 +110,13 @@ export default {
                     "show": true
                 }
             }
+        },
+        figcaption(image) {
+            const figcaption = {...image.figcaption}
+            if(this.figcaptionPosition) {
+                figcaption.position = this.figcaptionPosition
+            }
+            return figcaption
         },
         onAddItem() {
             this.editModeContext.content.addContent(
@@ -145,7 +156,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-image-gallery ---------------------------------------------------------------------------------------- */
 .cmd-image-gallery {
     > .cmd-headline, > input.edit-mode, > .edit-component-wrapper {
@@ -162,7 +173,7 @@ export default {
 
         img {
             border: var(--default-border);
-            border-radius: var(--border-radius);
+            border-radius: var(--default-border-radius);
             max-height: 30rem;
         }
 

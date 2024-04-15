@@ -1,5 +1,5 @@
 <template>
-    <div v-if="tooltipVisibility" :class="['cmd-tooltip', status]" ref="tooltip">
+    <div v-if="tooltipVisibility" :class="['cmd-tooltip', validationStatus]" ref="tooltip">
         <div v-if="cmdHeadline || iconClose.show" class="headline-wrapper">
             <!-- begin CmdHeadline -->
             <CmdHeadline
@@ -19,6 +19,7 @@
             </a>
             <!-- end icon to close tooltip -->
         </div>
+
         <!-- begin slot-content -->
         <slot>
             {{ tooltipText }}
@@ -69,13 +70,27 @@ export default {
             required: false
         },
         /**
-         * status
+         * validation-status for tooltip
          *
-         * @allowedValues: error, warning, success, info
+         * @allowedValues: "", error, warning, success, info
          */
-        status: {
+        validationStatus: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "" ||
+                    value === "error" ||
+                    value === "warning" ||
+                    value === "success" ||
+                    value === "info"
+            }
+        },
+        /**
+         * id of container that scrolls the content of the site
+         */
+        idOfScrollContainer: {
+            type: String,
+            default: "page-wrapper"
         },
         /**
          * icon 'close'
@@ -105,13 +120,13 @@ export default {
             const relatedElement = document.getElementById(this.relatedId)
 
             if(relatedElement) {
-                relatedElement.addEventListener("mouseenter", this.showTooltip)
-                document.addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+                document.getElementById(this.idOfScrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
                 document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
 
                 if (this.toggleVisibilityByClick) {
                     relatedElement.addEventListener("click", this.toggleTooltipVisibility)
                 } else {
+                    relatedElement.addEventListener("mouseenter", this.showTooltip)
                     relatedElement.addEventListener("mouseleave", this.hideTooltip)
                 }
             }
@@ -155,16 +170,16 @@ export default {
     },
     unmounted() {
         if(this.relatedId) {
-            const relatedElement = document.getElementById(this.npm )
+            const relatedElement = document.getElementById(this.relatedId)
 
             if(relatedElement) {
-                relatedElement.removeEventListener("mouseenter", this.showTooltip)
                 document.removeEventListener("scroll", this.hideTooltip)
                 document.removeEventListener("keyup", this.hideTooltipOnEsc)
 
                 if (this.toggleVisibilityByClick) {
                     relatedElement.removeEventListener("click", this.toggleTooltipVisibility)
                 } else {
+                    relatedElement.removeEventListener("mouseenter", this.showTooltip)
                     relatedElement.removeEventListener("mouseleave", this.showTooltip)
                 }
             }
@@ -185,7 +200,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-tooltip ------------------------------------------------------------------------------------------ */
 .cmd-tooltip {
     padding: .6rem .7rem .4rem .7rem;
@@ -201,6 +216,26 @@ export default {
     display: flex;
     flex-direction: column;
 
+    &.error, &.warning, &.success, &.info {
+        border-color: var(--status-color);
+    }
+
+    &.error {
+        --status-color: var(--error-color);
+    }
+
+    &.warning {
+        --status-color: var(--warning-color);
+    }
+
+    &.success {
+        --status-color: var(--success-color);
+    }
+
+    &.info {
+        --status-color: var(--info-color);
+    }
+
     .headline-wrapper {
         display: flex;
 
@@ -210,6 +245,11 @@ export default {
             [class*="icon-"] {
                 padding-left: 1rem;
                 font-size: var(--font-size-small);
+                color: var(--hyperlink-color);
+
+                &:hover, &:active, &:focus {
+                    color: var(--hyperlink-color-highlighted);
+                }
             }
         }
     }

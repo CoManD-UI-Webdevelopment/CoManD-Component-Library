@@ -15,6 +15,7 @@
             <CmdFormElement
                 element="input"
                 type="text"
+                ref="username"
                 :name="cmdFormElementUsername.name"
                 :id="cmdFormElementUsername.id"
                 v-model="username"
@@ -46,7 +47,7 @@
         <div class="option-wrapper flex-container">
             <template v-if="options.forgotPassword || options.createAccount">
                 <!-- begin link for 'forgot password' -->
-                <a v-if="options.forgotPassword" href="#" @click.prevent="sendLogin = true">
+                <a v-if="options.forgotPassword" href="#" @click.prevent="toggleSendLoginView">
                     <!-- begin CmdIcon -->
                     <CmdIcon v-if="options.forgotPassword.icon?.show && options.forgotPassword.icon?.iconClass"
                           :iconClass="options.forgotPassword.icon.iconClass"
@@ -119,6 +120,7 @@
 
         <!-- begin CmdFormElement -->
         <CmdFormElement
+            ref="sendPassword"
             element="input"
             type="email"
             :fieldIconClass="cmdFormElementSendLogin.innerIconClass"
@@ -133,7 +135,7 @@
         <!-- end CmdFormElement -->
 
         <div class="option-wrapper flex-container">
-            <a href="#" @click.prevent="sendLogin = false">
+            <a href="#" @click.prevent="toggleSendLoginView">
                 <!-- begin CmdIcon -->
                 <CmdIcon
                     v-if="options.backToLoginForm && options.backToLoginForm.icon && options.backToLoginForm.icon.show && options.backToLoginForm.icon.iconClass"
@@ -391,6 +393,17 @@ export default {
         }
     },
     methods: {
+        toggleSendLoginView() {
+            this.sendLogin = !this.sendLogin
+
+            this.$nextTick(() => {
+                if(this.sendLogin) {
+                    this.$refs.sendPassword.setFocus()
+                } else {
+                    this.$refs.username.setFocus()
+                }
+            })
+        },
         modelChange() {
             this.$emit("update:modelValue", { "username": this.username, "password": this.password })
         },
@@ -425,7 +438,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-login-form ---------------------------------------------------------------------------------------- */
 .cmd-login-form {
     .option-wrapper {

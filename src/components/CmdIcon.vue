@@ -28,7 +28,11 @@ export default {
          */
         type: {
             type: String,
-            default: "auto"
+            default: "auto",
+            validator(value) {
+                return value === "auto" ||
+                    value === "iconify"
+            }
         },
         /**
          * icon-class for icon from local iconfont
@@ -63,9 +67,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .iconify {
-    font-size: var(--icon-size);
+    font-size: var(--default-icon-size);
     vertical-align: text-bottom;
 
     & + span, span + &  {

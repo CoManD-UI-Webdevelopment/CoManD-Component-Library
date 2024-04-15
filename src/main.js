@@ -4,8 +4,8 @@ import "comand-frontend-framework/styles"
 
 import { createApp } from "vue"
 
-// import App from "./App.vue"
-import App from "./App.vue"
+// import ComponentLibrary from "./ComponentLibrary.vue"
+import ComponentLibrary from "./ComponentLibrary.vue"
 //import { createRouter, createWebHistory } from "vue-router"
 import "clickout-event"
 
@@ -36,7 +36,7 @@ import '@/assets/styles/template.css'
 import "prismjs/themes/prism.css"
 
 /* import css for demopage only */
-//import 'comand-frontend-framework/public/demopage-only.css'
+import 'comand-frontend-framework/demopage-only.css'
 /* end imports css from comand-component-library ---------------------------------------------------------------------------------------- */
 
 import router from "./router"
@@ -53,4 +53,4 @@ import router from "./router"
 // })
 
 // createApp(App).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')
-createApp(App).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')
+createApp(ComponentLibrary).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')

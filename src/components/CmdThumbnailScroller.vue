@@ -19,18 +19,18 @@
         <div class="inner-thumbnail-wrapper">
             <!-- begin CmdSlideButton -->
             <CmdSlideButton
-                    v-if="showSlidebuttons"
-                    @click.prevent="showPrevItem"
-                    slideButtonType="prev"
+                v-if="showSlidebuttons"
+                @click.prevent="showPrevItem"
+                slideButtonType="prev"
             />
             <!-- end CmdSlideButton -->
 
             <!-- begin list of images to slide -->
             <transition-group name="slide" tag="ul">
-                <li v-for="(item, index) in items" :key="index"
-                    :class="[{'active' : activeItemIndex === index}, item.id ? 'item-' + item.id : '']">
+                <li v-for="(item, index) in items" :key="index">
                     <a v-if="!editModeContext" :href="executeOnClick === 'url' ? item.url : '#'"
                        @click="executeLink(index, $event)"
+                       :class="[{'active' : activeItemIndex === index}, item.id ? 'item-' + item.id : '']"
                        :title="tooltip"
                        :target="executeOnClick === 'url' ? '_blank' : null"
                     >
@@ -117,6 +117,11 @@ export default {
         }
     },
     props: {
+        /**
+         * orientation for scroller
+         *
+         * @allewedValues: "horizontal", "vertical"
+         */
         orientation: {
             type: String,
             default: "horizontal"
@@ -146,7 +151,11 @@ export default {
          */
         contentType: {
             type: String,
-            default: "image"
+            default: "image",
+            validator(value) {
+                return value === "image" ||
+                    value === "text"
+            }
         },
         /**
          * set type to define what will be executed on click on a thumbnail-scroller-item
@@ -155,7 +164,12 @@ export default {
          */
         executeOnClick: {
             type: String,
-            default: "fancybox"
+            default: "fancybox",
+            validator(value) {
+                return value === "fancybox" ||
+                    value === "url" ||
+                    value === "emit"
+            }
         },
         /**
          * list of thumbnail-scroller-items
@@ -357,199 +371,228 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-thumbnail-scroller ------------------------------------------------------------------------------------------ */
-@import '../assets/styles/variables';
-
 .cmd-thumbnail-scroller {
-  display: inline-flex; /* do not set to table to avoid overflow is not hidden on small devices */
+    display: inline-flex; /* do not set to table to avoid overflow is not hidden on small devices */
     flex-direction: column;
     gap: var(--default-gap);
-  width: 100%;
+    width: 100%;
 
     &.full-width:not(.vertical) {
-    display: flex; /* allows flex-items to stretch equally over full space */
+        display: flex; /* allows flex-items to stretch equally over full space */
 
-      > div {
-          width: 100%;
-      }
-  }
+        > div {
+            width: 100%;
+        }
+    }
 
-  > .inner-thumbnail-wrapper {
-      border-radius: var(--border-radius);
+    > .inner-thumbnail-wrapper {
+        border-radius: var(--default-border-radius);
         padding: calc(var(--default-padding) * 2);
         padding-top: 0;
-      margin: 0 auto;
-      border: var(--default-border);
-      background: var(--color-scheme-background-color);
-      overflow: hidden;
+        margin: 0 auto;
+        border: var(--default-border);
+        background: var(--color-scheme-background-color);
+        overflow: hidden;
 
-      > ul {
-          overflow: hidden;
-          margin: 0;
-          display: flex;
-          gap: var(--grid-gap);
-          justify-content: space-between;
-          width: 100%; /* stretch flex-container */
+        > ul {
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            gap: var(--grid-gap);
+            justify-content: space-between;
+            width: 100%; /* stretch flex-container */
 
-          > li {
-              align-self: center;
-              list-style-type: none;
-              margin: 0;
+            > li {
+                align-self: center;
+                list-style-type: none;
+                margin: 0;
                 margin-top: 2rem;
+                flex: none; /* avoids items to shrink to small on small screens */
 
-              a {
-                  text-align: center;
-              }
-
-              img {
-                  border-radius: var(--border-radius);
+                img {
                     min-width: 15rem;
-                  max-height: 10rem;
-              }
+                    max-height: 10rem;
+                }
 
-              &.active {
-                  a {
-                      figcaption {
-                          opacity: 1;
-                      }
-                  }
-              }
+                a {
+                    display: block;
+                    text-align: center;
+
+                    &.active {
+                        color: var(--pure-white);
+                        background: none; /* overwrite default behaviour from frontend-framework */
+
+                        span, span[class*="icon"] {
+                            color: inherit
+                        }
+
+                        &:has(figcaption) {
+                            img {
+                                border-bottom-left-radius: 0;
+                                border-bottom-right-radius: 0;
+                            }
+                        }
+
+                        figcaption {
+                            background: var(--primary-color);
+                            opacity: 1;
+                        }
+                    }
+
+                    &:has(img) {
+                        padding: 0;
+                    }
+
+                    &:hover, &:active, &:focus {
+                        &.active {
+                            figcaption {
+                                color: var(--hyperlink-color);
+                                background: none;
+                            }
+                        }
+                    }
+                }
 
                 .image-wrapper {
-                    min-width: 11.1rem; // assure to be as wide as action-buttons in edit-mode
+                    min-width: 11.1rem; /* assure to be as wide as action-buttons in edit-mode */
                 }
-          }
-      }
-  }
+            }
+        }
+    }
 
-  &.vertical {
+    &.vertical {
         width: auto;
 
         .inner-thumbnail-wrapper {
-    display: inline-flex;
-    left: 50%;
-    height: 75rem; /* remove later !!! */
-    transform: translateX(-50%);
+            display: inline-flex;
+            left: 50%;
+            height: 75rem; /* remove later !!! */
+            transform: translateX(-50%);
 
-    > ul {
-      width: auto;
-      display: flex;
-      flex-direction: column;
+            > ul {
+                width: auto;
+                display: flex;
+                flex-direction: column;
 
-      [class*="switch-button-"] {
-        width: 100%;
-        height: auto;
+                [class*="switch-button-"] {
+                    width: 100%;
+                    height: auto;
 
-        &::before {
-          transform: rotate(90deg);
-          display: inline-block;
-          margin: 0 auto;
-        }
-      }
-    }
-
-    .slide-button-next {
-      top: auto;
-      bottom: 0;
-    }
-  }
-    }
-
-  &.gallery-scroller {
-    max-width: var(--max-width);
-    left: 0;
-    right: 0;
-    position: fixed;
-    bottom: var(--default-margin);
-    margin: auto;
-    display: table;
-
-    li {
-      a {
-        color: var(--color-scheme-text-color);
-        text-decoration: none;
-      }
-
-      &.active {
-        img {
-          border-color: var(--primary-color);
-        }
-
-        figcaption {
-          color: var(--primary-color);
-        }
-      }
-
-      &:not(.active) {
-        img {
-          border: var(--default-border);
-          opacity: var(--reduced-opacity);
-        }
-
-        figcaption {
-          text-decoration: none;
-        }
-
-        a {
-          &:hover, &:active, &:focus {
-            figcaption {
-              color: var(--primary-color);
+                    &::before {
+                        transform: rotate(90deg);
+                        display: inline-block;
+                        margin: 0 auto;
+                    }
+                }
             }
 
-            img {
-              border-color: var(--primary-color);
-              opacity: 1;
+            .slide-button-next {
+                top: auto;
+                bottom: 0;
             }
-          }
         }
-      }
-    }
-  }
-
-  &.large-icons {
-    li a {
-      display: flex;
-      flex-direction: column;
-      gap: calc(var(--default-gap) / 4);
-      text-decoration: none;
-      align-items: center;
-      justify-content: center;
-
-      span {
-        margin: 0;
-      }
-
-      [class*="icon-"] {
-        font-size: 5rem;
-      }
-    }
-  }
-
-  @media only screen and (max-width: $medium-max-width) {
-    & > ul > li {
-      flex: none;
-    }
-
-    & img {
-      width: auto;
-    }
-
-    & > ul > li img {
-      max-height: 7rem;
     }
 
     &.gallery-scroller {
-      max-width: calc(100% - calc(var(--default-margin) * 3));
-      display: flex;
+        max-width: var(--max-width);
+        left: 0;
+        right: 0;
+        position: fixed;
+        bottom: var(--default-margin);
+        margin: auto;
+        display: table;
+
+        li {
+            a {
+                color: var(--color-scheme-text-color);
+                text-decoration: none;
+
+                &.active {
+                    img {
+                        border-color: var(--primary-color);
+                    }
+
+                    figcaption {
+                        color: var(--primary-color);
+                    }
+                }
+
+                &:not(.active) {
+                    img {
+                        border: var(--default-border);
+                        opacity: var(--reduced-opacity);
+                    }
+
+                    figcaption {
+                        text-decoration: none;
+                    }
+                }
+
+                &:hover, &:active, &:focus {
+                    figcaption {
+                        color: var(--primary-color);
+                    }
+
+                    img {
+                        border-color: var(--primary-color);
+                        opacity: 1;
+                    }
+                }
+            }
+        }
     }
-  }
+
+    &.large-icons {
+        li a {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--default-gap) / 4);
+            text-decoration: none;
+            align-items: center;
+            justify-content: center;
+
+            span {
+                margin: 0;
+            }
+
+            [class*="icon-"] {
+                font-size: 5rem;
+            }
+        }
+    }
+}
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-thumbnail-scroller {
+        & > ul > li {
+            flex: none;
+
+            img {
+                max-height: 7rem;
+            }
+        }
+
+        & img {
+            width: auto;
+        }
+
+        &.gallery-scroller {
+            max-width: calc(100% - calc(var(--default-margin) * 3));
+            display: flex;
+        }
+    }
 }
 
 @container (width <= #{$small-max-width}) {
-  .cmd-thumbnail-scroller {
-    display: block;
-  }
+    .cmd-thumbnail-scroller {
+        display: block;
+    }
 }
 
 /* end cmd-thumbnail-scroller ------------------------------------------------------------------------------------------ */

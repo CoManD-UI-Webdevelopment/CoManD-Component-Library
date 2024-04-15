@@ -1,24 +1,21 @@
 <template>
     <label
-       v-if="(element === 'input' || element === 'select' || element === 'textarea')"
-       :class="[
+        v-if="(element === 'input' || element === 'select' || element === 'textarea')"
+        :class="[
         'cmd-form-element',
          validationStatus,
          $attrs.class,
            {
             disabled: $attrs.disabled,
             inline : displayLabelInline,
-            checked: isChecked,
             'toggle-switch': toggleSwitch,
             colored: colored,
-            on: colored && isChecked,
-            off: colored && !isChecked,
             'has-state': validationStatus
            }
        ]"
-       :for="htmlId"
-       :title="$attrs.title"
-       ref="label">
+        :for="htmlId"
+        :title="$attrs.title"
+        ref="label">
 
         <!-- begin label-text (+ required asterisk) -->
         <span v-if="(labelText || $slots.labeltext) && $attrs.type !== 'checkbox' && $attrs.type !== 'radio'"
@@ -26,32 +23,31 @@
             <span>
                 <template v-if="labelText">{{ labelText }}</template>
                 <!-- begin slot 'labeltext' -->
-                <slot v-else name="labeltext" />
+                <slot v-else name="labeltext"/>
                 <!-- end slot 'labeltext' -->
                 <sup v-if="$attrs.required" aria-hidden="true">*</sup>
             </span>
 
-            <!-- begin CmdTooltipForInputElements -->
-            <CmdTooltipForInputElements
+            <!-- begin CmdTooltipForFormElements -->
+            <CmdTooltipForFormElements
                 v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
                 ref="tooltip"
                 :validationStatus="validationStatus"
-                :validationMessage="getValidationMessage"
                 :relatedId="tooltipId"
                 :cmdListOfRequirements="listOfRequirements"
                 :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             />
-            <!-- end CmdTooltipForInputElements -->
+            <!-- end CmdTooltipForFormElements -->
 
-            <a v-if="$attrs.required || inputRequirements.length"
-                href="#"
-                @click.prevent
-                :title="validationTooltip"
-                :aria-errormessage="tooltipId"
-                aria-live="assertive"
-                :id="tooltipId">
+            <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
+               href="#"
+               @click.prevent
+               :title="validationTooltip"
+               :aria-errormessage="tooltipId"
+               aria-live="assertive"
+               :id="tooltipId">
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="getStatusIconClass" />
+                <CmdIcon :iconClass="getStatusIconClass"/>
                 <!-- end CmdIcon -->
             </a>
         </span>
@@ -59,10 +55,7 @@
 
         <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio'" class="flex-container"><!-- container required to place inner icons correctly -->
             <!-- begin CmdIcon (for icon inside field) -->
-            <CmdIcon
-                v-if="fieldIconClass"
-                class="place-inside"
-                :iconClass="fieldIconClass"
+            <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"
             />
             <!-- end CmdIcon (for icon inside field) -->
 
@@ -98,8 +91,8 @@
                :title="iconPasswordVisible.tooltip"
             >
                <!-- begin CmdIcon -->
-               <CmdIcon :iconClass="iconPasswordVisible.iconClass" />
-               <!-- end CmdIcon -->
+               <CmdIcon :iconClass="iconPasswordVisible.iconClass"/>
+                <!-- end CmdIcon -->
             </a>
             <!-- end show-password-icon -->
         </span>
@@ -121,7 +114,7 @@
                     @blur="onBlur"
                     :checked="isChecked"
                     :value="inputValue"
-                    :class="[inputClass, validationStatus, toggleSwitchIconClass, { 'replace-input-type': replaceInputType, 'toggle-switch': toggleSwitch }]"
+                    :class="[inputClass, validationStatus, toggleSwitchIconClass, { 'replace-input-type': replaceInputType}]"
                     :id="htmlId"
                     :disabled="$attrs.disabled"
                     :aria-invalid="validationStatus === 'error'"
@@ -130,7 +123,7 @@
                     <span>
                         <template v-if="labelText">{{ labelText }}</template>
                         <!-- begin slot 'labeltext' -->
-                        <slot v-else name="labeltext" />
+                        <slot v-else name="labeltext"/>
                         <!-- end slot 'labeltext' -->
                         <sup v-if="$attrs.required">*</sup>
                     </span>
@@ -140,15 +133,16 @@
             <!-- begin labels for toggle-switch with switch-label -->
             <template v-else-if="onLabel && offLabel">
                 <span class="switch-label-wrapper">
-                    <input v-bind="elementAttributes"
-                           @change="onChange"
-                           @blur="onBlur"
-                           :checked="isChecked"
-                           :value="inputValue"
-                           :class="{inputClass, validationStatus}"
-                           :id="htmlId"
-                           :disabled="$attrs.disabled"
-                           :aria-invalid="validationStatus === 'error'"
+                    <input
+                        v-bind="elementAttributes"
+                        @change="onChange"
+                        @blur="onBlur"
+                        :checked="isChecked"
+                        :value="inputValue"
+                        :class="{inputClass, validationStatus}"
+                        :id="htmlId"
+                        :disabled="$attrs.disabled"
+                        :aria-invalid="validationStatus === 'error'"
                     />
                     <span class="label-text">{{ onLabel }}</span>
                     <span class="label-text">{{ offLabel }}</span>
@@ -200,14 +194,16 @@
                     :maxlength="getMaxLength()"
                     :value="modelValue"
                 />
-                <a v-if="showSearchButton" href="#" :class="['button no-flex', {disabled: $attrs.disabled}]" :title="iconSearch.tooltip" @click.prevent="executeSearch">
+                <a v-if="showSearchButton" href="#" :class="['button no-flex', {disabled: $attrs.disabled}]"
+                   :title="iconSearch.tooltip" @click.prevent="executeSearch">
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconSearch.iconClass" />
+                    <CmdIcon :iconClass="iconSearch.iconClass"/>
                     <!-- end CmdIcon -->
                 </a>
-                <a v-if="iconDelete?.show" href="#" @click.prevent="$emit('update:modelValue', '')" :title="iconDelete?.tooltip">
+                <a v-if="iconDelete?.show" href="#" @click.prevent="$emit('update:modelValue', '')"
+                   :title="iconDelete?.tooltip">
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType" />
+                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType"/>
                     <!-- end CmdIcon -->
                 </a>
             </span>
@@ -393,6 +389,13 @@ export default {
             required: false
         },
         /**
+         * activate if interactive status-icon (to show requirements) should be shown inline with label
+         */
+        showStatusIcon: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * native button
          */
         nativeButton: {
@@ -437,13 +440,20 @@ export default {
         /**
          * set status for label and form-element
          *
-         * @allowedValues: error, warning, success, info
+         * @allowedValues: "", error, warning, success, info
          *
          * @affectsStyling: true
          */
         status: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "" ||
+                    value === "error" ||
+                    value === "warning" ||
+                    value === "success" ||
+                    value === "info"
+            }
         },
         /**
          * toggle display of number of used and allowed characters for textarea
@@ -509,7 +519,7 @@ export default {
          * icon for error-validated items in list-of-requirements
          *
          * element-property must be set to 'input'
-         * showRequirements-subproperty (of CmdListOfRequirements)  must be set to 'true'
+         * showRequirements-subproperty (of CmdListOfRequirements) must be set to 'true'
          *
          */
         iconHasStateError: {
@@ -706,8 +716,8 @@ export default {
         },
         // toggle icons for toggle-switch
         toggleSwitchIconClass() {
-            if(this.toggleSwitch && this.useIconsForToggleSwitch && this.toggleSwitchUncheckedIconClass && this.toggleSwitchCheckedIconClass) {
-                if(this.isChecked) {
+            if (this.toggleSwitch && this.useIconsForToggleSwitch && this.toggleSwitchUncheckedIconClass && this.toggleSwitchCheckedIconClass) {
+                if (this.isChecked) {
                     return this.toggleSwitchCheckedIconClass
                 }
                 return this.toggleSwitchUncheckedIconClass
@@ -716,10 +726,13 @@ export default {
         }
     },
     methods: {
+        setFocus() {
+            this.$refs.label.querySelector("input, select, textarea")?.focus()
+        },
         additionalStandardRequirements() {
             const requirements = []
             // check if field is type "email"
-            if(this.$attrs.type === "email") {
+            if (this.$attrs.type === "email") {
                 requirements.push({
                     message: this.getMessage("cmdformelement.validationTooltip.is_valid_email"),
                     valid: () => this.$refs.input.checkValidity()
@@ -822,7 +835,7 @@ export default {
         },
         closeTooltipOnBlur() {
             // close tooltip by calling function from CmdTooltipForInputElements using $refs
-            if(this.$refs.tooltip) {
+            if (this.$refs.tooltip) {
                 this.$refs.tooltip.hideTooltip()
             }
         },
@@ -842,15 +855,25 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-form-element ------------------------------------------------------------------------------------------ */
 .cmd-form-element {
+    /* icon right aligned in input */
     input + .place-inside {
         left: auto;
-        right: .5rem
+        right: .5rem;
+        color: var(--hyperlink-color);
+
+        span {
+            color: inherit;
+        }
     }
 
     &.has-state, & + .cmd-tooltip {
+        * {
+            --status-color: var(--error-color);
+        }
+            
         ::placeholder {
             color: var(--status-color);
         }
@@ -859,8 +882,18 @@ export default {
             color: var(--status-color);
 
             &.place-inside {
-                color: var(--status-color);
+                color: inherit;
             }
+        }
+
+        &.success * {
+            --status-color: var(--success-color);
+        }
+    }
+
+    :is(input[type="checkbox"], input[type="radio"]):checked {
+        ~ .label-text span {
+            color: var(--hyperlink-color);
         }
     }
 
@@ -875,6 +908,10 @@ export default {
     .search-field-wrapper {
         margin: 0;
 
+        input[type="search"] {
+            border-radius: var(--default-border-radius);
+        }
+
         a {
             position: absolute;
             top: 50%;
@@ -882,7 +919,7 @@ export default {
             transform: translateY(-50%);
             z-index: 100;
 
-            // set styles to avoid overwriting by has-state-colors
+            /* set styles to avoid overwriting by has-state-colors */
             &.button {
                 span {
                     color: var(--color-scheme-background-color);
@@ -894,11 +931,6 @@ export default {
                     }
                 }
             }
-        }
-
-        input:not(:only-child) {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
         }
 
         a.button {
@@ -918,85 +950,24 @@ export default {
         }
     }
 
-    &.colored {
-        input {
-            border-color: var(--error-color);
-
-            &::after {
-                border-color: inherit;
-            }
-        }
-
-        &.on {
-            input {
-                border-color: var(--success-color);
-
-                &::after {
-                    border-color: inherit;
-                    background: var(--success-color);
-                }
-            }
-        }
-    }
-
     .characters-left-wrapper {
         margin-top: calc(var(--default-margin) / 2);
         display: block;
 
         span:not(:only-child):first-child {
             margin-right: calc(var(--default-margin) / 2);
-            color: var(--text-color);
+            color: var(--color-scheme-text-color);
         }
 
         .characters-left {
-            color: var(--text-color);
+            color: var(--color-scheme-text-color);
 
             &.error {
                 color: var(--error-color);
             }
         }
     }
-
-    /* begin toggle-switch */
-    /* no cmd-prefix-styling (class based on frontend-framework) */
-    &.toggle-switch {
-        &.colored {
-            &.off {
-                .switch-label-wrapper {
-                    border-color: var(--error-color);
-
-                    span {
-                        &.label-text {
-                            color: var(--error-color);
-
-                            &::before {
-                                border-color: var(--error-color);
-                                background-color: var(--pure-white);
-                            }
-                        }
-                    }
-                }
-            }
-
-            &.on {
-                .switch-label-wrapper {
-                    border-color: var(--success-color);
-
-                    span {
-                        &.label-text {
-                            color: var(--success-color);
-
-                            &::before {
-                                border-color: var(--success-color);
-                                background-color: var(--success-color);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    /* end toggle-switch */
 }
+
 /* end cmd-form-element------------------------------------------------------------------------------------------ */
 </style>

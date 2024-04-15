@@ -24,22 +24,24 @@
         </CmdSystemMessage>
         <!-- end CmdSystemMessage -->
 
-        <div :class="['box drop-area flex-container vertical', { 'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
+        <div :class="['box flex-container vertical', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
             <template v-if="!listOfFiles.length">
+                <!-- begin CmdHeadline -->
                 <CmdHeadline v-if="allowMultipleFileUploads" v-bind="cmdHeadlineNoFilesToUpload" headlineLevel="4">
-                    {{ getMessage("cmduploadform.no_files_to_upload") }}
+                    {{ headlineTextNoFilesToUpload }}
                 </CmdHeadline>
-                <CmdHeadline v-else v-bind="cmdHeadlineNoFilesToUpload" headlineLevel="4">
-                    {{ getMessage("cmduploadform.no_file_to_upload") }}
-                </CmdHeadline>
+                <!-- end CmdHeadline -->
             </template>
 
             <!-- begin total-upload information -->
             <div v-else class="flex-container vertical">
                 <div v-if="showTotalUpload && listOfFiles.length !== 1" class="flex-container vertical list-files-wrapper">
+                    <!-- begin CmdHeadline -->
                     <CmdHeadline v-bind="cmdHeadlineSummaryOfAllFiles" headlineLevel="4">
                         {{ getMessage("cmduploadform.headline.summary_of_all_files") }}
                     </CmdHeadline>
+                    <!-- end CmdHeadline -->
+
                     <ul v-if="showTotalUpload && listOfFiles.length !== 1" class="list-of-files total-files">
                         <li class="flex-container no-flex">
                             <a
@@ -83,9 +85,12 @@
 
                 <div class="flex-container vertical list-files-wrapper">
                     <!-- begin list of selected files -->
+                    <!-- begin CmdHeadline -->
                     <CmdHeadline v-bind="cmdHeadlineListOfSelectedFiles" headlineLevel="4">
                         {{ getMessage("cmduploadform.headline.list_of_selected_files") }}
                     </CmdHeadline>
+                    <!-- end CmdHeadline -->
+
                     <ul class="list-of-files">
                         <li
                             v-for="(uploadFile, index) in listOfFiles"
@@ -108,20 +113,21 @@
                                 { error: uploadFile.error }
                               ]">
                                 {{ uploadFile.file.name }} <small>({{ formatSize(uploadFile.file.size) }})</small>
-                        </span>
-                            <template v-if="uploadInitiated && !uploadFile.error">
-                        <span class="progressbar">
-                            <span>{{ getPercentage(uploadFile.progress) }}</span>
-                            <!-- do not place inside progress-tag (will not be displayed then) -->
-                            <progress
-                                max="100"
-                                :value="uploadFile.progress"
-                                :title="
-                                formatSize(uploadFile.uploadedBytes) + '/' + formatSize(uploadFile.file.size)
-                              "
-                            ></progress>
-                          </span>
-                            </template>
+                            </span>
+
+                            <!-- begin progressbar -->
+                            <span class="progressbar" v-if="uploadInitiated && !uploadFile.error">
+                                <span>{{ getPercentage(uploadFile.progress) }}</span>
+                                <!-- do not place inside progress-tag (will not be displayed then) -->
+                                <progress
+                                    max="100"
+                                    :value="uploadFile.progress"
+                                    :title="
+                                    formatSize(uploadFile.uploadedBytes) + '/' + formatSize(uploadFile.file.size)
+                                  "
+                                ></progress>
+                            </span>
+                            <!-- end progressbar -->
                         </li>
                     </ul>
                     <a
@@ -137,12 +143,18 @@
             <!-- end list of selected files -->
 
             <!-- begin upload conditions -->
+            <!-- begin CmdHeadline -->
             <CmdHeadline v-if="allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectAdditionalFiles" headlineLevel="4">
                 {{ getMessage("cmduploadform.headline.select_additional_files") }}
             </CmdHeadline>
+            <!-- end CmdHeadline -->
+
+            <!-- begin CmdHeadline -->
             <CmdHeadline v-if="!allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectNewFile" headlineLevel="4">
                 {{ getMessage("cmduploadform.headline.select_new_file") }}
             </CmdHeadline>
+            <!-- end CmdHeadline -->
+
             <dl class="small">
                 <template v-if="maxTotalUploadSize > 0">
                     <dt :class="{ error: totalSize > maxTotalUploadSize }">
@@ -188,7 +200,8 @@
             </dl>
             <!-- end upload conditions -->
 
-            <div>
+            <!-- begin upload-button and drag-and-drop-text -->
+            <div class="flex-container vertical no-gap">
                 <button
                     type="button"
                     :class="['button upload primary', { disabled: uploadInitiated }]"
@@ -217,7 +230,9 @@
                     </strong>
                 </p>
             </div>
+            <!-- end upload-button and drag-and-drop-text -->
         </div>
+
         <!-- begin CmdFormElement -->
         <CmdFormElement
             v-if="enableComment"
@@ -268,7 +283,8 @@
     <!-- end advanced mode -->
 
     <!-- begin simple mode -->
-    <a v-else href="#" @click.prevent="selectFiles" :class="['cmd-upload-form  drop-area', {'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
+    <a v-else href="#" @click.prevent="selectFiles" :class="['cmd-upload-form box', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
+        <!-- begin progressbar -->
         <span class="progressbar" v-if="uploadInitiated">
             <span>{{ getPercentage(totalUploadProgress) }}</span>
             <progress
@@ -277,10 +293,11 @@
                 :title="totalBytesUploaded">
             </progress>
         </span>
+        <!-- end progressbar -->
 
         <!-- begin slot-content -->
         <slot>
-            <template v-if="enableDragAndDrop">
+            <template v-if="!enableDragAndDrop">
                 <template v-if="fileTypeImage">
                     <span>{{ getMessage("cmduploadform.select_image") }}</span>
                     <!-- begin CmdIcon -->
@@ -456,9 +473,25 @@ export default {
             default: true
         },
         /**
+         * toggle visibility for legend-text
+         */
+        showLegend: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * text for legend
+         *
+         * @requiredForAccessibility: true
+         */
+        textLegend: {
+            type: String,
+            required: false
+        },
+        /**
          * set icon for delete-icons
          */
-        deleteIcon: {
+        iconDelete: {
             type: Object,
             default() {
                 return {
@@ -611,25 +644,12 @@ export default {
         cmdHeadlineSelectNewFile: {
             type: Object,
             required: false
-        },
-        /**
-         * toggle visibility for legend-text
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * text for legend
-         *
-         * @requiredForAccessibility: true
-         */
-        textLegend: {
-            type: String,
-            required: false
         }
     },
     computed: {
+        headlineTextNoFilesToUpload() {
+            return this.allowMultipleFileUploads ? this.getMessage("cmduploadform.no_files_to_upload") : this.this.getMessage("cmduploadform.no_file_to_upload")
+        },
         fileTypeImage() {
             return this.allowedFileExtensions.some(extension => extension.includes('jpg'));
         },
@@ -1035,7 +1055,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-upload-form -------------------------------------------------------------------------------------------- */
 .cmd-upload-form {
     .cmd-custom-headline {
@@ -1043,8 +1063,30 @@ export default {
         justify-content: center;
     }
 
+    /* begin box for simple-mode */
+    &.box {
+        display: inline-flex;
+        flex-direction: column;
+        background: var(--default-background-color);
+
+        text-decoration: none;
+        text-align: center;
+        padding: var(--default-padding);
+
+        span {
+            margin: 0;
+
+            &[class*="icon-"] {
+                font-size: 5rem;
+            }
+        }
+    }
+    /* end box for simple-mode */
+
     .box {
+        box-shadow: none;
         background: var(--color-scheme-background-color);
+        border: var(--default-border);
 
         dl {
             justify-content: center;
@@ -1076,7 +1118,7 @@ export default {
         overflow-x: hidden;
         overflow-y: auto;
         border: var(--default-border);
-        padding: calc(var(--default-padding) * 2);
+        padding: var(--default-padding);
         margin: 0;
 
         > li {
@@ -1091,8 +1133,8 @@ export default {
                         background: var(--color-scheme-background-color);
 
                         &::-moz-progress-bar {
-                            border-top-left-radius: var(--border-radius);
-                            border-bottom-left-radius: var(--border-radius);
+                            border-top-left-radius: var(--default-border-radius);
+                            border-bottom-left-radius: var(--default-border-radius);
                             background: var(--primary-color);
                         }
                     }
@@ -1175,7 +1217,7 @@ export default {
         border: var(--default-border);
         border-style: dashed;
         background: var(--color-scheme-background-color);
-        padding: (var(--default-padding));
+        padding: var(--default-padding);
         text-align: center;
 
         &.allow-drop {
@@ -1184,17 +1226,6 @@ export default {
 
         > [class*="icon-"] {
             font-size: 5rem;
-        }
-    }
-
-    &.drop-area {
-        display: inline-flex;
-        flex-direction: column;
-        text-decoration: none;
-        background: var(--default-background-color);
-
-        span {
-            margin: 0;
         }
     }
 }

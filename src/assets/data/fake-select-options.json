@@ -8,7 +8,8 @@
     "value": 2
   },
   {
-    "text": "Option 3",
-    "value": 3
+    "text": "Option 3 with icon",
+    "value": 3,
+    "iconClass": "icon-mail"
   }
 ]

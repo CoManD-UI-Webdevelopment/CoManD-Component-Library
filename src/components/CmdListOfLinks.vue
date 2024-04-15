@@ -8,7 +8,7 @@
         <!-- end cmd-headline -->
 
         <!-- begin list of links -->
-        <ul :class="['flex-container', {'no-gap': !useGap},'align-' + align, setStretchClass]">
+        <ul :class="['flex-container', {'no-gap': !useGap}, 'align-' + align, setStretchClass]">
             <CmdListOfLinksItem
                 v-if="!editModeContext"
                 v-for="(link, index) in links"
@@ -57,6 +57,31 @@ export default {
     mixins: [EditMode],
     props: {
         /**
+         * toggle gab between links
+         */
+        useGap: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * style component like a box
+         *
+         * @affectsStyling: true
+         */
+        styleAsBox: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * activate if large icons should be displayed above link text
+         *
+         * @affectsStyling: true
+         */
+        largeIcons: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * activate if component should contain a list of anchors for the section within the page
          */
         sectionAnchors: {
@@ -73,15 +98,6 @@ export default {
             default: 0
         },
         /**
-         * activate if large icons should be displayed above link text
-         *
-         * @affectsStyling: true
-         */
-        largeIcons: {
-            type: Boolean,
-            default: false
-        },
-        /**
          * set horizontal alignment
          *
          * orientation-property must be set to 'horizontal'
@@ -90,7 +106,12 @@ export default {
          */
         align: {
             type: String,
-            default: "left"
+            default: "left",
+            validator(value) {
+                return value === "left" ||
+                    value === "center" ||
+                    value === "right"
+            }
         },
         /**
          * properties for CmdHeadline-component
@@ -113,23 +134,11 @@ export default {
          */
         orientation: {
             type: String,
-            default: "vertical"
-        },
-        /**
-         * toggle gab between links
-         */
-        useGap: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * style component like a box
-         *
-         * @affectsStyling: true
-         */
-        styleAsBox: {
-            type: Boolean,
-            default: false
+            default: "vertical",
+            validator(value) {
+                return value === "horizontal" ||
+                    value === "vertical"
+            }
         }
     },
     computed: {
@@ -171,7 +180,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-list-of-links ---------------------------------------------------------------------------------------- */
 .cmd-list-of-links {
     > ul {
@@ -183,6 +192,14 @@ export default {
             list-style: none;
             margin-left: 0;
         }
+
+        &.align-center {
+            justify-content: center;
+        }
+
+        &.align-right li {
+            text-align: right;
+        }
     }
 
     &.horizontal {
@@ -193,10 +210,6 @@ export default {
             > li {
                 flex: none;
                 display: flex;
-            }
-
-            &.align-center {
-                justify-content: center;
             }
 
             &.align-right {

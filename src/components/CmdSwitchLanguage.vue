@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-switch-language ---------------------------------------------------------------------------------------- */
 .cmd-switch-language {
     ul {

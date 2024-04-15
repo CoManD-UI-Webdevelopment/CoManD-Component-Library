@@ -180,12 +180,15 @@ export default {
         }
     },
     beforeUnmount() {
-        if (this.hnd !== null) {
-            window.clearInterval(this.hnd);
-            this.hnd = null;
-        }
+        this.stopAutoplay()
     },
     methods: {
+        stopAutoplay() {
+            if (this.hnd !== null) {
+                window.clearInterval(this.hnd);
+                this.hnd = null;
+            }
+        },
         itemProvider() {
             return {
                 "image": {
@@ -302,6 +305,19 @@ export default {
             immediate: true,
             deep: true
         },
+        autoplay() {
+            if(this.autoplay) {
+                this.setupSlider()
+            } else {
+                this.stopAutoplay()
+            }
+        },
+        autoplayInterval() {
+            if(this.autoplay) {
+                this.stopAutoplay()
+                this.setupSlider()
+            }
+        },
         currentItem() {
             // wait to nextTick to ensure ref is available
             this.$nextTick(() => {
@@ -313,10 +329,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-slideshow ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-slideshow {
     figure a, img {
         display: block;
@@ -334,6 +348,18 @@ export default {
         font-size: 3rem;
         color: var(--pure-white);
         background: var(--primary-color);
+    }
+
+    &:has(figcaption) {
+        img {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        figcaption {
+            border-bottom-left-radius: var(--default-border-radius);
+            border-bottom-right-radius: var(--default-border-radius);
+        }
     }
 
     .inner-slideshow-wrapper {
@@ -375,12 +401,11 @@ export default {
 
         .image-wrapper {
             width: 100%;
-            min-width: 11.1rem; // assure to be as wide as action-buttons in edit-mode
+            min-width: 11.1rem; /* assure to be as wide as action-buttons in edit-mode */
             min-height: 50rem;
         }
 
         > ol {
-            display: -webkit-flex; /* Safari 6-8 */
             display: flex;
             margin: 0 auto;
             position: absolute;
@@ -404,7 +429,7 @@ export default {
                 }
 
                 &:hover, &:active, &:focus, &.active {
-                    border-color: var(--pure-white);
+                    border-color: var(--hyperlink-color);
 
                     a {
                         background: var(--pure-white);
@@ -444,14 +469,8 @@ export default {
             top: .5rem;
             right: 5.5rem;
             padding: 0 0.2rem;
-            border-radius: var(--border-radius);
+            border-radius: var(--default-border-radius);
             background: var(--pure-white-reduced-opacity);
-        }
-    }
-
-    @media only screen and (max-width: $medium-max-width) {
-        figcaption {
-            font-size: 2rem;
         }
     }
 }
@@ -464,6 +483,17 @@ export default {
         font-size: 3rem;
     }
 }
+</style>
 
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-slideshow {
+        figcaption {
+            font-size: 2rem;
+        }
+    }
+}
 /* end cmd-slideshow ------------------------------------------------------------------------------------------ */
 </style>

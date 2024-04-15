@@ -1,7 +1,6 @@
 <template>
     <div class="cmd-box-wrapper">
-        <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation || allowTogglingCollapsingBoxes"
-             class="flex-container headline-wrapper">
+        <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation || allowTogglingCollapsingBoxes" class="flex-container headline-wrapper">
             <!-- begin CmdHeadline -->
             <CmdHeadline v-if="cmdHeadline.headlineText" v-bind="cmdHeadline" />
             <!-- end CmdHeadline -->
@@ -12,14 +11,14 @@
                     <CmdIcon :iconClass="collapsingBoxesOpen ? expandBoxesIcon.iconClass : collapseBoxesIcon.iconClass" :type="rowView ? iconGridView.iconType : iconRowView.iconType" />
                     <!-- end CmdIcon -->
                 </a>
-                <a v-if="allowUserToToggleOrientation" href="#" @click.prevent="rowView = !rowView" :title="rowView ? iconRowView.tooltip : iconGridView.tooltip">
+                <a v-if="allowUserToToggleOrientation" href="#" @click.prevent="toggleOrientation" :title="rowView ? iconRowView.tooltip : iconGridView.tooltip">
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="rowView ? iconGridView.iconClass : iconRowView.iconClass" :type="rowView ? iconGridView.iconType : iconRowView.iconType" />
                     <!-- end CmdIcon -->
                 </a>
             </div>
         </div>
-        <div :class="[
+        <div :class="['inner-box-wrapper',
             useFlexbox ? 'flex-container' : 'grid-container-create-columns',
             {
                 'no-gap': !useGap,
@@ -46,7 +45,8 @@ export default {
         return {
             rowView: this.useRowViewAsDefault,
             collapsingBoxesOpen: true,
-            currentOpenBox: []
+            currentOpenBox: [],
+            oneBoxPerRow: false
         }
     },
     props: {
@@ -198,6 +198,10 @@ export default {
         }
     },
     methods: {
+        toggleOrientation() {
+            this.rowView = !this.rowView
+            this.oneBoxPerRow = this.rowView
+        },
         boxIsOpen(index) {
             return this.currentOpenBox.includes(index)
         },
@@ -263,10 +267,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-box-wrapper ---------------------------------------------------------------------------------------- */
-@import '../assets/styles/variables';
-
 .cmd-box-wrapper {
     display: flex;
     flex-direction: column;
@@ -296,6 +298,12 @@ export default {
                 height: auto; /* must be set to auto if inner boxes have als stretchVertically-property activated */
             }
         }
+    }
+
+    .inner-box-wrapper > *{
+        flex: none;
+        flex-grow: 1;
+        flex-basis: min-content;
     }
 
     .row-view {
@@ -328,6 +336,13 @@ export default {
         }
     }
 
+
+}
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+.cmd-box-wrapper {
     @media only screen and (max-width: $medium-max-width) {
         > .grid-container-create-columns {
             grid-template-columns: repeat(v-bind(boxesPerRowMedium), minmax(0, 1fr));
@@ -340,6 +355,5 @@ export default {
         }
     }
 }
-
 /* end cmd-box-wrapper ---------------------------------------------------------------------------------------- */
 </style>

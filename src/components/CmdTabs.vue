@@ -103,18 +103,18 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-tabs ------------------------------------------------------------------------------------------ */
 .cmd-tabs {
     > ul {
-        margin-bottom: 0;
+        margin: 0;
         display: flex;
 
         > li {
             z-index: 10;
             margin-left: 0;
-            border-top-left-radius: var(--border-radius);
-            border-top-right-radius: var(--border-radius);
+            border-top-left-radius: var(--default-border-radius);
+            border-top-right-radius: var(--default-border-radius);
             list-style-type: none;
             background: var(--color-scheme-background-color);
 
@@ -125,8 +125,8 @@ export default {
                 padding: var(--default-padding);
                 border: var(--default-border);
                 border-bottom: 0;
-                border-top-left-radius: var(--border-radius);
-                border-top-right-radius: var(--border-radius);
+                border-top-left-radius: var(--default-border-radius);
+                border-top-right-radius: var(--default-border-radius);
                 text-decoration: none;
 
                 &:hover, &:active, &:focus {
@@ -185,7 +185,7 @@ export default {
     > div {
         padding: var(--default-padding);
         border: var(--primary-border);
-        border-radius: var(--border-radius);
+        border-radius: var(--default-border-radius);
         background: var(--color-scheme-background-color);
         border-top-left-radius: 0;
 

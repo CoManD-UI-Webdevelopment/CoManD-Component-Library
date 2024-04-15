@@ -471,10 +471,8 @@ export {openFancyBox}
 export default FancyBox
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-fancybox ---------------------------------------------------------------------------------------- */
-@import "../assets/styles/variables";
-
 .cmd-fancybox {
     z-index: 500;
     flex-direction: column;
@@ -482,7 +480,7 @@ export default FancyBox
     min-width: 30vw;
     min-height: 30vh;
     background: var(--pure-white);
-    border-radius: var(--border-radius);
+    border-radius: var(--default-border-radius);
     overflow: hidden;
     gap: calc(var(--default-gap) / 2);
 
@@ -490,13 +488,13 @@ export default FancyBox
         margin-top: calc(var(--default-margin) * 2)
     }
 
-    // detect open-attribute (will be added to dom automatically)
+    /* detect open-attribute (will be added to dom automatically) */
     &[open] {
         display: flex;
     }
 
     &.show-overlay::backdrop {
-        --reduced-opacity: .75; // must be declared again, because ::backdrop does not allow the use of global variables
+        --reduced-opacity: .75; /* must be declared again, because ::backdrop does not allow the use of global variables */
         background: rgba(0, 0, 0, var(--reduced-opacity));
     }
 
@@ -571,7 +569,7 @@ export default FancyBox
                 min-height: 0;
 
                 &[class*="print"] > [class*="icon-"] {
-                    color: var(--text-color);
+                    color: var(--default-text-color);
                 }
 
                 &.print-grayscale {
@@ -619,7 +617,12 @@ export default FancyBox
             }
         }
     }
+}
+</style>
 
+<style lang="scss">
+@import "../assets/styles/variables";
+.cmd-fancybox {
     @media only screen and (max-width: $medium-max-width) {
         .outer-content-wrapper {
             .content {

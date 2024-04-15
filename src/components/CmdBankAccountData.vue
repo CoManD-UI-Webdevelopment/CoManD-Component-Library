@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-bank-account-data ---------------------------------------------------------------------------------------- */
 .cmd-bank-account-data {
     dd {

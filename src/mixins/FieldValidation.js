@@ -215,23 +215,6 @@ export default {
             }
             return this.helplink.icon.iconClass
         },
-        getStatusIconType() {
-            if (this.validationStatus !== "") {
-                if (!this.capsLockActivated) {
-                    if (this.validationStatus === "error") {
-                        return this.iconHasStateError.iconType
-                    } else if (this.validationStatus === "warning") {
-                        return this.iconHasStateWarning.iconType
-                    } else if (this.validationStatus === "success") {
-                        return this.iconHasStateSuccess.iconType
-                    }
-                    return this.iconHasStateInfo.iconType
-                } else {
-                    return this.iconCapsLock.iconType
-                }
-            }
-            return this.helplink.icon.iconType
-        },
         inputRequirements() {
             const standardRequirements = []
             // check if field is required

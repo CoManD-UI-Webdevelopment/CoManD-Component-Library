@@ -105,10 +105,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-form-filters ------------------------------------------------------------------------------------------ */
 .cmd-form-filters {
     display: flex;
+    margin: 0;
 
     li {
         list-style-type: none;

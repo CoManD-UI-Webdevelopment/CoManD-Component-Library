@@ -185,7 +185,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
+/* begin cmd-form ---------------------------------------------------------------------------------------- */
 .cmd-form {
     &:not([data-use-validation="true"]) {
         label.error :where(::placeholder, select option:first-child),
@@ -204,5 +205,10 @@ export default {
             border-color: var(--error-color);
         }
     }
+
+    .button, .button:last-child {
+        margin-left: auto;
+    }
 }
+/* end cmd-form ---------------------------------------------------------------------------------------- */
 </style>

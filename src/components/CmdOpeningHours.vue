@@ -55,7 +55,8 @@
                 :key="index"
                 :day="day"
                 :separator="separator"
-                :abbreviationText="abbreviationText"
+                :abbreviationTextAm="abbreviationTextAm"
+                :abbreviationTextPm="abbreviationTextPm"
             />
         </dl>
         <!-- end default view -->
@@ -82,7 +83,8 @@
                 <CmdOpeningHoursItem
                     :day="day"
                     :separator="separator"
-                    :abbreviationText="abbreviationText"
+                    :abbreviationTextAm="abbreviationTextAm"
+                    :abbreviationTextPm="abbreviationTextPm"
                 />
             </dl>
         </EditComponentWrapper>
@@ -169,13 +171,6 @@ export default {
     },
     props: {
         /**
-         * set a link to a detail page
-         */
-        link: {
-            type: Object,
-            required: false
-        },
-        /**
          * toggles if "closed"-text will be shown
          *
          * @affectsStyling: true
@@ -183,6 +178,13 @@ export default {
         closed: {
             type: Boolean,
             default: false
+        },
+        /**
+         * set a link to a detail page
+         */
+        link: {
+            type: Object,
+            required: false
         },
         /**
          * text for 'open'-information
@@ -198,13 +200,26 @@ export default {
             type: String,
             default: "Closed right now!"
         },
+        /**
+         * separator between time-spans
+         */
         separator: {
             type: String,
             default: "–"
         },
-        abbreviationText: {
+        /**
+         * abbreviation (behind time) for morning
+         */
+        abbreviationTextAm: {
             type: String,
-            default: "h"
+            default: "am"
+        },
+        /**
+         * abbreviation (behind time) for afternoon
+         */
+        abbreviationTextPm: {
+            type: String,
+            default: "pm"
         },
         /**
          * list of opening-hours
@@ -228,13 +243,6 @@ export default {
             required: false
         },
         /**
-         * properties for CmdHeadline-component
-         */
-        cmdHeadline: {
-            type: Object,
-            required: false
-        },
-        /**
          * option to set custom time format by function
          */
         timeFormatter: {
@@ -254,6 +262,13 @@ export default {
         checkInterval: {
             type: Number,
             default: 5000
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
         }
     },
     mounted() {
@@ -434,7 +449,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-opening-hours ------------------------------------------------------------------------------------------ */
 .cmd-opening-hours {
     > a, > span {
