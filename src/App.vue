@@ -1725,7 +1725,6 @@
 
 <script>
 // import used example data
-import accordionData from '@/assets/data/accordion.json'
 import addressData from '@/assets/data/address-data.json'
 import bankAccountData from '@/assets/data/bank-account-data.json'
 import boxUserData from '@/assets/data/box-user.json'
@@ -1878,7 +1877,6 @@ export default {
             openBoxes: [0],
 
             // assign data from json files to data-properties
-            accordionData,
             addressData,
             bankAccountData,
             boxProductData,

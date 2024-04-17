@@ -162,22 +162,27 @@
                 :id="htmlId"
                 @blur="onBlur"
                 @change="$emit('update:modelValue', $event.target.value)">
-            <option v-for="(option, index) in selectOptions" :key="index" :value="option.value"
-                    :selected="option.value === modelValue">{{ option.text }}
+            <option
+                v-for="(option, index) in selectOptions"
+                :key="index"
+                :value="option.value"
+                :selected="option.value === modelValue"
+            >
+                {{ option.text }}
             </option>
         </select>
         <!-- end selectbox -->
 
         <!-- begin textarea -->
-        <textarea v-if="element === 'textarea'"
-                  v-bind="elementAttributes"
-                  :id="htmlId"
-                  :value="modelValue"
-                  :maxlength="getMaxLength()"
-                  @input="onInput"
-                  @focus="tooltip = true"
-                  @blur="onBlur">
-        </textarea>
+        <textarea
+            v-if="element === 'textarea'"
+            v-bind="elementAttributes"
+            :id="htmlId"
+            :value="modelValue"
+            :maxlength="getMaxLength()"
+            @input="onInput"
+            @focus="tooltip = true"
+            @blur="onBlur"></textarea><!-- no line-break to avoid empty spaces inside textarea -->
         <span v-if="element === 'textarea' && showCharactersTextarea" class="characters-left-wrapper">
             <span v-if="textCharactersLeft">{{ textCharactersLeft }}</span>
             <span :class="['characters-left', {error: charactersLeft === 0}]">{{ charactersLeft }}</span>

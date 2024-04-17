@@ -83,8 +83,7 @@
                                 <a v-if="entry.linkGoogleMaps" :href="locateAddress(entry)" target="google-maps" :title="entry.tooltip">
                                     <template v-if="showIconsOnly">
                                         <!-- begin CmdIcon -->
-                                        <CmdIcon v-if="entry.iconClass" :iconClass="entry.iconClass"
-                                                 :type="entry.iconType"/>
+                                        <CmdIcon v-if="entry.iconClass" :iconClass="entry.iconClass" :type="entry.iconType"/>
                                         <!-- end CmdIcon -->
                                     </template>
                                     <template v-else>

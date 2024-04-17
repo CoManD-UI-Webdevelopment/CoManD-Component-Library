@@ -670,6 +670,8 @@ export default {
         }
 
         > .box-header {
+            padding: 0;
+
             > img, > div {
                 display: table;
                 margin: 0 auto;
@@ -685,13 +687,13 @@ export default {
                 font-size: 2rem;
                 font-weight: bold;
                 padding: var(--default-padding);
-                padding-bottom: 0;
             }
         }
 
         .box-body {
             flex-grow: 1;
-            padding: 0 var(--default-padding);
+            padding: var(--default-padding);
+            padding-bottom: 0;
 
             > * {
                 text-align: center;
@@ -716,16 +718,12 @@ export default {
     &.user {
         > .box-header {
             --default-icon-size: 6rem;
+            --box-header-text-color: var(--primary-color);
 
-            padding: var(--default-padding);
-            border-radius: var(--full-circle);
+            background: none;
 
-
-            .cmd-headline {
-                > * {
-                    display: block;
-                    text-align: center;
-                }
+            > div:first-child > [class*="icon-"] {
+                aspect-ratio: 1/1;
             }
 
             img, > div:first-child > [class*="icon-"] {
@@ -733,7 +731,7 @@ export default {
                 margin: 0 auto var(--default-margin) auto;
                 padding: calc(var(--default-padding) * 3);
                 border-radius: var(--full-circle);
-                background: var(--primary-color);
+                background: var(--box-header-background-color);
                 color: var(--pure-white);
 
                 & + p, & + figcaption {
@@ -777,6 +775,7 @@ export default {
 
         .box-footer {
             margin-top: auto;
+            padding: 0;
             border-top: var(--default-border);
 
             .cmd-list-of-links {
