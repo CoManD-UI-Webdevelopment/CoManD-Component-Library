@@ -1067,7 +1067,7 @@ export default {
     &.box {
         display: inline-flex;
         flex-direction: column;
-        background: var(--default-background-color);
+        background: var(--default-background);
 
         text-decoration: none;
         text-align: center;
@@ -1085,7 +1085,7 @@ export default {
 
     .box {
         box-shadow: none;
-        background: var(--color-scheme-background-color);
+        background: var(--color-scheme-background);
         border: var(--default-border);
 
         dl {
@@ -1130,7 +1130,7 @@ export default {
 
                 progress {
                     &[value] {
-                        background: var(--color-scheme-background-color);
+                        background: var(--color-scheme-background);
 
                         &::-moz-progress-bar {
                             border-top-left-radius: var(--default-border-radius);
@@ -1149,7 +1149,7 @@ export default {
                     top: .2rem;
                     padding: .1rem .2rem;
                     line-height: 100%;
-                    background: var(--color-scheme-background-color);
+                    background: var(--color-scheme-background);
                 }
             }
         }
@@ -1216,7 +1216,7 @@ export default {
     .drop-area, &.drop-area {
         border: var(--default-border);
         border-style: dashed;
-        background: var(--color-scheme-background-color);
+        background: var(--color-scheme-background);
         padding: var(--default-padding);
         text-align: center;
 

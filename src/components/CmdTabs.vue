@@ -116,7 +116,7 @@ export default {
             border-top-left-radius: var(--default-border-radius);
             border-top-right-radius: var(--default-border-radius);
             list-style-type: none;
-            background: var(--color-scheme-background-color);
+            background: var(--color-scheme-background);
 
             a {
                 display: flex;
@@ -186,7 +186,7 @@ export default {
         padding: var(--default-padding);
         border: var(--primary-border);
         border-radius: var(--default-border-radius);
-        background: var(--color-scheme-background-color);
+        background: var(--color-scheme-background);
         border-top-left-radius: 0;
 
         > div {

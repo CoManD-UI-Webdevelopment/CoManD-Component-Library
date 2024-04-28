@@ -24,7 +24,7 @@ import '@/assets/styles/logos-iconfont.css'
 import '@/assets/styles/editmode-iconfont.css'
 
 /* import css for global-styles */
-import '@/assets/styles/global-styles.scss'
+import '@/assets/styles/component-library-global-styles.scss'
 
 /* import css for global transitions */
 import '@/assets/styles/transitions.scss'

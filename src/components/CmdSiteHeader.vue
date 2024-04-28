@@ -125,7 +125,7 @@ export default {
     flex-direction: column;
     flex: none;
     border-bottom: var(--default-border);
-    background: var(--color-scheme-background-color);
+    background: var(--color-scheme-background);
 
     &.sticky {
         position: sticky;

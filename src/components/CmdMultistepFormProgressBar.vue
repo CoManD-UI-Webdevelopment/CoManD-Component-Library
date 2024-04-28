@@ -266,7 +266,7 @@ export default {
             }
 
             & ~ li {
-                background: var(--default-background-color);
+                background: var(--default-background);
                 border-left-color: var(--border-color);
 
                 a {

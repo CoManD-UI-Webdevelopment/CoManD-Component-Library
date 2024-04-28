@@ -20,18 +20,6 @@
             <span class="label-text">
                 <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined">*</sup></span>
 
-                <!-- begin CmdTooltipForFormElements -->
-                <CmdTooltipForFormElements
-                    v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
-                    ref="tooltip"
-                    :validationStatus="validationStatus"
-                    :validationMessage="getValidationMessage"
-                    :relatedId="tooltipId"
-                    :cmdListOfRequirements="listOfRequirements"
-                    :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-                />
-                <!-- end CmdTooltipForFormElements -->
-
                 <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                    href="#"
                    @click.prevent
@@ -43,6 +31,18 @@
                    <CmdIcon :iconClass="getStatusIconClass"/>
                     <!-- end CmdIcon -->
                 </a>
+
+                <!-- begin CmdTooltipForFormElements -->
+                <CmdTooltipForFormElements
+                    v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
+                    ref="tooltip"
+                    :validationStatus="validationStatus"
+                    :validationMessage="getValidationMessage"
+                    :relatedId="tooltipId"
+                    :cmdListOfRequirements="listOfRequirements"
+                    :role="validationStatus === 'error' ? 'alert' : 'dialog'"
+                />
+                <!-- end CmdTooltipForFormElements -->
             </span>
             <!-- end label -->
         </template>
@@ -562,7 +562,7 @@ export default {
                 > a {
                     height: inherit;
                     border: var(--default-border);
-                    background: var(--color-scheme-background-color);
+                    background: var(--color-scheme-background);
                     color: var(--color-scheme-text-color);
                     border-radius: var(--default-border-radius);
 
@@ -687,7 +687,7 @@ export default {
             margin: 0;
             border-bottom-right-radius: var(--default-border-radius);
             border-bottom-left-radius: var(--default-border-radius);
-            background: var(--color-scheme-background-color);
+            background: var(--color-scheme-background);
             border: var(--primary-border);
 
             li {
@@ -745,7 +745,7 @@ export default {
                     }
 
                     &:hover, &:active, &:focus {
-                        background: var(--color-scheme-background-color);
+                        background: var(--color-scheme-background);
 
                         span {
                             color: var(--status-color);
@@ -792,7 +792,7 @@ export default {
 @mixin disabled-styles {
     color: var(--disabled-color);
     border-color: var(--disabled-color);
-    background: var(--disabled-background-color);
+    background: var(--disabled-background);
 }
 
 .cmd-fake-select {

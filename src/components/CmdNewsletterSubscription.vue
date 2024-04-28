@@ -34,7 +34,7 @@
                 element="button"
                 :type="buttonType"
                 :disabled="buttonDisabled"
-                :nativeButton="cmdFormElementSubmit"
+                :nativeButton="cmdFormElementSubmitDynamicLabel"
                 @click="sendData"
             />
             <!-- end cmd-form-element -->
@@ -145,6 +145,14 @@ export default {
         }
     },
     computed: {
+        cmdFormElementSubmitDynamicLabel() {
+            return this.updateButtonLabelText
+        },
+        updateButtonLabelText() {
+            const button = {...this.cmdFormElementSubmit}
+            button.text = this.subscription === "subscribe" ? "Subscribe now" : "Unsubscribe from list"
+            return button
+        },
         subscription: {
             get() {
                 return this.modelValue.subscription || "subscribe"
@@ -168,6 +176,15 @@ export default {
         },
         checkValidationStatus(event) {
             this.buttonDisabled = event !== "success"
+        }
+    },
+    watch: {
+        modelValue: {
+            handler() {
+                return this.updateButtonLabelText
+            },
+            deep: true,
+            immediate: true
         }
     }
 }

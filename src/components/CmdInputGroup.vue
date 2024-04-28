@@ -16,6 +16,20 @@
         <span v-show="showLabel" class="label-text">
             <span :id="htmlId">{{ labelText }}<sup v-if="required">*</sup></span>
 
+            <!-- begin status-icon -->
+            <a v-if="(required || inputRequirements.length > 0) && showStatusIcon"
+               href="#"
+               @click.prevent
+               :title="validationTooltip"
+               :aria-errormessage="tooltipId"
+               aria-live="assertive"
+               :id="tooltipId">
+               <!-- begin CmdIcon -->
+               <CmdIcon :iconClass="getStatusIconClass"/>
+                <!-- end CmdIcon -->
+            </a>
+            <!-- end status-icon -->
+
             <!-- begin CmdTooltipForFormElements -->
             <CmdTooltipForFormElements
                 v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
@@ -31,20 +45,6 @@
                 :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             />
             <!-- end CmdTooltipForFormElements -->
-
-            <!-- begin status-icon -->
-            <a v-if="(required || inputRequirements.length > 0) && showStatusIcon"
-               href="#"
-               @click.prevent
-               :title="validationTooltip"
-               :aria-errormessage="tooltipId"
-               aria-live="assertive"
-               :id="tooltipId">
-               <!-- begin CmdIcon -->
-               <CmdIcon :iconClass="getStatusIconClass"/>
-                <!-- end CmdIcon -->
-            </a>
-            <!-- end status-icon -->
         </span>
         <!-- end label -->
 

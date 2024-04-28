@@ -265,7 +265,7 @@ export default {
 
         &.dark-mode {
             input {
-                background: var(--color-scheme-background-color);
+                background: var(--color-scheme-background);
                 border-color: var(--color-scheme-text-color);
 
                 &::before {
@@ -273,7 +273,7 @@ export default {
                     content: "";
                     width: var(--size);
                     aspect-ratio: 1/1;
-                    background: var(--color-scheme-background-color);
+                    background: var(--color-scheme-background);
                     border-radius: var(--full-circle);
                     position: absolute;
                     top: 0;

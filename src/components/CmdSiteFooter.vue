@@ -32,7 +32,7 @@ export default {
 .cmd-site-footer {
     padding: var(--grid-gap) 0;
     border-top: var(--default-border);
-    background: var(--default-background-color);
+    background: var(--default-background);
     margin-top: auto;
     flex: none;
 

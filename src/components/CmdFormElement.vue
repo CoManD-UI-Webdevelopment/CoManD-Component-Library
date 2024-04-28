@@ -28,17 +28,6 @@
                 <sup v-if="$attrs.required" aria-hidden="true">*</sup>
             </span>
 
-            <!-- begin CmdTooltipForFormElements -->
-            <CmdTooltipForFormElements
-                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
-                ref="tooltip"
-                :validationStatus="validationStatus"
-                :relatedId="tooltipId"
-                :cmdListOfRequirements="listOfRequirements"
-                :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-            />
-            <!-- end CmdTooltipForFormElements -->
-
             <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                href="#"
                @click.prevent
@@ -50,6 +39,17 @@
                 <CmdIcon :iconClass="getStatusIconClass"/>
                 <!-- end CmdIcon -->
             </a>
+
+            <!-- begin CmdTooltipForFormElements -->
+            <CmdTooltipForFormElements
+                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
+                ref="tooltip"
+                :validationStatus="validationStatus"
+                :relatedId="tooltipId"
+                :cmdListOfRequirements="listOfRequirements"
+                :role="validationStatus === 'error' ? 'alert' : 'dialog'"
+            />
+            <!-- end CmdTooltipForFormElements -->
         </span>
         <!-- end label-text (+ required asterisk) -->
 
@@ -878,7 +878,7 @@ export default {
         * {
             --status-color: var(--error-color);
         }
-            
+
         ::placeholder {
             color: var(--status-color);
         }
@@ -927,7 +927,7 @@ export default {
             /* set styles to avoid overwriting by has-state-colors */
             &.button {
                 span {
-                    color: var(--color-scheme-background-color);
+                    color: var(--color-scheme-background);
                 }
 
                 &:hover, &:active, &:focus {

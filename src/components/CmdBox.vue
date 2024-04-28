@@ -1,6 +1,7 @@
 <template>
     <!-- begin boxType 'content' -->
     <div v-if="boxType === 'content'"
+         ref="cmdBox"
          :class="[
              'cmd-box box content',
              {
@@ -128,6 +129,7 @@
             </div>
             <!-- end ribbons -->
         </div>
+        <!-- begin box-body -->
         <div class="box-body">
             <p v-if="product.articleNumber">{{ getMessage("cmdbox.productbox.article_no") }} {{
                     product.articleNumber
@@ -137,6 +139,7 @@
             </p>
             <p v-if="product.description">{{ product.description }}</p>
         </div>
+        <!-- end box-body -->
     </a>
     <!-- end boxType 'product' -->
 
@@ -151,6 +154,7 @@
                 'row-view': rowView
              }
          ]">
+        <!-- begin box-header -->
         <div class="box-header flex-container vertical">
             <figure v-if="user.image">
                 <img :src="user.image.src" :alt="user.image.alt"/>
@@ -161,20 +165,30 @@
                 <p v-if="!rowView">{{ user.name }}</p>
             </div>
         </div>
+        <!-- end box-header -->
+
+        <!-- begin box-body -->
         <div class="box-body">
             <p v-if="rowView">{{ user.name }}</p>
             <p v-if="user.profession">{{ user.profession }}</p>
             <p v-if="user.position">{{ user.position }}</p>
             <p v-if="user.description" class="description">{{ user.description }}</p>
         </div>
-        <ul class="tags">
+        <!-- end box-body -->
+
+        <!-- begin user-tags -->
+        <ul  v-if="user.tags && user.tags.length" class="tags">
             <li v-for="(tag, index) in user.tags" :key="index">
                 {{ tag }}
             </li>
         </ul>
-        <div v-if="user.links" class="box-footer">
+        <!-- end user-tags -->
+
+        <!-- begin box-footer -->
+        <div v-if="user.links && user.links.length" class="box-footer">
             <CmdListOfLinks :links="user.links" orientation="horizontal" :useGap="false"/>
         </div>
+        <!-- end box-footer -->
     </div>
     <!-- end boxType 'user' -->
 </template>
@@ -454,6 +468,18 @@ export default {
         // for boxType === product
         clickOnProduct(product) {
             this.$emit('click', product)
+        },
+        // set focus on first input if box contains form-elements
+        setFocus() {
+            this.$nextTick(() => {
+                if(this.open) {
+                   const firstFormElement = this.$refs.cmdBox.querySelector(":is(input, select, textarea):first-of-type")
+
+                    if(firstFormElement) {
+                       firstFormElement.focus()
+                    }
+                }
+            })
         }
     },
     watch: {
@@ -461,7 +487,11 @@ export default {
             // toggle collapse-status of all boxes if changed in outer component
             if (this.collapsible) {
                 this.open = this.openCollapsedBox
+                this.setFocus()
             }
+        },
+        open() {
+            this.setFocus()
         }
     }
 }
@@ -492,8 +522,8 @@ export default {
     &.collapsible {
         a.box-header {
             justify-content: space-between;
-            background: var(--hyperlink-color);
-            border-radius: var(--default-border-radius);
+            background: var(--box-header-background);
+            border-radius: var(--box-border-radius);
 
             &:hover, &:active, &:focus {
                 background: var(--pure-white);
@@ -528,6 +558,11 @@ export default {
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
             }
+
+            fieldset {
+                border: 0;
+                padding: var(--default-padding);
+            }
         }
 
         > .box-header {
@@ -553,7 +588,7 @@ export default {
 
         .box-body {
             flex-grow: 1;
-            border-top: var(--default-border);
+            border-top: var(--box-border);
 
             p.cutoff-text {
                 padding: var(--default-padding);
@@ -568,7 +603,7 @@ export default {
                     left: 0;
                     bottom: 0;
                     height: calc(var(--line-of-text-height) * 3);
-                    background: linear-gradient(to bottom, transparent 0%, var(--default-background-color) 100%);
+                    background: linear-gradient(to bottom, transparent 0%, var(--default-background) 100%);
                 }
 
                 &.show-text {
@@ -576,7 +611,7 @@ export default {
                 }
 
                 & + a {
-                    border-top: var(--default-border);
+                    border-top: var(--box-border);
                     display: block;
                     padding: var(--default-padding);
                     margin: 0;
@@ -600,7 +635,7 @@ export default {
                         display: block;
                         padding: var(--default-padding);
                         text-decoration: none;
-                        border-bottom: var(--default-border);
+                        border-bottom: var(--box-border);
 
                         &:hover, &:active, &:focus {
                             background: var(--primary-color);
@@ -731,7 +766,7 @@ export default {
                 margin: 0 auto var(--default-margin) auto;
                 padding: calc(var(--default-padding) * 3);
                 border-radius: var(--full-circle);
-                background: var(--box-header-background-color);
+                background: var(--box-header-background);
                 color: var(--pure-white);
 
                 & + p, & + figcaption {
@@ -776,7 +811,7 @@ export default {
         .box-footer {
             margin-top: auto;
             padding: 0;
-            border-top: var(--default-border);
+            border-top: var(--box-border);
 
             .cmd-list-of-links {
                 ul {
@@ -785,15 +820,15 @@ export default {
 
                     li {
                         flex: 1;
-                        border-radius: var(--default-border-radius);
+                        border-radius: var(--box-border-radius);
 
                         a {
                             flex: 1;
                             padding: var(--default-padding);
                             text-align: center;
-                            background: var(--color-scheme-background-color);
-                            border-left: var(--default-border);
-                            border-radius: var(--default-border-radius);
+                            background: var(--color-scheme-background);
+                            border-left: var(--box-border);
+                            border-radius: var(--box-border-radius);
                         }
 
                         &:hover, &:active, &:focus {
@@ -832,6 +867,7 @@ export default {
 
             .box-footer {
                 border: 0;
+                background: none;
 
                 .cmd-list-of-links {
                     background: none;

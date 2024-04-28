@@ -21,7 +21,7 @@
                 </span>
             </component>
         </template>
-        <component :is="headlineTag">
+        <component v-else :is="headlineTag">
             <!-- begin CmdIcon -->
             <CmdIcon v-if="headlineIcon" :iconClass="headlineIcon?.iconClass" :type="headlineIcon?.iconType"/>
             <!-- end CmdIcon -->

@@ -47,47 +47,90 @@
                             >
                                 <template v-slot:body>
                                     <ul>
-                                        <li :class="'active' ? activeEntry === 'CmdAddressData' : null"><a href="#section-address-data" @click="updateSettingsSidebar('CmdAddressData')">Address Data</a></li>
+                                        <li :class="'active' ? activeEntry === 'CmdAddressData' : null"><a
+                                            href="#section-address-data"
+                                            @click="updateSettingsSidebar('CmdAddressData')">Address Data</a></li>
                                         <li><a href="#section-advanced-form-elements">Advanced Form Elements</a></li>
-                                        <li><a href="#section-bank-account-data" @click="updateSettingsSidebar('CmdBankAccountData')">Bank Account Data</a></li>
-                                        <li><a href="#section-boxes" @click="updateSettingsSidebar('CmdBox')">Boxes</a></li>
-                                        <li><a href="#section-breadcrumbs" @click="updateSettingsSidebar('CmdBreadcrumbs')">Breadcrumbs</a></li>
-                                        <li><a href="#section-cookie-disclaimer" @click="hideSettingsSidebar">Cookie-Disclaimer</a></li>
+                                        <li><a href="#section-bank-account-data"
+                                               @click="updateSettingsSidebar('CmdBankAccountData')">Bank Account
+                                            Data</a></li>
+                                        <li><a href="#section-boxes" @click="updateSettingsSidebar('CmdBox')">Boxes</a>
+                                        </li>
+                                        <li><a href="#section-breadcrumbs"
+                                               @click="updateSettingsSidebar('CmdBreadcrumbs')">Breadcrumbs</a></li>
+                                        <li><a href="#section-cookie-disclaimer" @click="hideSettingsSidebar">Cookie-Disclaimer</a>
+                                        </li>
                                         <li><a href="#section-fancybox" @click="hideSettingsSidebar">Fancybox</a></li>
                                         <li><a href="#section-forms" @click="hideSettingsSidebar">Forms</a></li>
-                                        <li><a href="#section-google-maps" @click="hideSettingsSidebar">Google-Maps&trade;</a></li>
-                                        <li><a href="#section-headlines" @click="updateSettingsSidebar('CmdHeadline')">Headlines</a></li>
+                                        <li><a href="#section-google-maps" @click="hideSettingsSidebar">Google-Maps&trade;</a>
+                                        </li>
+                                        <li><a href="#section-headlines" @click="updateSettingsSidebar('CmdHeadline')">Headlines</a>
+                                        </li>
                                         <li><a href="#section-icons" @click="hideSettingsSidebar">Icons</a></li>
-                                        <li><a href="#section-input-group" @click="updateSettingsSidebar('CmdInputGroup')">Input-Group</a></li>
+                                        <li><a href="#section-input-group"
+                                               @click="updateSettingsSidebar('CmdInputGroup')">Input-Group</a></li>
                                         <li><a href="#section-image" @click="hideSettingsSidebar">Image</a></li>
-                                        <li><a href="#section-image-gallery" @click="hideSettingsSidebar">Image Gallery</a></li>
-                                        <li><a href="#section-image-zoom" @click="hideSettingsSidebar">Image-Zoom</a></li>
-                                        <li><a href="#section-list-of-links" @click="updateSettingsSidebar('CmdLinkOfLists')">List Of Links</a></li>
-                                        <li><a href="#section-login-form" @click="updateSettingsSidebar('CmdLoginForm')">Login Form</a></li>
-                                        <li><a href="#section-main-navigation" @click="updateSettingsSidebar('CmdMainNavigation')">Main-Navigation</a></li>
-                                        <li><a href="#section-multistep-form-progress-bar" @click="updateSettingsSidebar('CmdMultistepFormProgressBar')">Multistepform-Progressbar</a></li>
-                                        <li><a href="#section-newsletter-subscription" @click="updateSettingsSidebar('CmdNewsletterSubscription')">Newsletter Subscription</a></li>
-                                        <li><a href="#section-opening-hours" @click="updateSettingsSidebar('CmdOpeningHours')">Opening Hours</a></li>
-                                        <li><a href="#section-pagination" @click="updateSettingsSidebar('CmdPagination')">Pagination</a></li>
-                                        <li><a href="#section-site-footer" @click="hideSettingsSidebar">Site Footer</a></li>
-                                        <li><a href="#section-site-header" @click="updateSettingsSidebar('CmdSiteHeader')">Site Header</a></li>
-                                        <li><a href="#section-site-search" @click="updateSettingsSidebar('CmdSiteSearch')">Site Search</a></li>
-                                        <li><a href="#section-slideshow" @click="updateSettingsSidebar('CmdSlideshow')">Slideshow</a></li>
-                                        <li><a href="#section-social-networks" @click="updateSettingsSidebar('CmdSocialNetworks')">Social Networks</a></li>
-                                        <li><a href="#section-switch-language" @click="hideSettingsSidebar">Switch Language</a></li>
-                                        <li><a href="#section-system-message" @click="updateSettingsSidebar('CmdSystemMessage')">System-Message</a></li>
-                                        <li><a href="#section-tables" @click="updateSettingsSidebar('CmdSystemMeCmdTablesssage')">Tables</a></li>
-                                        <li><a href="#section-tabs" @click="updateSettingsSidebar('CmdTabs')">Tabs</a></li>
-                                        <li><a href="#section-text-image-block" @click="updateSettingsSidebar('CmdTextImageBlock')">Text Image Block</a></li>
-                                        <li><a href="#section-thumbnail-scroller" @click="updateSettingsSidebar('CmdThumbnailScroller')">Thumbnail-Scroller</a></li>
-                                        <li><a href="#section-toggle-darkmode" @click="updateSettingsSidebar('CmdToggleDarkMode')">ToggleDarkMode</a></li>
-                                        <li><a href="#section-tooltip" @click="updateSettingsSidebar('CmdTooltip')">Tooltip</a></li>
-                                        <li><a href="#section-upload-form" @click="updateSettingsSidebar('CmdUploadForm')">Upload-Form</a></li>
+                                        <li><a href="#section-image-gallery" @click="hideSettingsSidebar">Image
+                                            Gallery</a></li>
+                                        <li><a href="#section-image-zoom" @click="hideSettingsSidebar">Image-Zoom</a>
+                                        </li>
+                                        <li><a href="#section-list-of-links"
+                                               @click="updateSettingsSidebar('CmdLinkOfLists')">List Of Links</a></li>
+                                        <li><a href="#section-login-form"
+                                               @click="updateSettingsSidebar('CmdLoginForm')">Login Form</a></li>
+                                        <li><a href="#section-main-navigation"
+                                               @click="updateSettingsSidebar('CmdMainNavigation')">Main-Navigation</a>
+                                        </li>
+                                        <li><a href="#section-multistep-form-progress-bar"
+                                               @click="updateSettingsSidebar('CmdMultistepFormProgressBar')">Multistepform-Progressbar</a>
+                                        </li>
+                                        <li><a href="#section-newsletter-subscription"
+                                               @click="updateSettingsSidebar('CmdNewsletterSubscription')">Newsletter
+                                            Subscription</a></li>
+                                        <li><a href="#section-opening-hours"
+                                               @click="updateSettingsSidebar('CmdOpeningHours')">Opening Hours</a></li>
+                                        <li><a href="#section-pagination"
+                                               @click="updateSettingsSidebar('CmdPagination')">Pagination</a></li>
+                                        <li><a href="#section-site-footer" @click="hideSettingsSidebar">Site Footer</a>
+                                        </li>
+                                        <li><a href="#section-site-header"
+                                               @click="updateSettingsSidebar('CmdSiteHeader')">Site Header</a></li>
+                                        <li><a href="#section-site-search"
+                                               @click="updateSettingsSidebar('CmdSiteSearch')">Site Search</a></li>
+                                        <li><a href="#section-slideshow" @click="updateSettingsSidebar('CmdSlideshow')">Slideshow</a>
+                                        </li>
+                                        <li><a href="#section-social-networks"
+                                               @click="updateSettingsSidebar('CmdSocialNetworks')">Social Networks</a>
+                                        </li>
+                                        <li><a href="#section-switch-language" @click="hideSettingsSidebar">Switch
+                                            Language</a></li>
+                                        <li><a href="#section-system-message"
+                                               @click="updateSettingsSidebar('CmdSystemMessage')">System-Message</a>
+                                        </li>
+                                        <li><a href="#section-tables"
+                                               @click="updateSettingsSidebar('CmdSystemMeCmdTablesssage')">Tables</a>
+                                        </li>
+                                        <li><a href="#section-tabs" @click="updateSettingsSidebar('CmdTabs')">Tabs</a>
+                                        </li>
+                                        <li><a href="#section-text-image-block"
+                                               @click="updateSettingsSidebar('CmdTextImageBlock')">Text Image Block</a>
+                                        </li>
+                                        <li><a href="#section-thumbnail-scroller"
+                                               @click="updateSettingsSidebar('CmdThumbnailScroller')">Thumbnail-Scroller</a>
+                                        </li>
+                                        <li><a href="#section-toggle-darkmode"
+                                               @click="updateSettingsSidebar('CmdToggleDarkMode')">ToggleDarkMode</a>
+                                        </li>
+                                        <li><a href="#section-tooltip" @click="updateSettingsSidebar('CmdTooltip')">Tooltip</a>
+                                        </li>
+                                        <li><a href="#section-upload-form"
+                                               @click="updateSettingsSidebar('CmdUploadForm')">Upload-Form</a></li>
                                     </ul>
                                 </template>
                             </CmdBox>
                         </template>
                     </CmdBoxWrapper>
+
                     <dl class="comand-versions">
                         <dt>Frontend-Framework Version:</dt>
                         <dd>{{ packageJson.dependencies['comand-frontend-framework'].replace("^", "") }}</dd>
@@ -133,7 +176,7 @@
                 <!-- begin address-data ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-address-data">
-                        Address Data
+                        <span>Address Data</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdAddressData')"></a>
                     </h2>
@@ -151,7 +194,7 @@
                 <!-- begin advanced form elements --------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-advanced-form-elements">Advanced Form Elements</h2>
-                    <h3>Form elements status:</h3>
+                    <h3><span>Form elements status:</span></h3>
                     <div class="flex-container">
                         <ul class="list-status">
                             <li>
@@ -201,7 +244,8 @@
                     <CmdForm :use-fieldset="false" id="advanced-form-elements" novalidate="novalidate">
                         <fieldset class="grid-container-create-columns">
                             <legend>Legend</legend>
-                            <h2 class="headline-demopage">Form Element-Component
+                            <h2 class="headline-demopage">
+                                <span>Form Element-Component</span>
                                 <a href="#" class="icon-cog" title="Open Component Settings"
                                    @click.prevent="openSettingsSidebar('CmdFormElement')"></a>
                             </h2>
@@ -396,10 +440,11 @@
                             />
                             <hr/>
                             <!-- begin FakeSelect -->
-                            <h2 class="headline-demopage">
-                                Fake Selects
-                                <a href="#" class="icon-cog" title="Open Component Settings" @click.prevent="openSettingsSidebar('CmdFakeSelect')"></a>
-                            </h2>
+                            <h3 class="headline-demopage">
+                                <span>Fake Selects</span>
+                                <a href="#" class="icon-cog" title="Open Component Settings"
+                                   @click.prevent="openSettingsSidebar('CmdFakeSelect')"></a>
+                            </h3>
                             <div class="flex-container">
                                 <!-- type === default: normal selectbox (with optional icons) -->
                                 <CmdFakeSelect
@@ -606,7 +651,7 @@
 
                             <!-- begin cmd-toggle-darkmode -->
                             <h3 class="headline-demopage" id="section-toggle-darkmode">
-                                Toggle Dark-Mode
+                                <span>Toggle Dark-Mode</span>
                                 <a href="#" class="icon-cog" title="Open Component Settings"
                                    @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
                             </h3>
@@ -892,7 +937,7 @@
                 <!-- begin bank account data ----------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-bank-account-data">
-                        Bank Account Data
+                        <span>Bank Account Data</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdBankAccountData')"></a>
                     </h2>
@@ -909,8 +954,9 @@
                 <CmdWidthLimitationWrapper anchorId="section-boxes">
                     <h2 class="headline-demopage">Boxes</h2>
                     <h3 class="headline-demopage">
-                        Default Box
-                        <a href="#" class="icon-cog" title="Open Component Settings" @click.prevent="openSettingsSidebar('CmdBox')"></a>
+                        <span>Default Box</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdBox')"></a>
                     </h3>
                     <CmdBox
                         ref="CmdBox"
@@ -931,7 +977,8 @@
                             <p>
                                 <strong>Header, Content/Body and Footer of this box are given by slots.</strong>
                             </p>
-                            <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height is defined) the content of this box to scroll</p>
+                            <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height is
+                                defined) the content of this box to scroll</p>
                         </template>
                         <template v-slot:footer>
                             <p>
@@ -952,7 +999,6 @@
                         />
                     </CmdBoxWrapper>
                     <CmdBoxWrapper
-                        :useFlexbox="true"
                         :use-gap="true"
                         :cmdHeadline="{headlineText: 'Different examples of content-boxes (in BoxWrapper)', headlineLevel: 3}"
                     >
@@ -980,11 +1026,43 @@
                                 <p>
                                     <strong>Header, Content/Body and Footer of this box are given by slots.</strong>
                                 </p>
-                                <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height is defined) the content of this box to scroll</p>
+                                <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height
+                                    is defined) the content of this box to scroll</p>
                             </template>
                             <template v-slot:footer>
                                 <p>
                                     Footer content
+                                </p>
+                            </template>
+                        </CmdBox>
+                        <CmdBox :useSlots="['header', 'body']" :use-default-padding="false" :collapsible="true">
+                            <template v-slot:header>
+                                <h4>
+                                    Box with inputs
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <CmdForm :showLegend="false" textLegend="Login Form">
+                                    <CmdFormElement
+                                        element="input"
+                                        type="text"
+                                        :required="true"
+                                        labelText="Username:"
+                                        placeholder="Username"
+                                    />
+                                    <CmdFormElement
+                                        element="input"
+                                        type="password"
+                                        :required="true"
+                                        labelText="Password:"
+                                        placeholder="Password"
+                                    />
+                                </CmdForm>
+                            </template>
+                            <!-- will not be displayed, because useSlots-property does not contain 'footer' in array -->
+                            <template v-slot:footer>
+                                <p>
+                                    footer content
                                 </p>
                             </template>
                         </CmdBox>
@@ -1089,7 +1167,7 @@
                 <!-- begin breadcrumbs ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper inner-component="div">
                     <h2 class="headline-demopage" id="section-breadcrumbs">
-                        Breadcrumbs
+                        <span>Breadcrumbs</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
                     </h2>
@@ -1201,7 +1279,7 @@
                 <!-- begin headlines ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-headlines">
-                        Headlines
+                        <span>Headlines</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdHeadline')"></a>
                     </h2>
@@ -1248,14 +1326,21 @@
                 <!-- begin images ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-image">
-                        Image
+                        <span>Image</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdImage')"></a>
                     </h2>
                     <div class="flex-container">
-                        <CmdImage ref="CmdImage" :image="imageData[0].image" :figcaption="imageData[0].figcaption"
-                                  v-bind="cmdImageSettingsData"/>
-                        <CmdImage :image="imageData[1].image" :figcaption="imageData[1].figcaption"/>
+                        <CmdImage
+                            ref="CmdImage"
+                            :image="imageData[0].image"
+                            :figcaption="imageData[0].figcaption"
+                            v-bind="cmdImageSettingsData"
+                        />
+                        <CmdImage
+                            :image="imageData[1].image"
+                            :figcaption="imageData[1].figcaption"
+                        />
                     </div>
                 </CmdWidthLimitationWrapper>
                 <!-- end images ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1263,7 +1348,7 @@
                 <!-- begin image-gallery------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-image-gallery">
-                        Image-Gallery
+                        <span>Image-Gallery</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdImageGallery')"></a>
                     </h2>
@@ -1290,7 +1375,7 @@
                 <!-- begin list-of-links ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-list-of-links">
-                        List Of Links
+                        <span>List Of Links</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdListOfLinks')"></a>
                     </h2>
@@ -1305,7 +1390,7 @@
                 <!-- begin login-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-login-form">
-                        Login Form
+                        <span>Login Form</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                     </h2>
@@ -1319,7 +1404,7 @@
                 <!-- begin main-navigation ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-main-navigation">
-                        Main Navigation
+                        <span>Main Navigation</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdMainNavigation')"></a>
                     </h2>
@@ -1334,7 +1419,7 @@
                 <!-- begin multistep-form-progress-bar ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
-                        Multistepform-Progressbar
+                        <span>Multistepform-Progressbar</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
                     </h2>
@@ -1354,7 +1439,7 @@
                 <!-- begin newsletter-subscription ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-newsletter-subscription">
-                        Newsletter Subscription
+                        <span>Newsletter Subscription</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdNewsletterSubscription')"></a>
                     </h2>
@@ -1372,7 +1457,7 @@
                 <!-- begin opening-hours ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-opening-hours">
-                        Opening Hours
+                        <span>Opening Hours</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdOpeningHours')"></a>
                     </h2>
@@ -1388,7 +1473,7 @@
                 <!-- begin pagination ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-pagination">
-                        Pagination
+                        <span>Pagination</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdPagination')"></a>
                     </h2>
@@ -1415,7 +1500,7 @@
                 <!-- begin site-header ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-site-header">
-                        Site Header
+                        <span>Site Header</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdSiteHeader')"></a>
                     </h2>
@@ -1438,7 +1523,7 @@
                 <!-- begin site-search ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-site-search">
-                        Site Search
+                        <span>Site Search</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdSiteSearch')"></a>
                     </h2>
@@ -1458,7 +1543,7 @@
                 <!-- begin slideshow ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-slideshow">
-                        Slideshow
+                        <span>Slideshow</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdSlideshow')"></a>
                     </h2>
@@ -1473,7 +1558,7 @@
                 <!-- begin social-networks ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-social-networks">
-                        Social Networks
+                        <span>Social Networks</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdSocialNetworks')"></a>
                     </h2>
@@ -1498,7 +1583,7 @@
                 <!-- begin system-message ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-system-message">
-                        System Message
+                        <span>System Message</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
                     </h2>
@@ -1518,7 +1603,7 @@
                 <!-- begin tables ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-tables">
-                        Tables
+                        <span>Tables</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdTable')"></a>
                     </h2>
@@ -1529,16 +1614,21 @@
                         :table-data="tableDataLarge"
                     />
                     <h3>Table as wide as possible</h3>
-                    <CmdTable :collapsible="true" :fullWidthOnDefault="false" :userCanToggleWidth="true"
-                              :table-data="tableDataLarge"/>
+                    <CmdTable
+                        :collapsible="true"
+                        :fullWidthOnDefault="false"
+                        :userCanToggleWidth="true"
+                        :table-data="tableDataLarge"
+                    />
                 </CmdWidthLimitationWrapper>
                 <!-- end tables ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin tabs ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-tabs">
-                        Tabs
-                        <a href="#" class="icon-cog" title="Open Component Settings" @click.prevent="openSettingsSidebar('CmdTabs')"></a>
+                        <span>Tabs</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdTabs')"></a>
                     </h2>
                     <CmdTabs
                         ref="CmdTabs"
@@ -1566,7 +1656,7 @@
                 <!-- begin text-image-block ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-text-image-block">
-                        Text-Image-Block
+                        <span>Text-Image-Block</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdTextImageBlock')"></a>
                     </h2>
@@ -1614,7 +1704,7 @@
                 <!-- begin thumbnail-scroller ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-thumbnail-scroller">
-                        Thumbnail-Scroller
+                        <span>Thumbnail-Scroller</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
                     </h2>
@@ -1631,7 +1721,7 @@
                 <!-- begin tooltip ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-tooltip">
-                        Tooltip
+                        <span>Tooltip</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdTooltip')"></a>
                     </h2>
@@ -1647,10 +1737,17 @@
                     >
                         Tooltip on hover
                     </CmdTooltip>
-                    <CmdTooltip :delay-to-show-tooltip="2000" related-id="show-with-delay">
+                    <CmdTooltip
+                        :delay-to-show-tooltip="2000"
+                        related-id="show-with-delay"
+                    >
                         Tooltip on hover with delay
                     </CmdTooltip>
-                    <CmdTooltip related-id="show-on-click" :toggle-visibility-by-click="true" :allowEscapeKey="true">
+                    <CmdTooltip
+                        related-id="show-on-click"
+                        :toggle-visibility-by-click="true"
+                        :allowEscapeKey="true"
+                    >
                         Tooltip on click
                     </CmdTooltip>
                 </CmdWidthLimitationWrapper>
@@ -1659,7 +1756,7 @@
                 <!-- begin upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-upload-form">
-                        Upload-Form
+                        <span>Upload-Form</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdUploadForm')"></a>
                     </h2>
@@ -2112,82 +2209,86 @@ export default {
 </script>
 
 <style>
-.list-status {
-    .active {
-        color: var(--default-text-color);
-        text-decoration: none;
-        background: none;
-    }
-}
-
-main .cmd-width-limitation-wrapper:not(:last-child) {
-    border-bottom: var(--default-border);
-    border-style: dashed;
-
-    section {
-        padding-top: calc(var(--default-padding) * 6);
-        padding-bottom: calc(var(--default-padding) * 6);
-    }
-}
-
-.headline-demopage {
-    [class*="icon-"] {
-        font-size: 2rem;
-    }
-}
-
-.cmd-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2000;
-    max-width: 30rem;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    gap: 0;
-    border: 0;
-    border-right-width: 0;
-    border-right-style: none;
-    border-right-color: currentcolor;
-    border-right: var(--default-border);
-
-    .box {
-        border-right: 0;
-
-        &:not(:last-child) {
-            border-bottom: 0;
+.demopage {
+    .list-status {
+        .active {
+            color: var(--default-text-color);
+            text-decoration: none;
+            background: none;
         }
     }
 
-    .open-slot-wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
+    main .cmd-width-limitation-wrapper:not(:last-child) {
+        border-bottom: var(--default-border);
+        border-style: dashed;
 
-        .comand-versions {
-            padding: var(--default-padding);
+        section {
+            padding-top: calc(var(--default-padding) * 6);
+            padding-bottom: calc(var(--default-padding) * 6);
+        }
+    }
+
+    .headline-demopage {
+        [class*="icon-"] {
+            font-size: 2rem;
+            color: var(--pure-white);
             margin: 0;
         }
     }
 
-    .closed-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: var(--default-gap);
-        padding: var(--default-padding);
+    .cmd-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+        max-width: 30rem;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        gap: 0;
+        border: 0;
+        border-right-width: 0;
+        border-right-style: none;
+        border-right-color: currentcolor;
+        border-right: var(--default-border);
+
+        .box {
+            border-right: 0;
+
+            &:not(:last-child) {
+                border-bottom: 0;
+            }
+        }
+
+        .open-slot-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+
+            .comand-versions {
+                padding: var(--default-padding);
+                margin: 0;
+            }
+        }
+
+        .closed-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--default-gap);
+            padding: var(--default-padding);
+        }
+
+        &:last-child {
+            left: auto;
+            right: 0;
+        }
     }
 
-    &:last-child {
-        left: auto;
-        right: 0;
-    }
-}
-
-#component-settings {
-    .open-slot-wrapper {
-        display: block;
+    #component-settings {
+        .open-slot-wrapper {
+            display: block;
+        }
     }
 }
 </style>

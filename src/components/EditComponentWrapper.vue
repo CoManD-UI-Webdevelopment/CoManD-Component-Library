@@ -485,7 +485,7 @@ function buildComponentPath(component) {
                     font-size: 1rem;
                     display: block;
                     padding: 0.5rem;
-                    background: var(--button-background-color);
+                    background: var(--button-background);
 
                     &:before {
                         content: "";

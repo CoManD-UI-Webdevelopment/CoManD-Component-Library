@@ -1,4 +1,4 @@
-/* global-styles.scss - last update: 2022/06/11 - IT IS NOT RECOMMENDED TO EDIT THIS FILE (TO AVOID TROUBLESHOOTING AFTER UPDATING) - DO CHANGES IN template.css ONLY */
+/* component-library-global-styles.scss - last update: 2022/06/11 - IT IS NOT RECOMMENDED TO EDIT THIS FILE (TO AVOID TROUBLESHOOTING AFTER UPDATING) - DO CHANGES IN template.css ONLY */
 
 /* begin table of contents --------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*
@@ -143,7 +143,7 @@ body.avoid-scrolling {
 
         &:hover, &:active, &:focus {
             border-color: var(--primary-color);
-            background: var(--default-background-color);
+            background: var(--default-background);
         }
     }
 
@@ -304,26 +304,26 @@ html {
     &.light-mode {
         /* assign default colors for custom light-mode set by class */
         --color-scheme-text-color: var(--light-mode-text-color);
-        --color-scheme-text-color-buttons: var(--light-mode-text-color-buttons);
-        --color-scheme-background-color: var(--light-mode-background-color);
         --color-scheme-text-color-inverted: var(--dark-mode-text-color);
-        --color-scheme-background-inverted: var(--dark-mode-background-color);
+        --color-scheme-text-color-buttons: var(--light-mode-text-color-buttons);
+        --color-scheme-background: var(--light-mode-background);
+        --color-scheme-background-inverted: var(--dark-mode-background);
         --default-background-color-lightness: 97%;
     }
 
     --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
     --color-scheme-text-color-inverted: var(--light-mode-text-color);
-    --color-scheme-background: var(--dark-mode-background-color);
-    --color-scheme-background-inverted: var(--light-mode-background-color);
+    --color-scheme-background: var(--dark-mode-background);
+    --color-scheme-background-inverted: var(--light-mode-background);
     --default-background-color-lightness: 20%;
 
     &.dark-mode {
         /* assign default colors for custom dark-mode set by class */
         --color-scheme-text-color: var(--dark-mode-text-color);
-        --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
-        --color-scheme-background-color: var(--dark-mode-background-color);
         --color-scheme-text-color-inverted: var(--light-mode-text-color);
-        --color-scheme-background-inverted: var(--light-mode-background-color);
+        --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
+        --color-scheme-background: var(--dark-mode-background);
+        --color-scheme-background-inverted: var(--light-mode-background);
         --default-background-color-lightness: 20%;
         --hyperlink-color-lightness: 40%; /* hyperlink-color-lightness */
         --hyperlink-color-highlighted-lightness: 50%; /* hyperlink-color-highlighted-lightness (used for highlighted hyperlinks) */

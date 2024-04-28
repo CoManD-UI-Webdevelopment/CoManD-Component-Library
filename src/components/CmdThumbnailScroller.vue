@@ -393,7 +393,7 @@ export default {
         padding-top: 0;
         margin: 0 auto;
         border: var(--default-border);
-        background: var(--color-scheme-background-color);
+        background: var(--color-scheme-background);
         overflow: hidden;
 
         > ul {
