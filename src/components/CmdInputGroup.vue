@@ -6,7 +6,7 @@
             inline: labelInline,
             'multiple-switch': multipleSwitch,
             disabled: disabled,
-            'toggle-switch': toggleSwitch,
+            'toggle-switches': toggleSwitches,
             'has-state': validationStatus
         }
         ]"
@@ -50,7 +50,7 @@
 
         <!-- begin view without slot -->
         <span v-if="!useSlot" :class="['flex-container', {'no-flex': !stretchHorizontally, 'no-gap': multipleSwitch}]">
-            <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id">
+            <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches}">
                 <input
                     :type="inputTypes"
                     :id="inputElement.id"
@@ -58,7 +58,7 @@
                     :value="inputElement.value"
                     v-model="inputValue"
                     :disabled="disabled"
-                    :class="{'replace-input-type': replaceInputType, 'toggle-switch': toggleSwitch}"
+                    :class="{'replace-input-type': replaceInputType}"
                 />
                 <!-- begin CmdIcon -->
                 <CmdIcon
@@ -159,7 +159,7 @@ export default {
         /**
          * for replacing native checkboxes/radio-buttons by custom ones (based on frontend-framework)
          *
-         * toggleSwitch-property must be set to 'false'
+         * toggleSwitches-property must be set to 'false'
          *
          * @affectsStyling: true
          */
@@ -174,7 +174,7 @@ export default {
          *
          * @affectsStyling: true
          */
-        toggleSwitch: {
+        toggleSwitches: {
             type: Boolean,
             default: false
         },
@@ -314,15 +314,11 @@ export default {
         }
 
         &:hover, &:active, &:focus {
-            span {
+            > span {
                 color: var(--hyperlink-color-highlighted)
             }
 
             & + .flex-container {
-                label:not(:has(input:checked)) .label-text {
-                    color: var(--default-text-color);
-                }
-
                 input {
                     border-color: var(--default-border-color);
                 }
@@ -335,16 +331,26 @@ export default {
             --status-color: var(--error-color);
         }
 
-        label, [class*="icon-"]  {
+        label, span, [class*="icon-"]  {
             color: var(--status-color);
         }
 
         &.multiple-switch {
-            label {
-                border-color: var(--status-color);
+            &.error {
+                --status-color: var(--error-color);
 
-                > * {
-                    color: var(--status-color);
+                label {
+                    border-color: var(--error-color);
+
+                    > * {
+                        color: var(--error-color);
+                    }
+
+                    &:is(:hover, :active, :focus) {
+                        span, [class*="icon-"] {
+                            color: var(--hyperlink-color-highlighted);
+                        }
+                    }
                 }
             }
         }

@@ -848,7 +848,7 @@
                                 :inputElements="idForReplacedInputsInInputGroup('checkbox-group-toggle-switch')"
                                 inputTypes="checkbox"
                                 v-model="inputGroupValueToggleSwitchCheckbox"
-                                :toggleSwitch="true"
+                                :toggleSwitches="true"
                                 required="required"
                                 :status="validationStatus"
                                 :disabled="disabledStatus"
@@ -864,7 +864,7 @@
                                 :inputElements="idForReplacedInputsInInputGroup('radio-group-toggle-switch')"
                                 inputTypes="radio"
                                 v-model="inputGroupValueToggleSwitchRadio"
-                                :toggleSwitch="true"
+                                :toggleSwitches="true"
                                 required="required"
                                 :status="validationStatus"
                                 :disabled="disabledStatus"
@@ -1142,6 +1142,7 @@
                     <h3>Product boxes (collapsible)</h3>
                     <CmdBoxWrapper
                         :boxesPerRow="[5, 2, 1]"
+                        :openBoxesByDefault="[2]"
                         :useRowViewAsDefault="true"
                         :allowMultipleExpandedBoxes="false"
                         :useGap="true">

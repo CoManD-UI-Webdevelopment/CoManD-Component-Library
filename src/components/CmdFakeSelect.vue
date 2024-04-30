@@ -628,6 +628,7 @@ export default {
         a, a:visited {
             display: flex;
             align-items: center;
+            width: 100%;
             padding: .7rem;
             padding-top: .8rem;
             outline: none;

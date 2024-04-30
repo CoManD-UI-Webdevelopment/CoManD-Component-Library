@@ -171,6 +171,7 @@ export default {
 
         > a {
             border-right: var(--default-border);
+            border-left: 0;
         }
     }
 }

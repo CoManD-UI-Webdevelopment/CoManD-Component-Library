@@ -45,6 +45,7 @@ export { default as CmdToggleDarkMode } from '@/components/CmdToggleDarkMode.vue
 export { default as CmdTooltip } from '@/components/CmdTooltip.vue'
 export { default as CmdUploadForm } from '@/components/CmdUploadForm.vue'
 export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimitationWrapper.vue'
+export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'
 
 // export directives
 export { default as DirFocus } from '@/directives/focus'

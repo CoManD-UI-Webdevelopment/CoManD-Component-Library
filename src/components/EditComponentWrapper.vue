@@ -389,14 +389,19 @@ function buildComponentPath(component) {
         display: none;
         position: absolute;
         left: auto;
-        right: 10rem;
+        right: 8rem;
+        font-size: 1rem;
         font-style: italic;
-        z-index: 10;
-        padding: .2rem;
+        z-index: 1;
+        padding: .2rem 2rem .2rem .5rem;
         background: var(--primary-color);
+        margin: 0;
     }
 
     &.active {
+        border-color: var(--pure-white);
+        min-height: 2.5rem;
+
         .component-name {
             display: block;
         }
@@ -452,8 +457,8 @@ function buildComponentPath(component) {
             right: auto; /* avoids container to be stretched */
             flex-wrap: nowrap;
             border-bottom: 0;
-            backdrop-filter: grayscale(1) brightness(1.5) blur(2rem) opacity(85%);
-            border-radius: .5rem;
+            backdrop-filter: var(--primary-color);
+            border-radius: var(--default-border-radius);
 
             li {
                 top: 0;
