@@ -376,13 +376,26 @@ function buildComponentPath(component) {
 
     display: block;
 
+    label {
+        &.text-center input {
+            text-align: center;
+        }
+
+        &.edit-mode input, select, .cmd-fake-select {
+            padding: 0;
+            height: auto;
+            min-height: calc(var(--input-height) / 2);
+        }
+    }
+
+    [data-component="CmdSlideshow"] {
+        top: 1.8rem;
+        right: 5.3rem;
+    }
+
     &.highlight {
         border-color: var(--hyperlink-color-highlighted);
         border-style: dotted;
-    }
-
-    .cmd-headline {
-        margin: 0;
     }
 
     .component-name {
@@ -390,21 +403,12 @@ function buildComponentPath(component) {
         position: absolute;
         left: auto;
         right: 8rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-style: italic;
         z-index: 1;
         padding: .2rem 2rem .2rem .5rem;
         background: var(--primary-color);
         margin: 0;
-    }
-
-    &.active {
-        border-color: var(--pure-white);
-        min-height: 2.5rem;
-
-        .component-name {
-            display: block;
-        }
     }
 
     .action-buttons {
@@ -456,8 +460,10 @@ function buildComponentPath(component) {
             left: 0;
             right: auto; /* avoids container to be stretched */
             flex-wrap: nowrap;
+            border: var(--default-border);
+            border-color: var(--pure-white);
             border-bottom: 0;
-            backdrop-filter: var(--primary-color);
+            background: var(--pure-white);
             border-radius: var(--default-border-radius);
 
             li {
@@ -504,20 +510,70 @@ function buildComponentPath(component) {
                         top: 0;
                         left: 0;
                         transform: none;
+
+                        &::before {
+                            color: var(--hyperlink-color)
+                        }
                     }
 
                     &.primary {
                         background: var(--primary-color);
                     }
+
+                    &:hover, &:active, &:focus {
+                        span[class*="icon-"] {
+                            &::before {
+                                color: var(--hyperlink-color-highlighted)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
 
-        &.active {
-            //width: 100%; /* stretch inside flex-container */
-            background: var(--pure-white);
+    &.active {
+        //width: 100%; /* stretch inside flex-container */
+        background: var(--pure-white);
+        border-color: var(--pure-white);
+        min-height: 2.5rem;
+
+        .component-name {
+            display: block;
+        }
+
+        label {
+            &.cmd-form-element {
+                :is(input[type="checkbox"], input[type="radio"]):checked {
+                    & ~ .label-text span {
+                        color: var(--pure-white);
+                    }
+                }
+            }
         }
     }
+
+    /* begin edit-mode-styles for specific components */
+    .cmd-headline {
+        margin: 0;
+    }
+
+    .cmd-thumbnail-scroller {
+        .inner-thumbnail-wrapper > ul > li {
+            align-self: flex-start;
+        }
+
+        .cmd-image .drop-area span[class*="icon"] {
+            font-size: 5rem;
+        }
+    }
+
+    .cmd-image {
+        input {
+            width: 5rem;
+        }
+    }
+    /* end edit-mode-styles for specific components */
 
     // begin component-level only
     &:not(.edit-items) {

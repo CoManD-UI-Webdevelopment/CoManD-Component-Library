@@ -14,9 +14,9 @@
 
         <!-- begin label -->
         <span v-show="showLabel" class="label-text">
-            <span :id="htmlId">{{ labelText }}<sup v-if="required">*</sup></span>
+            <span :id="htmlId">{{ labelText }}<sup v-if="required" aria-hidden="true">*</sup></span>
 
-            <!-- begin status-icon -->
+            <!-- begin status-icon (linked with tooltip) -->
             <a v-if="(required || inputRequirements.length > 0) && showStatusIcon"
                href="#"
                @click.prevent
@@ -28,7 +28,7 @@
                <CmdIcon :iconClass="getStatusIconClass"/>
                 <!-- end CmdIcon -->
             </a>
-            <!-- end status-icon -->
+            <!-- end status-icon (linked with tooltip) -->
 
             <!-- begin CmdTooltipForFormElements -->
             <CmdTooltipForFormElements
@@ -87,9 +87,11 @@
 import FieldValidation from "../mixins/FieldValidation.js"
 import Identifier from "../mixins/Identifier"
 import Tooltip from "../mixins/Tooltip.js"
+import DefaultMessageProperties from "../mixins/CmdFormElement/DefaultMessageProperties"
 
 export default {
     mixins: [
+        DefaultMessageProperties,
         FieldValidation,
         Identifier,
         Tooltip

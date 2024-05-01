@@ -102,8 +102,8 @@
                                         <li><a href="#section-social-networks"
                                                @click="updateSettingsSidebar('CmdSocialNetworks')">Social Networks</a>
                                         </li>
-                                        <li><a href="#section-switch-language" @click="hideSettingsSidebar">Switch
-                                            Language</a></li>
+                                        <li><a href="#section-switch-language" @click="hideSettingsSidebar">Switch Language</a>
+                                        </li>
                                         <li><a href="#section-system-message"
                                                @click="updateSettingsSidebar('CmdSystemMessage')">System-Message</a>
                                         </li>
@@ -124,7 +124,8 @@
                                         <li><a href="#section-tooltip" @click="updateSettingsSidebar('CmdTooltip')">Tooltip</a>
                                         </li>
                                         <li><a href="#section-upload-form"
-                                               @click="updateSettingsSidebar('CmdUploadForm')">Upload-Form</a></li>
+                                               @click="updateSettingsSidebar('CmdUploadForm')">Upload-Form</a>
+                                        </li>
                                     </ul>
                                 </template>
                             </CmdBox>
@@ -185,7 +186,6 @@
                             ref="CmdAddressData"
                             :addressData="addressData"
                             v-bind="cmdAddressDataSettingsData"
-                            :cmdHeadline="{headlineText: 'Address Data Headline', headlineLevel: 3}"
                         />
                     </div>
                 </CmdWidthLimitationWrapper>
@@ -945,7 +945,6 @@
                         :account-data="bankAccountData"
                         v-bind="cmdBankAccountDataSettingsData"
                         ref="CmdBankAccountData"
-                        :cmd-headline="{ headlineText: 'Bank Account', headlineLevel: 3}"
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end bank account data ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1396,7 +1395,7 @@
                            @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                     </h2>
                     <CmdForm :use-validation="true" :use-fieldset="false">
-                        <CmdLoginForm ref="CmdLoginForm" v-bind="cmdListOfLinksSettingsData" v-model="loginData"/>
+                        <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
                     </CmdForm>
                     <p>LoginData: {{ loginData }}</p>
                 </CmdWidthLimitationWrapper>
@@ -1552,7 +1551,7 @@
                         ref="CmdSlideshow"
                         v-bind="cmdSlideshowSettingsData"
                         :slideshow-items="slideshowData"
-                    />
+                    >Slot-Content</CmdSlideshow>
                 </CmdWidthLimitationWrapper>
                 <!-- end slideshow ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -1637,18 +1636,15 @@
                         :tabs="tabsData">
                         <template v-slot:tab-content-0>
                             <h4>Tab 1 headline</h4>
-                            <p>Content</p>
+                            <p>Slot-Content Tab 1</p>
                         </template>
                         <template v-slot:tab-content-1>
-                            <h4>Tab 2</h4>
-                            <p>Content</p>
-                            <p>Content</p>
+                            <h4>Tab 2 headline</h4>
+                            <p>Slot-Content Tab 2</p>
                         </template>
                         <template v-slot:tab-content-2>
-                            <h4>Tab 3</h4>
-                            <p>Content</p>
-                            <p>Content</p>
-                            <p>Content</p>
+                            <h4>Tab 3 headline</h4>
+                            <p>Slot-Content Tab 3</p>
                         </template>
                     </CmdTabs>
                 </CmdWidthLimitationWrapper>

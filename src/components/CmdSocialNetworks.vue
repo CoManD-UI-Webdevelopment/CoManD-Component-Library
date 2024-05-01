@@ -149,13 +149,13 @@ export default {
             default: "You must accept data privacy conditions!"
         },
         /**
-         * alignment for buttons
+         * text-alignment for buttons
          *
          * @allowedValues: "left", "right"
          */
         buttonTextAlign: {
             type: String,
-            default: "left",
+            default: "right",
             validator(value) {
                 return value === "left" ||
                     value === "right"
@@ -298,6 +298,10 @@ export default {
             }
 
             &.text-align-right {
+                flex-direction: row;
+            }
+
+            &.text-align-left {
                 flex-direction: row-reverse;
             }
         }

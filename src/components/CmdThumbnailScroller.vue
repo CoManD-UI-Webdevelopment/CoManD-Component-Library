@@ -421,7 +421,7 @@ export default {
                     text-align: center;
 
                     &.active {
-                        color: var(--pure-white);
+                        color: var(--hyperlink-color-highlighted);
                         background: none; /* overwrite default behaviour from frontend-framework */
 
                         span, span[class*="icon"] {
@@ -438,6 +438,7 @@ export default {
                         figcaption {
                             background: var(--primary-color);
                             opacity: 1;
+                            color: var(--pure-white);
                         }
                     }
 
@@ -545,7 +546,7 @@ export default {
     }
 
     &.large-icons {
-        li a {
+        ul li a {
             display: flex;
             flex-direction: column;
             gap: calc(var(--default-gap) / 4);

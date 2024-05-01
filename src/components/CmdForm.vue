@@ -31,10 +31,13 @@
                     :nativeButton="item.nativeButton"
                 />
                 <!-- end loop for formElements -->
-                <button v-if="submitButton" class="button" type="submit">
+
+                <!-- begin submit-button -->
+                <button v-if="submitButton" :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
                     <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
                     <span v-if="submitButton.text">{{ submitButton.text }}</span>
                 </button>
+                <!-- end submit-button -->
             </fieldset>
 
             <!-- begin button-row-slot-content -->
@@ -128,7 +131,9 @@ export default {
             default() {
                 return {
                     iconClass: "icon-check",
-                    text: "Submit"
+                    text: "Submit",
+                    type: "submit",
+                    primary: true
                 }
             }
         }

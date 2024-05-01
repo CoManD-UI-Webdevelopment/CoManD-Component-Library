@@ -18,8 +18,9 @@
         <template v-if="showLabel">
             <!-- begin label -->
             <span class="label-text">
-                <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined">*</sup></span>
+                <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup></span>
 
+                <!-- begin status-icon (linked with tooltip) -->
                 <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                    href="#"
                    @click.prevent
@@ -31,6 +32,7 @@
                    <CmdIcon :iconClass="getStatusIconClass"/>
                     <!-- end CmdIcon -->
                 </a>
+                <!-- end status-icon (linked with tooltip) -->
 
                 <!-- begin CmdTooltipForFormElements -->
                 <CmdTooltipForFormElements
@@ -51,7 +53,9 @@
                 <!-- begin default/selected-option -->
                 <a href="#" @click.prevent="toggleOptions" @blur="onBlur" :title="optionIcon?.tooltip">
                     <!-- begin show flag -->
-                    <img v-if="type === 'country' && optionCountry" :src="pathFlag(optionCountry)" :alt="optionCountry"
+                    <img v-if="type === 'country' && optionCountry"
+                         :src="pathFlag(optionCountry)"
+                         :alt="optionCountry"
                          :class="['flag', optionCountry]"/>
                     <!-- end show flag -->
 

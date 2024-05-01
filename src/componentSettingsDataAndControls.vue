@@ -5,6 +5,10 @@ export default {
 data() {
     return {
         cmdAddressDataSettingsData: {
+            cmdHeadline: {
+                headlineText: "Address Data",
+                headlineLevel: 3
+            },
             useSlot: false,
             showLabelIcons: true,
             showLabelTexts: false,
@@ -12,6 +16,10 @@ data() {
             showLabels: true
         },
         cmdBankAccountDataSettingsData: {
+            cmdHeadline: {
+                headlineText: "Bank Account Data",
+                headlineLevel: 3
+            },
             allowCopyByClick: false,
             additionalInformation: ""
         },
@@ -523,12 +531,12 @@ data() {
             ],
             buttonTextAlign: [
                 {
-                    text: "Left (default)",
-                    value: "left"
+                    text: "Right (default)",
+                    value: "right"
                 },
                 {
-                    text: "Right",
-                    value: "right"
+                    text: "Left",
+                    value: "left"
                 }
             ]
         },

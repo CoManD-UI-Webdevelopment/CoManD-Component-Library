@@ -22,12 +22,17 @@
               :class="['label-text', { hidden: !showLabel }]">
             <span>
                 <template v-if="labelText">{{ labelText }}</template>
+
                 <!-- begin slot 'labeltext' -->
                 <slot v-else name="labeltext"/>
                 <!-- end slot 'labeltext' -->
-                <sup v-if="$attrs.required" aria-hidden="true">*</sup>
+
+                <!-- begin required asterisk -->
+                <sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup>
+                <!-- end required asterisk -->
             </span>
 
+            <!-- begin status-icon (linked with tooltip) -->
             <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                href="#"
                @click.prevent
@@ -39,6 +44,7 @@
                 <CmdIcon :iconClass="getStatusIconClass"/>
                 <!-- end CmdIcon -->
             </a>
+            <!-- end status-icon (linked with tooltip) -->
 
             <!-- begin CmdTooltipForFormElements -->
             <CmdTooltipForFormElements

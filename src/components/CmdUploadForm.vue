@@ -24,7 +24,8 @@
         </CmdSystemMessage>
         <!-- end CmdSystemMessage -->
 
-        <div :class="['box flex-container vertical', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
+        <div :class="['box flex-container vertical', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]"
+             v-on="dragAndDropHandler">
             <template v-if="!listOfFiles.length">
                 <!-- begin CmdHeadline -->
                 <CmdHeadline v-if="allowMultipleFileUploads" v-bind="cmdHeadlineNoFilesToUpload" headlineLevel="4">
@@ -35,7 +36,8 @@
 
             <!-- begin total-upload information -->
             <div v-else class="flex-container vertical">
-                <div v-if="showTotalUpload && listOfFiles.length !== 1" class="flex-container vertical list-files-wrapper">
+                <div v-if="showTotalUpload && listOfFiles.length !== 1"
+                     class="flex-container vertical list-files-wrapper">
                     <!-- begin CmdHeadline -->
                     <CmdHeadline v-bind="cmdHeadlineSummaryOfAllFiles" headlineLevel="4">
                         {{ getMessage("cmduploadform.headline.summary_of_all_files") }}
@@ -50,7 +52,7 @@
                                 @click.prevent="cancelUpload"
                             >
                                 <!-- begin CmdIcon -->
-                                <CmdIcon :iconClass="deleteIcon.iconClass" :type="deleteIcon.iconClass" />
+                                <CmdIcon :iconClass="deleteIcon.iconClass" :type="deleteIcon.iconClass"/>
                                 <!-- end CmdIcon -->
                             </a>
                             <span>
@@ -103,7 +105,7 @@
                                 @click.prevent="removeFile(index)"
                             >
                                 <!-- begin CmdIcon -->
-                                <CmdIcon :iconClass="iconDelete.iconClass" :type="iconDelete.iconType" />
+                                <CmdIcon :iconClass="iconDelete.iconClass" :type="iconDelete.iconType"/>
                                 <!-- end CmdIcon -->
                             </a>
                             <span
@@ -143,61 +145,65 @@
             <!-- end list of selected files -->
 
             <!-- begin upload conditions -->
-            <!-- begin CmdHeadline -->
-            <CmdHeadline v-if="allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectAdditionalFiles" headlineLevel="4">
-                {{ getMessage("cmduploadform.headline.select_additional_files") }}
-            </CmdHeadline>
-            <!-- end CmdHeadline -->
+            <div class="upload-conditions">
+                <!-- begin CmdHeadline -->
+                <CmdHeadline v-if="allowMultipleFileUploads && listOfFiles.length"
+                             v-bind="cmdHeadlineSelectAdditionalFiles" headlineLevel="4">
+                    {{ getMessage("cmduploadform.headline.select_additional_files") }}
+                </CmdHeadline>
+                <!-- end CmdHeadline -->
 
-            <!-- begin CmdHeadline -->
-            <CmdHeadline v-if="!allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectNewFile" headlineLevel="4">
-                {{ getMessage("cmduploadform.headline.select_new_file") }}
-            </CmdHeadline>
-            <!-- end CmdHeadline -->
+                <!-- begin CmdHeadline -->
+                <CmdHeadline v-if="!allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectNewFile"
+                             headlineLevel="4">
+                    {{ getMessage("cmduploadform.headline.select_new_file") }}
+                </CmdHeadline>
+                <!-- end CmdHeadline -->
 
-            <dl class="small">
-                <template v-if="maxTotalUploadSize > 0">
-                    <dt :class="{ error: totalSize > maxTotalUploadSize }">
-                        {{ getMessage("cmduploadform.max_total_upload_size") }}
+                <dl class="small">
+                    <template v-if="maxTotalUploadSize > 0">
+                        <dt :class="{ error: totalSize > maxTotalUploadSize }">
+                            {{ getMessage("cmduploadform.max_total_upload_size") }}
+                        </dt>
+                        <dd :class="['text-align-right', { error: totalSize > maxTotalUploadSize }]">
+                            {{ formatSize(maxTotalUploadSize) }}
+                        </dd>
+                    </template>
+                    <dt :class="{ error: errors.fileSize }">
+                        {{ getMessage("cmduploadform.max_file_upload_size") }}
                     </dt>
-                    <dd :class="['text-align-right', { error: totalSize > maxTotalUploadSize }]">
-                        {{ formatSize(maxTotalUploadSize) }}
+                    <dd :class="['text-align-right', { error: errors.fileSize }]">
+                        {{ formatSize(maxFileUploadSize) }}
                     </dd>
-                </template>
-                <dt :class="{ error: errors.fileSize }">
-                    {{ getMessage("cmduploadform.max_file_upload_size") }}
-                </dt>
-                <dd :class="['text-align-right', { error: errors.fileSize }]">
-                    {{ formatSize(maxFileUploadSize) }}
-                </dd>
-                <dt :class="{ error: errors.fileType }">
-                    {{ getMessage("cmduploadform.allowed_file_types") }}
-                </dt>
-                <dd>
-                    <a
-                        href="#"
-                        @click.prevent="showListOfFileExtensions = !showListOfFileExtensions"
-                        :title="getMessage('cmduploadform.tooltip.toggle_list_of_allowed_file_types')">
-                        <!-- begin CmdIcon -->
-                        <CmdIcon
-                            :iconClass="showListOfFileExtensions ? iconInvisible.iconClass : iconVisible.iconClass"
-                            :type="showListOfFileExtensions ? iconInvisible.iconType : iconVisible.iconType"
-                        />
-                        <!-- end CmdIcon -->
-                    </a>
-                    <transition name="fade">
-                        <ul v-if="showListOfFileExtensions" class="list-of-file-extensions">
-                            <li
-                                v-for="(fileExtension, index) in allowedFileExtensions"
-                                :key="index"
-                                :class="{ error: errors.fileType }"
-                            >
-                                {{ fileExtension }}
-                            </li>
-                        </ul>
-                    </transition>
-                </dd>
-            </dl>
+                    <dt :class="{ error: errors.fileType }">
+                        {{ getMessage("cmduploadform.allowed_file_types") }}
+                    </dt>
+                    <dd>
+                        <a
+                            href="#"
+                            @click.prevent="showListOfFileExtensions = !showListOfFileExtensions"
+                            :title="getMessage('cmduploadform.tooltip.toggle_list_of_allowed_file_types')">
+                            <!-- begin CmdIcon -->
+                            <CmdIcon
+                                :iconClass="showListOfFileExtensions ? iconInvisible.iconClass : iconVisible.iconClass"
+                                :type="showListOfFileExtensions ? iconInvisible.iconType : iconVisible.iconType"
+                            />
+                            <!-- end CmdIcon -->
+                        </a>
+                        <transition name="fade">
+                            <ul v-if="showListOfFileExtensions" class="list-of-file-extensions">
+                                <li
+                                    v-for="(fileExtension, index) in allowedFileExtensions"
+                                    :key="index"
+                                    :class="{ error: errors.fileType }"
+                                >
+                                    {{ fileExtension }}
+                                </li>
+                            </ul>
+                        </transition>
+                    </dd>
+                </dl>
+            </div>
             <!-- end upload conditions -->
 
             <!-- begin upload-button and drag-and-drop-text -->
@@ -209,7 +215,7 @@
                     @click="selectFiles()"
                 >
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType" />
+                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
                     <!-- end CmdIcon -->
                     <span v-if="allowMultipleFileUploads">{{
                             getMessage("cmduploadform.labeltext.select_files")
@@ -265,7 +271,7 @@
                 @click="uploadFiles"
             >
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconUpload.iconClass" :type="iconUpload.iconType" />
+                <CmdIcon :iconClass="iconUpload.iconClass" :type="iconUpload.iconType"/>
                 <!-- end CmdIcon -->
                 <span v-if="listOfFiles.length === 1 || !allowMultipleFileUploads">
                     {{ getMessage("cmduploadform.buttontext.upload_file") }}
@@ -274,7 +280,7 @@
             </button>
             <button :class="['button', { disabled: listOfFiles.length === 0 }]" @click="cancel">
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconCancel.iconClass" :type="iconCancel.iconType" />
+                <CmdIcon :iconClass="iconCancel.iconClass" :type="iconCancel.iconType"/>
                 <!-- end CmdIcon -->
                 <span>{{ getMessage("cmduploadform.buttontext.cancel") }}</span>
             </button>
@@ -283,7 +289,9 @@
     <!-- end advanced mode -->
 
     <!-- begin simple mode -->
-    <a v-else href="#" @click.prevent="selectFiles" :class="['cmd-upload-form box', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]" v-on="dragAndDropHandler">
+    <a v-else href="#" @click.prevent="selectFiles"
+       :class="['cmd-upload-form box', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]"
+       v-on="dragAndDropHandler">
         <!-- begin progressbar -->
         <span class="progressbar" v-if="uploadInitiated">
             <span>{{ getPercentage(totalUploadProgress) }}</span>
@@ -301,20 +309,20 @@
                 <template v-if="fileTypeImage">
                     <span>{{ getMessage("cmduploadform.select_image") }}</span>
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconImage.iconClass" :type="iconImage.iconType" />
+                    <CmdIcon :iconClass="iconImage.iconClass" :type="iconImage.iconType"/>
                     <!-- end CmdIcon -->
                 </template>
                 <template v-else>
                     <span>{{ getMessage("cmduploadform.select_file") }}</span>
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType" />
+                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
                     <!-- end CmdIcon -->
                 </template>
             </template>
             <template v-else>
                 <span>{{ getMessage("cmduploadform.drag_and_drop_file_here") }}</span>
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconDragAndDrop.iconClass" :type="iconDragAndDrop.iconType" />
+                <CmdIcon :iconClass="iconDragAndDrop.iconClass" :type="iconDragAndDrop.iconType"/>
                 <!-- end CmdIcon -->
             </template>
             <small>{{ getMessage("cmduploadform.max_upload_size") }} {{ formatSize(maxFileUploadSize) }}</small>
@@ -1184,6 +1192,12 @@ export default {
 
         hr {
             width: 100%; /* will be 0 instead (because of align-items: center for parent) */
+        }
+    }
+
+    .upload-conditions {
+        .cmd-headline > * {
+            text-align: center;
         }
     }
 

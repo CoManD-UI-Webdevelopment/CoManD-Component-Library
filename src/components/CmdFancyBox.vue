@@ -474,6 +474,7 @@ export default FancyBox
 <style>
 /* begin cmd-fancybox ---------------------------------------------------------------------------------------- */
 .cmd-fancybox {
+    position: fixed;
     z-index: 500;
     flex-direction: column;
     padding: var(--default-padding);

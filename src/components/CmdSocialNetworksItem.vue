@@ -2,7 +2,7 @@
     <li class="cmd-social-networks-item">
         <a
             :key="network.path"
-            :class="['button', {disabled: userMustAcceptDataPrivacy && !dataPrivacyAccepted}, {'text-align-right': buttonTextAlign === 'right'}]"
+            :class="['button', {disabled: userMustAcceptDataPrivacy && !dataPrivacyAccepted}, 'text-align-' + buttonTextAlign]"
             :id="network.id"
             :href="getUrl(network)"
             @click="preventOnDisabled"
