@@ -1,5 +1,5 @@
 <template>
-    <div class="cmd-pager">
+    <div class="cmd-pagination">
         <!-- begin button/link to previous page -->
         <a
             :href="getPreviousHref"
@@ -47,10 +47,10 @@
 <script>
 // import mixins
 import I18n from "../mixins/I18n"
-import DefaultMessageProperties from "../mixins/CmdPager/DefaultMessageProperties"
+import DefaultMessageProperties from "../mixins/CmdPagination/DefaultMessageProperties"
 
 export default {
-    name: "CmdPager",
+    name: "CmdPagination",
     mixins: [
         I18n,
         DefaultMessageProperties
@@ -172,7 +172,7 @@ export default {
 
 <style>
 /* begin cmd-pagination ---------------------------------------------------------------------------------------- */
-.cmd-pager {
+.cmd-pagination {
     display: flex;
     justify-content: space-between;
 

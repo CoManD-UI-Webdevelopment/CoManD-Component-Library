@@ -24,7 +24,7 @@
                 <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
                    href="#"
                    @click.prevent
-                   :title="!useCustomTooltip ? getValidationMessage : ''"
+                   :title="validationTooltip"
                    :aria-errormessage="tooltipId"
                    aria-live="assertive"
                    :id="tooltipId">
@@ -71,7 +71,7 @@
                     <!-- end optional icon -->
 
                     <!-- begin text -->
-                    <span v-if="optionName" class="option-name" :style="limitWidthStyle">{{ optionName }}</span>
+                    <span v-if="optionName" class="option-name">{{ optionName }}</span>
                     <!-- end text -->
 
                     <!-- begin custom dropdown-icon -->
@@ -179,7 +179,8 @@
 <script>
 // import mixins
 import I18n from "../mixins/I18n"
-import DefaultMessageProperties from "../mixins/CmdFakeSelect/DefaultMessageProperties"
+import DefaultMessagePropertiesFakeSelect from "../mixins/CmdFakeSelect/DefaultMessageProperties"
+import DefaultMessagePropertiesFormElement from "../mixins/CmdFormElement/DefaultMessageProperties"
 import FieldValidation from "../mixins/FieldValidation"
 import Identifier from "../mixins/Identifier"
 import Tooltip from "../mixins/Tooltip"
@@ -189,7 +190,8 @@ export default {
     inheritAttrs: false,
     mixins: [
         I18n,
-        DefaultMessageProperties,
+        DefaultMessagePropertiesFakeSelect,
+        DefaultMessagePropertiesFormElement,
         FieldValidation,
         Identifier,
         Tooltip
@@ -198,7 +200,6 @@ export default {
         return {
             showOptions: false,
             validationStatus: "",
-            limitWidthStyle: null,
             allOptionsSelected: false
         }
     },
@@ -428,16 +429,6 @@ export default {
             return this.getMessage("cmdfakeselect.linktext.select_all_options")
         }
     },
-    mounted() {
-        //this.$nextTick(this.limitWidth)
-        //setTimeout(this.limitWidth, 250)
-        const hnd = setInterval(() => {
-            if (this.$refs.fakeselect) {
-                clearInterval(hnd)
-                this.limitWidth()
-            }
-        }, 100)
-    },
     methods: {
         toggleAllOptions() {
             this.validationStatus = "success"
@@ -453,12 +444,6 @@ export default {
             }
 
             this.$emit("update:modelValue", checkboxValues)
-        },
-        limitWidth() {
-            if (this.$refs.fakeselect) {
-                const outerWidth = this.$refs.fakeselect.offsetWidth
-                this.limitWidthStyle = {width: outerWidth / 100 * 90 + "px"}
-            }
         },
         toggleOptions() {
             if (this.$attrs.disabled !== 'disabled') {
@@ -569,6 +554,10 @@ export default {
                     background: var(--color-scheme-background);
                     color: var(--color-scheme-text-color);
                     border-radius: var(--default-border-radius);
+
+                    img {
+                        flex-shrink: 0;
+                    }
 
                     span, [class*="icon"] {
                         color: var(--color-scheme-text-color);

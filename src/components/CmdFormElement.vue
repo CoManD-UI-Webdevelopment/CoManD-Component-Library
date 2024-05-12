@@ -881,8 +881,11 @@ export default {
     }
 
     &.has-state, & + .cmd-tooltip {
-        * {
-            --status-color: var(--error-color);
+
+        &.error {
+            * {
+                --status-color: var(--error-color);
+            }
         }
 
         ::placeholder {

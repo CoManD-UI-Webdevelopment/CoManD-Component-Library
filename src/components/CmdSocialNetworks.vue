@@ -21,17 +21,22 @@
 
         <!-- begin list of networks -->
         <ul v-if="validNetworks.length > 0" :class="['button-wrapper', {'no-gap': !useGap}]">
-            <!-- begin cmd-social-networks (default view) -->
-            <CmdSocialNetworksItem
-                v-if="!editModeContext"
-                v-for="(entry, index) in validNetworks"
-                :key="index"
-                :network="entry"
-                :userMustAcceptDataPrivacy="userMustAcceptDataPrivacy"
-                :buttonTextAlign="buttonTextAlign"
-                :dataPrivacyAccepted="dataPrivacyAccepted"
-            />
-            <!-- end cmd-social-networks (default view) -->
+            <template v-if="!editModeContext">
+                <!-- begin cmd-social-networks (default view) -->
+                <CmdSocialNetworksItem
+                    v-for="(entry, index) in validNetworks"
+                    :key="index"
+                    :network="entry"
+                    :userMustAcceptDataPrivacy="userMustAcceptDataPrivacy"
+                    :buttonTextAlign="buttonTextAlign"
+                    :dataPrivacyAccepted="dataPrivacyAccepted"
+                />
+                <!-- end cmd-social-networks (default view) -->
+
+                <!-- begin slot-content -->
+                <slot></slot>
+                <!-- end slot-content -->
+            </template>
 
             <!-- begin edit-mode -->
             <EditComponentWrapper
@@ -62,8 +67,11 @@
 </template>
 
 <script>
-import {buildComponentPath} from "../utils/editmode.js"
+// import mixins (EditMode only)
 import EditMode from "../mixins/EditMode.vue"
+
+// import utils (EditMode only)
+import {buildComponentPath} from "../utils/editmode.js"
 
 export default {
     name: "CmdSocialNetworks",
@@ -110,7 +118,7 @@ export default {
             default: false
         },
         /**
-         * list of networks (i.e. facebook, twitter etc.)
+         * list of networks (i.e. facebook, linkedin etc.)
          */
         networks: {
             type: Array,
@@ -162,7 +170,7 @@ export default {
             }
         },
         /**
-         * properties for cmdFormElement
+         * properties for CmdFormElement-component
          *
          * userMustAcceptDataPrivacy-property must be activated
          */
@@ -217,7 +225,7 @@ export default {
                 this.itemProvider)
         },
         itemProvider() {
-            return                 {
+            return {
                 "id": "social-network-facebook",
                 "path": "https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fdevelopment.comand-cms.com%2Fmodule%2Fteam.html",
                 "tooltip": "Share this page on facebook",
@@ -369,9 +377,9 @@ export default {
             li {
                 flex: 1;
 
-        .button {
-                display: flex;
-            }
+                .button {
+                    display: flex;
+                }
             }
         }
     }
@@ -401,8 +409,8 @@ export default {
         --social-network-color: #3c5a99;
     }
 
-    #social-network-twitter {
-        --social-network-color: #6bacde;
+    #social-network-x {
+        --social-network-color: #14171a;
     }
 
     #social-network-xing {

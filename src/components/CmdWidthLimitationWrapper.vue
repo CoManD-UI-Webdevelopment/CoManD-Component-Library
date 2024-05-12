@@ -1,7 +1,7 @@
 <template>
     <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}">
         <!-- begin slot-content in section -->
-        <section v-if="innerWrapper" :class="setInnerClass" :id="anchorId">
+        <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
             <!-- begin cmd-headline -->
             <CmdHeadline
                 v-if="cmdHeadline"
@@ -11,9 +11,19 @@
             />
             <!-- end cmd-headline -->
 
-            <!-- begin slot-content -->
-            <slot></slot>
-            <!-- end slot-content -->
+            <!-- begin slot-content (one column only) -->
+            <slot v-if="numberOfColumns === 1" ></slot>
+            <!-- end slot-content (one column only) -->
+
+            <!-- begin grid-/flex-container to wrap multiple columns/items -->
+            <div v-else :class="useGrid ? 'grid-container-create-columns' : 'flex-container'">
+                <div v-for="index in numberOfColumns" :key="`i${index}`" :class="useGrid ? 'grid-item' : 'flex-item'">
+                    <!-- begin slot-content (multiple columns only) -->
+                    <slot></slot>
+                    <!-- end slot-content (multiple columns only) -->
+                </div>
+            </div>
+            <!-- end grid-/flex-container to wrap multiple columns/items -->
         </section>
         <!-- end slot-content in section -->
 
@@ -32,6 +42,17 @@
 export default {
     name: "CmdWidthLimitationWrapper",
     props: {
+        numberOfColumns: {
+            type: Number,
+            default: 1,
+            validator(value) {
+                return value >= 0
+            }
+        },
+        useGrid: {
+            type: Boolean,
+            default: false
+        },
         /**
          * set a html-tag as inner tag
          *
@@ -41,7 +62,7 @@ export default {
             type: String,
             default: "section",
             validator(value) {
-                return value;
+                return value
             }
         },
         /**
@@ -50,7 +71,7 @@ export default {
          * (if deactivated, content will be directly placed inside cmd-width-limitation-wrapper)
          *
          */
-        innerWrapper: {
+        useInnerSection: {
             type: Boolean,
             default: true
         },

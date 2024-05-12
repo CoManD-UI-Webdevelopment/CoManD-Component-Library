@@ -339,7 +339,8 @@ data() {
             largeIcons: false,
             sectionAnchors: false,
             orientation: "vertical",
-            align: "left"
+            align: "left",
+            showListStyleItems: false
         },
         cmdListOfLinksSettingsControls: {
             align: [
@@ -365,6 +366,16 @@ data() {
                 {
                     text: "Horizontal",
                     value: "horizontal"
+                }
+            ],
+            showListStyleItems: [
+                {
+                    text: "False (default)",
+                    value: false
+                },
+                {
+                    text: "True",
+                    value: true
                 }
             ]
         },
@@ -457,6 +468,9 @@ data() {
                 headlineText: "Opening Hours",
                 headlineLevel: 3
             }
+        },
+        cmdPageFooterSettingsData: {
+            useSmallButtons: false
         },
         cmdPaginationSettingsData: {
             pages: 3,
@@ -580,7 +594,8 @@ data() {
         cmdTextImageBlockSettingsData: {
             htmlContent: "Text given as html-content",
             paragraphTextAlign: "left",
-            headlinePosition: "aboveImage"
+            headlinePosition: "aboveImage",
+            orientation: "vertical"
         },
         cmdTextImageBlockSettingsControls: {
             paragraphTextAlign: [
@@ -605,6 +620,16 @@ data() {
                 {
                     text: "Below Image",
                     value: "belowImage"
+                }
+            ],
+            orientation: [
+                {
+                    text: "Vertical (default)",
+                    value: "vertical"
+                },
+                {
+                    text: "Horizontal",
+                    value: "horizontal"
                 }
             ]
         },

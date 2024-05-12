@@ -130,6 +130,8 @@ export default {
 
     &.box {
         padding: 0;
+
+        border-left: 0;
     }
 
     .cmd-box-wrapper > .grid-container-create-columns {

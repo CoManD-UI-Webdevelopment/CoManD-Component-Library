@@ -1,5 +1,12 @@
 <template>
-    <div :class="['cmd-list-of-links', {box: styleAsBox, horizontal: orientation === 'horizontal', 'section-anchors': sectionAnchors, 'large-icons': largeIcons}]">
+    <div :class="['cmd-list-of-links',
+        {
+            box: styleAsBox, horizontal: orientation === 'horizontal',
+            'section-anchors': sectionAnchors,
+            'large-icons': largeIcons,
+            'show-list-style-items': showListStyleItems
+        }
+    ]">
         <!-- begin cmd-headline -->
         <CmdHeadline
             v-if="cmdHeadline?.headlineText || editModeContext"
@@ -9,6 +16,7 @@
 
         <!-- begin list of links -->
         <ul :class="['flex-container', {'no-gap': !useGap}, 'align-' + align, setStretchClass]">
+            <!-- begin CmdListOfLinksItem-->
             <CmdListOfLinksItem
                 v-if="!editModeContext"
                 v-for="(link, index) in links"
@@ -16,6 +24,7 @@
                 :class="{'active': sectionAnchors && activeSection === index}"
                 :link="link"
             />
+            <!-- end CmdListOfLinksItem-->
 
             <!-- begin edit-mode -->
             <li v-else>
@@ -31,11 +40,14 @@
                     :componentPath="['props', 'links', index]"
                     :itemProvider="itemProvider"
                 >
+                    <!-- begin CmdListOfLinksItem-->
                     <CmdListOfLinksItem
                         :class="{'active': sectionAnchors && activeSection === index}"
                         :link="link"
                     />
+                    <!-- end CmdListOfLinksItem-->
                 </EditComponentWrapper>
+
                 <button v-if="links.length === 0" type="button" class="button confirm small" @click="onAddItem">
                     <span class="icon-plus"></span>
                     <span>Add new entry</span>
@@ -48,7 +60,10 @@
 </template>
 
 <script>
+// import mixins (editMode only)
 import EditMode from "../mixins/EditMode.vue"
+
+// import utils (editMode only)
 import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js"
 
 export default {
@@ -96,6 +111,15 @@ export default {
         activeSection: {
             type: Number,
             default: 0
+        },
+        /**
+         * toggle list-style-items visibility
+         *
+         * @affectsStyling: true
+         */
+        showListStyleItems: {
+            type: Boolean,
+            default: false
         },
         /**
          * set horizontal alignment
@@ -200,6 +224,19 @@ export default {
         &.align-right li {
             text-align: right;
         }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            margin-left: calc(var(--default-padding) * 2);
+        }
+    }
+
+    &.show-list-style-items {
+        li {
+            list-style-type: disc;
+            margin-left: 1.7rem;
+        }
     }
 
     &.horizontal {
@@ -210,6 +247,7 @@ export default {
             > li {
                 flex: none;
                 display: flex;
+                flex-direction: column;
             }
 
             &.align-right {
@@ -224,20 +262,42 @@ export default {
     }
 
     &.large-icons {
-        li a {
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--default-gap) / 4);
-            text-decoration: none;
-            align-items: center;
-            justify-content: center;
+        li {
+            list-style-type: none;
 
-            span {
-                margin: 0;
+            a {
+                display: flex;
+                flex-direction: column;
+                gap: calc(var(--default-gap) / 4);
+                text-decoration: none;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    margin: 0;
+                }
+
+                [class*="icon-"] {
+                    font-size: 5rem;
+                }
             }
+        }
+    }
+}
+</style>
 
-            [class*="icon-"] {
-                font-size: 5rem;
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-list-of-links {
+        > ul {
+            ul {
+                gap: calc(var(--default-gap) / 2);
+
+                > li:first-child {
+                    margin-top: calc(var(--default-gap) / 2);
+                }
             }
         }
     }

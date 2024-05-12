@@ -530,6 +530,10 @@ function buildComponentPath(component) {
                 }
             }
         }
+
+        &.active {
+            background: hsla(0, 0%, 100%, .2);
+        }
     }
 
     &.active {

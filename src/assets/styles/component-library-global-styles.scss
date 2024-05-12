@@ -250,6 +250,18 @@ body.avoid-scrolling {
 
         &.success {
             --status-color: var(--success-color);
+
+            .label-text > a {
+                &:has([class*="icon-"]) {
+                    &:hover, &:active, &:focus {
+                        cursor: default;
+
+                        [class*="icon-"] {
+                            color: var(--success-color);
+                        }
+                    }
+                }
+            }
         }
 
         &.info {

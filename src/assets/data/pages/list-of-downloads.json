@@ -1,0 +1,56 @@
+[
+  {
+    "headline": {
+      "headlineLevel": 4,
+      "headlineText": "Segment #1 (vertical list)"
+    },
+    "orientation": "vertical",
+    "links": [
+      {
+        "iconClass": "icon-file-pdf",
+        "type": "href",
+        "text": "Download file #1",
+        "path": "#"
+      },
+      {
+        "iconClass": "icon-file-excel",
+        "type": "href",
+        "text": "Download file #2",
+        "path": "#"
+      },
+      {
+        "iconClass": "icon-file-other",
+        "type": "href",
+        "text": "Download file #3",
+        "path": "#"
+      }
+    ]
+  },
+  {
+    "headline": {
+      "headlineLevel": 4,
+      "headlineText": "Segment #2 (horizontal list)"
+    },
+    "orientation": "horizontal",
+    "links": [
+      {
+        "iconClass": "icon-file-pdf",
+        "type": "href",
+        "text": "Download file #1",
+        "path": "#"
+      },
+      {
+        "iconClass": "icon-file-excel",
+        "type": "href",
+        "text": "Download file #2",
+        "path": "#"
+      },
+      {
+        "iconClass": "icon-file-other",
+        "type": "href",
+        "text": "Download file #3",
+        "path": "#"
+      }
+    ]
+  }
+]

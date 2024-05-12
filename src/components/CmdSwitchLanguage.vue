@@ -95,8 +95,10 @@ export default {
             a:not([class*="active"]) {
                 filter: contrast(.5);
 
-                &:hover, &:focus, &:active {
+                &:hover, &:focus-visible, &:active, &.active {
                     filter: none;
+                    padding: 0; /* overwrite default settings from frontend-framework for .active */
+                    background: none; /* overwrite default settings from frontend-framework for .active */
                 }
             }
         }

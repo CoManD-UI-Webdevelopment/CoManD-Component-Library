@@ -11,7 +11,19 @@
     "text": "Internal link",
     "path": "/content/fancybox-content.html",
     "tooltip": "Open local file in fancybox",
-    "fancybox": true
+    "fancybox": true,
+    "children": [
+      {
+        "type": "href",
+        "text": "Link for child #1",
+        "path": "#"
+      },
+      {
+        "type": "href",
+        "text": "Link for child #2",
+        "path": "#"
+      }
+    ]
   },
   {
     "iconClass": "icon-export",

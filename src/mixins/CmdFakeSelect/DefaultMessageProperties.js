@@ -7,7 +7,6 @@ export default {
         "cmdfakeselect.linktext.select_all_options": "Select all options",
         "cmdfakeselect.headline.an_option_is_selected": "An option is selected",
         "cmdfakeselect.option.options_selected": "{0} options selected"
-
       }
     }
   }

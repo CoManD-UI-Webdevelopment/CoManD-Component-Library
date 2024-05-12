@@ -15,15 +15,26 @@
         <!-- end use href --->
 
         <!-- begin use router-link -->
-        <router-link v-else-if="link.type === 'router'"
-                     :to="getRoute(link)"
-                     :title="link.tooltip">
+        <router-link
+            v-else-if="link.type === 'router'"
+            :to="getRoute(link)"
+            :title="link.tooltip">
             <!-- begin CmdIcon -->
             <CmdIcon v-if="link.iconClass" :iconClass="link.iconClass" :type="link.iconType" />
             <!-- end CmdIcon -->
             <span v-if="link.text">{{ link.text }}</span>
         </router-link>
         <!-- end use router-link -->
+
+        <!-- begin CmdListOfLinksItem for nested children -->
+        <ul v-if="!editModeContext">
+            <CmdListOfLinksItem
+                v-for="(child, index) in link.children"
+                :key="index"
+                :link="child"
+            />
+        </ul>
+        <!-- end CmdListOfLinksItem for nested children -->
     </li>
     <!-- end default-view -->
 

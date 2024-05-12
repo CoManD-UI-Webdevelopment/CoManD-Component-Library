@@ -1,8 +1,8 @@
 <template>
-    <div class="cmd-text-image-block flex-container vertical">
+    <div :class="['cmd-text-image-block flex-container', orientation]">
         <!-- begin cmdHeadline -->
         <CmdHeadline
-            v-if="(cmdHeadline?.headlineText || editModeContext) && headlinePosition === 'aboveImage'"
+            v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'aboveImage' && orientation === 'vertical')"
             v-bind="cmdHeadline"
         />
         <!-- end cmdHeadline -->
@@ -16,14 +16,19 @@
         />
         <!-- end cmdImage -->
 
-        <!-- begin cmdHeadline -->
-        <CmdHeadline
-            v-if="(cmdHeadline?.headlineText || editModeContext) && headlinePosition === 'belowImage'"
-            v-bind="cmdHeadline"
-        />
-        <!-- end cmdHeadline -->
+        <div class="flex-container vertical">
+            <!-- begin cmdHeadline -->
+            <CmdHeadline
+                v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'belowImage' || orientation === 'horizontal')"
+                v-bind="cmdHeadline"
+            />
+            <!-- end cmdHeadline -->
 
-        <!-- begin continuous text -->
+            <!-- begin continuous text -->
+            <div v-if="htmlContent" v-html="htmlContent" :class="textAlign"></div>
+            <!-- end continuous text -->
+        </div>
+
         <!-- begin edit-mode -->
         <EditComponentWrapper
             v-if="editModeContext"
@@ -47,14 +52,14 @@
             </template>
         </EditComponentWrapper>
         <!-- end edit-mode -->
-
-        <div v-else-if="htmlContent" v-html="htmlContent" :class="textAlign"></div>
-        <!-- end continuous text -->
     </div>
 </template>
 
 <script>
+// import mixins (editMode only)
 import EditMode from "../mixins/EditMode.vue"
+
+// import utils (editMode only)
 import {updateHandlerProvider} from "../utils/editmode.js"
 
 export default {
@@ -66,8 +71,18 @@ export default {
         }
     },
     props: {
-        editModeContextData: {
-            type: Object
+        /**
+         * orientation for entire component
+         *
+         * @allowedValues: "vertical", "horizontal"
+         */
+        orientation: {
+            type: String,
+            default: "vertical",
+            validator(value) {
+                return value === "vertical" ||
+                value === "horizontal"
+            }
         },
         /**
          * content for continuous text (can contain html-tags)
@@ -104,7 +119,7 @@ export default {
             }
         },
         /**
-         * properties for CmdHeadline-component
+         * property for CmdHeadline-component
          */
         cmdHeadline: {
             type: Object,
@@ -116,6 +131,12 @@ export default {
         cmdImage: {
             type: Object,
             required: false
+        },
+        /**
+         * editMode only
+         */
+        editModeContextData: {
+            type: Object
         }
     },
     computed: {
@@ -163,7 +184,15 @@ export default {
 </script>
 
 <style>
+/* begin cmd-text-image-block ---------------------------------------------------------------------------------------- */
+.cmd-text-image-block {
+    > .flex-container {
+        gap: calc(var(--default-gap) / 2);
+    }
+}
+
 .edit-mode .cmd-text-image-block textarea {
     width: 100%;
 }
+/* end cmd-text-image-block ---------------------------------------------------------------------------------------- */
 </style>

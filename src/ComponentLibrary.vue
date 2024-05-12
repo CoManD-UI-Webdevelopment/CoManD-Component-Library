@@ -89,6 +89,8 @@
                                             Subscription</a></li>
                                         <li><a href="#section-opening-hours"
                                                @click="updateSettingsSidebar('CmdOpeningHours')">Opening Hours</a></li>
+                                        <li><a href="#section-page-footer"
+                                               @click="updateSettingsSidebar('CmdPageFooter')">Page Footer</a></li>
                                         <li><a href="#section-pagination"
                                                @click="updateSettingsSidebar('CmdPagination')">Pagination</a></li>
                                         <li><a href="#section-site-footer" @click="hideSettingsSidebar">Site Footer</a>
@@ -129,10 +131,39 @@
                                     </ul>
                                 </template>
                             </CmdBox>
+                            <CmdBox
+                                :use-slots="['body']"
+                                :collapsible="true"
+                                :cmdHeadline="{headlineText: 'Page-Templates', headlineLevel: 4, headlineIcon: {iconClass: 'icon-file-settings'}}"
+                                :openCollapsedBox="slotProps.boxIsOpen(2)"
+                                @toggleCollapse="slotProps.boxToggled(2, $event)"
+                            >
+                                <template v-slot:body>
+                                    <ul>
+                                        <li :class="'active' ? activeEntry === 'BasicForm' : null">
+                                            <a href="#section-basic-form" @click="updateSettingsSidebar('BasicForm', 'page')">Basic Form</a>
+                                        </li>
+                                        <li>
+                                            Segmented Lists Of Links
+                                            <ul>
+                                                <li>
+                                                    <a href="#section-segmented-lists-of-links-downloads" @click="updateSettingsSidebar('SegmentedListsOfLinks', 'page')">
+                                                        Downloads
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#section-segmented-lists-of-links-sitemap" @click="updateSettingsSidebar('SegmentedListsOfLinks', 'page')">
+                                                        SiteMap
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </template>
+                            </CmdBox>
                         </template>
                     </CmdBoxWrapper>
-
-                    <dl class="comand-versions">
+                    <dl class="box-footer comand-versions">
                         <dt>Frontend-Framework Version:</dt>
                         <dd>{{ packageJson.dependencies['comand-frontend-framework'].replace("^", "") }}</dd>
                         <dt>Component-Library Version:</dt>
@@ -173,7 +204,10 @@
                 </template>
             </CmdSiteHeader>
             <!-- end site-header --------------------------------------------------------------------------------------------------------------------------------------------------->
-            <main id="content">
+            <main v-if="componentView" id="content">
+                <CmdWidthLimitationWrapper>
+                    <h1 class="headline-demopage">Components Overview</h1>
+                </CmdWidthLimitationWrapper>
                 <!-- begin address-data ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-address-data">
@@ -1138,7 +1172,7 @@
                             />
                         </template>
                     </CmdBoxWrapper>
-                    <h3>Product boxes (collapsible)</h3>
+                    <h3>Boxes in BoxWrapper (collapsible)</h3>
                     <CmdBoxWrapper
                         :boxesPerRow="[5, 2, 1]"
                         :openBoxesByDefault="[2]"
@@ -1470,6 +1504,25 @@
                 </CmdWidthLimitationWrapper>
                 <!-- end opening-hours ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
+                <!-- begin page-footer ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-page-footer">
+                        <span>Page Footer</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdPageFooter')"></a>
+                    </h2>
+                    <CmdPageFooter
+                        ref="CmdPageFooter"
+                        v-bind="cmdPageFooterSettingsData"
+                        :cmdSocialNetworks="socialNetworksData">
+                        <button class="button primary" title="Button given by slot">
+                            <span class="icon-mail"></span>
+                            <span>Contact</span>
+                        </button>
+                    </CmdPageFooter>
+                </CmdWidthLimitationWrapper>
+                <!-- end page-footer ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
                 <!-- begin pagination ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-pagination">
@@ -1765,10 +1818,20 @@
                 <!-- end upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
             </main>
 
+            <main v-else id="content">
+                <CmdWidthLimitationWrapper>
+                    <h1 class="headline-demopage">Page Overview</h1>
+                </CmdWidthLimitationWrapper>
+
+                <!-- being page-overview -->
+                <PageOverview />
+                <!-- end page-overview -->
+            </main>
+
             <CmdSiteFooter>
-                <!-- begin parent-component -->
-                Footer
-                <!-- end parent-component -->
+                <!-- begin slot-content -->
+                Slot-Content for Site-Footer
+                <!-- end slot-content -->
             </CmdSiteFooter>
             <!-- end cmd-site-footer -->
 
@@ -1828,7 +1891,7 @@
 </template>
 
 <script>
-// import used example data
+// import example data
 import addressData from '@/assets/data/address-data.json'
 import bankAccountData from '@/assets/data/bank-account-data.json'
 import boxUserData from '@/assets/data/box-user.json'
@@ -1852,8 +1915,8 @@ import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
 import navigationData from '@/assets/data/main-navigation.json'
 import openingHoursData from '@/assets/data/opening-hours.json'
 import selectOptionsData from '@/assets/data/select-options.json'
-import socialNetworksData from '@/assets/data/social-networks-page-by-json.json'
 import slideshowData from '@/assets/data/slideshow.json'
+import socialNetworksData from '@/assets/data/social-networks-page-by-json.json'
 import tabsData from '@/assets/data/tabs.json'
 import tableDataSmall from '@/assets/data/table-small.json'
 import tableDataLarge from '@/assets/data/table-large.json'
@@ -1862,21 +1925,27 @@ import thumbnailScrollerTextData from '@/assets/data/thumbnail-scroller-text.jso
 
 import packageJson from '../package.json'
 
-import {openFancyBox} from "@/components/CmdFancyBox.vue"
+import PageOverview from "@/pages/PageOverview.vue"
 
 // import external functions
 import * as functions from "@/mixins/FieldValidation.js"
-import componentSettingsDataAndControls from "@/componentSettingsDataAndControls.vue"
-
+import {openFancyBox} from "@/components/CmdFancyBox.vue"
 import {localizedTime} from "./components/CmdOpeningHours.vue"
+
+// import data and controls for settings
+import componentSettingsDataAndControls from "@/componentSettingsDataAndControls.vue"
 
 export default {
     name: "App",
     mixins: [componentSettingsDataAndControls],
+    components: {
+        PageOverview
+    },
     data() {
         return {
             activeEntry: "CmdAddressData",
             componentControls: {},
+            componentView: true,
             selectedTemplate: "blank",
             acceptedCookies: ["google-maps"],
             showTooltip: false,
@@ -2001,18 +2070,18 @@ export default {
             fakeSelectFilterOptionsData,
             fakeSelectOptionsData,
             formElementsData,
-            listOfLinksData,
             imageData,
             imageGalleryData,
             inputGroupReplacedRadiobuttonsData,
             inputGroupToggleSwitchRadiobuttonsData,
             languagesData,
+            listOfLinksData,
             multistepsData,
             navigationData,
             openingHoursData,
             selectOptionsData,
-            socialNetworksData,
             slideshowData,
+            socialNetworksData,
             tableDataSmall,
             tableDataLarge,
             tabsData,
@@ -2022,6 +2091,9 @@ export default {
         }
     },
     computed: {
+        cmdSocialNetworks() {
+            return cmdSocialNetworks
+        },
         templateId() {
             return "template-" + this.selectedTemplate
         },
@@ -2036,11 +2108,17 @@ export default {
         setActiveEntry(ComponentName) {
             this.activeEntry = ComponentName
         },
-        updateSettingsSidebar(ComponentName) {
+        updateSettingsSidebar(ComponentName, type) {
             this.setActiveEntry(ComponentName)
 
-            if (this.openRightSidebar) {
-                this.openSettingsSidebar(ComponentName)
+            if(type !== 'page') {
+                this.componentView = true
+
+                if (this.openRightSidebar) {
+                    this.openSettingsSidebar(ComponentName)
+                }
+            } else {
+                this.componentView = false
             }
         },
         hideSettingsSidebar() {

@@ -1,0 +1,78 @@
+[
+  {
+    "headline": {
+      "headlineLevel": 4,
+      "headlineText": "Segment #1 (vertical list)"
+    },
+    "orientation": "vertical",
+    "links": [
+      {
+        "iconClass": "icon-home",
+        "type": "href",
+        "text": "Link #1",
+        "path": "#"
+      },
+      {
+        "iconClass": "icon-user-profile",
+        "type": "href",
+        "text": "Link #2",
+        "path": "#",
+        "children": [
+          {
+            "iconClass": "icon-link",
+            "type": "href",
+            "text": "Sublink #1",
+            "path": "#"
+          },
+          {
+            "iconClass": "icon-export",
+            "type": "href",
+            "text": "Sublink #2",
+            "path": "#"
+          }
+        ]
+      },
+      {
+        "type": "href",
+        "text": "Link #3",
+        "path": "#"
+      }
+    ]
+  },
+  {
+    "headline": {
+      "headlineLevel": 4,
+      "headlineText": "Segment #2 (horizontal list)"
+    },
+    "orientation": "horizontal",
+    "links": [
+      {
+        "type": "href",
+        "text": "Link #1",
+        "path": "#"
+      },
+      {
+        "type": "href",
+        "text": "Link #2",
+        "path": "#",
+        "children": [
+          {
+            "type": "href",
+            "text": "Sublink #1",
+            "path": "#"
+          },
+          {
+            "type": "href",
+            "text": "Sublink #2",
+            "path": "#"
+          }
+        ]
+      },
+      {
+        "type": "href",
+        "text": "Link #3",
+        "path": "#"
+      }
+    ]
+  }
+]

@@ -242,7 +242,7 @@ export default {
         updateStatus() {
             if (this.required) {
                 if (this.inputValue?.length) {
-                    this.validationStatus = ""
+                    this.validationStatus = "success"
                     return
                 }
                 this.validationStatus = "error"

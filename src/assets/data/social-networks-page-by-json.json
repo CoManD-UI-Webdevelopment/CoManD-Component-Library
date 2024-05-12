@@ -7,9 +7,9 @@
     "linkText": "Share"
   },
   {
-    "id": "social-network-twitter",
+    "id": "social-network-x",
     "path": "https://twitter.com/home?status=http%3A%2F%2Fdevelopment.comand-cms.com%2Fmodule%2Fteam.html",
-    "tooltip": "Share this page on twitter",
+    "tooltip": "Share this page on X",
     "iconClass": "icon-twitter",
     "linkText": "Share"
   },
