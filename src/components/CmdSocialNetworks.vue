@@ -427,14 +427,18 @@ export default {
 @import "../assets/styles/variables";
 
 @container (max-width: #{$small-max-width}) {
-    .button-wrapper {
-        .button {
-            flex: none;
-            width: auto !important;
+    .cmd-social-networks {
+        container-type: normal; /* do not set to 'inline-size' to avoid to be stretched vertically on small devices */
 
-            [class*="icon-"] {
-                & + span {
-                    display: none;
+        .button-wrapper {
+            .button {
+                flex: none;
+                width: auto !important;
+
+                [class*="icon-"] {
+                    & + span {
+                        display: none;
+                    }
                 }
             }
         }

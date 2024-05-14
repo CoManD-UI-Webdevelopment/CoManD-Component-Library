@@ -39,7 +39,7 @@
 @import 'variables'; /* scss-variables (only used for media-query-breakpoints) */
 /* ---------------------------------------------- END IMPORTS -------------------------------------------------- */
 
-// assign scss-variables for breakpoints (from variables.scss) to css-variables, to get access to their value in JavaScript by getComputedStyle(document.documentElement).getPropertyValue
+/* assign scss-variables for breakpoints (from variables.scss) to css-variables, to get access to their value in JavaScript by getComputedStyle(document.documentElement).getPropertyValue */
 html {
     --medium-max-width: #{$medium-max-width};
     --small-max-width: #{$small-max-width};
@@ -313,6 +313,12 @@ body.avoid-scrolling {
 
 /* ---------------------------------------------- BEGIN COLORS-SCHEMES (LIGHT-/DARK-MODE) -------------------------------------------------- */
 html {
+    --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
+    --color-scheme-text-color-inverted: var(--light-mode-text-color);
+    --color-scheme-background: var(--dark-mode-background);
+    --color-scheme-background-inverted: var(--light-mode-background);
+    --default-background-color-lightness: 20%;
+
     &.light-mode {
         /* assign default colors for custom light-mode set by class */
         --color-scheme-text-color: var(--light-mode-text-color);
@@ -322,12 +328,6 @@ html {
         --color-scheme-background-inverted: var(--dark-mode-background);
         --default-background-color-lightness: 97%;
     }
-
-    --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
-    --color-scheme-text-color-inverted: var(--light-mode-text-color);
-    --color-scheme-background: var(--dark-mode-background);
-    --color-scheme-background-inverted: var(--light-mode-background);
-    --default-background-color-lightness: 20%;
 
     &.dark-mode {
         /* assign default colors for custom dark-mode set by class */

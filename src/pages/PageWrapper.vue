@@ -6,7 +6,7 @@
         <CmdSiteHeader
             v-if="cmdSiteHeader"
             :cmdMainNavigation="{navigationEntries: mainNavigationEntries}"
-            :closeOffcanvas="{ iconClass: 'icon-cancel', text: label('main_navigation.close_navigation'), showText: true}"
+            :closeOffcanvas="{ iconClass: 'icon-cancel', text: 'Close navigation', showText: true}"
             :navigationInline="cmdSiteHeader.navigationInline"
             @offcanvas="offcanvasToggled"
         >

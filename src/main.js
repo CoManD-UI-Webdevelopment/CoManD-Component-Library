@@ -27,7 +27,7 @@ import '@/assets/styles/editmode-iconfont.css'
 import '@/assets/styles/component-library-global-styles.scss'
 
 /* import css for global transitions */
-import '@/assets/styles/transitions.scss'
+import '@/assets/styles/transitions.css'
 
 /* import css-example for your custom styles */
 import '@/assets/styles/template.css'
