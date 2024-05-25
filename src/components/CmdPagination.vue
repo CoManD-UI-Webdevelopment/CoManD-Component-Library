@@ -218,7 +218,7 @@ export default {
 @import '../assets/styles/variables';
 
 @media only screen and (max-width: $medium-max-width) {
-    .cmd-pager {
+    .cmd-pagination {
         > a.button {
             span {
                 margin: 0;

@@ -5,6 +5,7 @@
         <div id="page-wrapper">
             <a id="anchor-back-to-top"></a>
             <CmdSidebar
+                v-if="showLeftSidebar"
                 :cmdHeadline="{headlineText: 'Site Settings', headlineLevel: 3, textAlign: 'center'}"
                 :openSidebar="openLeftSidebar"
                 @toggle-sidebar="setOpenStatusLeftSidebar"
@@ -91,6 +92,8 @@
                                                @click="updateSettingsSidebar('CmdOpeningHours')">Opening Hours</a></li>
                                         <li><a href="#section-page-footer"
                                                @click="updateSettingsSidebar('CmdPageFooter')">Page Footer</a></li>
+                                        <li><a href="#section-page-header"
+                                               @click="updateSettingsSidebar('CmdPageHeader')">Page Header</a></li>
                                         <li><a href="#section-pagination"
                                                @click="updateSettingsSidebar('CmdPagination')">Pagination</a></li>
                                         <li><a href="#section-site-footer" @click="hideSettingsSidebar">Site Footer</a>
@@ -202,6 +205,9 @@
                         </a>
                         <a href="#" class="button primary" title="Open Page-Templates" @click.prevent="openBox(2)">
                             <span class="icon-file-settings"></span>
+                        </a>
+                        <a href="#" @click.prevent="showLeftSidebar = false">
+                            <span>Hide sidebar</span>
                         </a>
                     </div>
                 </template>
@@ -1230,7 +1236,9 @@
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
                     </h2>
-                    <CmdBreadcrumbs ref="CmdBreadcrumbs" :breadcrumbLinks="breadcrumbData"
+                    <CmdBreadcrumbs ref="CmdBreadcrumbs"
+                                    :breadcrumbLabel="breadcrumbsData.breadcrumbLabel"
+                                    :breadcrumbLinks="breadcrumbsData.breadcrumbLinks"
                                     v-bind="cmdBreadcrumbsSettingsData"/>
                 </CmdWidthLimitationWrapper>
                 <!-- end breadcrumbs ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1547,6 +1555,26 @@
                     </CmdPageFooter>
                 </CmdWidthLimitationWrapper>
                 <!-- end page-footer ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                <!-- begin page-header ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-page-header">
+                        <span>Page Header</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdPageHeader')"></a>
+                    </h2>
+                    <CmdPageHeader
+                        ref="CmdPageHeader"
+                        v-bind="cmdPageFooterSettingsData"
+                        :cmdBreadcrumbs="breadcrumbsData"
+                        :cmdHeadline="{headlineText: 'Main headline for page', headlineLevel: 1}">
+                        <a href="#" title="Link given by slot">
+                            <span class="icon-user-profile"></span>
+                            <span>You are logged in</span>
+                        </a>
+                    </CmdPageHeader>
+                </CmdWidthLimitationWrapper>
+                <!-- end page-header ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin pagination ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
@@ -1921,7 +1949,7 @@ import addressData from '@/assets/data/address-data.json'
 import bankAccountData from '@/assets/data/bank-account-data.json'
 import boxUserData from '@/assets/data/box-user.json'
 import boxProductData from '@/assets/data/box-product.json'
-import breadcrumbData from '@/assets/data/breadcrumbs.json'
+import breadcrumbsData from '@/assets/data/breadcrumbs.json'
 import companyLogoData from '@/assets/data/company-logo.json'
 import cookieDisclaimerData from '@/assets/data/cookie-disclaimer.json'
 import fakeSelectColorsData from '@/assets/data/fake-select-colors.json'
@@ -1971,6 +1999,7 @@ export default {
             activeEntry: "CmdAddressData",
             componentControls: {},
             componentView: true,
+            showLeftSidebar: true,
             selectedTemplate: "blank",
             acceptedCookies: ["google-maps"],
             showTooltip: false,
@@ -2087,7 +2116,7 @@ export default {
             bankAccountData,
             boxProductData,
             boxUserData,
-            breadcrumbData,
+            breadcrumbsData,
             companyLogoData,
             cookieDisclaimerData,
             fakeSelectColorsData,

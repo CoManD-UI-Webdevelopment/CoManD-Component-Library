@@ -24,7 +24,7 @@ data() {
             additionalInformation: ""
         },
         cmdBreadcrumbsSettingsData: {
-            breadcrumbLabel: "You are here",
+            breadcrumbLabel: "You are here:",
             breadcrumbSeparator: ">"
         },
         cmdBoxSettingsData: {

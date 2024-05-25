@@ -29,6 +29,7 @@ export { default as CmdNewsletterSubscription } from '@/components/CmdNewsletter
 export { default as CmdOpeningHours } from '@/components/CmdOpeningHours.vue'
 export { default as CmdPagination } from '@/components/CmdPagination.vue'
 export { default as CmdPageFooter } from '@/components/CmdPageFooter.vue'
+export { default as CmdPageHeader } from '@/components/CmdPageHeader.vue'
 export { default as CmdProgressBar } from '@/components/CmdProgressBar.vue'
 export { default as CmdSidebar } from '@/components/CmdSidebar.vue'
 export { default as CmdSiteFooter } from '@/components/CmdSiteFooter.vue'

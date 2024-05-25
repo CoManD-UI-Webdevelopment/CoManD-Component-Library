@@ -1,26 +1,21 @@
-[
-  {
-    "path": "/",
-    "text": "Home",
-    "iconClass": "icon-home",
-    "type": "href"
-  },
-  {
-    "text": "Subpage",
-    "type": "href",
-    "route": {
-      "path": "/subpage"
+{
+  "breadcrumbLabel": "Page levels:",
+  "breadcrumbLinks": [
+    {
+      "path": "/",
+      "text": "Home",
+      "iconClass": "icon-home",
+      "type": "href"
+    },
+    {
+      "path": "/subpage",
+      "text": "Subpage",
+      "type": "href"
+    },
+    {
+      "path": "/subpage/subsubpage",
+      "text": "Subsubpage",
+      "type": "href"
     }
-  },
-  {
-    "text": "Subsubpage",
-    "type": "href",
-    "route": {
-      "name": "subsubpage",
-      "params": {
-        "param1": "1",
-        "param2": "2"
-      }
-    }
-  }
-]
+  ]
+}

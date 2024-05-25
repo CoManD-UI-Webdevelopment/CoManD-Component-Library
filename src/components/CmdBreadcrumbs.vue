@@ -89,8 +89,7 @@ export default {
         }
 
         a {
-            display: inherit;
-            align-items: inherit;
+            display: table; /* do not set to (inline-)flex to avoid icon to be underlined by hover/active/focus */
             text-decoration: none;
 
             &:hover, &:active, &:focus {

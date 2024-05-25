@@ -381,6 +381,7 @@ export default {
         }
 
         &:hover, &:active, &:focus {
+            background: var(--pure-white);
             color: var(--pure-white);
 
             > span {
@@ -410,10 +411,8 @@ export default {
 <style lang="scss">
 @import "../assets/styles/variables";
 
-@container (max-width: #{$small-max-width}) {
+@mixin button-wrapper {
     .cmd-social-networks {
-        container-type: normal; /* do not set to 'inline-size' to avoid to be stretched vertically on small devices */
-
         .button-wrapper {
             .button {
                 flex: none;
@@ -427,6 +426,14 @@ export default {
             }
         }
     }
+}
+
+@media only screen and (max-width: $small-max-width) {
+    @include button-wrapper
+}
+
+@container (max-width: #{$small-max-width}) {
+    @include button-wrapper
 }
 
 /* end cmd-social-networks ------------------------------------------------------------------------------------------ */

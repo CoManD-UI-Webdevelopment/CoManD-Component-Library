@@ -154,7 +154,7 @@
     "useRowViewAsDefault": true,
     "useGap": true,
     "cmdHeadline": {
-      "headlineText": "Team 1",
+      "headlineText": "Team 2",
       "headlineLevel": 3
     },
     "boxes": [

@@ -1,26 +1,28 @@
 <template>
-    <div :class="['cmd-page-footer flex-container', {'small-buttons': useSmallButtons}]">
-        <!-- begin button print-preview -->
-        <button
-            v-if="buttonPrintView.show"
-            :class="['button', {'primary': buttonPrintView.primary}]"
-            :title="buttonPrintView.text ? buttonPrintView.icon?.tooltip : null"
-        >
-            <span v-if="buttonPrintView.icon?.show" :class="buttonPrintView.icon?.iconClass"></span>
-            <span v-if="buttonPrintView.text">{{buttonPrintView.text}}</span>
-        </button>
-        <!-- end button print-preview -->
-
-        <!-- begin slot-content -->
-        <slot></slot>
-        <!-- end slot-content -->
-
+    <footer :class="['cmd-page-footer flex-container', {'small-buttons': useSmallButtons}]">
         <!-- begin CmdSocialNetworks -->
         <CmdSocialNetworks v-if="cmdSocialNetworks" :networks="cmdSocialNetworks">
             <slot name="cmd-social-networks"></slot>
         </CmdSocialNetworks>
         <!-- end CmdSocialNetworks -->
-    </div>
+
+        <div class="button-wrapper">
+            <!-- begin slot-content -->
+            <slot></slot>
+            <!-- end slot-content -->
+
+            <!-- begin button print-preview -->
+            <button
+                v-if="buttonPrintView.show"
+                :class="['button', {'primary': buttonPrintView.primary}]"
+                :title="buttonPrintView.text ? buttonPrintView.icon?.tooltip : null"
+            >
+                <span v-if="buttonPrintView.icon?.show" :class="buttonPrintView.icon?.iconClass"></span>
+                <span v-if="buttonPrintView.text">{{buttonPrintView.text}}</span>
+            </button>
+            <!-- end button print-preview -->
+        </div>
+    </footer>
 </template>
 
 <script>
@@ -78,6 +80,33 @@ export default {
             }
         }
     }
+
+    > .button-wrapper {
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-left: auto;
+    }
 }
 /* end cmd-page-footer -------------------------------------------------------------------------------------------- */
+</style>
+
+<style lang="scss">
+@import "../assets/styles/variables";
+
+.cmd-page-footer {
+    .cmd-social-networks {
+        container-type: normal !important; /* do not set to 'inline-size' to avoid to be stretched vertically on small devices */
+    }
+}
+
+@media only screen and (max-width: $small-max-width) {
+    .cmd-page-footer {
+        align-items: flex-start;
+
+        > .button-wrapper {
+            margin-left: 0;
+            gap: calc(var(--default-gap) / 2);
+        }
+    }
+}
 </style>
