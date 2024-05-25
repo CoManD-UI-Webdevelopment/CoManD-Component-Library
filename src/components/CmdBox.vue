@@ -61,7 +61,7 @@
             <div v-if="useSlots?.includes('body')"
                  :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}"
                  ref="boxBody"
-                 :style="'max-height: ' + calculatedBodyHeight"
+                 :style="allowContentToScroll ? 'max-height: ' + calculatedBodyHeight : null"
             >
                 <!-- begin slot 'body' -->
                 <slot name="body">
@@ -86,7 +86,7 @@
             <template v-else>
                 <img v-if="image" :src="image.src" :alt="image.altText"/>
 
-                <div :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
+                <div v-else :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
                     <!-- begin CmdHeadline -->
                     <CmdHeadline
                         v-if="cmdHeadline?.headlineText && repeatHeadlineInBoxBody"
@@ -261,7 +261,7 @@ export default {
          */
         maxBoxBodyHeight: {
             type: String,
-            default: "100rem"
+            default: "10rem"
         },
         /**
          * activate if box should be collapsible
@@ -438,12 +438,14 @@ export default {
             required: false
         }
     },
+    /*
     mounted() {
+
         if (this.allowContentToScroll && this.$refs.boxBody) {
             const topPosition = this.$refs.boxBody.getBoundingClientRect().top
             this.calculatedBodyHeight = (document.documentElement.clientHeight - topPosition) + "px"
         }
-    },
+    },*/
     computed: {
         toggleTransition() {
             if (this.useTransition) {
@@ -587,8 +589,13 @@ export default {
         }
 
         .box-body {
+            display: flex;
             flex-grow: 1;
             border-top: var(--box-border);
+
+            & > div:only-child {
+                flex-grow: 1;
+            }
 
             p.cutoff-text {
                 padding: var(--default-padding);

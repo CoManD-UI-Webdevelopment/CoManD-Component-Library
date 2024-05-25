@@ -2,7 +2,7 @@
   {
     "headline": {
       "headlineLevel": 4,
-      "headlineText": "Segment #1 (vertical list)"
+      "headlineText": "List #1 (vertical list)"
     },
     "orientation": "vertical",
     "links": [
@@ -42,7 +42,7 @@
   {
     "headline": {
       "headlineLevel": 4,
-      "headlineText": "Segment #2 (horizontal list)"
+      "headlineText": "List #2 (horizontal list)"
     },
     "orientation": "horizontal",
     "links": [

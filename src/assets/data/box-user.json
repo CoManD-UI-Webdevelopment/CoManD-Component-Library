@@ -35,7 +35,7 @@
         "tooltip": "Send mail"
       },
       {
-        "path": "http://www.comand-cms.com",
+        "path": "https://www.comand-cms.com",
         "target": "comand",
         "iconClass": "icon-globe",
         "tooltip": "Visit website"
@@ -57,7 +57,7 @@
         "tooltip": "Send mail"
       },
       {
-        "path": "http://www.comand-cms.com",
+        "path": "https://www.comand-cms.com",
         "target": "comand",
         "iconClass": "icon-globe",
         "tooltip": "Visit website"
@@ -84,7 +84,7 @@
         "tooltip": "Send mail"
       },
       {
-        "path": "http://www.comand-cms.com",
+        "path": "https://www.comand-cms.com",
         "target": "comand",
         "iconClass": "icon-globe",
         "tooltip": "Visit website"
@@ -111,7 +111,7 @@
         "tooltip": "Send mail"
       },
       {
-        "path": "http://www.comand-cms.com",
+        "path": "https://www.comand-cms.com",
         "target": "comand",
         "iconClass": "icon-globe",
         "tooltip": "Visit website"

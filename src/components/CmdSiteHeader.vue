@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-site-header ---------------------------------------------------------------------------------------- */
 .cmd-site-header {
     grid-area: site-header;
@@ -153,6 +153,13 @@ export default {
     #main-navigation-wrapper {
         grid-column: span var(--grid-columns);
         border-bottom: 0;
+    }
+
+    & + #main-navigation-wrapper {
+        nav {
+            border-left: 0;
+            border-right: 0;
+        }
     }
 
     /* use id to ensure high specificity */

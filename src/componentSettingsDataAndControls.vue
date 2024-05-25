@@ -367,16 +367,6 @@ data() {
                     text: "Horizontal",
                     value: "horizontal"
                 }
-            ],
-            showListStyleItems: [
-                {
-                    text: "False (default)",
-                    value: false
-                },
-                {
-                    text: "True",
-                    value: true
-                }
             ]
         },
         cmdLoginFormSettingsData: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="cmd-page-segmented-lists-of-links flex-container vertical">
+    <div class="cmd-page-multiple-lists-of-links flex-container vertical">
         <template v-for="(segment, index) in segments" :key="index">
             <!-- begin CmdListOfLinks -->
             <CmdListOfLinks
@@ -11,7 +11,7 @@
             <!-- end CmdListOfLinks -->
 
             <!-- begin slot-content -->
-            <slot name="segmented-lists-of-links-slot-${index}"></slot>
+            <slot name="multiple-lists-of-links-slot-${index}"></slot>
             <!-- end slot-content -->
         </template>
     </div>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-    name: "SegmentedListsOfLinks",
+    name: "MultipleListsOfLinks",
     props: {
         segments: {
             type: Array,

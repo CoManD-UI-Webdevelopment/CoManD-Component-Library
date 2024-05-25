@@ -1,6 +1,6 @@
 <template>
     <div class="cmd-copyright-information" role="contentinfo">
-        <a href="http://www.comand-cms.com" target="comand-website" lang="en" title="CoManD-Website">&copy; CoManD</a>
+        <a href="https://www.comand-cms.com" target="comand-website" lang="en" title="CoManD-Website">&copy; CoManD</a>
     </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
 <style>
 /* begin cmd-copyright-information ---------------------------------------------------------------------------------------- */
 .cmd-copyright-information {
-    background: var(--default-text-color);
+    background: var(--dark-gray);
     border-top: var(--default-border-width) var(--default-border-style) var(--pure-white);
     text-align: center;
     padding: var(--default-padding);

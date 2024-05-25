@@ -88,12 +88,6 @@ export default {
             margin-right: calc(var(--default-margin) / 2);
         }
 
-        &:last-child {
-            > span {
-                display: none;
-            }
-        }
-
         a {
             display: inherit;
             align-items: inherit;

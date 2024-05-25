@@ -30,6 +30,8 @@
                     :userMustAcceptDataPrivacy="userMustAcceptDataPrivacy"
                     :buttonTextAlign="buttonTextAlign"
                     :dataPrivacyAccepted="dataPrivacyAccepted"
+                    :page="page"
+                    :appendPage="appendPage"
                 />
                 <!-- end cmd-social-networks (default view) -->
 
@@ -201,24 +203,6 @@ export default {
         }
     },
     methods: {
-        getUrl(network) {
-            if (this.userMustAcceptDataPrivacy && this.dataPrivacyAccepted) {
-                // if path is not given completely by json-data
-                if (this.appendPage) {
-                    // if page to share is given by property
-                    if (this.page) {
-                        return network.path + encodeURIComponent(this.page)
-                    }
-
-                    // if current page should be append to url
-                    return network.path + encodeURIComponent(location.href)
-                }
-
-                // if path is given completely by json-data
-                return network.path
-            }
-            return "#"
-        },
         onAddItem() {
             this.editModeContext.content.addContent(
                 buildComponentPath(this, 'props', 'networks', -1),

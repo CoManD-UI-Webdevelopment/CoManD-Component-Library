@@ -1,5 +1,6 @@
 <template>
     <div class="cmd-pages-basic-form">
+        <!-- being CmdForm -->
         <CmdForm :action="formAction"
                  @submit="onSubmit"
                  novalidate="novalidate"
@@ -12,9 +13,9 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_male')"
-                    name="salutation"
-                    inputValue="M"
-                    :replace-input-type="true"
+                    :name="configuration.salutation?.name || salutation"
+                    inputValue="m"
+                    :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation"
                     @validate="onValidate"
                 />
@@ -25,52 +26,65 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_female')"
-                    name="salutation"
-                    :replace-input-type="true"
+                    :name="configuration.salutation?.name || salutation"
+                    inputValue="f"
+                    :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
+
+            <!-- begin slot (top) -->
+            <slot name="top"></slot>
+            <!-- end slot (top) -->
+
             <div class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.lastName"
                     element="input"
-                    type="text"
+                    :type="configuration.lastName?.type || 'text'"
                     iconClass="icon-user-profile"
                     :labelText="getMessage('basic_form.labeltext.last_name')"
-                    :tooltipText="formData.last_name.error ? formData.last_name.errorMessage :  'Type your surname!'"
-                    required="required"
+                    :tooltipText="formData.lastName.error ? formData.lastName.errorMessage :  'Type your surname!'"
+                    :required="configuration.lastName?.required"
+                    :name="configuration.lastName?.name || 'last-name'"
                     :placeholder="getMessage('basic_form.placeholder.last_name')"
-                    v-model="formData.last_name.value"
-                    :status="formData.last_name.error ? 'error' : ''"
+                    v-model="formData.lastName.value"
+                    :status="formData.lastName.error ? 'error' : ''"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
 
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.firstName"
                     element="input"
-                    type="text"
+                    :type="configuration.firstName?.type || 'text'"
                     iconClass="icon-user-profile"
                     :labelText="getMessage('basic_form.labeltext.first_name')"
-                    :tooltipText="formData.first_name.error ? formData.first_name.errorMessage :  'Type your first name!'"
+                    :tooltipText="formData.firstName.error ? formData.firstName.errorMessage :  'Type your first name!'"
                     :placeholder="getMessage('basic_form.placeholder.first_name')"
-                    v-model="formData.first_name.value"
-                    :status="formData.first_name.error ? 'error' : ''"
+                    :required="configuration.firstName?.required"
+                    :name="configuration.firstName?.name || 'first-name'"
+                    v-model="formData.firstName.value"
+                    :status="formData.firstName.error ? 'error' : ''"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
-            <div class="flex-container">
+            <div v-if="configuration.email || configuration.phone" class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.email"
                     element="input"
-                    type="email"
+                    :type="configuration.email?.type || 'email'"
                     iconClass="icon-mail"
                     :labelText="getMessage('basic_form.labeltext.email')"
                     :placeholder="getMessage('basic_form.placeholder.email')"
-                    required="required"
+                    :required="configuration.email?.required"
+                    :name="configuration.email?.name || 'email'"
                     v-model="formData.email.value"
                     :status="formData.email.error ? 'error' : ''"
                     :tooltipText="formData.email.error ? formData.email.errorMessage :  'Type your email!'"
@@ -80,12 +94,15 @@
 
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.phone"
                     element="input"
-                    type="phone"
+                    :type="configuration.phone?.type || 'tel'"
                     iconClass="icon-phone"
                     :labelText="getMessage('basic_form.labeltext.phone')"
                     :placeholder="getMessage('basic_form.placeholder.phone')"
                     v-model="formData.phone.value"
+                    :required="configuration.phone?.required"
+                    :name="configuration.phone?.name || 'phone'"
                     :status="formData.phone.error ? 'error' : ''"
                     :tooltipText="formData.phone.error ? formData.phone.errorMessage :  'Type your phone number!'"
                     @validate="onValidate"
@@ -97,13 +114,14 @@
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
-                    type="text"
+                    :type="configuration.streetNo?.type || 'text'"
                     :labelText="getMessage('basic_form.labeltext.street_no')"
                     :placeholder="getMessage('basic_form.placeholder.street_no')"
-                    required="required"
-                    v-model="formData.street_no.value"
-                    :status="formData.street_no.error ? 'error' : ''"
-                    :tooltipText="formData.street_no.error ? formData.street_no.errorMessage :  'Type your street and number!'"
+                    :required="configuration.streetNo?.required"
+                    :name="configuration.streetNo?.name || 'street-no'"
+                    v-model="formData.streetNo.value"
+                    :status="formData.streetNo.error ? 'error' : ''"
+                    :tooltipText="formData.streetNo.error ? formData.streetNo.errorMessage :  'Type your street and number!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -112,9 +130,11 @@
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
                         element="input"
-                        type="number"
+                        :type="configuration.zip?.type || 'number'"
                         :labelText="getMessage('basic_form.labeltext.zip')"
                         :placeholder="getMessage('basic_form.placeholder.zip')"
+                        :required="configuration.zip?.required"
+                        :name="configuration.zip?.name || 'zip'"
                         v-model="formData.zip.value"
                         :status="formData.zip.error ? 'error' : ''"
                         :tooltipText="formData.zip.error ? formData.zip.errorMessage :  'Type your zip/postal code!'"
@@ -124,9 +144,11 @@
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
                         element="input"
-                        type="text"
+                        :type="configuration.city?.type || 'text'"
                         :labelText="getMessage('basic_form.labeltext.city')"
                         :placeholder="getMessage('basic_form.placeholder.city')"
+                        :required="configuration.city?.required"
+                        :name="configuration.city?.name || 'zip'"
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
                         :tooltipText="formData.city.error ? formData.city.errorMessage :  'Type your city!'"
@@ -138,13 +160,14 @@
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
-                    type="text"
+                    :type="configuration.additionalAddressInfo?.type || 'text'"
                     :labelText="getMessage('basic_form.labeltext.additional_address_info')"
                     :placeholder="getMessage('basic_form.placeholder.additional_address_info')"
-                    required="required"
-                    v-model="formData.additional_address_info.value"
-                    :status="formData.additional_address_info.error ? 'error' : ''"
-                    :tooltipText="formData.additional_address_info.error ? formData.additional_address_info.errorMessage :  'Type additional address information!'"
+                    :required="configuration.additionalAddressInfo?.required"
+                    :name="configuration.additionalAddressInfo?.name || 'additional-address-info'"
+                    v-model="formData.additionalAddressInfo.value"
+                    :status="formData.additionalAddressInfo.error ? 'error' : ''"
+                    :tooltipText="formData.additionalAddressInfo.error ? formData.additionalAddressInfo.errorMessage :  'Type additional address information!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -152,11 +175,30 @@
 
             <!-- begin cmd-form-element -->
             <CmdFormElement
+                :type="configuration.additionalText?.type || 'textarea'"
+                :labelText="getMessage('basic_form.labeltext.additional_text')"
+                :placeholder="getMessage('basic_form.placeholder.additional_text')"
+                :required="configuration.additionalText?.required"
+                :name="configuration.additionalText?.name || 'additional-text'"
+                v-model="formData.additionalText.value"
+                :status="formData.additionalText.error ? 'error' : ''"
+                @validate="onValidate"
+            />
+            <!-- end cmd-form-element -->
+
+            <!-- begin slot (bottom) -->
+            <slot name="bottom"></slot>
+            <!-- end slot (bottom) -->
+
+            <!-- begin cmd-form-element -->
+            <CmdFormElement
                 element="input"
                 type="checkbox"
-                :required="true"
-                v-model="formData.privacy.value"
-                :status="formData.privacy.error ? 'error' : ''"
+                :required="configuration.acceptPrivacy?.required"
+                :name="configuration.acceptPrivacy?.name || 'accept-privacy'"
+                :replaceInputType="configuration.acceptPrivacy?.replaceInputType"
+                v-model="formData.acceptPrivacy.value"
+                :status="formData.acceptPrivacy.error ? 'error' : ''"
                 @validate="onValidate">
                 <template v-slot:labeltext>
                     <span ref="dataPrivacy" v-html="getMessage('basic_form.labeltext.data_privacy')"></span>
@@ -164,11 +206,11 @@
             </CmdFormElement>
             <!-- end cmd-form-element -->
         </CmdForm>
+        <!-- end CmdForm -->
     </div>
 </template>
 
 <script>
-// import mixins
 // import mixins
 import I18n from "../mixins/I18n"
 import DefaultMessageProperties from "../mixins/pages/BasicForm/DefaultMessageProperties"
@@ -189,16 +231,17 @@ export default {
         return {
             //validator: new ContactFormValidator(name => this.label(name)),
             formData: {
-                salutation: 'M',
-                last_name: {value: ''},
-                first_name: {value: ''},
+                salutation: this.configuration.salutation.default,
+                lastName: {value: ''},
+                firstName: {value: ''},
                 email: {value: ''},
                 phone: {value: ''},
-                street_no: {value: ''},
+                streetNo: {value: ''},
                 zip: {value: ''},
                 city: {value: ''},
-                additional_address_info: {value: ''},
-                privacy: {value: false}
+                additionalAddressInfo: {value: ''},
+                additionalText: {value: ''},
+                acceptPrivacy: {value: false}
             },
             nativeButton: {
                 icon: {
@@ -211,8 +254,58 @@ export default {
         }
     },
     props: {
-        hiddenFormElements: {
-            
+        configuration: {
+            type: Object,
+            default() {
+                return {
+                    salutation: {
+                        name: "salutation",
+                        default: "m",
+                        replaceInputType: true
+                    },
+                    lastName: {
+                        name: "surname",
+                        required: true,
+                        type: "text"
+                    },
+                    firstName: {
+                        required: false,
+                        type: "text"
+                    },
+                    email: {
+                        required: true,
+                        type: "email"
+                    },
+                    phone: {
+                        required: false,
+                        type: "phone"
+                    },
+                    streetNo: {
+                        required: false,
+                        type: "text"
+                    },
+                    zip: {
+                        required: false,
+                        type: "number"
+                    },
+                    city: {
+                        required: false,
+                        type: "text"
+                    },
+                    additionalAddressInfo: {
+                        required: false,
+                        type: "text"
+                    },
+                    additionalText: {
+                        required: false,
+                        type: "textarea"
+                    },
+                    acceptPrivacy: {
+                        required: true,
+                        replaceInputType: true
+                    }
+                }
+            }
         },
         receiverEmailAddress: {
             type: String,
@@ -234,18 +327,13 @@ export default {
             }
         }
     },
-    /*
     mounted() {
-        usePiniaStore().$subscribe(() => {
-            this.$nextTick(() => {
-                this.$refs.dataPrivacy?.querySelector('.fancybox')?.addEventListener('click', event => {
-                    event.preventDefault()
-                    openFancyBox({url: event.target.getAttribute('href')})
-                })
-            })
+        this.$refs.dataPrivacy?.querySelector('.fancybox')?.addEventListener('click', event => {
+            event.preventDefault()
+            openFancyBox({url: event.target.getAttribute('href')})
         })
     },
-    */
+
     methods: {
         onSubmit(event) {
             this.onValidate();
@@ -255,20 +343,6 @@ export default {
                 event.preventDefault();
                 return;
             }
-
-            alert(`
-                Form submit:
-                salutation: ${this.formData.salutation}
-                last_name: ${this.formData.last_name.value}
-                first_name: ${this.formData.first_name.value}
-                email: ${this.formData.email.value}
-                phone: ${this.formData.phone.value}
-                street_no: ${this.formData.street_no.value}
-                zip: ${this.formData.zip.value}
-                city: ${this.formData.city.value}
-                additional_address_info: ${this.formData.additional_address_info.value}
-                privacy: ${this.formData.privacy.value}
-            `);
 
             event.preventDefault();
         },
@@ -281,54 +355,11 @@ export default {
                 openFancyBox({url: link})
             }
         },
-        // onPersist(data) {
-        //     return {
-        //         editModeContextData: {
-        //             ...(this.editModeContextData || {})
-        //         },
-        //         update(props) {
-        //             props.cmdHeadline = {
-        //                 ...(props.cmdHeadline || {}),
-        //             }
-        //             props.cmdHeadline.headlineText = data[0].headlineText
-        //         }
-        //     }
-        // },
-        // onDelete() {
-        //     console.log("ContactForm.onDelete()")
-        //     return {
-        //         editModeContextData: {
-        //             ...(this.editModeContextData || {})
-        //         }
-        //     }
-        // }
-        // openDataPrivacy(url) {
-        //     openFancyBox({url})
-        // }
+        openDataPrivacy(url) {
+            openFancyBox({url})
+        }
     }
 }
-
-// @Watch('$store.state.currentLanguage')
-// private languageChanged(): void {
-//     this.formData = Object.assign({}, {
-//       salutation: 'M',
-//       surname: {value: ''},
-//       email: {value: ''},
-//       message: {value: ''},
-//       privacy: {value: false}
-//     } as ContactFormData);
-//     this.labelsChanged()
-// }
-//
-// @Watch('$store.state.labels')
-// private labelsChanged(): void {
-//     this.$nextTick(() => {
-//         this.$el.querySelectorAll('.fancybox').forEach(link => link.addEventListener('click', e => {
-//             e.preventDefault()
-//             this.openDataPrivacy(link.getAttribute('href'))
-//         }))
-//     })
-// }
 </script>
 
 <style>

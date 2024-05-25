@@ -21,6 +21,8 @@ export default {
         "basic_form.placeholder.city": "City:",
         "basic_form.labeltext.additional_address_info": "Additional address information",
         "basic_form.placeholder.additional_address_info": "Additional address information",
+        "basic_form.labeltext.additional_text": "Additional text",
+        "basic_form.placeholder.additional_text": "Additional text",
         "basic_form.labeltext.data_privacy": "I accept handling and saving of my personal data a mentioned in the <a href='/content/data-privacy-en.html' class='fancybox'>private policy</a>."
       }
     }

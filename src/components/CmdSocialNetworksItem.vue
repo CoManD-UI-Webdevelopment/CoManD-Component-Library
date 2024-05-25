@@ -45,6 +45,22 @@ export default {
             type: Boolean
         },
         /**
+         * page to share (appended to social-bookmark-url)
+         *
+         * appendPage-property must be activated
+         */
+        page: {
+            type: String,
+            required: false
+        },
+        /**
+         * activate if page to share is not given by json-data
+         */
+        appendPage: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * alignment for buttons
          *
          * @allowedValues: "left", "right"

@@ -142,18 +142,40 @@
                                     <ul>
                                         <li :class="'active' ? activeEntry === 'BasicForm' : null">
                                             <a href="#section-basic-form" @click="updateSettingsSidebar('BasicForm', 'page')">Basic Form</a>
-                                        </li>
-                                        <li>
-                                            Segmented Lists Of Links
                                             <ul>
                                                 <li>
-                                                    <a href="#section-segmented-lists-of-links-downloads" @click="updateSettingsSidebar('SegmentedListsOfLinks', 'page')">
+                                                    <a href="#section-contact-information" @click="updateSettingsSidebar('ContactInformation', 'page')">
+                                                        Contact Information
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Multiple Lists Of Links
+                                            <ul>
+                                                <li>
+                                                    <a href="#section-multiple-lists-of-links-downloads" @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
                                                         Downloads
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#section-segmented-lists-of-links-sitemap" @click="updateSettingsSidebar('SegmentedListsOfLinks', 'page')">
+                                                    <a href="#section-multiple-lists-of-links-sitemap" @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
                                                         SiteMap
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Multiple Box Wrapper
+                                            <ul>
+                                                <li>
+                                                    <a href="#section-multiple-box-wrapper-team-overview" @click="updateSettingsSidebar('MultipleBoxWrapperTeamOverview', 'page')">
+                                                        Team Overview
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#section-multiple-box-wrapper-faqs" @click="updateSettingsSidebar('MultipleBoxWrapperFAQs', 'page')">
+                                                        FAQs
                                                     </a>
                                                 </li>
                                             </ul>
@@ -175,8 +197,11 @@
                         <a href="#" class="button primary" title="Open Template Settings" @click.prevent="openBox(0)">
                             <span class="icon-settings-template"></span>
                         </a>
-                        <a href="#" class="button primary" title="Open Template Settings" @click.prevent="openBox(1)">
+                        <a href="#" class="button primary" title="Open Components Overview" @click.prevent="openBox(1)">
                             <span class="icon-settings-component"></span>
+                        </a>
+                        <a href="#" class="button primary" title="Open Page-Templates" @click.prevent="openBox(2)">
+                            <span class="icon-file-settings"></span>
                         </a>
                     </div>
                 </template>
@@ -2146,7 +2171,7 @@ export default {
             this.openRightSidebar = event
         },
         openBox(boxIndex) {
-            this.openSidebar = true
+            this.openLeftSidebar = true
             this.openBoxes = [boxIndex]
         },
         navigationDataRight() {

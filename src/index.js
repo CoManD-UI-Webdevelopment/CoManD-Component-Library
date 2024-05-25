@@ -49,6 +49,12 @@ export { default as CmdUploadForm } from '@/components/CmdUploadForm.vue'
 export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimitationWrapper.vue'
 export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'
 
+// export page-components
+export { default as BasicForm } from '@/pages/BasicForm.vue'
+export { default as ContactInformation } from '@/pages/ContactInformation.vue'
+export { default as MultipleBoxWrapper } from '@/pages/MultipleBoxWrapper.vue'
+export { default as MultipleListsOfLinks } from '@/pages/MultipleListsOfLinks.vue'
+
 // export directives
 export { default as DirFocus } from '@/directives/focus'
 export { default as DirTelephone } from '@/directives/telephone'

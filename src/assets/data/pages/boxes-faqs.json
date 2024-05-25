@@ -1,0 +1,45 @@
+[
+  {
+    "boxesPerRow": 4,
+    "useRowViewAsDefault": true,
+    "useGap": true,
+    "cmdHeadline": {
+      "headlineText": "Frequently Asked Questions",
+      "headlineLevel": 4
+    },
+    "boxes": [
+      {
+        "boxType": "content",
+        "cmdHeadline": {
+          "headlineText": "Question 1",
+          "headlineLevel": 5
+        },
+        "textBody": "This is the answer for the question!"
+      },
+      {
+        "boxType": "content",
+        "cmdHeadline": {
+          "headlineText": "Question 2",
+          "headlineLevel": 5
+        },
+        "textBody": "This is the answer for the question!"
+      },
+      {
+        "boxType": "content",
+        "cmdHeadline": {
+          "headlineText": "Question 3",
+          "headlineLevel": 5
+        },
+        "textBody": "This is the answer for the question!"
+      },
+      {
+        "boxType": "content",
+        "cmdHeadline": {
+          "headlineText": "Question 4",
+          "headlineLevel": 5
+        },
+        "textBody": "This is the answer for the question!"
+      }
+    ]
+  }
+]
