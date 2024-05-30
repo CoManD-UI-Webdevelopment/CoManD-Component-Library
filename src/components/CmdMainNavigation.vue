@@ -1,7 +1,7 @@
 <template>
     <div
         :class="[
-            'cmd-main-navigation',
+            'cmd-main-navigation main-navigation-wrapper',
             {
                 'hide-sub-navigation' : !showSubNavigations,
                 'open-off-canvas': showOffcanvas,
@@ -9,7 +9,7 @@
                 'show-content-overlay': showContentOverlay,
                 'off-canvas-right': offcanvasPosition === 'right'
             }
-        ]" id="main-navigation-wrapper">
+        ]">
         <nav>
             <!-- begin main-level -->
             <ul :class="{'stretch-items' : stretchMainItems}">
@@ -393,7 +393,7 @@ export default {
 @import '../assets/styles/variables';
 
 @media only screen and (max-width: $medium-max-width) {
-    .cmd-main-navigation#main-navigation-wrapper {
+    .cmd-main-navigation.main-navigation-wrapper {
         --nav-transition: all .5s linear;
 
         display: flex;

@@ -6,7 +6,7 @@
             <!-- end CmdBreadcrumbs -->
 
             <!-- begin CmdHeadline -->
-            <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+            <CmdHeadline v-if="cmdHeadline.headlineText" v-bind="cmdHeadline" />
             <!-- end CmdHeadline -->
         </div>
 

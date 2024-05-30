@@ -81,10 +81,15 @@ export default {
         }
     }
 
+    .cmd-social-networks {
+        container-type: normal !important; /* do not set to 'inline-size' to avoid to be stretched vertically on small devices */
+    }
+
     > .button-wrapper {
         flex-direction: row;
         justify-content: flex-end;
         margin-left: auto;
+        gap: calc(var(--default-gap) / 2);
     }
 }
 /* end cmd-page-footer -------------------------------------------------------------------------------------------- */
@@ -93,19 +98,12 @@ export default {
 <style lang="scss">
 @import "../assets/styles/variables";
 
-.cmd-page-footer {
-    .cmd-social-networks {
-        container-type: normal !important; /* do not set to 'inline-size' to avoid to be stretched vertically on small devices */
-    }
-}
-
 @media only screen and (max-width: $small-max-width) {
     .cmd-page-footer {
         align-items: flex-start;
 
         > .button-wrapper {
             margin-left: 0;
-            gap: calc(var(--default-gap) / 2);
         }
     }
 }

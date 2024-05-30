@@ -92,6 +92,25 @@ data() {
                 }
             ]
         },
+        cmdCompanyLogoSettingsData: {
+            pathDefaultLogo: "/media/images/logos/logo.svg",
+            pathDarkmodeLogo: "/media/images/logos/logo-darkmode.svg",
+            altText: "Company Logo"
+        },
+        cmdCompanyLogoSettingsControls: {
+            type: [
+                {
+                    text: "href (default)",
+                    value: "href"
+                },
+                {
+                    text: "Router",
+                    value: "router"
+                }
+            ],
+            path: "./",
+            tooltip: "Tooltip"
+        },
         cmdFakeSelectSettingsData: {
             showSelectAllOptions: true,
             status: "",

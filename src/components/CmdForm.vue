@@ -33,12 +33,21 @@
                 <!-- end loop for formElements -->
 
                 <!-- begin submit-button -->
-                <button v-if="submitButton" :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
+                <button v-if="submitButton && submitButton.position === 'insideFieldset'" :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
                     <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
                     <span v-if="submitButton.text">{{ submitButton.text }}</span>
                 </button>
                 <!-- end submit-button -->
             </fieldset>
+
+            <div v-if="submitButton && submitButton.position === 'belowFieldset'" class="button-wrapper">
+                <!-- begin submit-button -->
+                <button :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
+                    <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
+                    <span v-if="submitButton.text">{{ submitButton.text }}</span>
+                </button>
+                <!-- end submit-button -->
+            </div>
 
             <!-- begin button-row-slot-content -->
             <slot name="button-row"></slot>
@@ -124,7 +133,7 @@ export default {
             required: false
         },
         /**
-         * submitbutton to submit all formdata
+         * submit-button to submit all form-data
          */
         submitButton: {
             type: Object,
@@ -133,6 +142,7 @@ export default {
                     iconClass: "icon-check",
                     text: "Submit",
                     type: "submit",
+                    position: "insideFieldset",
                     primary: true
                 }
             }
@@ -213,6 +223,10 @@ export default {
 
     .button, .button:last-child {
         margin-left: auto;
+    }
+
+    fieldset + .button-wrapper {
+        margin-top: var(--default-margin);
     }
 }
 /* end cmd-form ---------------------------------------------------------------------------------------- */

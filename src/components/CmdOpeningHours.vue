@@ -62,32 +62,35 @@
         <!-- end default view -->
 
         <!-- begin edit-mode -->
-        <button v-if="openingHoursFormatted.length === 0" type="button" class="button confirm small" @click="onAddItem">
-            <span class="icon-plus"></span>
-            <span>Add new entry</span>
-        </button>
+        <template v-else>
+            <button v-if="openingHoursFormatted.length === 0" type="button" class="button confirm small"
+                    @click="onAddItem">
+                <span class="icon-plus"></span>
+                <span>Add new entry</span>
+            </button>
 
-        <EditComponentWrapper
-            v-else
-            v-for="(day, index) in openingHoursFormatted"
-            :key="'x' + index"
-            class="edit-items"
-            :showComponentName="false"
-            componentName="CmdOpeningHoursItem"
-            :componentProps="day"
-            :allowedComponentTypes="[]"
-            :componentPath="['props', 'openingHours', index]"
-            :itemProvider="itemProvider"
-        >
-            <dl class="edit-mode-opening-hours-item">
-                <CmdOpeningHoursItem
-                    :day="day"
-                    :separator="separator"
-                    :abbreviationTextAm="abbreviationTextAm"
-                    :abbreviationTextPm="abbreviationTextPm"
-                />
-            </dl>
-        </EditComponentWrapper>
+            <EditComponentWrapper
+                v-else
+                v-for="(day, index) in openingHoursFormatted"
+                :key="'x' + index"
+                class="edit-items"
+                :showComponentName="false"
+                componentName="CmdOpeningHoursItem"
+                :componentProps="day"
+                :allowedComponentTypes="[]"
+                :componentPath="['props', 'openingHours', index]"
+                :itemProvider="itemProvider"
+            >
+                <dl class="edit-mode-opening-hours-item">
+                    <CmdOpeningHoursItem
+                        :day="day"
+                        :separator="separator"
+                        :abbreviationTextAm="abbreviationTextAm"
+                        :abbreviationTextPm="abbreviationTextPm"
+                    />
+                </dl>
+            </EditComponentWrapper>
+        </template>
         <!-- end edit-mode -->
 
         <!-- begin holiday-closes-text and miscellaneous information -->

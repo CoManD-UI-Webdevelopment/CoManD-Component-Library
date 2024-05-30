@@ -257,11 +257,11 @@ export default {
             default: false
         },
         /**
-         * set max-height for body (should only be used it allowContentToScroll-property is active)
+         * set max-height for body (should only be used if allowContentToScroll-property is active)
          */
         maxBoxBodyHeight: {
             type: String,
-            default: "10rem"
+            default: "20rem"
         },
         /**
          * activate if box should be collapsible
@@ -440,7 +440,6 @@ export default {
     },
     /*
     mounted() {
-
         if (this.allowContentToScroll && this.$refs.boxBody) {
             const topPosition = this.$refs.boxBody.getBoundingClientRect().top
             this.calculatedBodyHeight = (document.documentElement.clientHeight - topPosition) + "px"

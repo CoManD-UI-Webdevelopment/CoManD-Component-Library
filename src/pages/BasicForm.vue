@@ -1,13 +1,12 @@
 <template>
     <div class="cmd-pages-basic-form">
         <!-- being CmdForm -->
-        <CmdForm :action="formAction"
-                 @submit="onSubmit"
+        <CmdForm @submit="onSubmit"
                  novalidate="novalidate"
                  :textLegend="getMessage('basic_form.legend')"
                  :submitButton="submitButton"
         >
-            <div class="flex-container no-flex">
+            <div v-if="configuration.salutation" class="flex-container no-flex">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
@@ -39,7 +38,7 @@
             <slot name="top"></slot>
             <!-- end slot (top) -->
 
-            <div class="flex-container">
+            <div v-if="configuration.lastName || configuration.firstName" class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     v-if="configuration.lastName"
@@ -47,7 +46,6 @@
                     :type="configuration.lastName?.type || 'text'"
                     iconClass="icon-user-profile"
                     :labelText="getMessage('basic_form.labeltext.last_name')"
-                    :tooltipText="formData.lastName.error ? formData.lastName.errorMessage :  'Type your surname!'"
                     :required="configuration.lastName?.required"
                     :name="configuration.lastName?.name || 'last-name'"
                     :placeholder="getMessage('basic_form.placeholder.last_name')"
@@ -64,7 +62,6 @@
                     :type="configuration.firstName?.type || 'text'"
                     iconClass="icon-user-profile"
                     :labelText="getMessage('basic_form.labeltext.first_name')"
-                    :tooltipText="formData.firstName.error ? formData.firstName.errorMessage :  'Type your first name!'"
                     :placeholder="getMessage('basic_form.placeholder.first_name')"
                     :required="configuration.firstName?.required"
                     :name="configuration.firstName?.name || 'first-name'"
@@ -87,7 +84,6 @@
                     :name="configuration.email?.name || 'email'"
                     v-model="formData.email.value"
                     :status="formData.email.error ? 'error' : ''"
-                    :tooltipText="formData.email.error ? formData.email.errorMessage :  'Type your email!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -104,15 +100,15 @@
                     :required="configuration.phone?.required"
                     :name="configuration.phone?.name || 'phone'"
                     :status="formData.phone.error ? 'error' : ''"
-                    :tooltipText="formData.phone.error ? formData.phone.errorMessage :  'Type your phone number!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
 
-            <div class="flex-container">
+            <div v-if="configuration.streetNo || configuration.zip || configuration.city" class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.streetNo"
                     element="input"
                     :type="configuration.streetNo?.type || 'text'"
                     :labelText="getMessage('basic_form.labeltext.street_no')"
@@ -121,7 +117,6 @@
                     :name="configuration.streetNo?.name || 'street-no'"
                     v-model="formData.streetNo.value"
                     :status="formData.streetNo.error ? 'error' : ''"
-                    :tooltipText="formData.streetNo.error ? formData.streetNo.errorMessage :  'Type your street and number!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -129,6 +124,7 @@
                 <div class="input-wrapper">
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
+                        v-if="configuration.zip"
                         element="input"
                         :type="configuration.zip?.type || 'number'"
                         :labelText="getMessage('basic_form.labeltext.zip')"
@@ -137,12 +133,13 @@
                         :name="configuration.zip?.name || 'zip'"
                         v-model="formData.zip.value"
                         :status="formData.zip.error ? 'error' : ''"
-                        :tooltipText="formData.zip.error ? formData.zip.errorMessage :  'Type your zip/postal code!'"
                         @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
+
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
+                        v-if="configuration.city"
                         element="input"
                         :type="configuration.city?.type || 'text'"
                         :labelText="getMessage('basic_form.labeltext.city')"
@@ -151,7 +148,6 @@
                         :name="configuration.city?.name || 'zip'"
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
-                        :tooltipText="formData.city.error ? formData.city.errorMessage :  'Type your city!'"
                         @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
@@ -159,6 +155,7 @@
 
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.additionalAddressInfo"
                     element="input"
                     :type="configuration.additionalAddressInfo?.type || 'text'"
                     :labelText="getMessage('basic_form.labeltext.additional_address_info')"
@@ -167,7 +164,6 @@
                     :name="configuration.additionalAddressInfo?.name || 'additional-address-info'"
                     v-model="formData.additionalAddressInfo.value"
                     :status="formData.additionalAddressInfo.error ? 'error' : ''"
-                    :tooltipText="formData.additionalAddressInfo.error ? formData.additionalAddressInfo.errorMessage :  'Type additional address information!'"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -175,7 +171,8 @@
 
             <!-- begin cmd-form-element -->
             <CmdFormElement
-                :type="configuration.additionalText?.type || 'textarea'"
+                v-if="configuration.additionalText"
+                :element="configuration.additionalText?.element || 'textarea'"
                 :labelText="getMessage('basic_form.labeltext.additional_text')"
                 :placeholder="getMessage('basic_form.placeholder.additional_text')"
                 :required="configuration.additionalText?.required"
@@ -192,6 +189,7 @@
 
             <!-- begin cmd-form-element -->
             <CmdFormElement
+                v-if="configuration.acceptPrivacy"
                 element="input"
                 type="checkbox"
                 :required="configuration.acceptPrivacy?.required"
@@ -254,6 +252,9 @@ export default {
         }
     },
     props: {
+        /**
+         * configuration for form-elements used in form
+         */
         configuration: {
             type: Object,
             default() {
@@ -298,7 +299,7 @@ export default {
                     },
                     additionalText: {
                         required: false,
-                        type: "textarea"
+                        element: "textarea"
                     },
                     acceptPrivacy: {
                         required: true,
@@ -307,14 +308,16 @@ export default {
                 }
             }
         },
+        /**
+         * receiver e-mail-address the form is sent to
+         */
         receiverEmailAddress: {
             type: String,
             default: ""
         },
-        formAction: {
-            type: String,
-            required: true
-        },
+        /**
+         * submit-button to submit all form-data
+         */
         submitButton: {
             type: Object,
             default() {
@@ -322,6 +325,7 @@ export default {
                     iconClass: "icon-message-send",
                     text: "Send mail",
                     type: "submit",
+                    position: "belowFieldset",
                     primary: true
                 }
             }
@@ -333,7 +337,6 @@ export default {
             openFancyBox({url: event.target.getAttribute('href')})
         })
     },
-
     methods: {
         onSubmit(event) {
             this.onValidate();

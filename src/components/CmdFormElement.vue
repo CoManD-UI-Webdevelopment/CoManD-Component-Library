@@ -424,13 +424,6 @@ export default {
             }
         },
         /**
-         * set text for tooltip
-         */
-        tooltipText: {
-            type: String,
-            required: false
-        },
-        /**
          * set class for inner icon (icon placed 'inside' input/ left of input-text)
          *
          * element-property must be 'input' and type-property may not be checkbox or radio

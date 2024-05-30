@@ -1,12 +1,12 @@
 <template>
-    <!-- begin CmdBasicForm -->
+    <!-- begin basicForm -->
     <BasicForm v-if="contactFormOnly" v-bind="basicForm" />
-    <!-- end CmdBasicForm -->
+    <!-- end basicForm -->
 
     <div v-else class="flex-container">
-        <!-- begin CmdBasicForm -->
+        <!-- begin basicForm -->
         <BasicForm v-bind="basicForm" />
-        <!-- end CmdBasicForm -->
+        <!-- end basicForm -->
 
         <!-- begin additional-columns -->
         <div class="flex-container vertical">
@@ -30,14 +30,23 @@
 export default {
     name: "ContactInformation",
     props: {
+        /**
+         * properties for basicForm-component
+         */
         basicForm: {
             type: Object,
             default: null
         },
+        /**
+         * properties for CmdAddressData-component
+         */
         cmdAddressData: {
             type: Object,
             default: null
         },
+        /**
+         * properties for CmdGoogleMaps-component
+         */
         cmdGoogleMaps: {
             type: Object,
             default: null

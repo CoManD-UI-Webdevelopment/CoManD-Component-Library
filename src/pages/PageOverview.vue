@@ -14,7 +14,7 @@
             <span>Contact Information</span>
         </h2>
         <ContactInformation
-            :cmdBasicForm="{}"
+            :basicForm="basicForm"
             :cmdAddressData="{}"
             :cmdGoogleMaps="{}">
             <template v-slot:additional-info>
@@ -68,7 +68,38 @@ export default {
             listOfDownloadsData,
             listOfSiteLinksData,
             basicForm: {
-                formAction: "POST"
+                configuration: {
+                    salutation: {
+                        name: "salutation",
+                        default: "m",
+                        replaceInputType: true
+                    },
+                    lastName: {
+                        name: "surname",
+                        required: true,
+                        type: "text"
+                    },
+                    firstName: {
+                        required: false,
+                        type: "text"
+                    },
+                    email: {
+                        required: true,
+                        type: "email"
+                    },
+                    phone: {
+                        required: false,
+                        type: "phone"
+                    },
+                    additionalText: {
+                        required: false,
+                        element: "textarea"
+                    },
+                    acceptPrivacy: {
+                        required: true,
+                        replaceInputType: true
+                    }
+                }
             }
         }
     }

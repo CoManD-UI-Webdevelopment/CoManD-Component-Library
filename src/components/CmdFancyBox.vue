@@ -484,6 +484,7 @@ export default FancyBox
     border-radius: var(--default-border-radius);
     overflow: hidden;
     gap: calc(var(--default-gap) / 2);
+    max-width: var(--max-width);
 
     &.image-gallery {
         margin-top: calc(var(--default-margin) * 2)
@@ -601,7 +602,7 @@ export default FancyBox
     .outer-content-wrapper {
         max-height: 85vh;
         overflow-x: hidden;
-        max-width: var(--max-width);
+        flex: none;
 
         .content {
             > img, > video {

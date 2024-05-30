@@ -1,6 +1,13 @@
 <template>
     <div
-        :class="['cmd-site-header site-header', {sticky: sticky, 'navigation-inline': navigationInline, 'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'}]"
+        :class="[
+            'cmd-site-header site-header',
+            {
+                sticky: sticky,
+                'navigation-inline': navigationInline,
+                'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'
+            }
+        ]"
         role="banner">
         <!-- begin slot for elements above header -->
         <div v-if="$slots.topheader" class="top-header">
@@ -8,6 +15,7 @@
         </div>
         <!-- end slot for elements above header -->
 
+        <!-- begin (inner) header -->
         <header
             :class="[
                 useGrid ? 'grid-container-create-columns': 'flex-container',
@@ -43,6 +51,7 @@
             </template>
             <!-- end content given by data -->
         </header>
+        <!-- end (inner) header -->
 
         <!-- begin CmdMainNavigation -->
         <CmdMainNavigation
@@ -86,6 +95,24 @@ export default {
             default: false
         },
         /**
+         * set if header (incl. logo) should be resized if user scrolls page
+         *
+         * scrollContainerToResizeHeader-property must be defined
+         */
+        resizeHeaderOnScroll: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * set selector the user scrolls to resize header
+         *
+         * resizeHeaderOnScroll-property must be activated
+         */
+        scrollContainerToResizeHeader: {
+            type: String,
+            default: "#page-wrapper"
+        },
+        /**
          * use a grid for positioning of inner-elements (else a flex-container will be used)
          *
          * @affectsStyling: true
@@ -109,6 +136,21 @@ export default {
             required: false
         }
     },
+    mounted() {
+        if(this.resizeHeaderOnScroll) {
+            const scrollContainer = document.querySelector(this.scrollContainerToResizeHeader);
+
+            scrollContainer.addEventListener("scroll", function() {
+                const header = document.querySelector(".cmd-site-header > header");
+
+                if (scrollContainer.scrollTop > 0) {
+                    header.classList.add("resize-on-scroll");
+                } else {
+                    header.classList.remove("resize-on-scroll");
+                }
+            });
+        }
+    },
     methods: {
         emitOffcanvasStatus(event) {
             this.$emit("offcanvas", event)
@@ -130,6 +172,42 @@ export default {
     &.sticky {
         position: sticky;
         z-index: 300;
+
+        header {
+            --header-scroll-animation: var(--default-transition);
+            transition: var(--header-scroll-animation);
+
+            .cmd-company-logo {
+                figure, img {
+                    transition: var(--header-scroll-animation);
+                }
+
+                figure {
+                    width: 100%;
+                    height: 100px; /* must be replaced by dynamic value */
+
+                    img {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        margin: 0;
+                    }
+                }
+            }
+
+            &.resize-on-scroll {
+                padding-top: var(--default-padding);
+                padding-bottom: var(--default-padding);
+                transition: var(--header-scroll-animation);
+
+                .cmd-company-logo {
+                    figure {
+                        height: 5rem;
+                    }
+                }
+            }
+        }
     }
 
     header, .cmd-main-navigation nav, .cmd-list-of-links {
@@ -150,12 +228,12 @@ export default {
         }
     }
 
-    #main-navigation-wrapper {
+    .main-navigation-wrapper {
         grid-column: span var(--grid-columns);
         border-bottom: 0;
     }
 
-    & + #main-navigation-wrapper {
+    & + .main-navigation-wrapper {
         nav {
             border-left: 0;
             border-right: 0;
@@ -163,7 +241,7 @@ export default {
     }
 
     /* use id to ensure high specificity */
-    > .cmd-main-navigation#main-navigation-wrapper:last-child {
+    > .cmd-main-navigation.main-navigation-wrapper:last-child {
         border-bottom: 0;
     }
 
@@ -211,7 +289,7 @@ export default {
                 grid-column: span var(--grid-small-span);
             }
 
-            #main-navigation-wrapper {
+            .main-navigation-wrapper {
                 grid-area: main-navigation;
                 display: flex;
                 align-items: center;
@@ -245,22 +323,28 @@ export default {
         header {
             grid-auto-rows: auto; /* items should be as large as their content */
 
-            .cmd-main-navigation#main-navigation-wrapper {
+            .cmd-main-navigation.main-navigation-wrapper {
                 &:not(.persist-on-mobile) {
                     padding: 0;
                 }
             }
+
+            /* main-navigation below logo */
+            & + .cmd-main-navigation.main-navigation-wrapper {
+                padding-bottom: var(--default-padding);
+            }
         }
 
+        /* main-navigation inline with logo */
         &.navigation-inline {
-            .cmd-main-navigation#main-navigation-wrapper {
+            .cmd-main-navigation.main-navigation-wrapper {
                 &:not(.persist-on-mobile) {
                     padding-left: var(--default-padding);
                 }
             }
 
             &.off-canvas-right {
-                .cmd-main-navigation#main-navigation-wrapper {
+                .cmd-main-navigation.main-navigation-wrapper {
                     &:not(.persist-on-mobile) {
                         padding: 0;
                     }
@@ -286,7 +370,7 @@ export default {
 
         &.navigation-inline {
             header {
-                .cmd-company-logo, #main-navigation-wrapper {
+                .cmd-company-logo, .main-navigation-wrapper {
                     grid-column: span calc(var(--grid-small-span) / 2);
                 }
             }

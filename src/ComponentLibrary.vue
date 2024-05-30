@@ -19,10 +19,11 @@
                         :useGap="false"
                     >
                         <template v-slot="slotProps">
+                            <!-- begin box template selection -->
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
-                                :cmdHeadline="{headlineText: 'Template Settings', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
+                                :cmdHeadline="{headlineText: 'Template Selection', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(0)"
                                 @toggleCollapse="slotProps.boxToggled(0, $event)"
                             >
@@ -39,6 +40,9 @@
                                     </label>
                                 </template>
                             </CmdBox>
+                            <!-- end box template selection -->
+
+                            <!-- begin box list of components-->
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
@@ -48,92 +52,21 @@
                             >
                                 <template v-slot:body>
                                     <ul>
-                                        <li :class="'active' ? activeEntry === 'CmdAddressData' : null"><a
-                                            href="#section-address-data"
-                                            @click="updateSettingsSidebar('CmdAddressData')">Address Data</a></li>
-                                        <li><a href="#section-advanced-form-elements">Advanced Form Elements</a></li>
-                                        <li><a href="#section-bank-account-data"
-                                               @click="updateSettingsSidebar('CmdBankAccountData')">Bank Account
-                                            Data</a></li>
-                                        <li><a href="#section-boxes" @click="updateSettingsSidebar('CmdBox')">Boxes</a>
-                                        </li>
-                                        <li><a href="#section-breadcrumbs"
-                                               @click="updateSettingsSidebar('CmdBreadcrumbs')">Breadcrumbs</a></li>
-                                        <li><a href="#section-cookie-disclaimer" @click="hideSettingsSidebar">Cookie-Disclaimer</a>
-                                        </li>
-                                        <li><a href="#section-fancybox" @click="hideSettingsSidebar">Fancybox</a></li>
-                                        <li><a href="#section-forms" @click="hideSettingsSidebar">Forms</a></li>
-                                        <li><a href="#section-google-maps" @click="hideSettingsSidebar">Google-Maps&trade;</a>
-                                        </li>
-                                        <li><a href="#section-headlines" @click="updateSettingsSidebar('CmdHeadline')">Headlines</a>
-                                        </li>
-                                        <li><a href="#section-icons" @click="hideSettingsSidebar">Icons</a></li>
-                                        <li><a href="#section-input-group"
-                                               @click="updateSettingsSidebar('CmdInputGroup')">Input-Group</a></li>
-                                        <li><a href="#section-image" @click="hideSettingsSidebar">Image</a></li>
-                                        <li><a href="#section-image-gallery" @click="hideSettingsSidebar">Image
-                                            Gallery</a></li>
-                                        <li><a href="#section-image-zoom" @click="hideSettingsSidebar">Image-Zoom</a>
-                                        </li>
-                                        <li><a href="#section-list-of-links"
-                                               @click="updateSettingsSidebar('CmdLinkOfLists')">List Of Links</a></li>
-                                        <li><a href="#section-login-form"
-                                               @click="updateSettingsSidebar('CmdLoginForm')">Login Form</a></li>
-                                        <li><a href="#section-main-navigation"
-                                               @click="updateSettingsSidebar('CmdMainNavigation')">Main-Navigation</a>
-                                        </li>
-                                        <li><a href="#section-multistep-form-progress-bar"
-                                               @click="updateSettingsSidebar('CmdMultistepFormProgressBar')">Multistepform-Progressbar</a>
-                                        </li>
-                                        <li><a href="#section-newsletter-subscription"
-                                               @click="updateSettingsSidebar('CmdNewsletterSubscription')">Newsletter
-                                            Subscription</a></li>
-                                        <li><a href="#section-opening-hours"
-                                               @click="updateSettingsSidebar('CmdOpeningHours')">Opening Hours</a></li>
-                                        <li><a href="#section-page-footer"
-                                               @click="updateSettingsSidebar('CmdPageFooter')">Page Footer</a></li>
-                                        <li><a href="#section-page-header"
-                                               @click="updateSettingsSidebar('CmdPageHeader')">Page Header</a></li>
-                                        <li><a href="#section-pagination"
-                                               @click="updateSettingsSidebar('CmdPagination')">Pagination</a></li>
-                                        <li><a href="#section-site-footer" @click="hideSettingsSidebar">Site Footer</a>
-                                        </li>
-                                        <li><a href="#section-site-header"
-                                               @click="updateSettingsSidebar('CmdSiteHeader')">Site Header</a></li>
-                                        <li><a href="#section-site-search"
-                                               @click="updateSettingsSidebar('CmdSiteSearch')">Site Search</a></li>
-                                        <li><a href="#section-slideshow" @click="updateSettingsSidebar('CmdSlideshow')">Slideshow</a>
-                                        </li>
-                                        <li><a href="#section-social-networks"
-                                               @click="updateSettingsSidebar('CmdSocialNetworks')">Social Networks</a>
-                                        </li>
-                                        <li><a href="#section-switch-language" @click="hideSettingsSidebar">Switch Language</a>
-                                        </li>
-                                        <li><a href="#section-system-message"
-                                               @click="updateSettingsSidebar('CmdSystemMessage')">System-Message</a>
-                                        </li>
-                                        <li><a href="#section-tables"
-                                               @click="updateSettingsSidebar('CmdSystemMeCmdTablesssage')">Tables</a>
-                                        </li>
-                                        <li><a href="#section-tabs" @click="updateSettingsSidebar('CmdTabs')">Tabs</a>
-                                        </li>
-                                        <li><a href="#section-text-image-block"
-                                               @click="updateSettingsSidebar('CmdTextImageBlock')">Text Image Block</a>
-                                        </li>
-                                        <li><a href="#section-thumbnail-scroller"
-                                               @click="updateSettingsSidebar('CmdThumbnailScroller')">Thumbnail-Scroller</a>
-                                        </li>
-                                        <li><a href="#section-toggle-darkmode"
-                                               @click="updateSettingsSidebar('CmdToggleDarkMode')">ToggleDarkMode</a>
-                                        </li>
-                                        <li><a href="#section-tooltip" @click="updateSettingsSidebar('CmdTooltip')">Tooltip</a>
-                                        </li>
-                                        <li><a href="#section-upload-form"
-                                               @click="updateSettingsSidebar('CmdUploadForm')">Upload-Form</a>
+                                        <li v-for="(componentName, index) in listOfComponents" :key="index" :class="{'active' : activeEntry === 'Cmd' + componentName}">
+                                            <a
+                                                :href="sectionName(componentName)"
+                                                @click="updateSettingsSidebar(componentNameWithPrefix(componentName))"
+                                                title="Go to component"
+                                            >
+                                                {{ readableComponentName(componentName)}}
+                                            </a>
                                         </li>
                                     </ul>
                                 </template>
                             </CmdBox>
+                            <!-- end box list of components-->
+
+                            <!-- begin box page-templates -->
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
@@ -186,18 +119,22 @@
                                     </ul>
                                 </template>
                             </CmdBox>
+                            <!-- end box page-templates -->
                         </template>
                     </CmdBoxWrapper>
+
+                    <!-- begin list comand-versions -->
                     <dl class="box-footer comand-versions">
                         <dt>Frontend-Framework Version:</dt>
                         <dd>{{ packageJson.dependencies['comand-frontend-framework'].replace("^", "") }}</dd>
                         <dt>Component-Library Version:</dt>
                         <dd>{{ packageJson.version }}</dd>
                     </dl>
+                    <!-- end list comand-versions -->
                 </template>
                 <template #closed>
                     <div class="closed-sidebar">
-                        <a href="#" class="button primary" title="Open Template Settings" @click.prevent="openBox(0)">
+                        <a href="#" class="button primary" title="Open Template Selection" @click.prevent="openBox(0)">
                             <span class="icon-settings-template"></span>
                         </a>
                         <a href="#" class="button primary" title="Open Components Overview" @click.prevent="openBox(1)">
@@ -226,10 +163,7 @@
                 <template v-slot:logo>
                     <!-- begin company-logo --------------------------------------------------------------------------------------------------------------------------------------------------->
                     <CmdCompanyLogo
-                        :link="companyLogoData.link"
-                        altText="CoManD Logo"
-                        :pathDefaultLogo="companyLogoData.pathDefaultLogo"
-                        :pathDarkmodeLogo="companyLogoData.pathDarkmodeLogo"
+                        v-bind="companyLogoData"
                     />
                     <!-- end company-logo --------------------------------------------------------------------------------------------------------------------------------------------------->
                 </template>
@@ -1236,12 +1170,32 @@
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
                     </h2>
-                    <CmdBreadcrumbs ref="CmdBreadcrumbs"
-                                    :breadcrumbLabel="breadcrumbsData.breadcrumbLabel"
-                                    :breadcrumbLinks="breadcrumbsData.breadcrumbLinks"
-                                    v-bind="cmdBreadcrumbsSettingsData"/>
+                    <CmdBreadcrumbs
+                        ref="CmdBreadcrumbs"
+                        :breadcrumbLabel="breadcrumbsData.breadcrumbLabel"
+                        :breadcrumbLinks="breadcrumbsData.breadcrumbLinks"
+                        v-bind="cmdBreadcrumbsSettingsData"
+                    />
                 </CmdWidthLimitationWrapper>
                 <!-- end breadcrumbs ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                <!-- begin company-logo ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-company-logo">
+                        <span>Company Logo</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdCompanyLogo')"></a>
+                    </h2>
+                    <CmdCompanyLogo
+                        ref="CmdCompanyLogo"
+                        :link="companyLogoData.link"
+                        :altText="companyLogoData.altText"
+                        :pathDefaultLogo="companyLogoData.pathDefaultLogo"
+                        :pathDarkmodeLogo="companyLogoData.pathDarkmodeLogo"
+                        v-bind="cmdCompanyLogoSettingsData"
+                    />
+                </CmdWidthLimitationWrapper>
+                <!-- end company-logo ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin cookie-disclaimer ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
@@ -1815,7 +1769,7 @@
                         <CmdThumbnailScroller
                             ref="CmdThumbnailScroller"
                             v-bind="cmdThumbnailScrollerSettingsData"
-                            :thumbnail-scroller-items="thumbnailScrollerData"
+                            :thumbnailScrollerItems="thumbnailScrollerData"
                         />
                     </div>
                 </CmdWidthLimitationWrapper>
@@ -1871,16 +1825,19 @@
                 <!-- end upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
             </main>
 
+            <!-- begin page view -->
             <main v-else id="content">
                 <CmdWidthLimitationWrapper>
                     <h1 class="headline-demopage">Page Overview</h1>
                 </CmdWidthLimitationWrapper>
 
-                <!-- being page-overview -->
+                <!-- begin page-overview -->
                 <PageOverview />
                 <!-- end page-overview -->
             </main>
+            <!-- end page view -->
 
+            <!-- begin cmd-site-footer -->
             <CmdSiteFooter>
                 <!-- begin slot-content -->
                 Slot-Content for Site-Footer
@@ -1978,6 +1935,8 @@ import thumbnailScrollerTextData from '@/assets/data/thumbnail-scroller-text.jso
 
 import packageJson from '../package.json'
 
+import listOfComponents from "@/assets/data/listOfComponents.json"
+
 import PageOverview from "@/pages/PageOverview.vue"
 
 // import external functions
@@ -1996,6 +1955,7 @@ export default {
     },
     data() {
         return {
+            listOfComponents,
             activeEntry: "CmdAddressData",
             componentControls: {},
             componentView: true,
@@ -2159,17 +2119,27 @@ export default {
         }
     },
     methods: {
-        setActiveEntry(ComponentName) {
-            this.activeEntry = ComponentName
+        sectionName(componentName) {
+            let componentNameWithHyphens = componentName.replace(/([A-Z])/g, '-$1');
+            return "#section" + componentNameWithHyphens.toLowerCase();
         },
-        updateSettingsSidebar(ComponentName, type) {
-            this.setActiveEntry(ComponentName)
+        readableComponentName(componentName) {
+           return componentName.replace(/(?!^)([A-Z])/g, ' $1');
+        },
+        componentNameWithPrefix(componentName) {
+            return "Cmd" + componentName
+        },
+        setActiveEntry(componentName) {
+            this.activeEntry = componentName
+        },
+        updateSettingsSidebar(componentName, type) {
+            this.setActiveEntry(componentName)
 
             if(type !== 'page') {
                 this.componentView = true
 
                 if (this.openRightSidebar) {
-                    this.openSettingsSidebar(ComponentName)
+                    this.openSettingsSidebar(componentName)
                 }
             } else {
                 this.componentView = false
@@ -2387,6 +2357,11 @@ export default {
             &:not(:last-child) {
                 border-bottom: 0;
             }
+
+            li.active a {
+                padding: 0.1rem 0.3rem;
+                text-decoration: none;
+            }
         }
 
         .open-slot-wrapper {
@@ -2406,6 +2381,10 @@ export default {
             flex-direction: column;
             gap: var(--default-gap);
             padding: var(--default-padding);
+
+            .button {
+                align-self: center;
+            }
         }
 
         &:last-child {
