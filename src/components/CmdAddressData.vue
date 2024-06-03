@@ -25,6 +25,7 @@
                             :key="index" :addressEntry="entry"
                             :showLabelIcons="showLabelIcons"
                             :showLabelTexts="showLabelTexts"
+                            :showCityBeforeZip="showCityBeforeZip"
                         />
                         <!-- end cmd-address-data-item -->
                     </dl>
@@ -93,12 +94,18 @@
                                         </template>
                                         <!-- end street/number -->
 
-                                        <!-- begin zip/city -->
-                                        <template v-if="entry.zip || entry.city">
-                                            <span class="postal-code">{{ entry.zip }}&nbsp;</span>
-                                            <span class="locality">{{ entry.city }}</span><br/>
+                                        <!-- begin zip/city (state) -->
+                                        <span v-if="entry.zip || entry.city" :class="showCityBeforeZip ? 'order-city-zip' : 'order-zip-city'">
+                                            <span v-if="entry.zip" class="postal-code">{{ entry.zip }}&nbsp;</span>
+                                            <span v-if="entry.city" class="locality">{{ entry.city }}<template v-if="entry.state"> {{entry.state}}</template></span><br/>
+                                        </span>
+                                        <!-- end zip/city (state) -->
+
+                                        <!-- begin po box -->
+                                        <template v-if="entry.pobox">
+                                            <span>{{ entry.pobox }}</span><br/>
                                         </template>
-                                        <!-- end zip/city -->
+                                        <!-- end po box -->
 
                                         <!-- begin miscInfo -->
                                         <template v-if="entry.miscInfo">
@@ -121,12 +128,18 @@
                                     </template>
                                     <!-- end street/number -->
 
-                                    <!-- begin zip/city -->
-                                    <template v-if="entry.zip || entry.city">
-                                        <span class="postal-code">{{ entry.zip }}&nbsp;</span>
-                                        <span class="locality">{{ entry.city }}</span><br/>
+                                    <!-- begin zip/city (state) -->
+                                    <span v-if="entry.zip || entry.city" :class="showCityBeforeZip ? 'order-city-zip' : 'order-zip-city'">
+                                        <span v-if="entry.zip" class="postal-code">{{ entry.zip }}&nbsp;</span>
+                                        <span v-if="entry.city" class="locality">{{ entry.city }}<template v-if="entry.state"> {{entry.state}}</template></span><br/>
+                                    </span>
+                                    <!-- end zip/city (state) -->
+
+                                    <!-- begin po box -->
+                                    <template v-if="entry.pobox">
+                                        <span>{{ entry.pobox }}</span><br/>
                                     </template>
-                                    <!-- end zip/city -->
+                                    <!-- end po box -->
 
                                     <!-- begin miscInfo -->
                                     <template v-if="entry.miscInfo">
@@ -208,6 +221,13 @@ export default {
             required: true
         },
         /**
+         * activate to show city first/left then zip next/right
+         */
+        showCityBeforeZip: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * properties for CmdHeadline-component
          */
         cmdHeadline: {
@@ -285,9 +305,18 @@ export default {
                 align-self: flex-start;
 
                 [class*="icon"]:only-child {
-                    line-height: var(--line-height);
+                    line-height: var(--default-line-height);
                 }
             }
+        }
+
+        .order-city-zip, .order-zip-city {
+            display: inline-flex;
+            gap: .5rem;
+        }
+
+        .order-city-zip {
+            flex-direction: row-reverse;
         }
     }
 

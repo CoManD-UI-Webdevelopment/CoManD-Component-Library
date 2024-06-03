@@ -92,7 +92,7 @@
     <!-- begin default-view -->
     <figure v-else :class="['cmd-image', textAlign]">
         <figcaption v-if="figcaption?.show && figcaption?.position === 'top'">{{ figcaption?.text }}</figcaption>
-        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip"/>
+        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded" />
         <figcaption v-if="figcaption?.show && figcaption?.position !== 'top'">{{ figcaption?.text }}</figcaption>
     </figure>
     <!-- end default-view -->
@@ -248,6 +248,9 @@ export default {
         }
     },
     methods: {
+        onImageLoaded(event) {
+            this.$emit("image-loaded", event)
+        },
         itemProvider() {
             const editModeConfig = this.editModeConfig?.itemProviderOverwrite?.()
             return {

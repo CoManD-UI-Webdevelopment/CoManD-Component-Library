@@ -7,8 +7,7 @@
       "type": "href",
       "text": "Entry 1",
       "path": "#",
-      "iconClass": "icon-home",
-      "subentries": []
+      "iconClass": "icon-home"
     },
     {
       "type": "href",
@@ -40,7 +39,8 @@
         {
           "type": "href",
           "text": "Entry 2.2",
-          "path": "#"
+          "path": "#",
+          "subentries": []
         }
       ]
     },

@@ -96,7 +96,7 @@
                             <!-- end type === router -->
 
                             <!-- begin sub-level 2 -->
-                            <ul v-if="navigationSubEntry.subentries" :aria-expanded="openSubentry ? 'true' : 'false'">
+                            <ul v-if="navigationSubEntry.subentries?.length" :aria-expanded="openSubentry ? 'true' : 'false'">
                                 <li v-for="(navigationSubSubEntry, subsubindex) in navigationSubEntry.subentries"
                                     :key="subsubindex">
                                     <!-- begin type === href -->

@@ -28,7 +28,7 @@
                 <!-- end slot 'labeltext' -->
 
                 <!-- begin required asterisk -->
-                <sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup>
+                <sup v-if="$attrs.required != null && $attrs.required !== false" aria-hidden="true">*</sup>
                 <!-- end required asterisk -->
             </span>
 

@@ -1189,9 +1189,6 @@
                     <CmdCompanyLogo
                         ref="CmdCompanyLogo"
                         :link="companyLogoData.link"
-                        :altText="companyLogoData.altText"
-                        :pathDefaultLogo="companyLogoData.pathDefaultLogo"
-                        :pathDarkmodeLogo="companyLogoData.pathDarkmodeLogo"
                         v-bind="cmdCompanyLogoSettingsData"
                     />
                 </CmdWidthLimitationWrapper>
@@ -2160,8 +2157,6 @@ export default {
             if (this[controlsName]) {
                 this.componentControls = this[controlsName]
             }
-
-            console.log("this.componentProps", this.componentProps)
         },
         setOpenStatusLeftSidebar(event) {
             this.openLeftSidebar = event

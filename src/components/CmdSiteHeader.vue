@@ -1,5 +1,6 @@
 <template>
     <div
+        ref="site-header"
         :class="[
             'cmd-site-header site-header',
             {
@@ -35,6 +36,7 @@
                 <CmdCompanyLogo
                     v-if="cmdCompanyLogo"
                     v-bind="cmdCompanyLogo"
+                    @image-loaded="onImageLoaded"
                 />
                 <!-- end CmdCompanyLogo -->
 
@@ -70,6 +72,11 @@
 export default {
     name: "CmdSiteHeader",
     emits: ["offcanvas"],
+    data() {
+        return {
+            defaultLogoHeight: ""
+        }
+    },
     props: {
         /**
          * use only if default-button of inner navigation-component should not be used
@@ -137,10 +144,10 @@ export default {
         }
     },
     mounted() {
-        if(this.resizeHeaderOnScroll) {
+        if (this.resizeHeaderOnScroll) {
             const scrollContainer = document.querySelector(this.scrollContainerToResizeHeader);
 
-            scrollContainer.addEventListener("scroll", function() {
+            scrollContainer.addEventListener("scroll", function () {
                 const header = document.querySelector(".cmd-site-header > header");
 
                 if (scrollContainer.scrollTop > 0) {
@@ -152,8 +159,17 @@ export default {
         }
     },
     methods: {
+        onImageLoaded(event) {
+            this.defaultLogoHeight = (event.target.height / 10) + "rem"
+        },
         emitOffcanvasStatus(event) {
             this.$emit("offcanvas", event)
+        }
+    },
+    watch: {
+        defaultLogoHeight() {
+            const logo = this.$refs["site-header"].querySelector(".cmd-company-logo img")
+            logo.style.height = this.defaultLogoHeight
         }
     }
 }
@@ -178,19 +194,10 @@ export default {
             transition: var(--header-scroll-animation);
 
             .cmd-company-logo {
-                figure, img {
-                    transition: var(--header-scroll-animation);
-                }
-
                 figure {
-                    width: 100%;
-                    height: 100px; /* must be replaced by dynamic value */
-
                     img {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        height: 100%;
+                        transform-origin: top left;
+                        transition: var(--header-scroll-animation);
                         margin: 0;
                     }
                 }
@@ -203,7 +210,10 @@ export default {
 
                 .cmd-company-logo {
                     figure {
-                        height: 5rem;
+                        img {
+                            transition: var(--header-scroll-animation);
+                            height: 5rem;
+                        }
                     }
                 }
             }
@@ -213,7 +223,7 @@ export default {
     header, .cmd-main-navigation nav, .cmd-list-of-links {
         max-width: var(--max-width);
         width: 100%; /* stretch flex-item */
-        margin: 0 auto;
+        margin: 0 0 0 auto;
         padding: 0 var(--default-padding);
     }
 

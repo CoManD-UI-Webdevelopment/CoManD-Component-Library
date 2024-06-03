@@ -12,6 +12,8 @@
     "streetNo": "Your Street/No",
     "zip": "Your zip",
     "city": "Your city",
+    "state": "NY",
+    "pobox": "Your PO Box",
     "miscInfo": "Misc. info",
     "country": "Your country",
     "longitude": "0.0",

@@ -55,12 +55,12 @@
             </template>
             <!-- end street/number -->
 
-            <!-- begin zip/city -->
-            <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}</span>
-            <template v-if="addressEntry.city">
-                <span class="locality">{{ addressEntry.city }}</span><br/>
-            </template>
-            <!-- end zip/city -->
+            <!-- begin zip/city (state) -->
+            <span v-if="addressEntry.zip || addressEntry.city" :class="showCityBeforeZip ? 'city-zip' : 'zip-city'">
+                <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}&nbsp;</span>
+                <span v-if="addressEntry.city" class="locality">{{ addressEntry.city }}<template v-if="addressEntry.state"> {{addressEntry.state}}</template></span>
+            </span><br/>
+            <!-- end zip/city (state) -->
 
             <!-- begin miscInfo -->
             <template v-if="addressEntry.miscInfo">
@@ -83,12 +83,12 @@
                 </template>
                 <!-- end street/number -->
 
-                <!-- begin zip/city -->
-                <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}&nbsp;</span>
-                <template v-if="addressEntry.city">
-                    <span class="locality">{{ addressEntry.city }}</span><br/>
-                </template>
-                <!-- end zip/city -->
+                <!-- begin zip/city (state) -->
+                <span v-if="addressEntry.zip || addressEntry.city" :class="showCityBeforeZip ? 'city-zip' : 'zip-city'">
+                    <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}</span>
+                    <span v-if="addressEntry.city" class="locality">{{ addressEntry.city }}<template v-if="addressEntry.state">&nbsp;{{addressEntry.state}}</template></span>
+                </span><br/>
+                <!-- end zip/city (state) -->
 
                 <!-- begin miscInfo -->
                 <template v-if="addressEntry.miscInfo">
@@ -116,7 +116,7 @@
                 <!-- end street/number -->
 
                 <!-- begin zip/city -->
-                <div class="input-wrapper">
+                <div :class="showCityBeforeZip ? 'city-zip' : 'zip-city'" class="input-wrapper">
                     <CmdFormElement
                         element="input"
                         type="text"
@@ -207,6 +207,13 @@ export default {
          * activate if physical address should be linked with GoogleMaps
          */
         linkGoogleMaps: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * activate to show city first/left then zip next/right
+         */
+        showCityBeforeZip: {
             type: Boolean,
             default: false
         }

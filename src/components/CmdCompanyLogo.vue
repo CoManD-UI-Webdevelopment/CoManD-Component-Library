@@ -2,16 +2,16 @@
     <div class="cmd-company-logo company-logo">
         <router-link v-if="link?.type === 'router'" :to="link?.path" :title="link?.tooltip">
             <!-- begin CmdImage -->
-            <CmdImage :image="image"/>
+            <CmdImage :image="image" @image-loaded="onImageLoaded" />
             <!-- end CmdImage -->
         </router-link>
         <a v-else-if="link?.type === 'href'" :href="link?.path" :title="link?.tooltip">
             <!-- begin CmdImage -->
-            <CmdImage :image="image"/>
+            <CmdImage :image="image" @image-loaded="onImageLoaded" />
             <!-- end CmdImage -->
         </a>
         <!-- begin CmdImage -->
-        <CmdImage v-else :image="image"/>
+        <CmdImage v-else :image="image" @image-loaded="onImageLoaded" />
         <!-- end CmdImage -->
     </div>
 </template>
@@ -88,6 +88,9 @@ export default {
         this.$_observer.disconnect()
     },
     methods: {
+        onImageLoaded(event) {
+            this.$emit("image-loaded", event)
+        },
         onColorSchemeChange(event) {
             this.prefersColorScheme = event.matches ? "light" : "dark"
         },

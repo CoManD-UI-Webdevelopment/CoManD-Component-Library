@@ -6,7 +6,7 @@
                  :textLegend="getMessage('basic_form.legend')"
                  :submitButton="submitButton"
         >
-            <div v-if="configuration.salutation" class="flex-container no-flex">
+            <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
@@ -38,7 +38,7 @@
             <slot name="top"></slot>
             <!-- end slot (top) -->
 
-            <div v-if="configuration.lastName || configuration.firstName" class="flex-container">
+            <div v-if="configuration.lastName || configuration.firstName" class="flex-container order-lastname-firstname">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     v-if="configuration.lastName"
@@ -71,7 +71,7 @@
                 />
                 <!-- end cmd-form-element -->
             </div>
-            <div v-if="configuration.email || configuration.phone" class="flex-container">
+            <div v-if="configuration.email || configuration.phone" class="flex-container order-phone-email">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     v-if="configuration.email"
@@ -105,7 +105,7 @@
                 <!-- end cmd-form-element -->
             </div>
 
-            <div v-if="configuration.streetNo || configuration.zip || configuration.city" class="flex-container">
+            <div v-if="configuration.streetNo || configuration.streetNo || (configuration.zip && configuration.city)" class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     v-if="configuration.streetNo"
@@ -121,7 +121,22 @@
                 />
                 <!-- end cmd-form-element -->
 
-                <div class="input-wrapper">
+                <!-- begin cmd-form-element -->
+                <CmdFormElement
+                    v-if="configuration.pobox"
+                    element="input"
+                    :type="configuration.pobox?.type || 'text'"
+                    :labelText="getMessage('basic_form.labeltext.pobox')"
+                    :placeholder="getMessage('basic_form.placeholder.pobox')"
+                    :required="configuration.pobox?.required"
+                    :name="configuration.pobox?.name || 'pobox'"
+                    v-model="formData.pobox.value"
+                    :status="formData.pobox.error ? 'error' : ''"
+                    @validate="onValidate"
+                />
+                <!-- end cmd-form-element -->
+
+                <div class="input-wrapper" :class="showCityBeforeZip ? 'order-city-zip' : 'order-zip-city'">
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
                         v-if="configuration.zip"
@@ -237,17 +252,10 @@ export default {
                 streetNo: {value: ''},
                 zip: {value: ''},
                 city: {value: ''},
+                pobox: {value: ''},
                 additionalAddressInfo: {value: ''},
                 additionalText: {value: ''},
                 acceptPrivacy: {value: false}
-            },
-            nativeButton: {
-                icon: {
-                    show: true,
-                    iconClass: "icon-message-send",
-                    tooltip: "Send message"
-                },
-                text: "Send"
             }
         }
     },
@@ -307,6 +315,13 @@ export default {
                     }
                 }
             }
+        },
+        /**
+         * activate to show city first/left then zip next/right
+         */
+        showCityBeforeZip: {
+            type: Boolean,
+            default: false
         },
         /**
          * receiver e-mail-address the form is sent to
@@ -369,6 +384,10 @@ export default {
 .cmd-pages-basic-form {
     fieldset {
         margin: 0;
+
+        .order-city-zip {
+            flex-direction: row-reverse;
+        }
     }
 }
 </style>

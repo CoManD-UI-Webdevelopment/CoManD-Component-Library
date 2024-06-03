@@ -4,7 +4,6 @@
         :collapsible="true"
         :cmdHeadline="{headlineText: readableName(componentName), headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
         :openCollapsedBox="true"
-        :allowContentToScroll="true"
         boxBodyClass="settings-body"
     >
         <template v-slot:body>
