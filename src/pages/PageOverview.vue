@@ -1,12 +1,4 @@
 <template>
-    <!-- begin basic-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
-    <CmdWidthLimitationWrapper>
-        <h2 class="headline-demopage" id="section-basic-form">
-            <span>Basic Form</span>
-        </h2>
-        <BasicForm :formAction="basicForm.formAction" />
-    </CmdWidthLimitationWrapper>
-    <!-- end basic-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
     <!-- begin basic-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
     <CmdWidthLimitationWrapper>
@@ -66,41 +58,7 @@ export default {
             faqsData,
             boxesTeamOverviewData,
             listOfDownloadsData,
-            listOfSiteLinksData,
-            basicForm: {
-                configuration: {
-                    salutation: {
-                        name: "salutation",
-                        default: "m",
-                        replaceInputType: true
-                    },
-                    lastName: {
-                        name: "surname",
-                        required: true,
-                        type: "text"
-                    },
-                    firstName: {
-                        required: false,
-                        type: "text"
-                    },
-                    email: {
-                        required: true,
-                        type: "email"
-                    },
-                    phone: {
-                        required: false,
-                        type: "phone"
-                    },
-                    additionalText: {
-                        required: false,
-                        element: "textarea"
-                    },
-                    acceptPrivacy: {
-                        required: true,
-                        replaceInputType: true
-                    }
-                }
-            }
+            listOfSiteLinksData
         }
     }
 }

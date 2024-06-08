@@ -1,10 +1,15 @@
 <template>
     <div class="cmd-pages-basic-form">
-        <!-- being CmdForm -->
-        <CmdForm @submit="onSubmit"
-                 novalidate="novalidate"
-                 :textLegend="getMessage('basic_form.legend')"
-                 :submitButton="submitButton"
+        <!-- begin CmdHeadline -->
+        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <!-- end CmdHeadline -->
+
+        <!-- begin CmdForm -->
+        <CmdForm
+            @submit="onSubmit"
+            novalidate="novalidate"
+            :textLegend="getMessage('basic_form.legend')"
+            :submitButton="submitButton"
         >
             <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
                 <!-- begin cmd-form-element -->
@@ -12,7 +17,7 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_male')"
-                    :name="configuration.salutation?.name || salutation"
+                    :name="configuration.salutation?.name || 'salutation'"
                     inputValue="m"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation"
@@ -25,7 +30,7 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_female')"
-                    :name="configuration.salutation?.name || salutation"
+                    :name="configuration.salutation?.name || 'salutation'"
                     inputValue="f"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation"
@@ -108,6 +113,21 @@
             <div v-if="configuration.streetNo || configuration.streetNo || (configuration.zip && configuration.city)" class="flex-container">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
+                    v-if="configuration.country"
+                    element="select"
+                    :labelText="getMessage('basic_form.labeltext.country')"
+                    :selectOptions="configuration.country?.selectOptions"
+                    :required="configuration.country?.required"
+                    :name="configuration.country?.name || 'country'"
+                    v-model="formData.country.value"
+                    :status="formData.country.error ? 'error' : ''"
+                    @validate="onValidate"
+                    @update:modelValue="onCountrySelect"
+                />
+                <!-- end cmd-form-element -->
+
+                <!-- begin cmd-form-element -->
+                <CmdFormElement
                     v-if="configuration.streetNo"
                     element="input"
                     :type="configuration.streetNo?.type || 'text'"
@@ -136,11 +156,12 @@
                 />
                 <!-- end cmd-form-element -->
 
-                <div class="input-wrapper" :class="showCityBeforeZip ? 'order-city-zip' : 'order-zip-city'">
+                <div class="input-wrapper" :class="cityBeforeZip ? 'order-city-zip' : 'order-zip-city'">
                     <!-- begin cmd-form-element -->
                     <CmdFormElement
                         v-if="configuration.zip"
                         element="input"
+                        class="input-zip"
                         :type="configuration.zip?.type || 'number'"
                         :labelText="getMessage('basic_form.labeltext.zip')"
                         :placeholder="getMessage('basic_form.placeholder.zip')"
@@ -225,9 +246,9 @@
 
 <script>
 // import mixins
-import I18n from "../mixins/I18n"
-import DefaultMessageProperties from "../mixins/pages/BasicForm/DefaultMessageProperties"
-import FieldValidation from "../mixins/FieldValidation"
+import I18n from "../mixins/I18n.js"
+import DefaultMessageProperties from "../mixins/CmdBasicForm/DefaultMessageProperties.js"
+import FieldValidation from "../mixins/FieldValidation.js"
 
 export default {
     mixins: [
@@ -242,7 +263,6 @@ export default {
     },
     data() {
         return {
-            //validator: new ContactFormValidator(name => this.label(name)),
             formData: {
                 salutation: this.configuration.salutation.default,
                 lastName: {value: ''},
@@ -253,10 +273,12 @@ export default {
                 zip: {value: ''},
                 city: {value: ''},
                 pobox: {value: ''},
+                country: {value: ''},
                 additionalAddressInfo: {value: ''},
                 additionalText: {value: ''},
                 acceptPrivacy: {value: false}
-            }
+            },
+            cityBeforeZip: this.showCityBeforeZip
         }
     },
     props: {
@@ -288,6 +310,24 @@ export default {
                     phone: {
                         required: false,
                         type: "phone"
+                    },
+                    country: {
+                        required: false,
+                        element: "select",
+                        selectOptions: [
+                            {
+                                text: "Please select...",
+                                value: ""
+                            },
+                            {
+                                text: "United States",
+                                value: "us"
+                            },
+                            {
+                                text: "Germany",
+                                value: "de"
+                            },
+                        ]
                     },
                     streetNo: {
                         required: false,
@@ -344,12 +384,24 @@ export default {
                     primary: true
                 }
             }
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            default() {
+                return {
+                    headlineText: "Basic Form",
+                    headlineLevel: 3
+                }
+            }
         }
     },
     mounted() {
-        this.$refs.dataPrivacy?.querySelector('.fancybox')?.addEventListener('click', event => {
+        this.$refs.dataPrivacy?.querySelector(".fancybox")?.addEventListener("click", event => {
             event.preventDefault()
-            openFancyBox({url: event.target.getAttribute('href')})
+            openFancyBox({url: event.target.getAttribute("href")})
         })
     },
     methods: {
@@ -364,6 +416,9 @@ export default {
 
             event.preventDefault();
         },
+        onCountrySelect(event) {
+          this.cityBeforeZip = event === 'us' || event === 'uk';
+        },
         onValidate() {
             this.formData = Object.assign({}, this.validator.validate(this.formData));
         },
@@ -376,6 +431,11 @@ export default {
         openDataPrivacy(url) {
             openFancyBox({url})
         }
+    },
+    watch: {
+        showCityBeforeZip() {
+            this.cityBeforeZip = this.showCityBeforeZip
+        }
     }
 }
 </script>
@@ -387,6 +447,10 @@ export default {
 
         .order-city-zip {
             flex-direction: row-reverse;
+        }
+
+        .input-zip {
+            max-width: 30%;
         }
     }
 }

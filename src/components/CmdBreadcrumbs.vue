@@ -1,6 +1,6 @@
 <template>
     <ul class="cmd-breadcrumbs">
-        <li v-if="breadcrumbLabel">{{ breadcrumbLabel }}</li>
+        <li v-if="breadcrumbLabel" class="breadcrumb-label">{{ breadcrumbLabel }}</li>
         <li v-for="(link, index) in breadcrumbLinks || []" :key="index">
             <!-- begin type 'href' -->
             <a  v-if="link.type === 'href'" :href="link.path">
@@ -84,7 +84,7 @@ export default {
             padding: 0 calc(var(--default-padding) / 2);
         }
 
-        &:first-child {
+        &.breadcrumb-label {
             margin-right: calc(var(--default-margin) / 2);
         }
 

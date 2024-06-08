@@ -948,6 +948,19 @@
                 </CmdWidthLimitationWrapper>
                 <!-- end bank account data ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
+                <!-- begin basic form ----------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-basic-form">
+                        <span>Basic Form</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdBasicForm')"></a>
+                    </h2>
+                    <CmdBasicForm
+                        ref="CmdBasicForm"
+                    />
+                </CmdWidthLimitationWrapper>
+                <!-- end basic form ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
                 <!-- begin boxes ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper anchorId="section-boxes">
                     <h2 class="headline-demopage">Boxes</h2>
@@ -1498,7 +1511,8 @@
                     <CmdPageFooter
                         ref="CmdPageFooter"
                         v-bind="cmdPageFooterSettingsData"
-                        :cmdSocialNetworks="socialNetworksData">
+                        :cmdSocialNetworks="socialNetworksData"
+                    >
                         <button class="button primary" title="Button given by slot">
                             <span class="icon-mail"></span>
                             <span>Contact</span>

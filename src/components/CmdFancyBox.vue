@@ -73,7 +73,7 @@
                     <!-- end CmdImage -->
                 </div>
                 <div v-else-if="fancyBoxContent" class="content" v-html="fancyBoxContent"></div>
-                <div v-else-if="fancyBoxElements" class="content"></div>
+                <div v-else-if="fancyBoxElements" class="content" ref="elements"></div>
                 <div v-else-if="fancyBoxGallery" class="content">
                     <!-- begin CmdSlideButton -->
                     <CmdSlideButton @click.prevent="showPrevItem" slideButtonType="prev"/>
@@ -259,7 +259,7 @@ const FancyBox = defineComponent({
             required: false
         },
         /**
-         * list of show elements (not images)
+         * list of shown elements (not images)
          */
         elements: {
             type: Array,
@@ -382,7 +382,7 @@ const FancyBox = defineComponent({
             } else if (this.elements) {
                 this.fancyBoxElements = this.elements.map(el => el.cloneNode(true))
                 this.$nextTick(() => {
-                    this.$el.querySelector(".content").append(...this.fancyBoxElements)
+                    this.$refs.elements.append(...this.fancyBoxElements)
                 })
             }
         },

@@ -874,7 +874,6 @@ export default {
     }
 
     &.has-state, & + .cmd-tooltip {
-
         &.error {
             * {
                 --status-color: var(--error-color);
@@ -901,6 +900,12 @@ export default {
     :is(input[type="checkbox"], input[type="radio"]):checked {
         ~ .label-text span {
             color: var(--hyperlink-color);
+        }
+
+        &:hover, &:active, &:focus {
+            ~ .label-text span {
+                color: var(--hyperlink-color-highlighted);
+            }
         }
     }
 

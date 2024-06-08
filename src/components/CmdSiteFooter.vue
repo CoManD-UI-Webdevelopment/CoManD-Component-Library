@@ -1,5 +1,5 @@
 <template>
-    <div class="cmd-site-footer">
+    <div class="cmd-site-footer site-footer">
         <footer :class="['flex-container', {vertical: orientation === 'vertical'}]">
             <slot></slot>
         </footer>
@@ -31,8 +31,6 @@ export default {
 /* begin cmd-site-footer ---------------------------------------------------------------------------------------- */
 .cmd-site-footer {
     padding: var(--grid-gap) 0;
-    border-top: var(--default-border);
-    background: var(--default-background);
     margin-top: auto;
     flex: none;
 

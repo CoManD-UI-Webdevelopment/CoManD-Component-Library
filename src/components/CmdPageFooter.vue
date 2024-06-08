@@ -16,6 +16,7 @@
                 v-if="buttonPrintView.show"
                 :class="['button', {'primary': buttonPrintView.primary}]"
                 :title="buttonPrintView.text ? buttonPrintView.icon?.tooltip : null"
+                @click="showFancyBox"
             >
                 <span v-if="buttonPrintView.icon?.show" :class="buttonPrintView.icon?.iconClass"></span>
                 <span v-if="buttonPrintView.text">{{buttonPrintView.text}}</span>
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+import { openFancyBox } from "./CmdFancyBox.vue"
+
 export default {
     name: "CmdPageFooter",
     props: {
@@ -60,6 +63,38 @@ export default {
         cmdSocialNetworks: {
             type: Array,
             required: false
+        },
+        /**
+         * properties for CmdFancyBox-component
+         */
+        cmdFancyBox: {
+            type: Object,
+            default() {
+                return {
+                    showPrintButtons: true,
+                    defaultAriaLabelText: "print-preview"
+                }
+            }
+        }
+    },
+    methods: {
+        showFancyBox() {
+            let elements = []
+            if(typeof this.cmdFancyBox.elements === "function") {
+                elements = this.cmdFancyBox.elements()
+            } else {
+                elements = [document.querySelector("main")]
+            }
+
+            openFancyBox({
+                elements: elements,
+                showPrintButtons: this.cmdFancyBox.showPrintButtons,
+                defaultAriaLabelText: this.cmdFancyBox.defaultAriaLabelText,
+                cmdHeadline: this.cmdFancyBox.cmdHeadline,
+                showOverlay: this.cmdFancyBox.showOverlay,
+                showSubmitButtons: this.cmdFancyBox.showSubmitButtons,
+                allowEscapeKey: this.cmdFancyBox.allowEscapeKey
+            })
         }
     }
 }
@@ -90,6 +125,7 @@ export default {
         justify-content: flex-end;
         margin-left: auto;
         gap: calc(var(--default-gap) / 2);
+        flex: none;
     }
 }
 /* end cmd-page-footer -------------------------------------------------------------------------------------------- */

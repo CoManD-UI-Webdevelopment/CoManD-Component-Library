@@ -9,7 +9,7 @@
         />
         <!-- end CmdHeadline -->
 
-        <!-- being form elements -->
+        <!-- begin form elements -->
         <div class="flex-container">
             <!-- begin CmdFormElement -->
             <CmdFormElement

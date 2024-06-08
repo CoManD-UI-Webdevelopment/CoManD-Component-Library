@@ -51,7 +51,7 @@ export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimit
 export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'
 
 // export page-components
-export { default as BasicForm } from '@/pages/BasicForm.vue'
+export { default as BasicForm } from '@/components/CmdBasicForm.vue'
 export { default as ContactInformation } from '@/pages/ContactInformation.vue'
 export { default as MultipleBoxWrapper } from '@/pages/MultipleBoxWrapper.vue'
 export { default as MultipleListsOfLinks } from '@/pages/MultipleListsOfLinks.vue'

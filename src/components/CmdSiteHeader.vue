@@ -178,12 +178,12 @@ export default {
 <style>
 /* begin cmd-site-header ---------------------------------------------------------------------------------------- */
 .cmd-site-header {
+    --logo-width-on-scroll: 50%;
+
     grid-area: site-header;
     display: flex;
     flex-direction: column;
     flex: none;
-    border-bottom: var(--default-border);
-    background: var(--color-scheme-background);
 
     &.sticky {
         position: sticky;
@@ -199,6 +199,7 @@ export default {
                         transform-origin: top left;
                         transition: var(--header-scroll-animation);
                         margin: 0;
+                        width: 100%;
                     }
                 }
             }
@@ -212,7 +213,7 @@ export default {
                     figure {
                         img {
                             transition: var(--header-scroll-animation);
-                            height: 5rem;
+                            width: var(--logo-width-on-scroll);
                         }
                     }
                 }
@@ -223,12 +224,12 @@ export default {
     header, .cmd-main-navigation nav, .cmd-list-of-links {
         max-width: var(--max-width);
         width: 100%; /* stretch flex-item */
-        margin: 0 0 0 auto;
         padding: 0 var(--default-padding);
     }
 
     .cmd-main-navigation nav {
         width: auto;
+        margin: 0 0 0 auto; /* align nav to right */
     }
 
     .top-header {

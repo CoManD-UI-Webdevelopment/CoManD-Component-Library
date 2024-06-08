@@ -14,7 +14,7 @@
                     <!-- end pre-headline-text -->
 
                     <span>
-                        <!-- being slot -->
+                        <!-- begin slot -->
                          <slot>{{ headlineText }}</slot>
                          <!-- end slot -->
                     </span>
@@ -27,7 +27,7 @@
             <!-- end CmdIcon -->
 
             <span>
-                <!-- being slot -->
+                <!-- begin slot -->
                 <slot>{{ headlineText }}</slot>
                 <!-- end slot -->
             </span>
@@ -74,13 +74,13 @@
                         <span class="pre-headline-text">{{ preHeadlineText }}</span>
                         <!-- end pre-headline-text -->
 
-                        <!-- being slot -->
+                        <!-- begin slot -->
                         <slot>{{ headlineText }}</slot>
                         <!-- end slot -->
                     </component>
                 </template>
                 <component v-else-if="headlineText" :is="headlineTag">
-                    <!-- being slot -->
+                    <!-- begin slot -->
                     <slot>{{ headlineText }}</slot>
                     <!-- end slot -->
                 </component>

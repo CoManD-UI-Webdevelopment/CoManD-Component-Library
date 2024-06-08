@@ -3,7 +3,7 @@
        @click.prevent
        :class="['cmd-slide-button', 'button', 'keep-behavior-on-small-devices', slideButtonType]"
        :title="getDirection.tooltip">
-        <!-- being CmdIcon -->
+        <!-- begin CmdIcon -->
         <CmdIcon :iconClass="getDirection.iconClass || 'next'" />
         <!-- end CmdIcon -->
     </a>
