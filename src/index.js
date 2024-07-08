@@ -2,6 +2,7 @@
 export { default as CmdAddressData } from '@/components/CmdAddressData.vue'
 export { default as CmdBackToTopButton } from '@/components/CmdBackToTopButton.vue'
 export { default as CmdBankAccountData } from '@/components/CmdBankAccountData.vue'
+export { default as CmdBasicForm } from '@/components/CmdBasicForm.vue'
 export { default as CmdBox } from '@/components/CmdBox.vue'
 export { default as CmdBoxWrapper } from '@/components/CmdBoxWrapper.vue'
 export { default as CmdBreadcrumbs } from '@/components/CmdBreadcrumbs.vue'
@@ -51,7 +52,6 @@ export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimit
 export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'
 
 // export page-components
-export { default as BasicForm } from '@/components/CmdBasicForm.vue'
 export { default as ContactInformation } from '@/pages/ContactInformation.vue'
 export { default as MultipleBoxWrapper } from '@/pages/MultipleBoxWrapper.vue'
 export { default as MultipleListsOfLinks } from '@/pages/MultipleListsOfLinks.vue'

@@ -29,9 +29,6 @@
   - styles for medium screens
   - styles for small screens
 
-- COLOR SCHEMES ------------------------
-  - custom light-mode
-  - custom dark-mode
 */
 /* end table of contents --------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -310,40 +307,3 @@ body.avoid-scrolling {
 
 /* end styles for small screens --------------------------------------------------------------------------------------------------------------------------------------------------- */
 /* ---------------------------------------------- END MEDIA QUERIES AND BROWSER SPECIFIC STYLES -------------------------------------------------- */
-
-/* ---------------------------------------------- BEGIN COLORS-SCHEMES (LIGHT-/DARK-MODE) -------------------------------------------------- */
-html {
-    --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
-    --color-scheme-text-color-inverted: var(--light-mode-text-color);
-    --color-scheme-background: var(--dark-mode-background);
-    --color-scheme-background-inverted: var(--light-mode-background);
-    --default-background-color-lightness: 20%;
-
-    &.light-mode {
-        /* assign default colors for custom light-mode set by class */
-        --color-scheme-text-color: var(--light-mode-text-color);
-        --color-scheme-text-color-inverted: var(--dark-mode-text-color);
-        --color-scheme-text-color-buttons: var(--light-mode-text-color-buttons);
-        --color-scheme-background: var(--light-mode-background);
-        --color-scheme-background-inverted: var(--dark-mode-background);
-        --default-background-color-lightness: 97%;
-    }
-
-    &.dark-mode {
-        /* assign default colors for custom dark-mode set by class */
-        --color-scheme-text-color: var(--dark-mode-text-color);
-        --color-scheme-text-color-inverted: var(--light-mode-text-color);
-        --color-scheme-text-color-buttons: var(--dark-mode-text-color-buttons);
-        --color-scheme-background: var(--dark-mode-background);
-        --color-scheme-background-inverted: var(--light-mode-background);
-        --default-background-color-lightness: 20%;
-        --hyperlink-color-lightness: 40%; /* hyperlink-color-lightness */
-        --hyperlink-color-highlighted-lightness: 50%; /* hyperlink-color-highlighted-lightness (used for highlighted hyperlinks) */
-
-        :where(label, .label) .label-text > [class*="icon-"] {
-            background: var(--dark-gray);
-        }
-    }
-}
-
-/* ---------------------------------------------- END COLORS-SCHEMES (LIGHT-/DARK-MODE) -------------------------------------------------- */

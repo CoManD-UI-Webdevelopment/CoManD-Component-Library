@@ -10,6 +10,7 @@
             novalidate="novalidate"
             :textLegend="getMessage('basic_form.legend')"
             :submitButton="submitButton"
+            :formAction="formAction"
         >
             <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
                 <!-- begin cmd-form-element -->
@@ -20,7 +21,7 @@
                     :name="configuration.salutation?.name || 'salutation'"
                     inputValue="m"
                     :replaceInputType="configuration.salutation?.replaceInputType"
-                    v-model="formData.salutation"
+                    v-model="formData.salutation.value"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -33,7 +34,7 @@
                     :name="configuration.salutation?.name || 'salutation'"
                     inputValue="f"
                     :replaceInputType="configuration.salutation?.replaceInputType"
-                    v-model="formData.salutation"
+                    v-model="formData.salutation.value"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -181,7 +182,7 @@
                         :labelText="getMessage('basic_form.labeltext.city')"
                         :placeholder="getMessage('basic_form.placeholder.city')"
                         :required="configuration.city?.required"
-                        :name="configuration.city?.name || 'zip'"
+                        :name="configuration.city?.name || 'city'"
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
                         @validate="onValidate"
@@ -207,14 +208,14 @@
 
             <!-- begin cmd-form-element -->
             <CmdFormElement
-                v-if="configuration.additionalText"
-                :element="configuration.additionalText?.element || 'textarea'"
-                :labelText="getMessage('basic_form.labeltext.additional_text')"
-                :placeholder="getMessage('basic_form.placeholder.additional_text')"
-                :required="configuration.additionalText?.required"
-                :name="configuration.additionalText?.name || 'additional-text'"
-                v-model="formData.additionalText.value"
-                :status="formData.additionalText.error ? 'error' : ''"
+                v-if="configuration.userMessage"
+                :element="configuration.userMessage?.element || 'textarea'"
+                :labelText="getMessage('basic_form.labeltext.userMessage')"
+                :placeholder="getMessage('basic_form.placeholder.userMessage')"
+                :required="configuration.userMessage?.required"
+                :name="configuration.userMessage?.name || 'user-message'"
+                v-model="formData.userMessage.value"
+                :status="formData.userMessage.error ? 'error' : ''"
                 @validate="onValidate"
             />
             <!-- end cmd-form-element -->
@@ -249,8 +250,10 @@
 import I18n from "../mixins/I18n.js"
 import DefaultMessageProperties from "../mixins/CmdBasicForm/DefaultMessageProperties.js"
 import FieldValidation from "../mixins/FieldValidation.js"
+import {ContactFormValidator} from "@/utils/ContactFormValidation.js";
 
 export default {
+    emits: ["submit"],
     mixins: [
         I18n,
         DefaultMessageProperties,
@@ -263,8 +266,9 @@ export default {
     },
     data() {
         return {
+            validator: new ContactFormValidator(label => label),
             formData: {
-                salutation: this.configuration.salutation.default,
+                salutation: {value: this.configuration.salutation.default},
                 lastName: {value: ''},
                 firstName: {value: ''},
                 email: {value: ''},
@@ -275,13 +279,27 @@ export default {
                 pobox: {value: ''},
                 country: {value: ''},
                 additionalAddressInfo: {value: ''},
-                additionalText: {value: ''},
+                userMessage: {value: ''},
                 acceptPrivacy: {value: false}
             },
             cityBeforeZip: this.showCityBeforeZip
         }
     },
     props: {
+        /**
+         * activate if native submit-event should be used
+         */
+        useNativeSubmit: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * set url for form-action
+         */
+        formAction: {
+            type: String,
+            required: false
+        },
         /**
          * configuration for form-elements used in form
          */
@@ -345,7 +363,7 @@ export default {
                         required: false,
                         type: "text"
                     },
-                    additionalText: {
+                    userMessage: {
                         required: false,
                         element: "textarea"
                     },
@@ -406,15 +424,40 @@ export default {
     },
     methods: {
         onSubmit(event) {
-            this.onValidate();
+            this.onValidate()
 
             this.formData = Object.assign({}, this.validator.validatePrivacy(this.formData));
-            if (this.formData.error) {
-                event.preventDefault();
-                return;
+
+            if (this.formData.error || this.useNativeSubmit) {
+                if(this.formData.error) {
+                    // prevent original event from CmdForm (to avoid submit and reload)
+                    event.originalEvent.preventDefault()
+                }
+                return
             }
 
-            event.preventDefault();
+            // custom submit of form-data
+            const customSubmitFormData = new FormData()
+            // get keys for form-elements from configuration
+            const configurationEntries = Object.keys(this.configuration)
+
+            for(let i = 0; i < configurationEntries.length; i++) {
+                // assign formData values to form-element key
+                customSubmitFormData.set(configurationEntries[i], this.formData[configurationEntries[i]].value)
+            }
+
+            fetch(this.formAction, {method: "POST", body: customSubmitFormData}).then((response) => {
+                if(response.ok) {
+                    console.log("CmdBasicForm", "ok")
+                } else {
+                    console.log("CmdBasicForm", "fail")
+                }
+            }).catch((error) => {
+                console.error(error)
+            })
+
+            // prevent original levent form CmdForm (to avoid submit and reload)
+            event.originalEvent.preventDefault()
         },
         onCountrySelect(event) {
           this.cityBeforeZip = event === 'us' || event === 'uk';

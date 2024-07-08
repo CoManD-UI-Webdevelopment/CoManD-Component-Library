@@ -12,12 +12,6 @@
 }
 /* end fade-transition */
 
-.cmd-slideshow {
-  .fade-enter-from, .fade-leave-to {
-    position: absolute;
-  }
-}
-
 /* begin slide-transition */
 [class^="slide-"][class$="-enter-active"], [class^="slide-"][class$="-enter-active"] {
   transition: transform 1s ease-in-out;

@@ -1,5 +1,5 @@
 <template>
-    <form class="cmd-form" :data-use-validation="useValidation" @submit="onSubmit" :class="{error: errorOccurred}" :novalidate="novalidate">
+    <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit" :class="{error: errorOccurred}" :novalidate="novalidate">
         <template v-if="useFieldset">
             <fieldset class="flex-container">
                 <legend :class="{hidden : !showLegend}">{{ textLegend }}</legend>
@@ -73,6 +73,13 @@ export default {
         }
     },
     props: {
+        /**
+         * set url for form-action
+         */
+        formAction: {
+            type: String,
+            required: false
+        },
         /**
          * activate if form-elements should be given by slot
          */
@@ -153,10 +160,11 @@ export default {
         submitFormData(event) {
             // fill formdata with names and value
             let formdata = {}
-            this.formElements.forEach((element) => {
-                formdata[element.name] = this.formValues[element.name]
-            })
-
+            if(this.formElements) {
+                this.formElements.forEach((element) => {
+                    formdata[element.name] = this.formValues[element.name]
+                })
+            }
             this.$emit("submit", {originalEvent: event, formdata: formdata})
         },
         onSubmit(event) {

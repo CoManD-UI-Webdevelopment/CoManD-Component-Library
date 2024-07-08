@@ -957,7 +957,12 @@
                     </h2>
                     <CmdBasicForm
                         ref="CmdBasicForm"
+                        @submit="sendBasicForm"
                     />
+                    <dl>
+                       <dt>originalEvent</dt><dd>{{basicFormData.originalEvent}}</dd>
+                       <dt>formdata</dt><dd>{{basicFormData.formData}}</dd>
+                    </dl>
                 </CmdWidthLimitationWrapper>
                 <!-- end basic form ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -1968,6 +1973,7 @@ export default {
         return {
             listOfComponents,
             activeEntry: "CmdAddressData",
+            basicFormData: {},
             componentControls: {},
             componentView: true,
             showLeftSidebar: true,
@@ -2130,6 +2136,13 @@ export default {
         }
     },
     methods: {
+        sendBasicForm(event) {
+            // prevent original event
+            event.originalEvent.preventDefault()
+
+            // assign custom event to data-property
+            this.basicFormData = event
+        },
         sectionName(componentName) {
             let componentNameWithHyphens = componentName.replace(/([A-Z])/g, '-$1');
             return "#section" + componentNameWithHyphens.toLowerCase();

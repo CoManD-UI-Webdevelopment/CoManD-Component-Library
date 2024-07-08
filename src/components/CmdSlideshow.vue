@@ -473,6 +473,10 @@ export default {
             background: var(--pure-white-reduced-opacity);
         }
     }
+
+    .fade-enter-from, .fade-leave-to {
+        position: absolute;
+    }
 }
 
 .edit-mode .cmd-slideshow .image-wrapper.edit-items {
