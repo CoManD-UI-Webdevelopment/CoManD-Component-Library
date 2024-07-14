@@ -103,7 +103,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-double-arrow-down",
+                    iconClass: "icon-chevron-two-stripes-down",
                     tooltip: "Collapse all boxes"
                 }
             }
@@ -115,7 +115,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-double-arrow-up",
+                    iconClass: "icon-chevron-two-stripes-up",
                     tooltip: "Expand all boxes"
                 }
             }

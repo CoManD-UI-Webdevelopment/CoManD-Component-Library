@@ -230,14 +230,14 @@ export default {
                     next: {
                         next: {
                             type: "next",
-                            iconClass: "icon-single-arrow-right",
+                            iconClass: "icon-chevron-one-stripe-right",
                             tooltip: "Next"
                         }
                     },
                     prev: {
                         prev: {
                             type: "prev",
-                            iconClass: "icon-single-arrow-left",
+                            iconClass: "icon-chevron-one-stripe-left",
                             tooltip: "Previous"
                         }
                     }

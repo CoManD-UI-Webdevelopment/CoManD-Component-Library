@@ -384,8 +384,8 @@ data() {
             offcanvasPosition: "right",
             stretchMainItems: false,
             persistOnMobile: false,
-            subentriesIconClass: "icon-single-arrow-down",
-            subSubentriesIconClass: "icon-single-arrow-right"
+            subentriesIconClass: "icon-chevron-one-stripe-down",
+            subSubentriesIconClass: "icon-chevron-one-stripe-right"
         },
         cmdMainNavigationSettingsControls: {
             offcanvasPosition: [
@@ -401,17 +401,17 @@ data() {
         },
         cmdMultistepFormProgressBarSettingsData: {
             showStepNumber: false,
-            separatorIconClass: "icon-single-arrow-right"
+            separatorIconClass: "icon-chevron-one-stripe-right"
         },
         cmdMultistepFormProgressBarSettingsControls: {
             separatorIconClass: [
                 {
-                    text: "icon-single-arrow-right (default)",
-                    value: "icon-single-arrow-right"
+                    text: "icon-chevron-one-stripe-right (default)",
+                    value: "icon-chevron-one-stripe-right"
                 },
                 {
-                    text: "icon-double-arrow-right",
-                    value: "icon-double-arrow-right"
+                    text: "icon-chevron-two-stripes-right",
+                    value: "icon-chevron-two-stripes-right"
                 }
             ]
         },

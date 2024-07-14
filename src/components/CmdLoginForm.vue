@@ -323,7 +323,7 @@ export default {
                     backToLoginForm: {
                         icon: {
                             show: true,
-                            iconClass: "icon-single-arrow-left",
+                            iconClass: "icon-chevron-one-stripe-left",
                             tooltip: ""
                         },
                         text: "Back to login form"

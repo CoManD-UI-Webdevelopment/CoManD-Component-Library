@@ -94,14 +94,14 @@ export default {
         iconClassOpenCollapse() {
             if (this.collapseToLeft) {
                 if (this.open) {
-                    return "icon-single-arrow-left"
+                    return "icon-chevron-one-stripe-left"
                 }
-                return "icon-single-arrow-right"
+                return "icon-chevron-one-stripe-right"
             } else {
                 if (this.open) {
-                    return "icon-single-arrow-right"
+                    return "icon-chevron-one-stripe-right"
                 }
-                return "icon-single-arrow-left"
+                return "icon-chevron-one-stripe-left"
             }
         }
     },

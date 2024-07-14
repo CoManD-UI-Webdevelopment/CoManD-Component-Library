@@ -84,7 +84,7 @@ export default {
         separatorIconClass: {
             type: String,
             default() {
-                return "icon-single-arrow-right"
+                return "icon-chevron-one-stripe-right"
             }
         },
         useGap: {

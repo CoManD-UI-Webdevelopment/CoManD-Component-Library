@@ -39,19 +39,19 @@ export default {
             default: function() {
                 return {
                     prev: {
-                        iconClass: "icon-single-arrow-left",
+                        iconClass: "icon-chevron-one-stripe-left",
                         tooltip: "Previous"
                     },
                     next: {
-                        iconClass: "icon-single-arrow-right",
+                        iconClass: "icon-chevron-one-stripe-right",
                         tooltip: "Next"
                     },
                     up: {
-                        iconClass: "icon-single-arrow-up",
+                        iconClass: "icon-chevron-one-stripe-up",
                         tooltip: "Previous"
                     },
                     down: {
-                        iconClass: "icon-single-arrow-down",
+                        iconClass: "icon-chevron-one-stripe-down",
                         tooltip: "Next"
                     }
                 }

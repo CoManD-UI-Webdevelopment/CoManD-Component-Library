@@ -279,13 +279,13 @@ export default {
          * icon for dropdown-icon (i.e. an angle/arrow)
          *
          * @requiredForAccessibility: partial
-         * @defaultIcon: icon-single-arrow-down
+         * @defaultIcon: icon-chevron-one-stripe-down
          */
         iconDropdown: {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-single-arrow-down",
+                    iconClass: "icon-chevron-one-stripe-down",
                     tooltip: "Toggle dropdown visibility",
                     iconType: "auto"
                 }

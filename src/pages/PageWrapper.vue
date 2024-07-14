@@ -204,7 +204,7 @@ export default {
     computed: {
         iconBackToTop() {
             return {
-                iconClass: "icon-single-arrow-up",
+                iconClass: "icon-chevron-one-stripe-up",
                 tooltip: this.label("back_to_top_button.tooltip")
             }
         }

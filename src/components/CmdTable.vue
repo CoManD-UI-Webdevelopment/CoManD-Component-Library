@@ -141,7 +141,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-down",
+                    iconClass: "icon-chevron-one-stripe-down",
                     tooltip: "Expand table"
                 }
             }
@@ -155,7 +155,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-up",
+                    iconClass: "icon-chevron-one-stripe-up",
                     tooltip: "Collapse table"
                 }
             }
@@ -183,7 +183,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-right",
+                    iconClass: "icon-chevron-one-stripe-right",
                     tooltip: "Stretch table"
                 }
             }

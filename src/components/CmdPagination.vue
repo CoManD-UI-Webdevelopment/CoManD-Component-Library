@@ -105,7 +105,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-left",
+                    iconClass: "icon-chevron-one-stripe-left",
                     text: "prev",
                     showText: true
                 }
@@ -120,7 +120,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-right",
+                    iconClass: "icon-chevron-one-stripe-right",
                     text: "next",
                     showText: true
                 }

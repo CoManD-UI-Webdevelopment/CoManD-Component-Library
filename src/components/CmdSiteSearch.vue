@@ -294,11 +294,11 @@ export default {
             default() {
                 return {
                     showFilters: {
-                        iconClass: "icon-single-arrow-up",
+                        iconClass: "icon-chevron-one-stripe-up",
                         type: "auto"
                     },
                     hideFilters: {
-                        iconClass: "icon-single-arrow-down",
+                        iconClass: "icon-chevron-one-stripe-down",
                         type: "auto"
                     }
                 }

@@ -395,7 +395,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-up",
+                    iconClass: "icon-chevron-one-stripe-up",
                     tooltip: "Close content",
                     iconType: "auto"
                 }
@@ -410,7 +410,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-down",
+                    iconClass: "icon-chevron-one-stripe-down",
                     tooltip: "Show content",
                     iconType: "auto"
                 }

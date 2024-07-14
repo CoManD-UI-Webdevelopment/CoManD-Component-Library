@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/iconfonts/logos-iconfont/icomoon-logos.woff?fgweog') format('woff');
+  src:  url('../fonts/iconfonts/logos-iconfont/icomoon-logos.woff?hbqcvr') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -24,6 +24,29 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-x:before {
+  content: "\b121";
+}
+.icon-x-circle .path1:before {
+  content: "\b122";
+  color: rgb(0, 0, 0);
+}
+.icon-x-circle .path2:before {
+  content: "\b123";
+  margin-left: -0.998046875em;
+  color: rgb(255, 255, 255);
+}
+.icon-freelance:before {
+  content: "\e903";
+}
+.icon-freelancermap:before {
+  content: "\b124";
+  color: #fff;
+}
+.icon-wellfound:before {
+  content: "\b125";
+  color: #fff;
+}
 .icon-amazon:before {
   content: "\b100";
 }
@@ -38,9 +61,6 @@
 }
 .icon-css3:before {
   content: "\b104";
-}
-.icon-edge:before {
-  content: "\b105";
 }
 .icon-facebook:before {
   content: "\b106";
@@ -57,72 +77,63 @@
 .icon-git:before {
   content: "\b10a";
 }
-.icon-github:before {
+.icon-google-analytics:before {
   content: "\b10b";
 }
-.icon-google-analytics:before {
+.icon-html5:before {
   content: "\b10c";
 }
-.icon-html5:before {
+.icon-instagram:before {
   content: "\b10d";
 }
-.icon-instagram:before {
+.icon-linkedin:before {
   content: "\b10e";
 }
-.icon-linkedin:before {
+.icon-linkedin-square:before {
   content: "\b10f";
 }
-.icon-linkedin-square:before {
+.icon-linux:before {
   content: "\b110";
 }
-.icon-linux:before {
+.icon-meta:before {
   content: "\b111";
 }
-.icon-meta:before {
+.icon-opera:before {
   content: "\b112";
 }
-.icon-opera:before {
+.icon-paypal:before {
   content: "\b113";
 }
-.icon-paypal:before {
+.icon-safari:before {
   content: "\b114";
 }
-.icon-safari:before {
+.icon-skype:before {
   content: "\b115";
 }
-.icon-skype:before {
+.icon-tumblr:before {
   content: "\b116";
 }
-.icon-tumblr:before {
+.icon-tumblr-square:before {
   content: "\b117";
 }
-.icon-tumblr-square:before {
+.icon-twitch:before {
   content: "\b118";
 }
-.icon-twitch:before {
-  content: "\b119";
-}
-.icon-twitter:before {
-  content: "\b11a";
-}
-.icon-twitter-square:before {
+.icon-whatsapp:before {
   content: "\b11b";
 }
-.icon-vue:before {
+.icon-windows8:before {
   content: "\b11c";
 }
-.icon-whatsapp:before {
+.icon-xing:before {
   content: "\b11d";
 }
-.icon-windows8:before {
+.icon-xing-square:before {
   content: "\b11e";
 }
-.icon-xing:before {
+.icon-youtube:before {
   content: "\b11f";
 }
-.icon-xing-square:before {
+.icon-github:before {
   content: "\b120";
-}
-.icon-youtube:before {
-  content: "\b121";
 }

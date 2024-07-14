@@ -38,7 +38,7 @@ export default {
             type: Object,
             default: function () {
                 return {
-                    iconClass: "icon-single-arrow-up",
+                    iconClass: "icon-chevron-one-stripe-up",
                     tooltip: "Back to top",
                     iconType: "auto"
                 }

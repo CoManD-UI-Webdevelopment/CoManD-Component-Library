@@ -247,14 +247,14 @@ export default {
          */
         subentriesIconClass: {
             type: String,
-            default: "icon-single-arrow-down"
+            default: "icon-chevron-one-stripe-down"
         },
         /**
          * icon to show if a sub-entry has further sub-entries
          */
         subSubentriesIconClass: {
             type: String,
-            default: "icon-single-arrow-right"
+            default: "icon-chevron-one-stripe-right"
         }
     },
     methods: {

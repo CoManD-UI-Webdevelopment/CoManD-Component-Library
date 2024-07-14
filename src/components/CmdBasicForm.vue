@@ -210,8 +210,8 @@
             <CmdFormElement
                 v-if="configuration.userMessage"
                 :element="configuration.userMessage?.element || 'textarea'"
-                :labelText="getMessage('basic_form.labeltext.userMessage')"
-                :placeholder="getMessage('basic_form.placeholder.userMessage')"
+                :labelText="getMessage('basic_form.labeltext.user_message')"
+                :placeholder="getMessage('basic_form.placeholder.user_message')"
                 :required="configuration.userMessage?.required"
                 :name="configuration.userMessage?.name || 'user-message'"
                 v-model="formData.userMessage.value"

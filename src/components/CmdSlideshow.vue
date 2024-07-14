@@ -164,14 +164,14 @@ export default {
                 return {
                     next: {
                         next: {
-                            "iconClass": "icon-single-arrow-right",
+                            "iconClass": "icon-chevron-one-stripe-right",
                             "tooltip": "Next"
                         }
                     },
                     prev: {
                         prev: {
                             "type": "prev",
-                            "iconClass": "icon-single-arrow-left",
+                            "iconClass": "icon-chevron-one-stripe-left",
                             "tooltip": "Previous"
                         }
                     }
@@ -367,6 +367,7 @@ export default {
         justify-content: center;
 
         > a:not(.button) {
+            display: block;
             text-decoration: none;
 
             figcaption {
@@ -417,9 +418,9 @@ export default {
                 padding: .2rem;
                 list-style-type: none;
                 margin: 0;
-                border: var(--default-border-reduced-opacity);
                 border-radius: var(--full-circle);
                 background: var(--light-gray);
+                border: var(--default-border-reduced-opacity);
 
                 a {
                     display: block;
