@@ -1,11 +1,11 @@
 <template>
     <!-- begin basicForm -->
-    <BasicForm v-if="contactFormOnly" v-bind="basicForm" />
+    <CmdBasicForm v-if="contactFormOnly" v-bind="basicForm" />
     <!-- end basicForm -->
 
     <div v-else class="flex-container">
         <!-- begin basicForm -->
-        <BasicForm v-bind="basicForm" />
+        <CmdBasicForm v-bind="basicForm" />
         <!-- end basicForm -->
 
         <!-- begin additional-columns -->
@@ -31,9 +31,9 @@ export default {
     name: "ContactInformation",
     props: {
         /**
-         * properties for basicForm-component
+         * properties for CmdBasicForm-component
          */
-        basicForm: {
+        cmdBasicForm: {
             type: Object,
             default: null
         },

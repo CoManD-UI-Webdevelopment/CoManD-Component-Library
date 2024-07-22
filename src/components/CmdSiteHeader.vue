@@ -257,8 +257,8 @@ export default {
     }
 
     header {
-        padding-top: calc(var(--default-padding) * 2);
-        padding-bottom: calc(var(--default-padding) * 2);
+        padding-top: var(--default-padding);
+        padding-bottom: var(--default-padding);
         row-gap: 0;
 
         &.has-navigation {
@@ -292,7 +292,7 @@ export default {
             &.has-navigation {
                 grid-template-rows: 1fr;
                 grid-template-areas: "company-logo main-navigation";
-                padding-bottom: calc(var(--default-padding) * 2);
+                padding-bottom: var(--default-padding);
             }
 
             .cmd-company-logo {

@@ -110,8 +110,6 @@ export default {
             top: auto;
         }
     }
-
-
 }
 </style>
 

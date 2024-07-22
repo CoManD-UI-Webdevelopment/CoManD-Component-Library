@@ -1095,6 +1095,7 @@ export default {
         box-shadow: none;
         background: var(--color-scheme-background);
         border: var(--default-border);
+        align-items: center;
 
         dl {
             justify-content: center;

@@ -6,7 +6,7 @@
             <span>Contact Information</span>
         </h2>
         <ContactInformation
-            :basicForm="basicForm"
+            :cmdBasicForm="basicForm"
             :cmdAddressData="{}"
             :cmdGoogleMaps="{}">
             <template v-slot:additional-info>
@@ -21,10 +21,10 @@
         <h2 class="headline-demopage" id="section-multiple-lists-of-links-downloads">
             <span>Multiple Lists of links</span>
         </h2>
-        <h3>Downloads</h3>
+        <h3 id="section-multiple-lists-of-links-downloads">Downloads</h3>
         <MultipleListsOfLinks :segments="listOfDownloadsData" />
         <hr />
-        <h3>SiteMap</h3>
+        <h3 id="section-multiple-lists-of-links-sitemap">SiteMap</h3>
         <MultipleListsOfLinks :segments="listOfSiteLinksData" />
     </CmdWidthLimitationWrapper>
     <!-- end multiple-lists-of-links ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -34,10 +34,10 @@
         <h2 class="headline-demopage" id="section-multiple-box-wrapper">
             <span>Multiple Box Wrapper</span>
         </h2>
-        <h3>FAQs</h3>
+        <h3 id="section-multiple-box-wrapper-faqs">FAQs</h3>
         <MultipleBoxWrapper :segments="faqsData" />
         <hr />
-        <h3>Team Overview</h3>
+        <h3 id="section-multiple-box-wrapper-team-overview">Team Overview</h3>
         <MultipleBoxWrapper :segments="boxesTeamOverviewData" />
     </CmdWidthLimitationWrapper>
     <!-- end multiple-box-wrapper ------------------------------------------------------------------------------------------------------------------------------------------------------->

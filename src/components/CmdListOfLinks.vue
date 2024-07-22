@@ -214,7 +214,7 @@ export default {
 
         li {
             list-style: none;
-            margin-left: 0;
+            margin-left: 0 !important; /* overwrite default-settings from frontend-framework */
         }
 
         &.align-center {

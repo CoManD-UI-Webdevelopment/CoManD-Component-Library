@@ -49,16 +49,18 @@
                                 :cmdHeadline="{headlineText: 'Components', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-component'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(1)"
                                 @toggleCollapse="slotProps.boxToggled(1, $event)"
+                                id="list-of-components"
                             >
                                 <template v-slot:body>
                                     <ul>
-                                        <li v-for="(componentName, index) in listOfComponents" :key="index" :class="{'active' : activeEntry === 'Cmd' + componentName}">
+                                        <li v-for="(componentName, index) in listOfComponents" :key="index"
+                                            :class="{'active' : activeEntry === 'Cmd' + componentName}">
                                             <a
                                                 :href="sectionName(componentName)"
                                                 @click="updateSettingsSidebar(componentNameWithPrefix(componentName))"
                                                 title="Go to component"
                                             >
-                                                {{ readableComponentName(componentName)}}
+                                                {{ readableComponentName(componentName) }}
                                             </a>
                                         </li>
                                     </ul>
@@ -76,26 +78,24 @@
                             >
                                 <template v-slot:body>
                                     <ul>
-                                        <li :class="'active' ? activeEntry === 'BasicForm' : null">
-                                            <a href="#section-basic-form" @click="updateSettingsSidebar('BasicForm', 'page')">Basic Form</a>
-                                            <ul>
-                                                <li>
-                                                    <a href="#section-contact-information" @click="updateSettingsSidebar('ContactInformation', 'page')">
-                                                        Contact Information
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                        <li>
+                                            <a href="#section-contact-information"
+                                               @click="updateSettingsSidebar('ContactInformation', 'page')">
+                                                Contact Information
+                                            </a>
                                         </li>
                                         <li>
                                             Multiple Lists Of Links
                                             <ul>
                                                 <li>
-                                                    <a href="#section-multiple-lists-of-links-downloads" @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
+                                                    <a href="#section-multiple-lists-of-links-downloads"
+                                                       @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
                                                         Downloads
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#section-multiple-lists-of-links-sitemap" @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
+                                                    <a href="#section-multiple-lists-of-links-sitemap"
+                                                       @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
                                                         SiteMap
                                                     </a>
                                                 </li>
@@ -105,13 +105,15 @@
                                             Multiple Box Wrapper
                                             <ul>
                                                 <li>
-                                                    <a href="#section-multiple-box-wrapper-team-overview" @click="updateSettingsSidebar('MultipleBoxWrapperTeamOverview', 'page')">
-                                                        Team Overview
+                                                    <a href="#section-multiple-box-wrapper-faqs"
+                                                       @click="updateSettingsSidebar('MultipleBoxWrapperFAQs', 'page')">
+                                                        FAQs
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#section-multiple-box-wrapper-faqs" @click="updateSettingsSidebar('MultipleBoxWrapperFAQs', 'page')">
-                                                        FAQs
+                                                    <a href="#section-multiple-box-wrapper-team-overview"
+                                                       @click="updateSettingsSidebar('MultipleBoxWrapperTeamOverview', 'page')">
+                                                        Team Overview
                                                     </a>
                                                 </li>
                                             </ul>
@@ -960,8 +962,10 @@
                         @submit="sendBasicForm"
                     />
                     <dl>
-                       <dt>originalEvent</dt><dd>{{basicFormData.originalEvent}}</dd>
-                       <dt>formdata</dt><dd>{{basicFormData.formData}}</dd>
+                        <dt>originalEvent</dt>
+                        <dd>{{ basicFormData.originalEvent }}</dd>
+                        <dt>formdata</dt>
+                        <dd>{{ basicFormData.formData }}</dd>
                     </dl>
                 </CmdWidthLimitationWrapper>
                 <!-- end basic form ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1627,7 +1631,8 @@
                         ref="CmdSlideshow"
                         v-bind="cmdSlideshowSettingsData"
                         :slideshow-items="slideshowData"
-                    >Slot-Content</CmdSlideshow>
+                    >Slot-Content
+                    </CmdSlideshow>
                 </CmdWidthLimitationWrapper>
                 <!-- end slideshow ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -1848,7 +1853,7 @@
                 </CmdWidthLimitationWrapper>
 
                 <!-- begin page-overview -->
-                <PageOverview />
+                <PageOverview/>
                 <!-- end page-overview -->
             </main>
             <!-- end page view -->
@@ -2148,7 +2153,7 @@ export default {
             return "#section" + componentNameWithHyphens.toLowerCase();
         },
         readableComponentName(componentName) {
-           return componentName.replace(/(?!^)([A-Z])/g, ' $1');
+            return componentName.replace(/(?!^)([A-Z])/g, ' $1');
         },
         componentNameWithPrefix(componentName) {
             return "Cmd" + componentName
@@ -2159,7 +2164,7 @@ export default {
         updateSettingsSidebar(componentName, type) {
             this.setActiveEntry(componentName)
 
-            if(type !== 'page') {
+            if (type !== 'page') {
                 this.componentView = true
 
                 if (this.openRightSidebar) {
@@ -2384,6 +2389,13 @@ export default {
                 padding: 0.1rem 0.3rem;
                 text-decoration: none;
             }
+
+            &#list-of-components {
+                .box-body {
+                    max-height: 70rem;
+                    overflow: auto;
+                }
+            }
         }
 
         .open-slot-wrapper {
@@ -2395,6 +2407,11 @@ export default {
             .comand-versions {
                 padding: var(--default-padding);
                 margin: 0;
+                background: var(--pure-white);
+
+                dd {
+                    white-space: nowrap;
+                }
             }
         }
 
