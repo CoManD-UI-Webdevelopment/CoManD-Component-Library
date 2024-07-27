@@ -306,7 +306,10 @@ export default {
     }
 
     .cmd-slide-button {
+        top: 50% !important;
         display: none;
+        height: auto;
+        transform: translateY(-50%);
     }
 
     .inner-wrapper {

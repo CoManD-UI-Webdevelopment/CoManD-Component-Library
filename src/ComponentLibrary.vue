@@ -23,7 +23,7 @@
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
-                                :cmdHeadline="{headlineText: 'Template Selection', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
+                                :cmdHeadline="{headlineText: 'Template Settings', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(0)"
                                 @toggleCollapse="slotProps.boxToggled(0, $event)"
                             >
@@ -38,6 +38,26 @@
                                             <option value="influencer">Influencer</option>
                                         </select>
                                     </label>
+                                    <div>
+                                        <span>Color Scheme</span>
+                                        <div class="input-wrapper">
+                                            <label for="default-color-scheme">
+                                                <input type="radio" id="default-color-scheme" name="color-scheme" v-model="colorScheme"
+                                                       value="none"/>
+                                                <span class="label-text">Color-Scheme by Browser/OS</span>
+                                            </label>
+                                            <label for="light-mode">
+                                                <input type="radio" id="light-mode" name="color-scheme" v-model="colorScheme"
+                                                       value="light"/>
+                                                <span class="label-text">Light Mode</span>
+                                            </label>
+                                            <label for="dark-mode">
+                                                <input type="radio" id="dark-mode" name="color-scheme" v-model="colorScheme"
+                                                       value="dark"/>
+                                                <span class="label-text">Dark Mode</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </template>
                             </CmdBox>
                             <!-- end box template selection -->
@@ -1981,6 +2001,7 @@ export default {
             basicFormData: {},
             componentControls: {},
             componentView: true,
+            colorScheme: "none",
             showLeftSidebar: true,
             selectedTemplate: "blank",
             acceptedCookies: ["google-maps"],
@@ -2315,7 +2336,25 @@ export default {
         }
     },
     watch: {
+        colorScheme: {
+            handler() {
+                const htmlTag = document.documentElement
+
+                if (this.colorScheme === "light") {
+                    htmlTag.classList.remove("dark-mode")
+                    htmlTag.classList.add("light-mode")
+                } else if (this.colorScheme === "dark") {
+                    htmlTag.classList.remove("light-mode")
+                    htmlTag.classList.add("dark-mode")
+                } else {
+                    htmlTag.classList.remove("dark-mode")
+                    htmlTag.classList.remove("light-mode")
+                }
+            },
+            immediate: true
+        },
         selectedTemplate() {
+            // change stylesheet
             let linkTag = document.querySelector('link')
 
             if (linkTag) {
@@ -2328,6 +2367,37 @@ export default {
                 newLink.href = 'https://cdn.jsdelivr.net/npm/comand-frontend-framework/dist/templates/' + this.selectedTemplate + '.css';
 
                 document.head.appendChild(newLink);
+            }
+
+            if(this.selectedTemplate === "blank") {
+                this.companyLogoData =
+                    {
+                        "link": {
+                            "type": "href",
+                            "path": "./",
+                            "tooltip": "Tooltip"
+                        },
+                        "pathDefaultLogo": "/media/images/logos/logo.svg",
+                        "pathDarkmodeLogo": "/media/images/logos/logo-darkmode.svg",
+                        "altText": "Company Logo"
+                    }
+
+            }
+
+            // change logo
+            if(this.selectedTemplate === "dating") {
+                this.companyLogoData =
+                {
+                    "link": {
+                    "type": "href",
+                        "path": "./",
+                        "tooltip": "Tooltip"
+                },
+                    "pathDefaultLogo": "/media/images/logos/logo-dating.svg",
+                    "pathDarkmodeLogo": "/media/images/logos/logo-dating-darkmode.svg",
+                    "altText": "Company Logo"
+                }
+
             }
         }
     }
@@ -2405,9 +2475,7 @@ export default {
             height: 100%;
 
             .comand-versions {
-                padding: var(--default-padding);
                 margin: 0;
-                background: var(--pure-white);
 
                 dd {
                     white-space: nowrap;

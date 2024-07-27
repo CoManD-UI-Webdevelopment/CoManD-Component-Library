@@ -512,6 +512,12 @@ export default FancyBox
         filter: grayscale(1);
     }
 
+    .cmd-slide-button {
+        top: 50% !important;
+        height: auto;
+        transform: translateY(-50%);
+    }
+
     &.image {
         .outer-content-wrapper {
             max-height: none;

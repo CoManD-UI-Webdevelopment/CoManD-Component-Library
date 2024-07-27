@@ -2,7 +2,7 @@
     <div class="cmd-tabs">
         <ul :class="{'stretch-tabs' : stretchTabs}" role="tablist">
             <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="tab">
-                <a  href="#" @click.prevent="setActiveTab(index)" :title="!tab.name ? tab.tooltip : undefined">
+                <a href="#" @click.prevent="setActiveTab(index)" :title="!tab.name ? tab.tooltip : undefined">
                     <!-- begin CmdIcon -->
                     <CmdIcon v-if="tab.iconClass" :iconClass="tab.iconClass" :type="tab.iconType" />
                     <!-- end CmdIcon -->

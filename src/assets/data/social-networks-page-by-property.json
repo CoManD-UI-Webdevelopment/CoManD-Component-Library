@@ -10,7 +10,7 @@
     "id": "social-network-twitter",
     "path": "https://twitter.com/home?status=",
     "tooltip": "Share this page on twitter",
-    "iconClass": "icon-twitter",
+    "iconClass": "icon-x",
     "linkText": "Share"
   },
   {

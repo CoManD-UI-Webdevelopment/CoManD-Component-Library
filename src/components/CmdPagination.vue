@@ -180,6 +180,10 @@ export default {
         float: none;
         margin: 0;
 
+        &:has(span:only-child) {
+            aspect-ratio: 1/1;
+        }
+
         span {
             align-self: center;
         }

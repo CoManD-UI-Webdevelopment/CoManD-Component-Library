@@ -827,6 +827,21 @@ export default {
                     li {
                         flex: 1;
                         border-radius: var(--box-border-radius);
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 0;
+
+                        &:not(:only-child) {
+                            border-bottom-left-radius: 0;
+                            border-bottom-right-radius: 0;
+
+                            &:first-child {
+                                border-bottom-left-radius: var(--box-border-radius);
+                            }
+
+                            &:last-child {
+                                border-bottom-right-radius: var(--box-border-radius);
+                            }
+                        }
 
                         a {
                             flex: 1;
@@ -834,7 +849,8 @@ export default {
                             text-align: center;
                             background: var(--color-scheme-background);
                             border-left: var(--box-border);
-                            border-radius: var(--box-border-radius);
+                            border-radius: inherit;
+                            line-height: 100%;
                         }
 
                         &:hover, &:active, &:focus {
@@ -877,6 +893,11 @@ export default {
 
                 .cmd-list-of-links {
                     background: none;
+
+                    ul li {
+                        aspect-ratio: 1/1;
+                        border-radius: var(--box-border-radius) !important; /* overwrite settings from default-/column-view */
+                    }
 
                     ul, ul * {
                         border: 0;

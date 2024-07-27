@@ -387,6 +387,12 @@ export default {
         }
     }
 
+    .cmd-slide-button {
+        top: 50% !important;
+        height: auto;
+        transform: translateY(-50%);
+    }
+
     > .inner-thumbnail-wrapper {
         border-radius: var(--default-border-radius);
         padding: calc(var(--default-padding) * 2);
