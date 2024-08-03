@@ -179,8 +179,7 @@
 <script>
 // import mixins
 import I18n from "../mixins/I18n"
-import DefaultMessagePropertiesFakeSelect from "../mixins/CmdFakeSelect/DefaultMessageProperties"
-import DefaultMessagePropertiesFormElement from "../mixins/CmdFormElement/DefaultMessageProperties"
+import DefaultMessageProperties from "../mixins/CmdFakeSelect/DefaultMessageProperties"
 import FieldValidation from "../mixins/FieldValidation"
 import Identifier from "../mixins/Identifier"
 import Tooltip from "../mixins/Tooltip"
@@ -190,8 +189,7 @@ export default {
     inheritAttrs: false,
     mixins: [
         I18n,
-        DefaultMessagePropertiesFakeSelect,
-        DefaultMessagePropertiesFormElement,
+        DefaultMessageProperties,
         FieldValidation,
         Identifier,
         Tooltip
