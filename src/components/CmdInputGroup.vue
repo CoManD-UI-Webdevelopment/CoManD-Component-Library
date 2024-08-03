@@ -329,6 +329,10 @@ export default {
     }
 
     &.has-state {
+        input:checked ~ span {
+            --status-color: var(--hyperlink-color);
+        }
+
         &.error {
             --status-color: var(--error-color);
         }

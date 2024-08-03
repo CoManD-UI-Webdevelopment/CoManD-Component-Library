@@ -297,6 +297,7 @@
                                     :disabled="disabledStatus"
                                     :showSearchButton="false"
                                     placeholder="Search"
+                                    fieldIconClass="icon-search"
                                     tooltipText="This is a tooltip"
                                     v-bind="{useCustomTooltip: false}"
                                 />

@@ -59,7 +59,8 @@
         </span>
         <!-- end label-text (+ required asterisk) -->
 
-        <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio'" class="flex-container"><!-- container required to place inner icons correctly -->
+        <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio' && $attrs.type !== 'search'"
+              class="flex-container"><!-- container required to place inner icons correctly -->
             <!-- begin CmdIcon (for icon inside field) -->
             <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"
             />
@@ -198,6 +199,9 @@
         <!-- begin searchfield -->
         <template v-else-if="element === 'input' && $attrs.type === 'search'">
             <span class="search-field-wrapper flex-container no-gap">
+                <!-- begin CmdIcon (for icon inside field) -->
+                <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"/>
+                <!-- end CmdIcon (for icon inside field) -->
                 <input
                     v-bind="elementAttributes"
                     :id="htmlId"
@@ -862,6 +866,14 @@ export default {
 <style>
 /* begin cmd-form-element ------------------------------------------------------------------------------------------ */
 .cmd-form-element {
+    & input.replace-input-type {
+        &:checked {
+            &::after {
+                top: 0;
+            }
+        }
+    }
+
     /* icon right aligned in input */
     input + .place-inside {
         left: auto;

@@ -169,7 +169,7 @@ export default {
         justify-self: center;
         grid-column: span var(--grid-small-span);
         width: 100%;
-        min-width: 11.1rem; // assure to be as wide as action-buttons in edit-mode
+        min-width: 11.1rem; /* assure to be as wide as action-buttons in edit-mode */
 
         img {
             border: var(--default-border);

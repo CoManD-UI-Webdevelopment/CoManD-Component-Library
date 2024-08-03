@@ -70,7 +70,7 @@
 
         <!-- begin filters -->
         <template v-if="useFilters">
-            <a href="#" @click.prevent="showFilters = !showFilters">
+            <a class="filter-options" href="#" @click.prevent="showFilters = !showFilters">
                 <!-- begin CmdIcon -->
                 <CmdIcon
                     :iconClass="showFilters ? cmdIcon?.showFilters?.iconClass : cmdIcon?.hideFilters?.iconClass"
@@ -384,7 +384,10 @@ export default {
 .cmd-box-site-search {
     flex-wrap: nowrap;
 
-    > a {
+    > a.filter-options {
+        display: table;
+        align-self: flex-start;
+
         [class*='icon'] {
             font-size: var(--icon-size-small);
         }

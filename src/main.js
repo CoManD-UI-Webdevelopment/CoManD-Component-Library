@@ -17,11 +17,13 @@ import directiveTelephone from "./directives/telephone"
 import directiveFocus from "./directives/focus"
 
 /* begin imports css from comand-component-library ---------------------------------------------------------------------------------------- */
+import 'comand-ui-iconfonts/base-iconfont/base-iconfont.css'
+
 /* import additional iconfont containing company-logos */
-import '@/assets/styles/logos-iconfont.css'
+import 'comand-ui-iconfonts/logos-iconfont/logos-iconfont.css'
 
 /* import additional iconfont containing editmode-iconfont-icons */
-import '@/assets/styles/editmode-iconfont.css'
+import 'comand-ui-iconfonts/editmode-iconfont/editmode-iconfont.css'
 
 /* import css for global-styles */
 import '@/assets/styles/component-library-global-styles.scss'

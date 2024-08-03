@@ -50,7 +50,7 @@
                     <!-- begin close-icon -->
                     <a v-if="fancyboxOptions.closeIcon"
                        href="#"
-                       class="button primary"
+                       class="button"
                        id="close-dialog"
                        :title="fancyboxOptions.closeIcon.tooltip"
                        ref="close-dialog"
