@@ -58,7 +58,9 @@
 
         <!-- begin box-body -->
         <div v-show="open" :class="['box-body', boxBodyClass]" aria-expanded="true" role="article">
+            <!-- begin content given slot -->
             <div v-if="useSlots?.includes('body')"
+                 class="inner-box-body-wrapper"
                  :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}"
                  ref="boxBody"
                  :style="allowContentToScroll ? 'max-height: ' + calculatedBodyHeight : null"
@@ -66,12 +68,14 @@
                 <!-- begin slot 'body' -->
                 <slot name="body">
                     <transition-group :name="toggleTransition">
-                        <p :class="{
-                           'cutoff-text': cutoffTextLines > 0,
-                           'fade-last-line': fadeLastLine && !showCutOffText,
-                           'show-text' : showCutOffText
-                       }">
-                            {{ textBody }}
+                        <p
+                            :class="{
+                               'cutoff-text': cutoffTextLines > 0,
+                               'fade-last-line': fadeLastLine && !showCutOffText,
+                               'show-text' : showCutOffText
+                            }"
+                            v-html='textBody'
+                        >
                         </p>
                         <a v-if="cutoffTextLines > 0" href="#" @click.prevent="toggleCutOffText">
                             {{
@@ -82,11 +86,17 @@
                 </slot>
                 <!-- end slot 'body' -->
             </div>
+            <!-- end content given slot -->
 
-            <template v-else>
+            <!-- begin content given by properties -->
+            <div v-else
+                 class="inner-box-body-wrapper"
+                 :class="{'allow-scroll': allowContentToScroll}"
+            >
                 <img v-if="image" :src="image.src" :alt="image.altText"/>
 
-                <div v-else :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
+                <div v-if="textBody"
+                     :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
                     <!-- begin CmdHeadline -->
                     <CmdHeadline
                         v-if="cmdHeadline?.headlineText && repeatHeadlineInBoxBody"
@@ -94,9 +104,18 @@
                     />
                     <!-- end CmdHeadline -->
 
-                    <p v-if="textBody">{{ textBody }}</p>
+                    <!-- begin textBody -->
+                    <p v-if="textBody" v-html="textBody"></p>
+                    <!-- end textBody -->
                 </div>
-            </template>
+
+                <!-- begin additionalLink in box-footer -->
+                <div v-if="cmdLink?.linkType" class="box-footer">
+                    <CmdLink v-bind="cmdLink" />
+                </div>
+                <!-- end additionalLink in box-footer  -->
+            </div>
+            <!-- end content given by properties -->
         </div>
         <!-- end box-body -->
 
@@ -158,18 +177,20 @@
         <div class="box-header flex-container vertical">
             <figure v-if="user.image">
                 <img :src="user.image.src" :alt="user.image.alt"/>
-                <figcaption>{{ user.name }} <span v-if="user.age">, {{ user.age }}</span></figcaption>
+                <figcaption v-if="!rowView" class="user-name">{{ user.name }}<span v-if="user.age" class="user-age"> ({{
+                        user.age
+                    }})</span></figcaption>
             </figure>
             <div v-else>
                 <span :class="defaultProfileIconClass" :title="user.name"></span>
-                <p v-if="!rowView">{{ user.name }}</p>
+                <p v-if="!rowView" class="user-name">{{ user.name }}</p>
             </div>
         </div>
         <!-- end box-header -->
 
         <!-- begin box-body -->
         <div class="box-body">
-            <p v-if="rowView">{{ user.name }}</p>
+            <p v-if="rowView" class="user-name">{{ user.name }}</p>
             <p v-if="user.profession">{{ user.profession }}</p>
             <p v-if="user.position">{{ user.position }}</p>
             <p v-if="user.description" class="description">{{ user.description }}</p>
@@ -177,7 +198,7 @@
         <!-- end box-body -->
 
         <!-- begin user-tags -->
-        <ul  v-if="user.tags && user.tags.length" class="tags">
+        <ul v-if="user.tags && user.tags.length" class="tags">
             <li v-for="(tag, index) in user.tags" :key="index">
                 {{ tag }}
             </li>
@@ -436,6 +457,13 @@ export default {
         cmdHeadline: {
             type: Object,
             required: false
+        },
+        /**
+         * properties for CmdLink-component to set additional link at bottom of box
+         */
+        cmdLink: {
+            type: Object,
+            default: {}
         }
     },
     /*
@@ -473,11 +501,11 @@ export default {
         // set focus on first input if box contains form-elements
         setFocus() {
             this.$nextTick(() => {
-                if(this.open) {
-                   const firstFormElement = this.$refs.cmdBox.querySelector(":is(input, select, textarea):first-of-type")
+                if (this.open) {
+                    const firstFormElement = this.$refs.cmdBox.querySelector(":is(input, select, textarea):first-of-type")
 
-                    if(firstFormElement) {
-                       firstFormElement.focus()
+                    if (firstFormElement) {
+                        firstFormElement.focus()
                     }
                 }
             })
@@ -541,7 +569,7 @@ export default {
             overflow-y: auto;
 
             & * {
-              flex-shrink: 0;
+                flex-shrink: 0;
             }
         }
     }
@@ -627,6 +655,15 @@ export default {
             img {
                 display: block;
                 border-radius: 0;
+            }
+
+            .inner-box-body-wrapper:has(img:only-child) {
+                border-bottom-left-radius: var(--box-border-radius);
+                border-bottom-right-radius: var(--box-border-radius);
+
+                img {
+                    border-radius: inherit;
+                }
             }
 
             .navigation {
@@ -757,6 +794,15 @@ export default {
 
     /* boxType === 'user' */
     &.user {
+        .user-name {
+            color: var(--color-scheme-text-color);
+            font-size: 2rem;
+        }
+
+        .user-age {
+            font-size: var(--default-font-size);
+        }
+
         > .box-header {
             --default-icon-size: 6rem;
             --box-header-text-color: var(--primary-color);
@@ -769,7 +815,7 @@ export default {
 
             img, > div:first-child > [class*="icon-"] {
                 display: table;
-                margin: 0 auto var(--default-margin) auto;
+                margin: 0 auto var(--default-margin) auto !important;
                 padding: calc(var(--default-padding) * 3);
                 border-radius: var(--full-circle);
                 background: var(--box-header-background);
@@ -875,14 +921,6 @@ export default {
         }
 
         &.row-view {
-            [class*="icon"] {
-                --default-icon-size: 3rem;
-            }
-
-            .box-header > div:first-child > [class*="icon-"] {
-                padding: calc(var(--default-padding) * 1.5);
-            }
-
             .box-body p {
                 text-align: left;
             }
@@ -911,3 +949,5 @@ export default {
 
 /* end cmd-box ------------------------------------------------------------------------------------------ */
 </style>
+<script setup>
+</script>

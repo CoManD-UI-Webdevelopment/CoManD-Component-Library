@@ -1,4 +1,4 @@
-# comand-component-library (fka: comand-ui-kit)
+# CoManD Component-Library
 
 ## Project description
 ```
@@ -15,7 +15,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
@@ -27,6 +27,11 @@ npm run build
 ```
 npm run lint
 ```
+
+### Required dependencies
+```
+comand-frontend-framework
+comand-ui-iconfonts
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

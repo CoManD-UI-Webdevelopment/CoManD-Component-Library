@@ -16,6 +16,7 @@
             <figure :class="['cmd-image flex-container no-gap vertical', textAlign]">
                 <!-- begin figcaption above image -->
                 <template v-if="figcaption?.show && figcaption?.position === 'top'">
+                    <!-- begin CmdFormElement -->
                     <CmdFormElement
                         v-if="slotProps.editing"
                         element="input"
@@ -25,7 +26,8 @@
                         labelText="Text figcaption"
                         v-model="editableFigcaptionText"
                     />
-                    <figcaption v-else-if="figcaption?.text">{{ figcaption?.text }}</figcaption>
+                    <!-- end CmdFormElement -->
+                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text" />
                 </template>
                 <!-- end figcaption above image -->
 
@@ -62,6 +64,7 @@
 
                 <!-- begin figcaption below image -->
                 <template v-if="figcaption?.show && figcaption?.position !== 'top'">
+                    <!-- begin CmdFormElement -->
                     <CmdFormElement
                         v-if="slotProps.editing"
                         element="input"
@@ -73,12 +76,15 @@
                         v-model="editableFigcaptionText"
                         placeholder="figcaption"
                     />
-                    <figcaption v-else-if="figcaption?.text">{{ figcaption?.text }}</figcaption>
+                    <!-- end CmdFormElement -->
+                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text" />
                 </template>
                 <!-- end figcaption below image -->
 
                 <!-- begin show placeholder if no image exists (and component is not edited) -->
-                <button v-if="!slotProps.editing && !imageSource" type="button" class="button confirm"
+                <button v-if="!slotProps.editing && !imageSource"
+                        type="button"
+                        class="button confirm"
                         @click="onAddItem">
                     <span class="icon-add"></span>
                     <span>Add new image</span>
@@ -91,9 +97,9 @@
 
     <!-- begin default-view -->
     <figure v-else :class="['cmd-image', textAlign]">
-        <figcaption v-if="figcaption?.show && figcaption?.position === 'top'">{{ figcaption?.text }}</figcaption>
+        <figcaption v-if="figcaption?.show && figcaption?.position === 'top'" v-html="figcaption?.text" />
         <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded" />
-        <figcaption v-if="figcaption?.show && figcaption?.position !== 'top'">{{ figcaption?.text }}</figcaption>
+        <figcaption v-if="figcaption?.show && figcaption?.position !== 'top'" v-html="figcaption?.text" />
     </figure>
     <!-- end default-view -->
 </template>
@@ -112,7 +118,7 @@ export default {
             mediumMaxWidth: 1023,
             smallMaxWidth: 600,
             currentWindowWidth: window.innerWidth,
-            allowedFileExtensions: ["jpg", "jpeg", "png", "webp"],
+            allowedFileExtensions: ["gif", "jpg", "jpeg", "png", "webp", "svg"],
             uploadInitiated: false,
             allowDrop: false,
             showFigcaption: true,

@@ -418,7 +418,7 @@ export default {
                 flex: none; /* avoids items to shrink to small on small screens */
 
                 img {
-                    min-width: 15rem;
+                    min-width: 5rem;
                     max-height: 10rem;
                 }
 

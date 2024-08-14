@@ -1,130 +1,138 @@
 <template>
     <transition name="fade">
         <div class="cmd-cookie-disclaimer flex-container vertical">
-            <!-- begin CmdHeadline -->
-            <CmdHeadline
-                v-if="cmdHeadlineCookieDisclaimer?.show && cmdHeadlineCookieDisclaimer?.headlineText && cmdHeadlineCookieDisclaimer?.headlineLevel"
-                :headlineText="cmdHeadlineCookieDisclaimer.headlineText"
-                :headlineLevel="cmdHeadlineCookieDisclaimer.headlineLevel"
-            />
-            <!-- end CmdHeadline -->
+            <!-- begin slot -->
+            <template v-if="useSlot">
+                <slot></slot>
+            </template>
+            <!-- end slot -->
 
-            <!-- begin slot for cookie-options -->
-            <slot name="cookie-options">
-                <!-- begin required cookies -->
-                <div v-if="cookieOptions?.required" class="flex-container vertical">
-                    <!-- begin CmdHeadline -->
-                    <CmdHeadline
-                        v-if="cmdBoxRequiredCookies?.showHeadline"
-                        :headline-text="cmdBoxRequiredCookies?.headlineText"
-                        :headline-level="cmdBoxRequiredCookies?.headlineLevel "
-                    />
-                    <!-- end CmdHeadline -->
+            <template v-else>
+                <!-- begin CmdHeadline -->
+                <CmdHeadline
+                    v-if="cmdHeadlineCookieDisclaimer?.show && cmdHeadlineCookieDisclaimer?.headlineText && cmdHeadlineCookieDisclaimer?.headlineLevel"
+                    :headlineText="cmdHeadlineCookieDisclaimer.headlineText"
+                    :headlineLevel="cmdHeadlineCookieDisclaimer.headlineLevel"
+                />
+                <!-- end CmdHeadline -->
 
-                    <!-- begin CmdBox -->
-                    <CmdBox v-for="(cookie, index) in cookieOptions.required.cookies || []"
-                            :useSlots="['header', 'body']"
-                            :collapsible="cmdBoxRequiredCookies?.collapsible"
-                            :key="index"
-                    >
-                        <template v-slot:header>
-                            <!-- begin CmdFormElement -->
-                            <CmdFormElement
-                                element="input"
-                                type="checkbox"
-                                v-model="acceptedCookies"
-                                :inputValue="cookie.value"
-                                :labelText="cookie.labelText"
-                                :disabled="cookie.disabled"
-                                :id="cookie.id"
-                                :toggleSwitch="true"
-                                :title="getMessage('cmdcookiedisclaimer.title.cookie_cannot_be_disabled')"
-                            />
-                            <!-- end CmdFormElement -->
-                        </template>
-                        <template v-slot:body>
-                            <p v-if="cookie.description">{{ cookie.description }}</p>
-                            <p v-if="cookie.linkDataPrivacy">
-                                {{ cookie.linkDataPrivacy.label }}
-                                <a @click="openDataPrivacy"
-                                   :href="cookie.linkDataPrivacy.link"
-                                   :target="cookie.linkDataPrivacy.target">
-                                    {{ cookie.linkDataPrivacy.linkText }}
-                                </a>
-                            </p>
-                            <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
-                        </template>
-                    </CmdBox>
-                    <!-- end CmdBox -->
-                </div>
-                <!-- end required cookies -->
+                <!-- begin slot for cookie-options -->
+                <slot name="cookie-options">
+                    <!-- begin required cookies -->
+                    <div v-if="cookieOptions?.required" class="flex-container vertical">
+                        <!-- begin CmdHeadline -->
+                        <CmdHeadline
+                            v-if="cmdBoxRequiredCookies?.showHeadline"
+                            :headline-text="cmdBoxRequiredCookies?.headlineText"
+                            :headline-level="cmdBoxRequiredCookies?.headlineLevel "
+                        />
+                        <!-- end CmdHeadline -->
 
-                <hr/>
+                        <!-- begin CmdBox -->
+                        <CmdBox v-for="(cookie, index) in cookieOptions.required.cookies || []"
+                                :useSlots="['header', 'body']"
+                                :collapsible="cmdBoxRequiredCookies?.collapsible"
+                                :key="index"
+                        >
+                            <template v-slot:header>
+                                <!-- begin CmdFormElement -->
+                                <CmdFormElement
+                                    element="input"
+                                    type="checkbox"
+                                    v-model="acceptedCookies"
+                                    :inputValue="cookie.value"
+                                    :labelText="cookie.labelText"
+                                    :disabled="cookie.disabled"
+                                    :id="cookie.id"
+                                    :toggleSwitch="true"
+                                    :title="getMessage('cmdcookiedisclaimer.title.cookie_cannot_be_disabled')"
+                                />
+                                <!-- end CmdFormElement -->
+                            </template>
+                            <template v-slot:body>
+                                <p v-if="cookie.description">{{ cookie.description }}</p>
+                                <p v-if="cookie.linkDataPrivacy">
+                                    {{ cookie.linkDataPrivacy.label }}
+                                    <a @click="openDataPrivacy"
+                                       :href="cookie.linkDataPrivacy.link"
+                                       :target="cookie.linkDataPrivacy.target">
+                                        {{ cookie.linkDataPrivacy.linkText }}
+                                    </a>
+                                </p>
+                                <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
+                            </template>
+                        </CmdBox>
+                        <!-- end CmdBox -->
+                    </div>
+                    <!-- end required cookies -->
 
-                <!-- begin optional cookies -->
-                <div v-if="cookieOptions?.optional" class="flex-container vertical">
-                    <!-- begin CmdHeadline -->
-                    <CmdHeadline
-                        v-if="cmdBoxOptionalCookies?.showHeadline"
-                        :headline-text="cmdBoxOptionalCookies?.headlineText"
-                        :headline-level="cmdBoxOptionalCookies?.headlineLevel
+                    <hr/>
+
+                    <!-- begin optional cookies -->
+                    <div v-if="cookieOptions?.optional" class="flex-container vertical">
+                        <!-- begin CmdHeadline -->
+                        <CmdHeadline
+                            v-if="cmdBoxOptionalCookies?.showHeadline"
+                            :headline-text="cmdBoxOptionalCookies?.headlineText"
+                            :headline-level="cmdBoxOptionalCookies?.headlineLevel
                     "/>
-                    <!-- end CmdHeadline -->
+                        <!-- end CmdHeadline -->
 
-                    <!-- begin CmdBox -->
-                    <CmdBox v-for="(cookie, index) in cookieOptions.optional.cookies || []"
-                            :useSlots="['header', 'body']"
-                            :collapsible="cmdBoxOptionalCookies?.collapsible"
-                            :key="index"
-                    >
-                        <template v-slot:header>
-                            <!-- begin CmdFormElement -->
-                            <CmdFormElement
-                                element="input"
-                                type="checkbox"
-                                v-model="acceptedCookies"
-                                :inputValue="cookie.value"
-                                :labelText="cookie.labelText"
-                                :disabled="cookie.disabled"
-                                :id="cookie.id"
-                                :toggleSwitch="true"
-                                :title="getMessage('cmdcookiedisclaimer.title.toggle_to_accept_cookie')"
-                            />
-                            <!-- end CmdFormElement -->
-                        </template>
-                        <template v-slot:body>
-                            <p v-if="cookie.description">{{ cookie.description }}</p>
-                            <p v-if="cookie.linkDataPrivacy">
-                                {{ cookie.linkDataPrivacy.label }}
-                                <a @click="openDataPrivacy"
-                                   :href="cookie.linkDataPrivacy.link"
-                                   :target="cookie.linkDataPrivacy.target">
-                                    {{ cookie.linkDataPrivacy.linkText }}
-                                </a>
-                            </p>
-                            <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
-                        </template>
-                    </CmdBox>
-                    <!-- end CmdBox -->
+                        <!-- begin CmdBox -->
+                        <CmdBox v-for="(cookie, index) in cookieOptions.optional.cookies || []"
+                                :useSlots="['header', 'body']"
+                                :collapsible="cmdBoxOptionalCookies?.collapsible"
+                                :key="index"
+                        >
+                            <template v-slot:header>
+                                <!-- begin CmdFormElement -->
+                                <CmdFormElement
+                                    element="input"
+                                    type="checkbox"
+                                    v-model="acceptedCookies"
+                                    :inputValue="cookie.value"
+                                    :labelText="cookie.labelText"
+                                    :disabled="cookie.disabled"
+                                    :id="cookie.id"
+                                    :toggleSwitch="true"
+                                    :title="getMessage('cmdcookiedisclaimer.title.toggle_to_accept_cookie')"
+                                />
+                                <!-- end CmdFormElement -->
+                            </template>
+                            <template v-slot:body>
+                                <p v-if="cookie.description">{{ cookie.description }}</p>
+                                <p v-if="cookie.linkDataPrivacy">
+                                    {{ cookie.linkDataPrivacy.label }}
+                                    <a @click="openDataPrivacy"
+                                       :href="cookie.linkDataPrivacy.link"
+                                       :target="cookie.linkDataPrivacy.target">
+                                        {{ cookie.linkDataPrivacy.linkText }}
+                                    </a>
+                                </p>
+                                <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
+                            </template>
+                        </CmdBox>
+                        <!-- end CmdBox -->
+                    </div>
+                    <!-- end optional cookies -->
+                </slot>
+                <!-- end slot for cookie-options -->
+
+                <!-- begin slot for privacy-text -->
+                <slot name="privacy-text"></slot>
+                <!-- end slot for privacy-text -->
+
+                <!-- begin button-wrapper for 'accept'-buttons -->
+                <div class="button-wrapper align-center">
+                    <button v-if="buttonLabelAcceptCurrentSettings" type="button" @click="acceptCurrentCookies">
+                        <span>{{ buttonLabelAcceptCurrentSettings }}</span>
+                    </button>
+                    <button v-if="buttonLabelAcceptAllCookies" type="button" class="primary" @click="acceptAllCookies">
+                        <span>{{ buttonLabelAcceptAllCookies }}</span>
+                    </button>
                 </div>
-                <!-- end optional cookies -->
-            </slot>
-            <!-- end slot for cookie-options -->
-
-            <!-- begin slot for privacy-text -->
-            <slot name="privacy-text"></slot>
-            <!-- end slot for privacy-text -->
-
-            <!-- begin button-wrapper for 'accept'-buttons -->
-            <div class="button-wrapper align-center">
-                <button v-if="buttonLabelAcceptCurrentSettings" type="button" @click="acceptCurrentCookies">
-                    <span>{{ buttonLabelAcceptCurrentSettings }}</span>
-                </button>
-                <button v-if="buttonLabelAcceptAllCookies" type="button" class="primary" @click="acceptAllCookies">
-                    <span>{{ buttonLabelAcceptAllCookies }}</span>
-                </button>
-            </div>
-            <!-- end button-wrapper for 'accept'-buttons -->
+                <!-- end button-wrapper for 'accept'-buttons -->
+            </template>
         </div>
     </transition>
 </template>
@@ -144,6 +152,13 @@ export default {
         }
     },
     props: {
+        /**
+         * activate if you want to use slot instead for given structure
+         */
+        useSlot: {
+            type: Boolean,
+            default: false
+        },
         /**
          * set default v-model (must be named modelValue in Vue3)
          */
@@ -175,7 +190,7 @@ export default {
                     showHeadline: true,
                     headlineText: "Required cookies",
                     headlineLevel: 3
-                    }
+                }
             }
         },
         /**
@@ -220,8 +235,8 @@ export default {
                 const cookies = this.modelValue ? [...this.modelValue] : []
                 const requiredCookies = this.cookieOptions?.required?.cookies || []
                 for (let i = 0; i < requiredCookies.length; i++) {
-                    if(!cookies.includes(requiredCookies[i].value)) {
-                       cookies.push(requiredCookies[i].value)
+                    if (!cookies.includes(requiredCookies[i].value)) {
+                        cookies.push(requiredCookies[i].value)
                     }
                 }
                 return cookies

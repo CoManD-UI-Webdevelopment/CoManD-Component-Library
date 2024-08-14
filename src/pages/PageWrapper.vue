@@ -1,6 +1,6 @@
 <template>
     <a id="anchor-back-to-top"></a>
-    <div :class="{'overflow-hidden': offCanvasOpen}" id="page-wrapper"
+    <div :class="{'overflow-hidden': offCanvasOpen}" class="page-wrapper" :id="templateId"
          :style="{'scroll-padding-top': heightSiteHeader + 'px'}">
         <!-- begin cmd-site-header -->
         <CmdSiteHeader
@@ -104,7 +104,7 @@
         <CmdBackToTopButton
             href="#anchor-back-to-top"
             :iconBackToTop="iconBackToTop"
-            scroll-container="#page-wrapper"
+            scroll-container=".page-wrapper"
         />
         <!-- end cmd-back-to-top-button -->
 
@@ -154,6 +154,10 @@ export default {
         }
     },
     props: {
+        templateId: {
+            type: String,
+            default: null
+        },
         topHeaderNavigationEntries: {
             default: []
         },
@@ -195,7 +199,7 @@ export default {
 
         if (siteHeader.length > 0) {
             const resizeObserver = new ResizeObserver(entries => {
-                // get height of site-header to set scroll-padding on #page-wrapper
+                // get height of site-header to set scroll-padding on .page-wrapper
                 this.heightSiteHeader = entries[0].target.offsetHeight
             })
             resizeObserver.observe(siteHeader[0])

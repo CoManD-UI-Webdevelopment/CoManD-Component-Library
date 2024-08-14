@@ -78,7 +78,7 @@ data() {
             }
         },
         cmdBoxSettingsControls: {
-            "boxType": [
+            boxType: [
                 {
                     text: "Content (default)",
                     value: "content"
@@ -90,6 +90,26 @@ data() {
                 {
                     text: "User",
                     value: "user"
+                }
+            ]
+        },
+        cmdContainerSettingsData: {
+            contentAboveSlot: "",
+            contentBelowSlot: ""
+        },
+        cmdContainerSettingsControls: {
+            containerType: [
+                {
+                    text: "none (default)",
+                    value: null
+                },
+                {
+                    text: "flex",
+                    value: "flex"
+                },
+                {
+                    text: "grid",
+                    value: "grid"
                 }
             ]
         },
@@ -339,6 +359,30 @@ data() {
                 }
             ]
         },
+        cmdLinkSettingsData: {
+
+            path: "#",
+            target: "",
+            text: "Linktext",
+            styleAsButton: false,
+            primaryButton: false
+        },
+        cmdLinkSettingsControls: {
+            linkType: [
+                {
+                    text: "href (default)",
+                    value: "href"
+                },
+                {
+                    text: "router",
+                    value: "router"
+                },
+                {
+                    text: "button",
+                    value: "button"
+                }
+            ]
+        },
         cmdListOfLinksSettingsData: {
             useGap: true,
             styleAsBox: false,
@@ -361,8 +405,7 @@ data() {
                 {
                     text: "Right",
                     value: "right"
-                },
-
+                }
             ],
             orientation: [
                 {
@@ -727,6 +770,15 @@ data() {
             showLegend: true,
             textLegend: "Advanced upload form",
             allowedFileExtensions: ["jpg", "eps"]
+        },
+        cmdWidthLimitationWrapperSettingsData: {
+            numberOfColumns: 1,
+            useGrid: false,
+            innerComponent: "section",
+            useInnerSection: true,
+            sticky: false,
+            innerClass: "",
+            anchorId: ""
         }
     }
 }

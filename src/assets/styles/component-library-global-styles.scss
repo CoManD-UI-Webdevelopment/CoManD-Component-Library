@@ -44,7 +44,7 @@ html {
 
 /* ---------------------------------------------- BEGIN COMPONENTS AND GLOBAL STYLES -------------------------------------------------- */
 /* begin styles for main structure --------------------------------------------------------------------------------------------------------------------------------------------------- */
-#page-wrapper {
+.page-wrapper {
     display: flex;
     flex-direction: column;
     scroll-snap-type: y mandatory;

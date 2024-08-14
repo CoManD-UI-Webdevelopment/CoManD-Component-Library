@@ -1,29 +1,37 @@
 <template>
     <div class="cmd-bank-account-data">
-        <!-- begin CmdHeadline -->
-        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
-        <!-- end CmdHeadline -->
+        <!-- begin slot -->
+        <template v-if="useSlot">
+            <slot></slot>
+        </template>
+        <!-- end slot -->
 
-        <!-- begin account data -->
-        <dl>
-            <template v-for="(entry, index) in accountData" :key="index">
-                <dt>{{ entry.text }}</dt>
-                <dd v-if="allowCopyByClick && entry.allowCopy">
-                    <span>{{ entry.value }}</span>
-                    <a href="#" @click.prevent="copyToClipboard(entry.value)" :title="iconCopy.tooltip">
-                        <!-- begin CmdIcon -->
-                        <CmdIcon :iconClass="iconCopy.iconClass" :type="iconCopy.iconType" />
-                        <!-- end CmdIcon -->
-                    </a>
-                </dd>
-                <dd v-else :key="index">{{ entry.value }}</dd>
-            </template>
-        </dl>
-        <!-- end account data -->
+        <template v-else>
+            <!-- begin CmdHeadline -->
+            <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline"/>
+            <!-- end CmdHeadline -->
 
-        <!-- begin additional information -->
-        <p v-if="additionalInformation">{{ additionalInformation }}</p>
-        <!-- end additional information -->
+            <!-- begin account data -->
+            <dl>
+                <template v-for="(entry, index) in accountData" :key="index">
+                    <dt>{{ entry.text }}</dt>
+                    <dd v-if="allowCopyByClick && entry.allowCopy">
+                        <span>{{ entry.value }}</span>
+                        <a href="#" @click.prevent="copyToClipboard(entry.value)" :title="iconCopy.tooltip">
+                            <!-- begin CmdIcon -->
+                            <CmdIcon :iconClass="iconCopy.iconClass" :type="iconCopy.iconType"/>
+                            <!-- end CmdIcon -->
+                        </a>
+                    </dd>
+                    <dd v-else :key="index">{{ entry.value }}</dd>
+                </template>
+            </dl>
+            <!-- end account data -->
+
+            <!-- begin additional information -->
+            <p v-if="additionalInformation">{{ additionalInformation }}</p>
+            <!-- end additional information -->
+        </template>
     </div>
 </template>
 
@@ -31,6 +39,13 @@
 export default {
     name: "CmdBankAccountData",
     props: {
+        /**
+         * activate if you want to use slot instead for given structure
+         */
+        useSlot: {
+            type: Boolean,
+            default: false
+        },
         /**
          * bank account data
          *
@@ -102,5 +117,6 @@ export default {
         }
     }
 }
+
 /* end cmd-bank-account-data ---------------------------------------------------------------------------------------- */
 </style>

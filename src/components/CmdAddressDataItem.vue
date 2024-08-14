@@ -57,7 +57,7 @@
 
             <!-- begin zip/city (state) -->
             <span v-if="addressEntry.zip || addressEntry.city" :class="showCityBeforeZip ? 'city-zip' : 'zip-city'">
-                <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}&nbsp;</span>
+                <span v-if="addressEntry.zip" class="postal-code">{{ addressEntry.zip }}</span>
                 <span v-if="addressEntry.city" class="locality">{{ addressEntry.city }}<template v-if="addressEntry.state"> {{addressEntry.state}}</template></span>
             </span><br/>
             <!-- end zip/city (state) -->
@@ -305,6 +305,7 @@ export default {
                         streetNo: this.addressEntry.streetNo,
                         zip: this.addressEntry.zip,
                         city: this.addressEntry.city,
+                        state: this.addressEntry.state,
                         miscInfo: this.addressEntry.miscInfo,
                         country: this.addressEntry.country
                     }

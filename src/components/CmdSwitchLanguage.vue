@@ -93,7 +93,7 @@ export default {
             margin: 0;
 
             a:not([class*="active"]) {
-                filter: contrast(.5);
+                filter: contrast(.6);
 
                 &:hover, &:focus-visible, &:active, &.active, &.router-link-active {
                     filter: none;

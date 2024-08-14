@@ -462,6 +462,7 @@ export default {
         margin-bottom: var(--default-margin);
         color: var(--pure-white);
         background: var(--success-color);
+        border-radius: var(--default-border-radius);
 
         &.closed {
             background: var(--error-color);

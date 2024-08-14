@@ -310,6 +310,10 @@ export default {
             }
         }
 
+        .postal-code {
+            margin-right: calc(var(--default-margin) / 2);
+        }
+
         .order-city-zip, .order-zip-city {
             display: inline-flex;
             gap: .5rem;
@@ -317,6 +321,11 @@ export default {
 
         .order-city-zip {
             flex-direction: row-reverse;
+
+            .postal-code {
+                margin-right: 0;
+                margin-left: calc(var(--default-margin) / 2);
+            }
         }
     }
 

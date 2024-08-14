@@ -480,7 +480,7 @@ export default FancyBox
     padding: var(--default-padding);
     min-width: 30vw;
     min-height: 30vh;
-    background: var(--pure-white);
+    background: var(--color-scheme-background);
     border-radius: var(--default-border-radius);
     overflow: hidden;
     gap: calc(var(--default-gap) / 2);

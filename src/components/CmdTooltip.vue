@@ -86,11 +86,11 @@ export default {
             }
         },
         /**
-         * id of container that scrolls the content of the site
+         * selector of container that scrolls the content of the site
          */
-        idOfScrollContainer: {
+        scrollContainer: {
             type: String,
-            default: "page-wrapper"
+            default: ".page-wrapper"
         },
         /**
          * icon 'close'
@@ -120,7 +120,7 @@ export default {
             const relatedElement = document.getElementById(this.relatedId)
 
             if(relatedElement) {
-                document.getElementById(this.idOfScrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+                document.querySelector(this.scrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
                 document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
 
                 if (this.toggleVisibilityByClick) {

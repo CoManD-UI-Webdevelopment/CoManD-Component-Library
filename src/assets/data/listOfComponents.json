@@ -6,6 +6,7 @@
   "Boxes",
   "Breadcrumbs",
   "CompanyLogo",
+  "Container",
   "CookieDisclaimer",
   "Forms",
   "Fancybox",
@@ -15,6 +16,7 @@
   "Image",
   "ImageGallery",
   "ImageZoom",
+  "Link",
   "ListOfLinks",
   "LoginForm",
   "MainNavigation",
@@ -36,5 +38,6 @@
   "TextImageBlock",
   "ThumbnailScroller",
   "Tooltip",
-  "UploadForm"
+  "UploadForm",
+  "WidthLimitationWrapper"
 ]

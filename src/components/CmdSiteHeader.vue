@@ -117,7 +117,7 @@ export default {
          */
         scrollContainerToResizeHeader: {
             type: String,
-            default: "#page-wrapper"
+            default: ".page-wrapper"
         },
         /**
          * use a grid for positioning of inner-elements (else a flex-container will be used)

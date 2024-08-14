@@ -16,14 +16,15 @@
                 <template v-if="currentItem">
                     <template v-if="!useSlot">
                         <template v-if="!editModeContext">
-                            <a v-if="currentItem?.link?.href" :href="currentItem?.link?.href"
+                            <a v-if="currentItem?.link?.href"
+                               :href="currentItem?.link?.href"
                                :title="currentItem?.link?.tooltip">
-                            <!-- begin CmdImage -->
-                            <CmdImage :image="currentItem?.image" :figcaption="currentItem?.figcaption"/>
-                            <!-- begin CmdImage -->
-                        </a>
+                                <!-- begin CmdImage -->
+                                <CmdImage :image="currentItem?.image" :figcaption="currentItem?.figcaption"/>
+                                <!-- begin CmdImage -->
+                            </a>
 
-                       <!-- begin CmdImage -->
+                            <!-- begin CmdImage -->
                             <CmdImage v-else :image="currentItem?.image" :figcaption="currentItem?.figcaption"/>
                             <!-- begin CmdImage -->
                         </template>

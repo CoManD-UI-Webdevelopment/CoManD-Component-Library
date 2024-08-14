@@ -1,8 +1,7 @@
 <!--suppress HtmlUnknownTarget, NpmUsedModulesInstalled, JSUnresolvedVariable -->
 <template>
-    <div :id="templateId">
-        <!-- begin #page-wrapper -->
-        <div id="page-wrapper">
+        <!-- begin .page-wrapper -->
+        <div class="page-wrapper" :id="templateId">
             <a id="anchor-back-to-top"></a>
             <CmdSidebar
                 v-if="showLeftSidebar"
@@ -953,7 +952,7 @@
                 <!-- end advanced form elements ----------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin back to top button ----------------------------------------------------------------------------------------------------------------------------------------------------->
-                <CmdBackToTopButton href="#anchor-back-to-top" scroll-container="#page-wrapper"/>
+                <CmdBackToTopButton href="#anchor-back-to-top" scroll-container=".page-wrapper"/>
                 <!-- end back to top button ----------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin bank account data ----------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1145,14 +1144,14 @@
                         <CmdBox :useSlots="['header', 'body', 'footer']" :use-default-padding="false">
                             <template v-slot:header>
                                 <h4>
-                                    Box with image and content
+                                    Box with image, content and link
                                 </h4>
                             </template>
                             <template v-slot:body>
                                 <img src="/media/images/content-images/landscape-medium.jpg" alt="Alternative text"/>
                                 <div class="default-padding">
-                                    <h4>Headline</h4>
-                                    <p>This is some text information i.e a short-text for a news teaser.</p>
+                                    <h4>Custom headline</h4>
+                                    <p>Image, custom-headline and this text for the component are given by slot</p>
                                 </div>
                             </template>
                             <template v-slot:footer>
@@ -1161,6 +1160,23 @@
                                 </p>
                             </template>
                         </CmdBox>
+                        <CmdBox
+                            :use-default-padding="false"
+                            :image="{src: '/media/images/content-images/landscape-medium.jpg', altText: 'Alternative text'}"
+                            :repeatHeadlineInBoxBody="true"
+                            :useDefaultPadding="true"
+                            :cmdHeadline="{headlineText: 'Box with image, content and link', headlineLevel: 4}"
+                            textBody="Image, headline and this text for the component are given by property"
+                            :cmdLink="{
+                                linkType: 'href',
+                                path: '#',
+                                icon: {
+                                    iconClass: 'icon-chevron-two-stripes-right',
+                                    position: 'right'
+                                },
+                                text: 'Read more'
+                            }"
+                        />
                     </CmdBoxWrapper>
                     <h3>Product boxes</h3>
                     <div class="grid-container-create-columns">
@@ -1236,6 +1252,26 @@
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end company-logo ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                <!-- begin container ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-container">
+                        <span>Container</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdContainer')"></a>
+                    </h2>
+                    <CmdContainer
+                        style="border: 1px dotted gray"
+                        ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData"
+                        containerType="flex"
+                        contentAboveSlot="<div>HTML-Content above slot</div>"
+                        contentBelowSlot="<div>HTML-Content below slot</div>"
+                    >
+                        Slot-content
+                    </CmdContainer>
+                </CmdWidthLimitationWrapper>
+                <!-- end container ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
                 <!-- begin cookie-disclaimer ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
@@ -1433,6 +1469,22 @@
                 </CmdWidthLimitationWrapper>
                 <!-- end image-zoom ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
+                <!-- begin link ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-link">
+                        <span>Link</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdLink')"></a>
+                    </h2>
+                    <CmdLink
+                        linkType="href"
+                        ref="CmdLink"
+                        v-bind="cmdLinkSettingsData"
+                        :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
+                    />
+                </CmdWidthLimitationWrapper>
+                <!-- end link ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
                 <!-- begin list-of-links ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdWidthLimitationWrapper>
                     <h2 class="headline-demopage" id="section-list-of-links">
@@ -1560,7 +1612,6 @@
                     </h2>
                     <CmdPageHeader
                         ref="CmdPageHeader"
-                        v-bind="cmdPageFooterSettingsData"
                         :cmdBreadcrumbs="breadcrumbsData"
                         :cmdHeadline="{headlineText: 'Main headline for page', headlineLevel: 1}">
                         <a href="#" title="Link given by slot">
@@ -1865,6 +1916,23 @@
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                <!-- begin upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-width-limitation-wrapper">
+                        <span>Width Limitation Wrapper</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdWidthLimitationWrapper')"></a>
+                    </h2>
+                    <CmdWidthLimitationWrapper
+                        style="border: 1px dotted gray"
+                        ref="CmdWidthLimitationWrapper"
+                        v-bind="cmdWidthLimitationWrapperSettingsData"
+                    >
+                        Slot-content placed in inner section
+                    </CmdWidthLimitationWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
             </main>
 
             <!-- begin page view -->
@@ -1938,8 +2006,7 @@
                 </template>
             </CmdSidebar>
             <!-- end component-settings-sidebar ------------------------------------------------------------------------------------------------------------------------------------------------------->
-        </div><!-- end #page-wrapper -->
-    </div><!-- end #template-id-wrapper -->
+        </div><!-- end .page-wrapper -->
 </template>
 
 <script>
