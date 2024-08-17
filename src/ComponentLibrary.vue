@@ -1264,11 +1264,10 @@
                         style="border: 1px dotted gray"
                         ref="CmdContainer"
                         v-bind="cmdContainerSettingsData"
-                        containerType="flex"
-                        contentAboveSlot="<div>HTML-Content above slot</div>"
-                        contentBelowSlot="<div>HTML-Content below slot</div>"
                     >
-                        Slot-content
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
                     </CmdContainer>
                 </CmdWidthLimitationWrapper>
                 <!-- end container ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1929,7 +1928,9 @@
                         ref="CmdWidthLimitationWrapper"
                         v-bind="cmdWidthLimitationWrapperSettingsData"
                     >
-                        Slot-content placed in inner section
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
                     </CmdWidthLimitationWrapper>
                 </CmdWidthLimitationWrapper>
                 <!-- end upload-form ------------------------------------------------------------------------------------------------------------------------------------------------------->

@@ -1,6 +1,6 @@
 <template>
     <!-- begin default-view -->
-    <div v-if="!editModeContext || settingsContext || mainSidebarContext"
+    <div v-if="!editModeContext || settingsContext || mainSidebarContext || headlineText"
          :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': headlineIcon?.iconClass}, getTextAlign]">
         <template v-if="preHeadlineText">
             <component v-if="headlineText" :is="headlineTag">

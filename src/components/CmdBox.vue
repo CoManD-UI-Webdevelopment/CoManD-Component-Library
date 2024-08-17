@@ -602,7 +602,7 @@ export default {
             }
 
             * {
-                color: var(--pure-white);
+                color: var(--box-header-text-color);
                 margin-bottom: 0;
             }
 

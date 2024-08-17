@@ -94,22 +94,33 @@ data() {
             ]
         },
         cmdContainerSettingsData: {
-            contentAboveSlot: "",
-            contentBelowSlot: ""
+            contentAboveSlot: "<p>Content above slot</p>",
+            contentBelowSlot: "<p>Content below slot</p>",
+            containerType: "flex"
         },
         cmdContainerSettingsControls: {
             containerType: [
                 {
-                    text: "none (default)",
-                    value: null
-                },
-                {
-                    text: "flex",
+                    text: "flex (default)",
                     value: "flex"
                 },
                 {
                     text: "grid",
                     value: "grid"
+                },
+                {
+                    text: "none",
+                    value: ""
+                },
+            ],
+            contentOrientation: [
+                {
+                    text: "vertical (default)",
+                    value: "vertical"
+                },
+                {
+                    text: "horizontal",
+                    value: "horizontal"
                 }
             ]
         },
@@ -772,13 +783,38 @@ data() {
             allowedFileExtensions: ["jpg", "eps"]
         },
         cmdWidthLimitationWrapperSettingsData: {
-            numberOfColumns: 1,
-            useGrid: false,
+            contentType: "flex",
             innerComponent: "section",
             useInnerSection: true,
             sticky: false,
-            innerClass: "",
+            sectionClass: "section-class",
             anchorId: ""
+        },
+        cmdWidthLimitationWrapperSettingsControls: {
+            containerType: [
+                {
+                    text: "flex (default)",
+                    value: "flex"
+                },
+                {
+                    text: "grid",
+                    value: "grid"
+                },
+                {
+                    text: "none",
+                    value: ""
+                },
+            ],
+            contentOrientation: [
+                {
+                    text: "horizontal (default)",
+                    value: "horizontal"
+                },
+                {
+                    text: "vertical",
+                    value: "vertical"
+                }
+            ]
         }
     }
 }

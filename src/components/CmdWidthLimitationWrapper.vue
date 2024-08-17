@@ -1,7 +1,7 @@
 <template>
-    <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}">
+    <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}" ref="width-limitation-wrapper">
         <!-- begin slot-content in section -->
-        <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
+        <section v-if="useInnerSection" :class="setSectionClass" :id="anchorId">
             <!-- begin cmd-headline -->
             <CmdHeadline
                 v-if="cmdHeadline"
@@ -11,17 +11,15 @@
             />
             <!-- end cmd-headline -->
 
-            <!-- begin slot-content (one column only) -->
-            <slot v-if="numberOfColumns === 1" ></slot>
-            <!-- end slot-content (one column only) -->
+            <!-- begin slot-content (one column/slot-item only) -->
+            <slot v-if="oneSlotItem()"></slot>
+            <!-- end slot-content (one column/slot-item only) -->
 
             <!-- begin grid-/flex-container to wrap multiple columns/items -->
-            <div v-else :class="useGrid ? 'grid-container-create-columns' : 'flex-container'">
-                <div v-for="index in numberOfColumns" :key="`i${index}`" :class="useGrid ? 'grid-item' : 'flex-item'">
-                    <!-- begin slot-content (multiple columns only) -->
-                    <slot></slot>
-                    <!-- end slot-content (multiple columns only) -->
-                </div>
+            <div v-else :class="setInnerClass">
+                <!-- begin slot-content (multiple columns only) -->
+                <slot></slot>
+                <!-- end slot-content (multiple columns only) -->
             </div>
             <!-- end grid-/flex-container to wrap multiple columns/items -->
         </section>
@@ -42,16 +40,14 @@
 export default {
     name: "CmdWidthLimitationWrapper",
     props: {
-        numberOfColumns: {
-            type: Number,
-            default: 1,
-            validator(value) {
-                return value >= 0
-            }
-        },
-        useGrid: {
-            type: Boolean,
-            default: false
+        /**
+         * define container-type
+         *
+         * @allowedValues: "grid", "flex"
+         */
+        containerType: {
+            type: String,
+            default: "flex"
         },
         /**
          * set a html-tag as inner tag
@@ -91,7 +87,7 @@ export default {
          *
          * innerWrapper-property must be true
          */
-        innerClass: {
+        sectionClass: {
             type: String,
             required: false
         },
@@ -103,6 +99,19 @@ export default {
             required: false
         },
         /**
+         * define content-orientation
+         *
+         * @allowedValues: "vertical", "horizontal"
+         */
+        contentOrientation: {
+            type: String,
+            default: "vertical",
+            validator(value) {
+                return value === "horizontal" ||
+                    value === "vertical"
+            }
+        },
+        /**
          * properties for CmdHeadline-component
          *
          * @requiredForAccessibilty
@@ -110,18 +119,32 @@ export default {
         cmdHeadline: {
             type: Object,
             required: false
-        },
+        }
     },
     computed: {
-        setInnerClass() {
-            if (this.innerClass) {
-                return this.innerClass
+        setSectionClass() {
+            if (this.sectionClass) {
+                return this.sectionClass
             }
             if (this.innerComponent === "header") {
                 return "grid-container-create-columns"
             }
             if (this.innerComponent === "footer") {
                 return "flex-container"
+            }
+            return ""
+        },
+        setInnerClass() {
+            if(this.containerType === "grid") {
+                return "grid-container-create-columns"
+            }
+
+            if(this.containerType === "flex") {
+                if(this.contentOrientation === "horizontal") {
+                    return "flex-container"
+                } else if(this.contentOrientation === "vertical") {
+                    return "flex-container vertical"
+                }
             }
             return ""
         },
@@ -133,6 +156,15 @@ export default {
                 return "site-footer"
             }
             return ""
+        }
+    },
+    methods: {
+        oneSlotItem() {
+            const vnodes = this.$slots.default();
+            if (vnodes.length === 1 && typeof vnodes[0].type === "symbol" && Array.isArray(vnodes[0].children)) {
+                return vnodes[0].children.length === 1
+            }
+            return vnodes.length === 1
         }
     }
 }

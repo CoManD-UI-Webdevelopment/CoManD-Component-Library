@@ -414,6 +414,13 @@ export default {
                     headlineLevel: 3
                 }
             }
+        },
+        /**
+         * properties for CmdForm-component
+         */
+        cmdForm: {
+            type: Object,
+            required: false
         }
     },
     mounted() {
