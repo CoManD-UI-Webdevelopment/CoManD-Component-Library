@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "clickout-event": "^1.1.2",
-    "comand-frontend-framework": "^4.0.65",
+    "comand-frontend-framework": "^4.0.66",
     "comand-ui-iconfonts": "^1.0.7",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",

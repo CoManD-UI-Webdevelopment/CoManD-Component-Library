@@ -10,7 +10,7 @@
         <!-- end CmdHeadline -->
 
         <!-- begin form elements -->
-        <div class="flex-container">
+        <div :class="['login-fields, flex-container', {'vertical': orientation === 'vertical'}]">
             <!-- begin CmdFormElement -->
             <CmdFormElement
                 element="input"
@@ -44,6 +44,10 @@
         </div>
         <!-- end form elements -->
 
+        <!-- begin slot for login-form -->
+        <slot name="login"></slot>
+        <!-- end slot for login-form -->
+
         <div class="option-wrapper flex-container">
             <template v-if="options.forgotPassword || options.createAccount">
                 <!-- begin link for 'forgot password' -->
@@ -59,30 +63,20 @@
                 </a>
                 <!-- end link for 'forgot password' -->
 
-                <!-- begin link-type 'href' for 'create account' -->
-                <a v-if="options.createAccount && options.createAccount.linkType === 'href'" :href="options.createAccount.path">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon v-if="options.createAccount.icon?.show && options.createAccount.icon?.iconClass"
-                          :iconClass="options.createAccount.icon.iconClass"
-                          :type="options.createAccount.icon.iconType"
-                          :title="options.createAccount.icon.tooltip" />
-                    <!-- end CmdIcon -->
-                    <span v-if="options.createAccount.text">{{ options.createAccount.text }}</span>
-                </a>
-                <!-- end link-type 'href' for 'create account' -->
-
-                <!-- begin link-type 'router' for 'create account' -->
-                <router-link v-else-if="options.createAccount && options.createAccount.linkType === 'router'" :to="options.createAccount.path">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon v-if="options.createAccount.icon && options.createAccount.icon.show && options.createAccount.icon.iconClass"
-                          :class="options.createAccount.icon.iconClass"
-                          :type="options.createAccount.icon.iconType"
-                          :title="options.createAccount.icon.tooltip" />
+                <!-- begin link for 'create account' -->
+                <template v-if="options.createAccount">
+                    <CmdLink
+                        :linkType="options.createAccount.linkType"
+                        :path="options.createAccount.path"
+                        :text="options.createAccount.text"
+                        :icon="{
+                            iconClass: options.createAccount.icon?.iconClass,
+                            tooltip: options.createAccount.icon?.tooltip,
+                            position: options.createAccount.icon?.position
+                        }"
                     />
-                    <!-- end CmdIcon -->
-                    <span v-if="options.createAccount.text">{{ options.createAccount.text }}</span>
-                </router-link>
-                <!-- end link-type 'router' for 'create account' -->
+                </template>
+                <!-- end link for 'create account' -->
             </template>
 
             <!-- begin link-type 'button' -->
@@ -134,8 +128,12 @@
         />
         <!-- end CmdFormElement -->
 
+        <!-- begin slot for send-login-form -->
+        <slot name="send-login"></slot>
+        <!-- end slot for send-login-form -->
+
         <div class="option-wrapper flex-container">
-            <a href="#" @click.prevent="toggleSendLoginView">
+            <a v-if="options.backToLoginForm" href="#" @click.prevent="toggleSendLoginView">
                 <!-- begin CmdIcon -->
                 <CmdIcon
                     v-if="options.backToLoginForm && options.backToLoginForm.icon && options.backToLoginForm.icon.show && options.backToLoginForm.icon.iconClass"
@@ -151,19 +149,19 @@
 
             <!-- begin link-type 'button' -->
             <button
-                v-if="buttons.sendLogin.linkType === 'button'"
-                :type="buttons.sendLogin.type === 'submit' ? 'submit' : 'button'"
-                :class="['button', { primary: buttons.sendLogin.primary }]"
+                v-if="buttons.sendLogin?.linkType === 'button'"
+                :type="buttons.sendLogin?.type === 'submit' ? 'submit' : 'button'"
+                :class="['button', { primary: buttons.sendLogin?.primary }]"
                 :disabled="buttonSendLoginDisabled"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="buttons.sendLogin.icon?.iconClass"
-                    :iconClass="buttons.sendLogin.icon?.iconClass"
-                    :title="buttons.sendLogin.icon?.tooltip"
+                    v-if="buttons.sendLogin?.icon?.iconClass"
+                    :iconClass="buttons.sendLogin?.icon?.iconClass"
+                    :title="buttons.sendLogin?.icon?.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="buttons.sendLogin.text">{{ buttons.sendLogin.text }}</span>
+                <span v-if="buttons.sendLogin?.text">{{ buttons.sendLogin?.text }}</span>
             </button>
             <!-- end link-type 'button' -->
         </div>
@@ -197,6 +195,18 @@ export default {
                     username: "",
                     password: ""
                 }
+            }
+        },
+        /**
+         * orientation for inputfields
+         *
+         * @allowedValues 'vertical', 'horizontal'
+         */
+        orientation: {
+            type: String,
+            default: null,
+            validator(event) {
+                return event === "vertical" || event === "horizontal"
             }
         },
         /**
@@ -441,6 +451,14 @@ export default {
 <style>
 /* begin cmd-login-form ---------------------------------------------------------------------------------------- */
 .cmd-login-form {
+    .login-fields {
+        &.vertical {
+           .cmd-form-element {
+               width: 100%;
+           }
+        }
+    }
+
     .option-wrapper {
         align-items: center;
 

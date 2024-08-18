@@ -345,6 +345,7 @@ export default {
 
     > p {
         text-align: center;
+        color: var(--color-scheme-text-color); /* must be assigned again, because content is placed by slot */
     }
 
     #form-cookies {

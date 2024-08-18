@@ -434,6 +434,18 @@ data() {
             showLegend: true,
             textLegendForgotLoginForm: "Forgot login form"
         },
+        cmdLoginFormSettingsControls: {
+            orientation: [
+                {
+                    text: "Vertical",
+                    value: "vertical"
+                },
+                {
+                    text: "Horizontal (default)",
+                    value: "horizontal"
+                }
+            ]
+        },
         cmdMainNavigationSettingsData: {
             offcanvasPosition: "right",
             stretchMainItems: false,
