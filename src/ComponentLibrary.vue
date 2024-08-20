@@ -262,7 +262,7 @@
                     <!-- end cmd-form-filters -->
 
                     <CmdForm :use-fieldset="false" id="advanced-form-elements" novalidate="novalidate">
-                        <fieldset class="grid-container-create-columns">
+                        <fieldset class="flex-container">
                             <legend>Legend</legend>
                             <h2 class="headline-demopage">
                                 <span>Form Element-Component</span>

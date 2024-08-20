@@ -61,7 +61,7 @@
         <!-- end label-text (+ required asterisk) -->
 
         <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio' && $attrs.type !== 'search'"
-              class="flex-container"><!-- container required to place inner icons correctly -->
+              class="flex-container inner-input-wrapper"><!-- container required to place inner icons correctly -->
             <!-- begin CmdIcon (for icon inside field) -->
             <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"
             />
@@ -932,9 +932,15 @@ export default {
     }
 
     &.inline {
-        & > span {
+        .inner-input-wrapper {
             & > a:not(.button) {
                 margin-left: calc(var(--default-margin) / 2);
+            }
+        }
+
+        &.stretch-field {
+            .inner-input-wrapper {
+                width: 100%;
             }
         }
     }
