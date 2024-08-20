@@ -1029,7 +1029,7 @@
                     <CmdBoxWrapper
                         :useFlexbox="true"
                         :cmdHeadline="{headlineText: 'Boxes in BoxWrapper with flexbox', headlineLevel: 3}"
-                        :use-gap="true"
+                        :useGap="true"
                     >
                         <CmdBox
                             v-for="index in 14"
@@ -1177,6 +1177,13 @@
                                 text: 'Read more'
                             }"
                         />
+                        <CmdBox
+                            :useDefaultPadding="true"
+                            :cmdHeadline="{headlineText: 'Box with large icon and some content', headlineLevel: 4}"
+                            headlinePosition="body"
+                            :cmdIcon="{iconClass: 'icon-home', type: 'auto'}"
+                            textBody="Box with large icon, headline in body and content all given by properties."
+                        />
                     </CmdBoxWrapper>
                     <h3>Product boxes</h3>
                     <div class="grid-container-create-columns">
@@ -1198,7 +1205,8 @@
                     </CmdBoxWrapper>
                     <h3><span>Boxes in BoxWrapper (collapsible)</span>
                         <a href="#" class="icon-cog" title="Open Component Settings"
-                           @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a></h3>
+                           @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a>
+                    </h3>
                     <CmdBoxWrapper
                         ref="CmdBoxWrapper"
                         v-bind="cmdBoxWrapperSettingsData"
@@ -1341,7 +1349,7 @@
                     <a href="#"
                        @click.prevent="showFancyBox('url', '/media/images/demo-images/large/landscape-01.jpg', 'FancyBox with large image given by url')"
                        title="Open FancyBox with large image given by url"
-                       style="display: inline-flex;"
+                       style="align-self: flex-start"
                     >
                         <img src="/media/images/demo-images/small/landscape-01.jpg" alt="Alternative text"/>
                     </a>
@@ -1349,7 +1357,7 @@
                     <a href="#"
                        @click.prevent="showFancyBox('image', {large:'/media/images/demo-images/large/landscape-02.jpg'}, 'FancyBox with large image given by property')"
                        title="Open FancyBox with large image given by property"
-                       style="display: inline-flex;"
+                       style="align-self: flex-start"
                     >
                         <img src="/media/images/demo-images/small/landscape-02.jpg" alt="Alternative text"/>
                     </a>
@@ -1361,7 +1369,7 @@
                         large: '/media/images/demo-images/large/landscape-03.jpg'
                    }, 'FancyBox with large image given by property')"
                        title="Open FancyBox with large image given by property"
-                       style="display: inline-flex;"
+                       style="align-self: flex-start"
                     >
                         <img src="/media/images/demo-images/small/landscape-03.jpg" alt="Alternative text"/>
                     </a>

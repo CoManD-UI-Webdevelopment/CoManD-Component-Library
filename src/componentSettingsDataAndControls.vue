@@ -94,6 +94,10 @@ data() {
             ]
         },
         cmdContainerSettingsData: {
+            cmdHeadline: {
+                headlineText: "Container Headline",
+                headlineLevel: 3
+            },
             contentAboveSlot: "<p>Content above slot</p>",
             contentBelowSlot: "<p>Content below slot</p>",
             containerType: "flex"

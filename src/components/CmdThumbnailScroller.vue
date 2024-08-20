@@ -376,7 +376,7 @@ export default {
 .cmd-thumbnail-scroller {
     display: inline-flex; /* do not set to table to avoid overflow is not hidden on small devices */
     flex-direction: column;
-    gap: var(--default-gap);
+    gap: 1rem; /* should not depend on default-gap to avoid odd spacing between headline and scroller */
     width: 100%;
 
     &.full-width:not(.vertical) {
@@ -385,6 +385,10 @@ export default {
         > div {
             width: 100%;
         }
+    }
+
+    .cmd-headline {
+        margin: 0;
     }
 
     .cmd-slide-button {

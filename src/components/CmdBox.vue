@@ -25,7 +25,7 @@
 
             <!-- begin CmdHeadline -->
             <CmdHeadline
-                v-else-if="cmdHeadline?.headlineText"
+                v-else-if="cmdHeadline?.headlineText && headlinePosition === 'header'"
                 v-bind="cmdHeadline"
             />
             <!-- end CmdHeadline -->
@@ -41,14 +41,14 @@
 
         <!-- begin default header with slot -->
         <template v-else>
-            <div v-if="useSlots?.includes('header') || cmdHeadline?.headlineText" class="box-header">
+            <div v-if="useSlots?.includes('header') || (cmdHeadline?.headlineText && headlinePosition === 'header')" class="box-header">
                 <!-- begin slot 'header' -->
                 <slot v-if="useSlots?.includes('header')" name="header"></slot>
                 <!-- end slot 'header' -->
 
                 <!-- begin CmdHeadline -->
                 <CmdHeadline
-                    v-if="cmdHeadline?.headlineText"
+                    v-if="cmdHeadline?.headlineText && headlinePosition === 'header'"
                     v-bind="cmdHeadline"
                 />
                 <!-- end CmdHeadline -->
@@ -67,6 +67,19 @@
             >
                 <!-- begin slot 'body' -->
                 <slot name="body">
+                    <!-- begin CmdHeadline -->
+                    <CmdHeadline
+                        v-if="cmdHeadline?.headlineText && headlinePosition === 'body'"
+                        v-bind="cmdHeadline"
+                    />
+                    <!-- end CmdHeadline -->
+
+                    <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
+                        <!-- begin CmdIcon -->
+                        <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.type" />
+                        <!-- end CmdIcon -->
+                    </div>
+
                     <transition-group :name="toggleTransition">
                         <p
                             :class="{
@@ -97,9 +110,15 @@
 
                 <div v-if="textBody"
                      :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
+                    <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
+                        <!-- begin CmdIcon -->
+                        <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.type" />
+                        <!-- end CmdIcon -->
+                    </div>
+
                     <!-- begin CmdHeadline -->
                     <CmdHeadline
-                        v-if="cmdHeadline?.headlineText && repeatHeadlineInBoxBody"
+                        v-if="cmdHeadline?.headlineText && headlinePosition === 'body'"
                         v-bind="cmdHeadline"
                     />
                     <!-- end CmdHeadline -->
@@ -108,16 +127,16 @@
                     <p v-if="textBody" v-html="textBody"></p>
                     <!-- end textBody -->
                 </div>
-
-                <!-- begin additionalLink in box-footer -->
-                <div v-if="cmdLink?.linkType" class="box-footer">
-                    <CmdLink v-bind="cmdLink" />
-                </div>
-                <!-- end additionalLink in box-footer  -->
             </div>
             <!-- end content given by properties -->
         </div>
         <!-- end box-body -->
+
+        <!-- begin additionalLink in box-footer -->
+        <div v-if="cmdLink?.linkType" class="box-footer">
+            <CmdLink v-bind="cmdLink" />
+        </div>
+        <!-- end additionalLink in box-footer  -->
 
         <div v-if="useSlots?.includes('footer')" class="box-footer">
             <!-- begin slot 'footer' -->
@@ -308,13 +327,6 @@ export default {
             default: true
         },
         /**
-         * repeats headline (used in box-header) given by cmdHeadline-property in box-body
-         */
-        repeatHeadlineInBoxBody: {
-            type: Boolean,
-            default: false
-        },
-        /**
          * show fade-effect on last line
          *
          * cutoffTextLines-property must be large 0
@@ -452,6 +464,18 @@ export default {
             default: true
         },
         /**
+         * position of headline
+         *
+         * cmdHeadline-property must be set
+         */
+        headlinePosition: {
+            type: String,
+            default: "header",
+            validator(value) {
+                return value === "header" || value === "body"
+            }
+        },
+        /**
          * properties for CmdHeadline-component
          */
         cmdHeadline: {
@@ -464,6 +488,13 @@ export default {
         cmdLink: {
             type: Object,
             default: {}
+        },
+        /**
+         * properties for CmdIcon-component to set large icon in box-body
+         */
+        cmdIcon: {
+            type: Object,
+            required: false
         }
     },
     /*
@@ -564,6 +595,10 @@ export default {
         }
     }
 
+    > .box-body:first-child {
+        border-top: 0 !important;
+    }
+
     .box-body {
         .allow-scroll {
             overflow-y: auto;
@@ -622,6 +657,16 @@ export default {
 
             & > div:only-child {
                 flex-grow: 1;
+            }
+
+            .body-icon-wrapper {
+                display: flex;
+                justify-content: center;
+                margin-bottom: var(--default-margin);
+
+                span[class*="icon"] {
+                    font-size: 8rem;
+                }
             }
 
             p.cutoff-text {

@@ -33,7 +33,7 @@
                 <!-- end loop for formElements -->
 
                 <!-- begin submit-button -->
-                <button v-if="submitButton && submitButton.position === 'insideFieldset'" :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
+                <button v-if="submitButton && (submitButton.position === 'insideFieldset' || submitButton.position === null) " :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
                     <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
                     <span v-if="submitButton.text">{{ submitButton.text }}</span>
                 </button>
@@ -42,7 +42,7 @@
 
             <div v-if="submitButton && submitButton.position === 'belowFieldset'" class="button-wrapper">
                 <!-- begin submit-button -->
-                <button :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
+                <button :class="['button', {primary: submitButton.primary}]" :type="submitButton.type || 'submit'">
                     <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
                     <span v-if="submitButton.text">{{ submitButton.text }}</span>
                 </button>
