@@ -22,7 +22,7 @@
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
-                                :cmdHeadline="{headlineText: 'Template Settings', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
+                                :cmdHeadline="{headlineText: 'Template Settings', headlineLevel: 4, cmdIcon: {iconClass: 'icon-settings-template'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(0)"
                                 @toggleCollapse="slotProps.boxToggled(0, $event)"
                             >
@@ -65,7 +65,7 @@
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
-                                :cmdHeadline="{headlineText: 'Components', headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-component'}}"
+                                :cmdHeadline="{headlineText: 'Components', headlineLevel: 4, cmdIcon: {iconClass: 'icon-settings-component'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(1)"
                                 @toggleCollapse="slotProps.boxToggled(1, $event)"
                                 id="list-of-components"
@@ -91,7 +91,7 @@
                             <CmdBox
                                 :use-slots="['body']"
                                 :collapsible="true"
-                                :cmdHeadline="{headlineText: 'Page-Templates', headlineLevel: 4, headlineIcon: {iconClass: 'icon-file-settings'}}"
+                                :cmdHeadline="{headlineText: 'Page-Templates', headlineLevel: 4, cmdIcon: {iconClass: 'icon-file-settings'}}"
                                 :openCollapsedBox="slotProps.boxIsOpen(2)"
                                 @toggleCollapse="slotProps.boxToggled(2, $event)"
                             >
@@ -1397,7 +1397,6 @@
                     />
                     <CmdHeadline
                         ref="CmdHeadline"
-                        :headlineIcon="{iconClass: 'icon-home'}"
                         v-bind="cmdHeadlineSettingsData"
                     />
                 </CmdWidthLimitationWrapper>

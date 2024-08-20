@@ -1,11 +1,12 @@
 <template>
     <!-- begin default-view -->
     <div v-if="!editModeContext || settingsContext || mainSidebarContext || headlineText"
-         :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': headlineIcon?.iconClass}, getTextAlign]">
+         :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
+        <!-- begin headline with pre-headline-text -->
         <template v-if="preHeadlineText">
             <component v-if="headlineText" :is="headlineTag">
                 <!-- begin CmdIcon -->
-                <CmdIcon v-if="headlineIcon" :iconClass="headlineIcon?.iconClass" :type="headlineIcon?.iconType"/>
+                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
                 <!-- end CmdIcon -->
 
                 <span class="pre-headline-text-wrapper">
@@ -21,9 +22,12 @@
                 </span>
             </component>
         </template>
+        <!-- end headline with pre-headline-text -->
+
+        <!-- begin headline without pre-headline-text -->
         <component v-else :is="headlineTag">
             <!-- begin CmdIcon -->
-            <CmdIcon v-if="headlineIcon" :iconClass="headlineIcon?.iconClass" :type="headlineIcon?.iconType"/>
+            <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
             <!-- end CmdIcon -->
 
             <span>
@@ -32,6 +36,7 @@
                 <!-- end slot -->
             </span>
         </component>
+        <!-- end headline without pre-headline-text -->
     </div>
     <!-- end default-view -->
 
@@ -48,26 +53,29 @@
         :allowDeleteComponent="!!headlineText"
     >
         <template v-slot="slotProps">
+            <!-- begin CmdFormElement -->
             <CmdFormElement
                 v-if="slotProps.editing"
                 element="input"
                 type="text"
-                :class="['edit-mode', 'headline', 'h'+ headlineLevel, getTextAlign]"
+                :class="['edit-mode', 'headline', 'h'+ headlineLevel, headlineTextAlign]"
                 labelText="Headline"
                 :showLabel="false"
                 placeholder="Headline"
                 v-model="editableHeadlineText"
             />
+            <!-- end CmdFormElement -->
+
             <template v-else-if="headlineText"
-                 :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': headlineIcon?.iconClass}, getTextAlign]">
+                 :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
                 <!-- begin CmdIcon -->
-                <CmdIcon v-if="headlineIcon" :iconClass="headlineIcon?.iconClass" :type="headlineIcon?.iconType"/>
+                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
                 <!-- end CmdIcon -->
 
                 <template v-if="preHeadlineText">
                     <component v-if="headlineText" :is="headlineTag">
                         <!-- begin CmdIcon -->
-                        <CmdIcon v-if="headlineIcon" :iconClass="headlineIcon?.iconClass" :type="headlineIcon?.iconType"/>
+                        <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
                         <!-- end CmdIcon -->
 
                         <!-- begin pre-headline-text -->
@@ -85,6 +93,7 @@
                     <!-- end slot -->
                 </component>
             </template>
+
             <!-- begin show placeholder if no image exists (and component is not edited) -->
             <button v-else-if="componentActive" type="button" class="button confirm" @click="onAddItem">
                 <span class="icon-plus"></span>
@@ -132,13 +141,6 @@ export default {
             required: false
         },
         /**
-         * icon-class for icon shown left/before headline
-         */
-        headlineIcon: {
-            type: Object,
-            required: false
-        },
-        /**
          * text-alignment (has no effect if icon is used)
          *
          * @allowedValues: "left", "center", "right"
@@ -151,6 +153,13 @@ export default {
                     value === "center" ||
                     value === "right"
             }
+        },
+        /**
+         * properties for CmdIcon-component to show icon left/before headline
+         */
+        cmdIcon: {
+            type: Object,
+            required: false
         }
     },
     computed: {
@@ -166,7 +175,7 @@ export default {
             }
             return ""
         },
-        getTextAlign() {
+        headlineTextAlign() {
             if (this.textAlign) {
                 return "text-" + this.textAlign
             }

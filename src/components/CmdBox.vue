@@ -112,7 +112,7 @@
                      :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
                     <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
                         <!-- begin CmdIcon -->
-                        <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.type" />
+                        <CmdIcon v-bind="cmdIcon" />
                         <!-- end CmdIcon -->
                     </div>
 

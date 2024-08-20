@@ -2,7 +2,7 @@
     <CmdBox
         :use-slots="['body']"
         :collapsible="true"
-        :cmdHeadline="{headlineText: readableName(componentName), headlineLevel: 4, headlineIcon: {iconClass: 'icon-settings-template'}}"
+        :cmdHeadline="{headlineText: readableName(componentName), headlineLevel: 4, cmdIcon: {iconClass: 'icon-settings-template'}}"
         :openCollapsedBox="true"
         boxBodyClass="settings-body"
     >

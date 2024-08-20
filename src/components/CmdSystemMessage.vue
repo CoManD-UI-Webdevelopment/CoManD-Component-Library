@@ -22,7 +22,7 @@
             <!-- begin CmdHeadline -->
             <CmdHeadline
                 class="message-headline"
-                :headlineIcon="headlineIcon"
+                :cmdIcon="headlineIcon"
                 :headlineText="systemMessage"
                 :headlineLevel="messageHeadlineLevel"
                 :id="htmlId"

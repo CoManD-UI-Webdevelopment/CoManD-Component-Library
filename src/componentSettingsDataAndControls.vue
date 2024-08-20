@@ -810,7 +810,11 @@ data() {
             useInnerSection: true,
             sticky: false,
             sectionClass: "section-class",
-            anchorId: ""
+            anchorId: "",
+            cmdHeadline: {
+                headlineText: "Headline for WidthLimitationWrapper",
+                headlineLevel: 4
+            }
         },
         cmdWidthLimitationWrapperSettingsControls: {
             containerType: [
