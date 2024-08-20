@@ -1196,8 +1196,12 @@
                             />
                         </template>
                     </CmdBoxWrapper>
-                    <h3>Boxes in BoxWrapper (collapsible)</h3>
+                    <h3><span>Boxes in BoxWrapper (collapsible)</span>
+                        <a href="#" class="icon-cog" title="Open Component Settings"
+                           @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a></h3>
                     <CmdBoxWrapper
+                        ref="CmdBoxWrapper"
+                        v-bind="cmdBoxWrapperSettingsData"
                         :boxesPerRow="[5, 2, 1]"
                         :openBoxesByDefault="[2]"
                         :useRowViewAsDefault="true"
@@ -1508,6 +1512,18 @@
                     </h2>
                     <CmdForm :use-validation="true" :use-fieldset="false">
                         <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
+                    </CmdForm>
+                    <CmdForm :use-validation="true" :use-fieldset="false">
+                        <CmdLoginForm
+                            ref="CmdLoginForm"
+                            v-bind="cmdLoginFormSettingsData"
+                            orientation="vertical"
+                            :cmdHeadlineLoginForm="{
+                                headlineText: 'Please login',
+                                headlineLevel: 3
+                            }"
+                            v-model="loginData"
+                        />
                     </CmdForm>
                     <p>LoginData: {{ loginData }}</p>
                 </CmdWidthLimitationWrapper>

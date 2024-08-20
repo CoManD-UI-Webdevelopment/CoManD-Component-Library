@@ -8,6 +8,7 @@
            {
             disabled: $attrs.disabled,
             inline : displayLabelInline,
+            'stretch-field' : stretchField,
             'toggle-switch': toggleSwitch,
             colored: colored,
             'has-state': validationStatus
@@ -444,6 +445,15 @@ export default {
         displayLabelInline: {
             type: Boolean,
             required: false
+        },
+        /**
+         * activate if field should be stretch over remaining (horizontal) space if inline
+         *
+         * displayLabelInline-property must be activated
+         */
+        stretchField: {
+            type: Boolean,
+            default: false
         },
         /**
          * set status for label and form-element

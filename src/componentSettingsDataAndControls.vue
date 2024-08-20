@@ -371,7 +371,6 @@ data() {
             ]
         },
         cmdLinkSettingsData: {
-
             path: "#",
             target: "",
             text: "Linktext",
@@ -430,9 +429,16 @@ data() {
             ]
         },
         cmdLoginFormSettingsData: {
-            textLegendLoginForm: "Login form",
-            showLegend: true,
-            textLegendForgotLoginForm: "Forgot login form"
+            legendLoginForm: {
+                show: true,
+                align: "left",
+                text: "Login form"
+            },
+            legendForgotLoginForm: {
+                show: true,
+                align: "right",
+                text: "Forgot login form"
+            }
         },
         cmdLoginFormSettingsControls: {
             orientation: [

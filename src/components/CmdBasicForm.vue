@@ -8,7 +8,7 @@
         <CmdForm
             @submit="onSubmit"
             novalidate="novalidate"
-            :textLegend="getMessage('basic_form.legend')"
+            :legend="legend"
             :submitButton="submitButton"
             :formAction="formAction"
         >
@@ -299,6 +299,16 @@ export default {
         formAction: {
             type: String,
             required: false
+        },
+        legend: {
+            type: Object,
+            default() {
+                return {
+                    show: true,
+                    align: "right",
+                    text: "Legend"
+                }
+            }
         },
         /**
          * configuration for form-elements used in form

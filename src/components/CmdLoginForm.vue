@@ -1,7 +1,7 @@
 <template>
     <!-- begin login-form -->
     <fieldset v-show="!sendLogin" class="cmd-login-form flex-container">
-        <legend :class="{hidden : !showLegend}">{{ textLegendLoginForm }}</legend>
+        <legend :class="{hidden : !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left'}">{{ legendLoginForm.text }}</legend>
         <!-- begin CmdHeadline -->
         <CmdHeadline
             v-if="cmdHeadlineLoginForm"
@@ -10,7 +10,7 @@
         <!-- end CmdHeadline -->
 
         <!-- begin form elements -->
-        <div :class="['login-fields, flex-container', {'vertical': orientation === 'vertical'}]">
+        <div :class="['login-fields flex-container', {'vertical': orientation === 'vertical'}]">
             <!-- begin CmdFormElement -->
             <CmdFormElement
                 element="input"
@@ -65,6 +65,7 @@
 
                 <!-- begin link for 'create account' -->
                 <template v-if="options.createAccount">
+                    <!-- begin CmdLink -->
                     <CmdLink
                         :linkType="options.createAccount.linkType"
                         :path="options.createAccount.path"
@@ -75,6 +76,7 @@
                             position: options.createAccount.icon?.position
                         }"
                     />
+                    <!-- end CmdLink -->
                 </template>
                 <!-- end link for 'create account' -->
             </template>
@@ -104,7 +106,7 @@
 
     <!-- begin send-login-form -->
     <fieldset v-show="sendLogin" class="cmd-login-form flex-container">
-        <legend :class="{'hidden' : !showLegend}">{{ textLegendForgotLoginForm }}</legend>
+        <legend :class="{hidden : !legendForgotLoginForm.show, 'align-left': legendForgotLoginForm.align === 'left'}">{{ legendForgotLoginForm .text }}</legend>
         <!-- begin CmdHeadline -->
         <CmdHeadline
             v-if="cmdHeadlineSendLoginForm"
@@ -210,13 +212,19 @@ export default {
             }
         },
         /**
-         * text used as legend for login-fieldset
+         * options for legend for login-fieldset
          *
          * @requiredForAccessibility: true
          */
-        textLegendLoginForm: {
-            type: String,
-            default: "Login form"
+        legendLoginForm: {
+            type: Object,
+            default() {
+                return {
+                    show: true,
+                    align: "right",
+                    text: "Login form"
+                }
+            }
         },
         /**
          * toggle legend visibility
@@ -230,9 +238,15 @@ export default {
          *
          * @requiredForAccessibility: true
         */
-        textLegendForgotLoginForm: {
-            type: String,
-            default: "Forgot login form"
+        legendForgotLoginForm: {
+            type: Object,
+            default() {
+                return {
+                    show: true,
+                    align: 'right"',
+                    text: 'Forgot login form'
+                }
+            }
         },
         /**
          * properties for CmdHeadline-component for login-form
@@ -451,6 +465,16 @@ export default {
 <style>
 /* begin cmd-login-form ---------------------------------------------------------------------------------------- */
 .cmd-login-form {
+    .cmd-headline {
+        flex: none;
+        margin: 0;
+    }
+
+    legend.align-left {
+        left: 0;
+        right: auto;
+    }
+
     .login-fields {
         &.vertical {
            .cmd-form-element {
@@ -460,6 +484,7 @@ export default {
     }
 
     .option-wrapper {
+        flex: none;
         align-items: center;
 
         > a:not(.button) {

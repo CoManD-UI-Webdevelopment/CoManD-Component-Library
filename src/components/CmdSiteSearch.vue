@@ -1,7 +1,7 @@
 <template>
     <fieldset class="cmd-box-site-search flex-container">
         <!-- begin legend -->
-        <legend :class="{'hidden' : !showLegend}">{{ textLegend }}</legend>
+        <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <!-- end legend -->
 
         <!-- begin CmdHeadline -->
@@ -160,22 +160,20 @@ export default {
             default: true
         },
         /**
-         * toggle legend visibility
+         * legend for form
          *
-         * textLegend must be set
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * text for legend
+         * useFieldset-property must be activated
          *
-         * @requiredForAccessibility: true
+         * @requiredForAccessiblity: true
          */
-        textLegend: {
-            type: String,
-            required: false
+        legend: {
+            default() {
+                return {
+                    show: true,
+                    align: "left",
+                    text: "Legend"
+                }
+            }
         },
         /**
          * send search result from outside to display inside this component

@@ -274,10 +274,6 @@ export default {
     flex-direction: column;
     gap: calc(var(--default-gap) / 2);
 
-    &:not(:first-child) {
-        margin-top: calc(var(--default-margin) * 2);
-    }
-
     > .headline-wrapper {
         align-items: center;
         justify-content: space-between;

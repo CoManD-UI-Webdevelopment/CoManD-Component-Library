@@ -2,7 +2,7 @@
     <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit" :class="{error: errorOccurred}" :novalidate="novalidate">
         <template v-if="useFieldset">
             <fieldset class="flex-container">
-                <legend :class="{hidden : !showLegend}">{{ textLegend }}</legend>
+                <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
@@ -81,6 +81,22 @@ export default {
             required: false
         },
         /**
+         * legend for form
+         *
+         * useFieldset-property must be activated
+         *
+         * @requiredForAccessiblity: true
+         */
+        legend: {
+            default() {
+                return {
+                    show: true,
+                    align: "left",
+                    text: "Legend"
+                }
+            }
+        },
+        /**
          * activate if form-elements should be given by slot
          */
         useSlot: {
@@ -120,26 +136,6 @@ export default {
             default: true
         },
         /**
-         * toggle visibility for legend-text
-         *
-         * useFieldset must be activated
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * text for legend
-         *
-         * useFieldset must be activated
-         *
-         * @requiredForAccessibility: true
-         */
-        textLegend: {
-            type: String,
-            required: false
-        },
-        /**
          * submit-button to submit all form-data
          */
         submitButton: {
@@ -158,7 +154,7 @@ export default {
     methods: {
         createHtmlId,
         submitFormData(event) {
-            // fill formdata with names and value
+            // fill form-data with names and value
             let formdata = {}
             if(this.formElements) {
                 this.formElements.forEach((element) => {
@@ -217,10 +213,15 @@ export default {
             color: var(--error-color);
         }
 
-        :where(input, select, textarea):valid:focus[required],
-        select:invalid:focus[required] option:not(:first-child) {
+        :where(input, select, textarea):user-valid:focus[required],
+        select:user-invalid:focus[required] option:not(:first-child) {
             color: var(--success-color);
         }
+    }
+
+    legend.align-left {
+        left: 0;
+        right: auto;
     }
 
     &.error {
