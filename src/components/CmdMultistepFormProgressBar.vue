@@ -1,6 +1,22 @@
 <template>
     <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap}]">
         <li v-for="(step, index) in multisteps" :key="index" :class="{active : activeLink === index}">
+            <!-- begin CmdLink -->
+            <CmdLink
+                :linkType="step.type"
+                :path="step.path"
+                :title="step.tooltip"
+                @click.stop.prevent="clickedStep($event, index)"
+            >
+                <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
+                <!-- begin CmdIcon -->
+                <CmdIcon v-if="step.iconClass" :iconClass="step.iconClass" :type="step.iconType" />
+                <!-- end CmdIcon -->
+                <span v-if="step.text">{{ step.text }}</span>
+                <span :class="separatorIconClass"></span>
+            </CmdLink>
+            <!-- end CmdLink -->
+
             <!-- begin type === href -->
             <a v-if="step.type === 'href'"
                :href="step.path" @click.stop.prevent="clickedStep($event, index)"

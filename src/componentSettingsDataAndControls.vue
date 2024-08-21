@@ -493,8 +493,10 @@ data() {
         },
         cmdNewsletterSubscriptionSettingsData: {
             buttonType: "submit",
-            showLegend: true,
-            textLegend: "Stay up-to-date",
+            legend: {
+                show: true,
+                text: "Stay up-to-date"
+            },
             cmdInputGroup: {
                 inputElements: [
                     {
@@ -582,8 +584,10 @@ data() {
         },
         cmdSiteSearchSettingsData: {
             useFilters: true,
-            textLegend: "Search",
-            showLegend: true
+            legend: {
+                show: true,
+                text: "Search"
+            }
         },
         cmdSlideshowSettingsData: {
             useSlot: false,
@@ -800,8 +804,9 @@ data() {
             maxFileUploadSize: 10485760,
             allowMultipleFileUploads: false,
             advancedMode: true,
-            showLegend: true,
-            textLegend: "Advanced upload form",
+            legend: {
+                text: "Advanced upload form"
+            },
             allowedFileExtensions: ["jpg", "eps"]
         },
         cmdWidthLimitationWrapperSettingsData: {

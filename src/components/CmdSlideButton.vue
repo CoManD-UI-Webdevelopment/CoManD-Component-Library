@@ -4,7 +4,7 @@
        :class="['cmd-slide-button', 'button', 'keep-behavior-on-small-devices', slideButtonType]"
        :title="getDirection.tooltip">
         <!-- begin CmdIcon -->
-        <CmdIcon :iconClass="getDirection.iconClass || 'next'" />
+        <CmdIcon :type="getDirection.iconType || 'auto'" :iconClass="getDirection.iconClass || 'next'" />
         <!-- end CmdIcon -->
     </a>
 </template>

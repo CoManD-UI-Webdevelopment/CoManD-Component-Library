@@ -7,7 +7,7 @@
                    :class="['flag', language.iso2, {'active': activeLanguage(language)}]"
                    :title="language.tooltip"
                    @click="$emit('click', { originalEvent: $event, language} )">
-                    <img :src="imageSources[index]" :alt="language.name" />
+                   <img :src="imageSources[index]" :alt="language.name" />
                 </a>
                 <!-- end link-type 'href' -->
 

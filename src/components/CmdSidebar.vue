@@ -5,9 +5,8 @@
             <!-- begin CmdHeadline -->
             <CmdHeadline
                 v-if="cmdHeadline?.headlineText && open"
-                :headlineText="cmdHeadline.headlineText"
+                v-bind="cmdHeadline"
                 :headlineLevel="cmdHeadline.headlineLevel || 3"
-                :textAlign="cmdHeadline.textAlign"
                 class="sidebar-main-headline"
             />
             <!-- end CmdHeadline -->

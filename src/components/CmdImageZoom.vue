@@ -1,21 +1,23 @@
 <template>
-    <div class="cmd-imagezoom flex-container">
-
+    <div class="cmd-image-zoom flex-container">
         <!-- begin small image -->
         <a href="#" class="no-flex thumbnails-imagezoom" :title="imageSmall.tooltip">
-            <img :src="imageSmall.src"
+            <!-- begin CmdImage for small image -->
+            <CmdImage :src="imageSmall.src"
                  :alt="imageSmall.alt"
                 @mouseover="onMouseOver"
                 @mousemove="onMouseMove"
                 @mouseout="onMouseOut"
             />
-            <!-- end CmdImage -->
+            <!-- end CmdImage for small image -->
         </a>
         <!-- end small image -->
 
         <!-- begin large image -->
         <div v-if="showLargeImage" class="zoom-container">
-            <img :src="imageLarge.src" :alt="imageLarge.alt"/>
+            <!-- begin CmdImage for large image -->
+            <CmdImage v-bind="imageLarge" />
+            <!-- end CmdImage for large image -->
         </div>
         <div v-if="showLargeImage" class="zoom-overlay"></div>
         <!-- end large image -->
@@ -111,7 +113,7 @@ function clamp(value, min, max) {
 
 <style>
 /* begin cmd-imagezoom ---------------------------------------------------------------------------------------- */
-.cmd-imagezoom {
+.cmd-image-zoom {
     overflow: hidden;
 
     .zoom-container {

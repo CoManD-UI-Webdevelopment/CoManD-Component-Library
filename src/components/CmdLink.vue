@@ -5,6 +5,7 @@
         <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
         <span v-if="text">{{ text }}</span>
         <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
+        <slot></slot>
     </a>
     <!-- end href -->
 
@@ -13,6 +14,7 @@
         <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
         <span v-if="text">{{ text }}</span>
         <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
+        <slot></slot>
     </router-link>
     <!-- end router -->
 
@@ -21,6 +23,7 @@
         <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
         <span v-if="text">{{ text }}</span>
         <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
+        <slot></slot>
     </button>
     <!-- end button -->
     <!-- end CmdLink -->

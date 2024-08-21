@@ -2,7 +2,7 @@
     <!-- begin CmdTooltip -->
     <CmdTooltip
         ref="tooltip"
-        class="box cmd-tooltip-for-form-elements"
+        class="cmd-tooltip-for-form-elements box"
         :class="validationStatus"
         :relatedId="relatedId"
         :toggle-visibility-by-click="true">
@@ -10,12 +10,7 @@
         <!-- begin CmdListOfRequirements -->
         <CmdListOfRequirements
             v-if="cmdListOfRequirements.showRequirements"
-            :showHeadline="cmdListOfRequirements.showHeadline"
-            :inputRequirements="cmdListOfRequirements.inputRequirements"
-            :helplink="cmdListOfRequirements.helplink"
-            :inputModelValue="cmdListOfRequirements.inputModelValue"
-            :inputAttributes="cmdListOfRequirements.inputAttributes"
-            :labelText="cmdListOfRequirements.labelText"
+            v-bind="cmdListOfRequirements"
         />
         <!-- end CmdListOfRequirements -->
     </CmdTooltip>

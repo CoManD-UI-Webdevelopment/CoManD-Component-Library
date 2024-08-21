@@ -1,9 +1,9 @@
 <template>
     <!-- begin cmd-back-to-top-button -->
     <transition name="fade">
-        <a v-if="show" class="cmd-back-to-top-button button" id="back-to-top-button" href="#" role="button" :title="iconBackToTop.tooltip" @click.prevent="onBackToTop">
+        <a v-if="show" class="cmd-back-to-top-button button" id="back-to-top-button" href="#" role="button" :title="cmdIcon.tooltip" @click.prevent="onBackToTop">
             <!-- begin CmdIcon -->
-            <CmdIcon :iconClass="iconBackToTop.iconClass" :type="iconBackToTop.iconType" />
+            <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.iconType" />
             <!-- end CmdIcon -->
         </a>
     </transition>
@@ -34,7 +34,7 @@ export default {
          *
          * @requiredForAccessibility: partial
          */
-        iconBackToTop: {
+        cmdIcon: {
             type: Object,
             default: function () {
                 return {

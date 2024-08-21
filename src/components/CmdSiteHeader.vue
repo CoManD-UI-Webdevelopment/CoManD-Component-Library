@@ -43,9 +43,7 @@
                 <!-- begin CmdMainNavigation -->
                 <CmdMainNavigation
                     v-if="cmdMainNavigation?.navigationEntries?.length && navigationInline"
-                    :navigationEntries="cmdMainNavigation.navigationEntries"
-                    :offcanvasPosition="cmdMainNavigation.offcanvasPosition"
-                    :stretchMainItems="cmdMainNavigation.stretchMainItems"
+                    v-bind="cmdMainNavigation"
                     :closeOffcanvas="closeOffcanvas"
                     @offcanvas="emitOffcanvasStatus"
                 />
@@ -58,10 +56,8 @@
         <!-- begin CmdMainNavigation -->
         <CmdMainNavigation
             v-if="cmdMainNavigation?.navigationEntries?.length && !navigationInline"
-            :navigationEntries="cmdMainNavigation.navigationEntries"
-            :offcanvasPosition="cmdMainNavigation.offcanvasPosition"
+            v-bind="cmdMainNavigation"
             :closeOffcanvas="closeOffcanvas"
-            :stretchMainItems="cmdMainNavigation.stretchMainItems"
             @offcanvas="emitOffcanvasStatus"
         />
         <!-- end CmdMainNavigation -->

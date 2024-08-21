@@ -17,9 +17,9 @@
                     <dt>{{ entry.text }}</dt>
                     <dd v-if="allowCopyByClick && entry.allowCopy">
                         <span>{{ entry.value }}</span>
-                        <a href="#" @click.prevent="copyToClipboard(entry.value)" :title="iconCopy.tooltip">
+                        <a href="#" @click.prevent="copyToClipboard(entry.value)" :title="cmdIcon.tooltip">
                             <!-- begin CmdIcon -->
-                            <CmdIcon :iconClass="iconCopy.iconClass" :type="iconCopy.iconType"/>
+                            <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.iconType"/>
                             <!-- end CmdIcon -->
                         </a>
                     </dd>
@@ -74,7 +74,7 @@ export default {
          *
          * @requiredForAccessibility: partial
          */
-        iconCopy: {
+        cmdIcon: {
             type: Object,
             default() {
                 return {

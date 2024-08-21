@@ -11,7 +11,7 @@ export default {
     name: "CmdSiteFooter",
     props: {
         /**
-         * set to vertical if items inside should be arranged vertically
+         * set to vertical if inner content should be arranged vertically
          *
          * @allowedValues: horizontal, vertical
          */

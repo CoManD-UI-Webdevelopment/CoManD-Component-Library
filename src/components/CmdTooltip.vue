@@ -4,10 +4,7 @@
             <!-- begin CmdHeadline -->
             <CmdHeadline
                 v-if="cmdHeadline"
-               :iconClass="cmdHeadline.iconClass"
-               :preHeadline="cmdHeadline.preHeadline"
-               :headlineLevel="cmdHeadline.headlineLevel"
-               :headlineText="cmdHeadline.headlineText"
+               v-bind="cmdHeadline"
             />
             <!-- end CmdHeadline -->
 

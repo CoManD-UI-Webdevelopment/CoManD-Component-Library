@@ -9,9 +9,8 @@
             <header class="flex-container">
                 <!-- begin CmdHeadline -->
                 <CmdHeadline
-                    v-if="cmdHeadline?.show"
-                    :headlineText="cmdHeadline?.headlineText"
-                    :headlineLevel="cmdHeadline?.headlineLevel"
+                    v-if="cmdHeadline?.headlineText"
+                    v-bind="cmdHeadline"
                     :id="htmlId"
                 />
                 <!-- end CmdHeadline -->

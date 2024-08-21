@@ -10,13 +10,7 @@
         <!-- begin CmdListOfRequirements -->
         <CmdListOfRequirements
             v-if="cmdListOfRequirements.showRequirements"
-            :showHeadline="cmdListOfRequirements.showHeadline"
-            :inputRequirements="cmdListOfRequirements.inputRequirements"
-            :helplink="cmdListOfRequirements.helplink"
-            :inputModelValue="cmdListOfRequirements.inputModelValue"
-            :inputAttributes="cmdListOfRequirements.inputAttributes"
-            :validationTooltip="cmdListOfRequirements.validationTooltip"
-            :labelText="cmdListOfRequirements.labelText"
+            v-bind="cmdListOfRequirements"
         />
         <!-- end CmdListOfRequirements -->
     </CmdTooltip>

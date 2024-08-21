@@ -36,19 +36,19 @@
         <template v-else>
             <!-- begin edit-mode -->
             <CmdFormElement
-                    element="input"
-                    type="text"
-                    labelText="Label for Light Mode"
-                    placeholder="Label for Light Mode"
-                    v-model="labelTextLightModeModel"
+                element="input"
+                type="text"
+                labelText="Label for Light Mode"
+                placeholder="Label for Light Mode"
+                v-model="labelTextLightModeModel"
             />
 
             <CmdFormElement
-                    element="input"
-                    type="text"
-                    labelText="Label for Dark Mode"
-                    placeholder="Label for Dark Mode"
-                    v-model="labelTextDarkModeModel"
+                element="input"
+                type="text"
+                labelText="Label for Dark Mode"
+                placeholder="Label for Dark Mode"
+                v-model="labelTextDarkModeModel"
             />
             <!-- end edit-mode -->
         </template>

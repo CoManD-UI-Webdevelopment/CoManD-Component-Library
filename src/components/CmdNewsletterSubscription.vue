@@ -1,7 +1,7 @@
 <template>
     <fieldset class="cmd-newsletter-subscription flex-container">
         <!-- begin legend -->
-        <legend :class="{'hidden' : !showLegend}">{{ textLegend }}</legend>
+        <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <!-- end legend -->
 
         <!-- begin cmd-input-group -->
@@ -64,6 +64,11 @@ export default {
                 }
             }
         },
+        /**
+         * set type for button
+         *
+         * @allowedValues: "submit", "button"
+         */
         buttonType: {
             type: String,
             default: "button",
@@ -72,20 +77,20 @@ export default {
             }
         },
         /**
-         * toggle legend visibility
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * text used as legend for login-fieldset
+         * legend for form
          *
-         * @requiredForAccessibility: true
+         * useFieldset-property must be activated
+         *
+         * @requiredForAccessiblity: true
          */
-        textLegend: {
-            type: String,
-            default: "Stay up-to-date"
+        legend: {
+            default() {
+                return {
+                    show: true,
+                    align: "left",
+                    text: "Legend"
+                }
+            }
         },
         /**
          * properties for CmdInputGroup-component

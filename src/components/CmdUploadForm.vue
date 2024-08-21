@@ -1,7 +1,7 @@
 <template>
     <!-- begin advanced mode -->
     <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container', { 'upload-initiated': uploadInitiated }]">
-        <legend :class="{hidden : !showLegend}">{{ textLegend }}</legend>
+        <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <!-- begin CmdHeadlineFieldset -->
         <CmdHeadline
             v-if="cmdHeadlineFieldset"
@@ -52,7 +52,7 @@
                                 @click.prevent="cancelUpload"
                             >
                                 <!-- begin CmdIcon -->
-                                <CmdIcon :iconClass="deleteIcon.iconClass" :type="deleteIcon.iconClass"/>
+                                <CmdIcon v-bind="iconDelete" />
                                 <!-- end CmdIcon -->
                             </a>
                             <span>
@@ -105,7 +105,7 @@
                                 @click.prevent="removeFile(index)"
                             >
                                 <!-- begin CmdIcon -->
-                                <CmdIcon :iconClass="iconDelete.iconClass" :type="iconDelete.iconType"/>
+                                <CmdIcon v-bind="iconDelete" />
                                 <!-- end CmdIcon -->
                             </a>
                             <span
@@ -271,7 +271,7 @@
                 @click="uploadFiles"
             >
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconUpload.iconClass" :type="iconUpload.iconType"/>
+                <CmdIcon v-bind="iconUpload" />
                 <!-- end CmdIcon -->
                 <span v-if="listOfFiles.length === 1 || !allowMultipleFileUploads">
                     {{ getMessage("cmduploadform.buttontext.upload_file") }}
@@ -280,7 +280,7 @@
             </button>
             <button :class="['button', { disabled: listOfFiles.length === 0 }]" @click="cancel">
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconCancel.iconClass" :type="iconCancel.iconType"/>
+                <CmdIcon v-bind="iconCancel" />
                 <!-- end CmdIcon -->
                 <span>{{ getMessage("cmduploadform.buttontext.cancel") }}</span>
             </button>
@@ -481,20 +481,20 @@ export default {
             default: true
         },
         /**
-         * toggle visibility for legend-text
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
-         * text for legend
+         * legend for form
          *
-         * @requiredForAccessibility: true
+         * useFieldset-property must be activated
+         *
+         * @requiredForAccessiblity: true
          */
-        textLegend: {
-            type: String,
-            required: false
+        legend: {
+            default() {
+                return {
+                    show: true,
+                    align: "left",
+                    text: "Legend"
+                }
+            }
         },
         /**
          * set icon for delete-icons

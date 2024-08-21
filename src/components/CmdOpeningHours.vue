@@ -9,16 +9,8 @@
 
         <!-- begin opening-status with link to detail-page -->
         <template v-if="!editing">
-            <template v-if="link && link?.path && link?.show">
-                <a v-if="link.type === 'href'" :href="link.path" :class="{closed: isClosed}">{{ textOpenClosed }}</a>
-                <router-link v-if="link.type === 'router'" :to="link.path" :class="{closed: isClosed}">{{
-                        textOpenClosed
-                    }}
-                </router-link>
-                <button v-if="link.type === 'button'" :class="['button', {closed: isClosed}]">{{
-                        textOpenClosed
-                    }}
-                </button>
+            <template v-if="cmdLink?.path">
+                <CmdLink :linkType="cmdLink.type || 'href'" v-bind="cmdLink" :class="{closed: isClosed}">{{ textOpenClosed }}</CmdLink>
             </template>
             <!-- end opening-status with link to detail-page -->
 
@@ -183,13 +175,6 @@ export default {
             default: false
         },
         /**
-         * set a link to a detail page
-         */
-        link: {
-            type: Object,
-            required: false
-        },
-        /**
          * text for 'open'-information
          */
         textOpen: {
@@ -265,6 +250,13 @@ export default {
         checkInterval: {
             type: Number,
             default: 5000
+        },
+        /**
+         * properties for CmdLink-component
+         */
+        cmdLink: {
+            type: Object,
+            required: false
         },
         /**
          * properties for CmdHeadline-component

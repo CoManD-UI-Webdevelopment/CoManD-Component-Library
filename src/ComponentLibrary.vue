@@ -1082,7 +1082,7 @@
                                 </h4>
                             </template>
                             <template v-slot:body>
-                                <CmdForm :showLegend="false" textLegend="Login Form">
+                                <CmdForm>
                                     <CmdFormElement
                                         element="input"
                                         type="text"
@@ -1209,7 +1209,6 @@
                     </h3>
                     <CmdBoxWrapper
                         ref="CmdBoxWrapper"
-                        v-bind="cmdBoxWrapperSettingsData"
                         :boxesPerRow="[5, 2, 1]"
                         :openBoxesByDefault="[2]"
                         :useRowViewAsDefault="true"
@@ -1300,7 +1299,6 @@
                     <CmdForm
                         :useFieldset="true"
                         :useSlot="false"
-                        textLegend="Legend"
                         id="form-component"
                         novalidate="novalidate"
                         :formElements="formElementsData"
@@ -1309,7 +1307,6 @@
                     <h3>Form elements given by slot</h3>
                     <CmdForm
                         :use-fieldset="true"
-                        textLegend="Legend"
                         id="form-component"
                         novalidate="novalidate"
                         @submit="doConsoleLog"
@@ -1578,7 +1575,7 @@
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdNewsletterSubscription')"></a>
                     </h2>
-                    <CmdForm textLegend="Stay-up-to-date" :use-fieldset="false">
+                    <CmdForm :use-fieldset="false">
                         <CmdNewsletterSubscription
                             ref="CmdNewsletterSubscription"
                             v-bind="cmdNewsletterSubscriptionSettingsData"
@@ -1989,7 +1986,7 @@
                 :fancyboxOptions="{}"
                 :allowEscapeKey="false"
                 :cmdHeadline="{show: true, headlineText: 'Cookie Disclaimer', headlineLevel: 2}"
-                ariaLabelText="Cookie Disclaimer"
+                defaultAriaLabelText="Cookie Disclaimer"
             >
                 <!-- begin cookie-disclaimer ------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <CmdCookieDisclaimer
