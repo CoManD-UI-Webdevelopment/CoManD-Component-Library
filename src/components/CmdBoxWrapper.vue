@@ -293,13 +293,21 @@ export default {
                 align-self: stretch;
                 height: auto; /* must be set to auto if inner boxes have als stretchVertically-property activated */
             }
+
+            &.stretch-horizontally {
+                flex: 1;
+            }
         }
     }
 
-    .inner-box-wrapper > *{
+    .inner-box-wrapper > * {
         flex: none;
         flex-grow: 1;
         flex-basis: min-content;
+
+        &.stretch-horizontally {
+            flex: 1;
+        }
     }
 
     .row-view {

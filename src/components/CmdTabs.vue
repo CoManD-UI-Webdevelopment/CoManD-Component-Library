@@ -1,5 +1,6 @@
 <template>
     <div class="cmd-tabs">
+        <!-- being tab-list -->
         <ul :class="{'stretch-tabs' : stretchTabs}" role="tablist">
             <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="tab">
                 <a href="#" @click.prevent="setActiveTab(index)" :title="!tab.name ? tab.tooltip : undefined">
@@ -10,10 +11,12 @@
                 </a>
             </li>
         </ul>
+        <!-- end tab-list -->
 
+        <!-- being tab-content -->
         <!-- begin slot -->
         <template v-if="useSlot">
-            <div v-show="showTab === index - 1" v-for="index in tabs.length" :key="index" aria-live="assertive">
+            <div v-show="showTab === index - 1" v-for="index in tabs.length" :key="index" aria-live="assertive" :class="{'no-padding': !useDefaultPadding}">
                 <!-- begin slot-content -->
                 <slot :name="'tab-content-' + (index - 1)"></slot>
                 <!-- end slot-content -->
@@ -30,8 +33,10 @@
                :headlineLevel="tabs[showTab].headlineLevel"
             />
             <!-- end CmdHeadline -->
-            <div v-html="tabs[showTab].htmlContent"></div>
+
+            <div v-html="tabs[showTab].htmlContent" :class="{'no-padding': !useDefaultPadding}"></div>
         </div>
+        <!-- end tab-content -->
     </div>
 </template>
 
@@ -54,11 +59,11 @@ export default {
     emits: ["active-tab"],
     props: {
         /**
-         * properties for CmdHeadline-component
+         * set if content should use default-padding
          */
-        cmdHeadline: {
-            type: Object,
-            required: false
+        useDefaultPadding: {
+            type: Boolean,
+            default: true
         },
         /**
          * activate if tabs should be (equally) stretched horizontally over full width of tab-content
@@ -87,6 +92,13 @@ export default {
         activeTab: {
             type: Number,
             default: 0
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
         }
     },
     methods: {

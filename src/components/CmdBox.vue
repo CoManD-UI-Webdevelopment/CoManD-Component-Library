@@ -571,7 +571,7 @@ export default {
     }
 
     &.stretch-vertically {
-        height: 100%;
+        align-self: auto;
     }
 
     .box-header .cmd-headline {

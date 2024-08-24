@@ -1004,6 +1004,7 @@
                         textBody="Content"
                         :useSlots="['body', 'footer']"
                         :cmd-headline="{headlineText: 'Headline for box', headlineLevel: 4}"
+                        :stretchVertically="true"
                     >
                         <template v-slot:header>
                             <h4>

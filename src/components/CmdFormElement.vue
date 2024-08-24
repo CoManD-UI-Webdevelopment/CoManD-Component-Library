@@ -804,6 +804,7 @@ export default {
         onBlur(event) {
             this.validateInput(event)
             this.closeTooltipOnBlur()
+            this.$emit('blur', event)
         },
         onInput(event) {
             this.validateInput(event)

@@ -16,54 +16,6 @@
                 <span :class="separatorIconClass"></span>
             </CmdLink>
             <!-- end CmdLink -->
-
-            <!-- begin type === href -->
-            <a v-if="step.type === 'href'"
-               :href="step.path" @click.stop.prevent="clickedStep($event, index)"
-               :title="step.tooltip"
-            >
-                <span  v-if="showStepNumber" class="number">{{ index + 1 }}</span>
-                <!-- begin CmdIcon -->
-                <CmdIcon v-if="step.iconClass" :iconClass="step.iconClass" :type="step.iconType" />
-                <!-- end CmdIcon -->
-                <span v-if="step.text">{{ step.text }}</span>
-                <span :class="separatorIconClass"></span>
-            </a>
-            <!-- end type === href -->
-
-            <!-- begin type === router -->
-            <router-link
-                v-if="step.type === 'router'"
-                :to="getRoute(step)"
-                :title="step.tooltip"
-            >
-                <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
-                <!-- begin CmdIcon -->
-                <CmdIcon v-if="step.iconClass" :iconClass="step.iconClass" :type="step.iconType" />
-                <!-- end CmdIcon -->
-                <span v-if="step.text">{{ step.text }}</span>
-                <span :class="separatorIconClass"></span>
-            </router-link>
-            <!-- end type === router -->
-
-            <!-- begin type === button/submit -->
-            <button
-                v-if="step.type === 'button' || step.type === 'submit'"
-                class="button"
-                :type="step.type"
-                :name="step.name"
-                :title="step.tooltip"
-                :formaction="step.formaction"
-                @click.stop.prevent="clickedStep($event, index)"
-            >
-                <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
-                <!-- begin CmdIcon -->
-                <CmdIcon v-if="step.iconClass" :iconClass="step.iconClass" :type="step.iconType" />
-                <!-- end CmdIcon -->
-                <span v-if="step.text">{{ step.text }}</span>
-                <span :class="separatorIconClass"></span>
-            </button>
-            <!-- end type === button/submit -->
         </li>
     </ol>
 </template>
@@ -193,6 +145,7 @@ export default {
 
             :is(span, [class*="icon-"]) {
                 color: var(--pure-white);
+                font-size: var(--icon-size-medium) !important;
 
                 & + [class*="icon-"] {
                     &:last-child {

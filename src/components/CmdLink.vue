@@ -1,38 +1,62 @@
 <template>
     <!-- begin CmdLink -->
     <!-- begin href -->
-    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click.prevent="emitClick($event, 'href')">
-        <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <span v-if="text">{{ text }}</span>
-        <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <slot></slot>
+    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'href')">
+        <InnerLink :text="text" :icon="icon">
+            <slot></slot>
+        </InnerLink>
     </a>
     <!-- end href -->
 
     <!-- begin router -->
-    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click.prevent="emitClick($event, 'router')">
-        <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <span v-if="text">{{ text }}</span>
-        <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <slot></slot>
+    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'router')">
+        <InnerLink :text="text" :icon="icon">
+            <slot></slot>
+        </InnerLink>
     </router-link>
     <!-- end router -->
 
     <!-- begin button -->
-    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton}]" type="submit" @click.prevent="emitClick($event, 'button')">
-        <span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <span v-if="text">{{ text }}</span>
-        <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <slot></slot>
+    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton}]" type="submit" @click="emitClick($event, 'button')">
+        <InnerLink :text="text" :icon="icon">
+            <slot></slot>
+        </InnerLink>
     </button>
     <!-- end button -->
     <!-- end CmdLink -->
 </template>
 
 <script>
+import { defineComponent } from "vue"
+const InnerLink = defineComponent({
+    template: `<span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
+        <span v-if="text">{{ text }}</span>
+        <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
+        <slot></slot>`,
+    props: {
+        /**
+         * icon to display
+         */
+        icon: {
+            type: Object,
+            default: {}
+        },
+        /**
+         * displayed text
+         */
+        text: {
+            type: String,
+            default: ""
+        }
+    }
+})
+
 export default {
     name: "CmdLink",
     emits: ["click"],
+    components: {
+        InnerLink
+    },
     props: {
         /**
          * set type of link
@@ -54,7 +78,7 @@ export default {
          * linkType-property must be 'href', 'router'
          */
         path: {
-            type: String,
+            type: [String, Object],
             default: "#"
         },
         /**
