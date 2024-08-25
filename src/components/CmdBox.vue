@@ -580,6 +580,14 @@ export default {
         margin-bottom: 0;
     }
 
+    &:has(.cmd-image) {
+        align-self: auto !important; /* overwrite settings form frontend-framework */
+    }
+
+    &:has(.cmd-image:only-child) {
+        align-self: start !important;
+    }
+
     /* collapsible box only */
     &.collapsible {
         a.box-header {
@@ -704,7 +712,7 @@ export default {
                 border-radius: 0;
             }
 
-            .inner-box-body-wrapper:has(img:only-child) {
+            .inner-box-body-wrapper:has(figure:only-child) {
                 border-bottom-left-radius: var(--box-border-radius);
                 border-bottom-right-radius: var(--box-border-radius);
 

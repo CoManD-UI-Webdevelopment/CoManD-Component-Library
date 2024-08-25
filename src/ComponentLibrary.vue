@@ -1083,7 +1083,7 @@
                                 </h4>
                             </template>
                             <template v-slot:body>
-                                <CmdForm>
+                                <CmdForm :legend="{show: false}">
                                     <CmdFormElement
                                         element="input"
                                         type="text"
