@@ -10,7 +10,7 @@
                 'stretch-horizontally': stretchHorizontally,
                 'row-view': rowView
              },
-             ]"
+         ]"
     >
         <!-- begin collapsible header with slot -->
         <a v-if="collapsible"
@@ -106,7 +106,9 @@
                  class="inner-box-body-wrapper"
                  :class="{'allow-scroll': allowContentToScroll}"
             >
-                <img v-if="image" :src="image.src" :alt="image.altText"/>
+                <!-- begin CmdImage -->
+                <CmdImage v-if="cmdImage" v-bind="cmdImage" />
+                <!-- end CmdImage -->
 
                 <div v-if="textBody"
                      :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
@@ -404,9 +406,9 @@ export default {
         /**
          * image-object for box-body of content-box
          *
-         * src and altText must be set if image is sed
+         * properties for CmdImage-component
          */
-        image: {
+        cmdImage: {
             type: Object,
             required: false
         },

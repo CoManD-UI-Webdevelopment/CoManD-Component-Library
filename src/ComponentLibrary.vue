@@ -1163,11 +1163,11 @@
                         </CmdBox>
                         <CmdBox
                             :use-default-padding="false"
-                            :image="{src: '/media/images/content-images/landscape-medium.jpg', altText: 'Alternative text'}"
                             :repeatHeadlineInBoxBody="true"
                             :useDefaultPadding="true"
                             :cmdHeadline="{headlineText: 'Box with image, content and link', headlineLevel: 4}"
                             textBody="Image, headline and this text for the component are given by property"
+                            :cmdImage="{image: {src: '/media/images/content-images/landscape-medium.jpg', alt: 'Alternative text'}}"
                             :cmdLink="{
                                 linkType: 'href',
                                 path: '#',
