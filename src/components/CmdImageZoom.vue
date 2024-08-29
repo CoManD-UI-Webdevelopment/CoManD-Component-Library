@@ -1,10 +1,9 @@
 <template>
     <div class="cmd-image-zoom flex-container">
         <!-- begin small image -->
-        <a href="#" class="no-flex thumbnails-imagezoom" :title="imageSmall.tooltip">
+        <a href="#" class="no-flex thumbnails-imagezoom" :title="imageSmall.image.tooltip">
             <!-- begin CmdImage for small image -->
-            <CmdImage :src="imageSmall.src"
-                 :alt="imageSmall.alt"
+            <CmdImage v-bind="imageSmall" :figcaption="{}"
                 @mouseover="onMouseOver"
                 @mousemove="onMouseMove"
                 @mouseout="onMouseOut"
@@ -16,7 +15,7 @@
         <!-- begin large image -->
         <div v-if="showLargeImage" class="zoom-container">
             <!-- begin CmdImage for large image -->
-            <CmdImage v-bind="imageLarge" />
+            <CmdImage v-bind="imageLarge" :figcaption="{}" />
             <!-- end CmdImage for large image -->
         </div>
         <div v-if="showLargeImage" class="zoom-overlay"></div>

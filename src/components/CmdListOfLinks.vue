@@ -138,13 +138,6 @@ export default {
             }
         },
         /**
-         * properties for CmdHeadline-component
-         */
-        cmdHeadline: {
-            type: Object,
-            required: false
-        },
-        /**
          * list of displayed links
          */
         links: {
@@ -163,6 +156,13 @@ export default {
                 return value === "horizontal" ||
                     value === "vertical"
             }
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
         }
     },
     computed: {

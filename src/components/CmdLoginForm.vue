@@ -44,9 +44,9 @@
         </div>
         <!-- end form elements -->
 
-        <!-- begin slot for login-form -->
+        <!-- begin named slot for login-form -->
         <slot name="login"></slot>
-        <!-- end slot for login-form -->
+        <!-- end named slot for login-form -->
 
         <div class="option-wrapper flex-container">
             <template v-if="options.forgotPassword || options.createAccount">

@@ -2,61 +2,34 @@
     <!-- begin CmdLink -->
     <!-- begin href -->
     <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'href')">
-        <InnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
-        </InnerLink>
+        </CmdInnerLink>
     </a>
     <!-- end href -->
 
     <!-- begin router -->
     <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'router')">
-        <InnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
-        </InnerLink>
+        </CmdInnerLink>
     </router-link>
     <!-- end router -->
 
     <!-- begin button -->
     <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton}]" type="submit" @click="emitClick($event, 'button')">
-        <InnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
-        </InnerLink>
+        </CmdInnerLink>
     </button>
     <!-- end button -->
     <!-- end CmdLink -->
 </template>
 
 <script>
-import { defineComponent } from "vue"
-const InnerLink = defineComponent({
-    template: `<span v-if="icon.iconClass && icon.position !== 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <span v-if="text">{{ text }}</span>
-        <span v-if="icon.iconClass && icon.position === 'right'" :class="icon.iconClass" :title="icon.tooltip"></span>
-        <slot></slot>`,
-    props: {
-        /**
-         * icon to display
-         */
-        icon: {
-            type: Object,
-            default: {}
-        },
-        /**
-         * displayed text
-         */
-        text: {
-            type: String,
-            default: ""
-        }
-    }
-})
-
 export default {
     name: "CmdLink",
     emits: ["click"],
-    components: {
-        InnerLink
-    },
     props: {
         /**
          * set type of link
@@ -132,9 +105,5 @@ export default {
 </script>
 
 <style>
-.cmd-link {
-    span[class*="icon"]:not(:only-child) {
-        font-size: 1rem;
-    }
-}
+
 </style>

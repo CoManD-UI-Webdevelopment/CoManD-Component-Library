@@ -1471,8 +1471,8 @@
                         Image-Zoom
                     </h2>
                     <CmdImageZoom
-                        :imageSmall="imageData[2].image"
-                        :imageLarge="imageData[3].image"
+                        :imageSmall="imageData[2]"
+                        :imageLarge="imageData[3]"
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end image-zoom ------------------------------------------------------------------------------------------------------------------------------------------------------->
