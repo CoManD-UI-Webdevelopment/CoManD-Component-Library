@@ -416,6 +416,8 @@ export default {
          * String used as content (placed in a paragraph-tag) for box-body
          *
          * should only be used, if no further html-structure is required for box-body
+         *
+         * @canContainHtml: true
          */
         textBody: {
             type: String,

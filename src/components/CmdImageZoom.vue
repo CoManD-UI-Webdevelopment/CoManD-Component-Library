@@ -13,12 +13,12 @@
         <!-- end small image -->
 
         <!-- begin large image -->
-        <div v-if="showLargeImage" class="zoom-container">
+        <div  class="zoom-container">
             <!-- begin CmdImage for large image -->
             <CmdImage v-bind="imageLarge" :figcaption="{}" />
             <!-- end CmdImage for large image -->
         </div>
-        <div v-if="showLargeImage" class="zoom-overlay"></div>
+        <div class="zoom-overlay"></div>
         <!-- end large image -->
     </div>
 </template>

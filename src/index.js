@@ -67,3 +67,6 @@ export { getFileExtension } from '@/utils/getFileExtension'
 
 // export composables
 export { useSequence } from '@/composables/sequence'
+
+// export mixins
+export { default as I18n } from '@/mixins/I18n.js'

@@ -1,8 +1,10 @@
 <template>
     <footer :class="['cmd-page-footer flex-container', {'small-buttons': useSmallButtons}]">
         <!-- begin CmdSocialNetworks -->
-        <CmdSocialNetworks v-if="cmdSocialNetworks" :networks="cmdSocialNetworks">
+        <CmdSocialNetworks v-if="cmdSocialNetworks" v-bind="cmdSocialNetworks">
+            <!-- begin named slot for cmd-social-networks -->
             <slot name="cmd-social-networks"></slot>
+            <!-- end named slot for cmd-social-networks -->
         </CmdSocialNetworks>
         <!-- end CmdSocialNetworks -->
 
@@ -61,7 +63,7 @@ export default {
          * properties for CmdSocialNetworks-component
          */
         cmdSocialNetworks: {
-            type: Array,
+            type: Object,
             required: false
         },
         /**

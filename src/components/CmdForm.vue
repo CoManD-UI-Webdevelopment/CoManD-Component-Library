@@ -32,21 +32,24 @@
                 />
                 <!-- end loop for formElements -->
 
-                <!-- begin submit-button -->
-                <button v-if="submitButton && (submitButton.position === 'insideFieldset' || submitButton.position === null) " :class="['button', {primary: submitButton.primary}]" :type="submitButton.type">
-                    <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
-                    <span v-if="submitButton.text">{{ submitButton.text }}</span>
+                <!-- begin submit-button (inside fieldset) -->
+                <button v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null) "
+                        :class="['button', {primary: submitButtonOptions.primary}]"
+                        :type="submitButtonOptions.type"
+                >
+                    <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
+                    <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
                 </button>
-                <!-- end submit-button -->
+                <!-- end submit-button (inside fieldset) -->
             </fieldset>
 
-            <div v-if="submitButton && submitButton.position === 'belowFieldset'" class="button-wrapper">
-                <!-- begin submit-button -->
-                <button :class="['button', {primary: submitButton.primary}]" :type="submitButton.type || 'submit'">
-                    <span v-if="submitButton.iconClass" :class="submitButton.iconClass"></span>
-                    <span v-if="submitButton.text">{{ submitButton.text }}</span>
+            <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="button-wrapper">
+                <!-- begin submit-button (below fieldset) -->
+                <button :class="['button', {primary: submitButtonOptions.primary}]" :type="submitButtonOptions.type || 'submit'">
+                    <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
+                    <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
                 </button>
-                <!-- end submit-button -->
+                <!-- end submit-button (below fieldset) -->
             </div>
 
             <!-- begin button-row-slot-content -->
@@ -140,14 +143,18 @@ export default {
          */
         submitButton: {
             type: Object,
-            default() {
-                return {
-                    iconClass: "icon-check",
-                    text: "Submit",
-                    type: "submit",
-                    position: "insideFieldset",
-                    primary: true
-                }
+            required: false
+        }
+    },
+    computed: {
+        submitButtonOptions() {
+            return {
+                iconClass: "icon-check",
+                text: "Submit",
+                type: "submit",
+                position: "insideFieldset",
+                primary: true,
+                ...this.submitButton
             }
         }
     },

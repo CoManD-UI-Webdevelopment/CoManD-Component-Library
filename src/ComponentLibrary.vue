@@ -1471,8 +1471,8 @@
                         Image-Zoom
                     </h2>
                     <CmdImageZoom
-                        :imageSmall="imageData[2]"
-                        :imageLarge="imageData[3]"
+                        :imageSmall="imageZoomData.imageSmall"
+                        :imageLarge="imageZoomData.imageLarge"
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end image-zoom ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1738,7 +1738,7 @@
                     <CmdSocialNetworks
                         ref="CmdSocialNetworks"
                         v-bind="cmdSocialNetworksSettingsData"
-                        :networks="socialNetworksData"
+                        :networks="socialNetworksData.networks"
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end social-networks ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -2046,6 +2046,7 @@ import fakeSelectFilterOptionsData from '@/assets/data/fake-select-filter-option
 import fakeSelectOptionsData from '@/assets/data/fake-select-options.json'
 import formElementsData from '@/assets/data/form-elements.json'
 import imageData from '@/assets/data/image.json'
+import imageZoomData from '@/assets/data/image-zoom.json'
 import imageGalleryData from '@/assets/data/image-gallery.json'
 import inputGroupRadiobuttonsData from '@/assets/data/input-group-radiobuttons.json'
 import inputGroupReplacedRadiobuttonsData from '@/assets/data/input-group-replaced-radiobuttons.json'
@@ -2218,6 +2219,7 @@ export default {
             fakeSelectOptionsData,
             formElementsData,
             imageData,
+            imageZoomData,
             imageGalleryData,
             inputGroupReplacedRadiobuttonsData,
             inputGroupToggleSwitchRadiobuttonsData,

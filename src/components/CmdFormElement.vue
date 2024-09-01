@@ -22,7 +22,7 @@
         <span v-if="(labelText || $slots.labeltext) && $attrs.type !== 'checkbox' && $attrs.type !== 'radio'"
               :class="['label-text', { hidden: !showLabel }]">
             <span>
-                <template v-if="labelText">{{ labelText }}</template>
+                <template v-if="labelText" v-html="labelText">labelText</template>
 
                 <!-- begin slot 'labeltext' -->
                 <slot v-else name="labeltext"/>
@@ -312,6 +312,7 @@ export default {
          * text for label
          *
          * @requiredForAccessibility: true
+         * @canContainHtml: true
          */
         labelText: {
             type: String,

@@ -27,7 +27,7 @@
                         v-model="editableFigcaptionText"
                     />
                     <!-- end CmdFormElement -->
-                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text" />
+                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text"/>
                 </template>
                 <!-- end figcaption above image -->
 
@@ -77,7 +77,7 @@
                         placeholder="figcaption"
                     />
                     <!-- end CmdFormElement -->
-                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text" />
+                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text"/>
                 </template>
                 <!-- end figcaption below image -->
 
@@ -96,14 +96,19 @@
     <!-- end edit-mode -->
 
     <!-- begin default-view -->
-    <figure v-else :class="['cmd-image', textAlign]">
-        <figcaption v-if="figcaption?.show && figcaption?.position === 'top'" v-html="figcaption?.text" />
-        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded" />
-        <figcaption v-if="figcaption?.show && figcaption?.position !== 'top'" v-html="figcaption?.text" />
+    <!-- begin image with figure/figcaption -->
+    <figure v-else-if="useFigureTag || figcaption?.show" :class="['cmd-image', textAlign]">
+        <figcaption v-if="figcaption?.position === 'top'" v-html="figcaption?.text"/>
+        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
+        <figcaption v-if="figcaption?.position !== 'top'" v-html="figcaption?.text"/>
     </figure>
+    <!-- end image with figure/figcaption -->
+
+    <!-- begin image without figure/figcaption -->
+    <img v-else :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
+    <!-- end image without figure/figcaption -->
     <!-- end default-view -->
 </template>
-
 <script>
 import {createUuid} from "../utils/common.js"
 import {checkAndUploadFile} from "../utils/checkAndUploadFile"
@@ -161,6 +166,13 @@ export default {
         image: {
             type: Object,
             required: false
+        },
+        /**
+         * activate if image should be wrapped by figure-tag
+         */
+        useFigureTag: {
+            type: Boolean,
+            default: true
         },
         /**
          * figcaption-object including visibility, position (top/bottom), text

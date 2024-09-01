@@ -86,6 +86,8 @@ export default {
         },
         /**
          * content for continuous text (can contain html-tags)
+         *
+         * @canContainHtml: true
          */
         htmlContent: {
             type: String,

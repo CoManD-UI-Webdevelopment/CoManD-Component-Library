@@ -11,7 +11,7 @@
 
                 <span class="pre-headline-text-wrapper">
                     <!-- begin pre-headline-text -->
-                    <span class="pre-headline-text">{{ preHeadlineText }}</span>
+                    <span class="pre-headline-text" v-html="preHeadlineText"></span>
                     <!-- end pre-headline-text -->
 
                     <span>
@@ -135,6 +135,8 @@ export default {
         },
         /**
          * small pre-headline-text above main-headline
+         *
+         * @canContainHtml: true
          */
         preHeadlineText: {
             type: String,

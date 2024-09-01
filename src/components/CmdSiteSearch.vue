@@ -42,14 +42,11 @@
 
                 <!-- begin CmdFormElement for radius -->
                 <CmdFormElement
-                    v-if="cmdFormElementRadius.show"
+                    v-if="cmdFormElementRadiusOptions.show"
                     element="select"
                     class="no-flex"
                     v-model="radius"
-                    :show-label="cmdFormElementRadius.showLabel"
-                    :labelText="cmdFormElementRadius.labelText"
-                    :select-options="cmdFormElementRadius.selectOptions"
-                    :required="cmdFormElementRadius.required"
+                    v-bind="cmdFormElementRadiusOptions"
                 />
                 <!-- end CmdFormElement for radius -->
             </div>
@@ -226,40 +223,7 @@ export default {
          */
         cmdFormElementRadius: {
             type: Object,
-            default() {
-                return {
-                    show: true,
-                    showLabel: false,
-                    required: false,
-                    labelText: "Radius",
-                    selectOptions: [
-                        {
-                            text: "None",
-                            value: 0
-                        },
-                        {
-                            text: "5 Km",
-                            value: 5
-                        },
-                        {
-                            text: "10 Km",
-                            value: 10
-                        },
-                        {
-                            text: "15 Km",
-                            value: 15
-                        },
-                        {
-                            text: "50 Km",
-                            value: 50
-                        },
-                        {
-                            text: "100 Km",
-                            value: 100
-                        }
-                    ]
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdFormElement-component for search-button
@@ -304,6 +268,41 @@ export default {
         }
     },
     computed: {
+        cmdFormElementRadiusOptions() {
+            return {
+                show: true,
+                showLabel: false,
+                required: false,
+                labelText: "Radius",
+                selectOptions: [
+                    {
+                        text: "None",
+                        value: 0
+                    },
+                    {
+                        text: "5 Km",
+                        value: 5
+                    },
+                    {
+                        text: "10 Km",
+                        value: 10
+                    },
+                    {
+                        text: "15 Km",
+                        value: 15
+                    },
+                    {
+                        text: "50 Km",
+                        value: 50
+                    },
+                    {
+                        text: "100 Km",
+                        value: 100
+                    }
+                ],
+                ...this.cmdFormElementRadius
+            }
+        },
         searchValue1: {
             get() {
                 return this.modelValueInput1
@@ -339,7 +338,7 @@ export default {
         buttonSearchDisabled() {
             const validInput1 = !this.cmdFormElementInput1.required || this.searchValue1.trim()
             const validInput2 = !this.cmdFormElementInput2.show || !this.cmdFormElementInput2.required || this.searchValue2.trim()
-            const validInputRadius = !this.cmdFormElementRadius.show || !this.cmdFormElementRadius.required || this.radius
+            const validInputRadius = !this.cmdFormElementRadiusOptions.show || !this.cmdFormElementRadiusOptions.required || this.radius
 
             return !(validInput1 && validInput2 && validInputRadius)
         }
@@ -365,8 +364,8 @@ export default {
     watch: {
         cmdFormElementRadius: {
             handler() {
-                if (this.cmdFormElementRadius?.selectOptions && this.cmdFormElementRadius?.selectOptions.length && this.modelValueRadius == null) {
-                    this.radius = this.cmdFormElementRadius.selectOptions[0].value
+                if (this.cmdFormElementRadiusOptions?.selectOptions && this.cmdFormElementRadiusOptions?.selectOptions.length && this.modelValueRadius == null) {
+                    this.radius = this.cmdFormElementRadiusOptions.selectOptions[0].value
                 }
             },
             immediate: true,

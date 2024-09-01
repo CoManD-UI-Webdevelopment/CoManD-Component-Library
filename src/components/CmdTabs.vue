@@ -17,9 +17,9 @@
         <!-- begin slot -->
         <template v-if="useSlot">
             <div v-show="showTab === index - 1" v-for="index in tabs.length" :key="index" aria-live="assertive" :class="{'no-padding': !useDefaultPadding}">
-                <!-- begin slot-content -->
+                <!-- begin named slot-content -->
                 <slot :name="'tab-content-' + (index - 1)"></slot>
-                <!-- end slot-content -->
+                <!-- end named slot-content -->
             </div>
         </template>
         <!-- end slot -->
@@ -34,7 +34,9 @@
             />
             <!-- end CmdHeadline -->
 
+            <!-- begin html-content -->
             <div v-html="tabs[showTab].htmlContent" :class="{'no-padding': !useDefaultPadding}"></div>
+            <!-- end html-content -->
         </div>
         <!-- end tab-content -->
     </div>

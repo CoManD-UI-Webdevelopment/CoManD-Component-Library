@@ -16,13 +16,8 @@
                 element="input"
                 type="text"
                 ref="username"
-                :name="cmdFormElementUsername.name"
-                :id="cmdFormElementUsername.id"
                 v-model="username"
-                :fieldIconClass="cmdFormElementUsername.innerIconClass"
-                :labelText="cmdFormElementUsername.labelText"
-                :placeholder="cmdFormElementUsername.placeholder"
-                :required="cmdFormElementUsername.required"
+                v-bind="cmdFormElementUsernameOptions"
                 @validationStatusChange="checkValidationStatus($event, 'username')"
             />
             <!-- end CmdFormElement -->
@@ -31,13 +26,8 @@
             <CmdFormElement
                 element="input"
                 type="password"
-                :name="cmdFormElementPassword.name"
-                :id="cmdFormElementPassword.id"
-                :fieldIconClass="cmdFormElementPassword.innerIconClass"
                 v-model="password"
-                :labelText="cmdFormElementPassword.labelText"
-                :placeholder="cmdFormElementPassword.placeholder"
-                :required="cmdFormElementPassword.required"
+                v-bind="cmdFormElementPasswordOptions"
                 @validationStatusChange="checkValidationStatus($event, 'password')"
             />
             <!-- end CmdFormElement -->
@@ -83,21 +73,21 @@
 
             <!-- begin link-type 'button' -->
             <button
-                v-if="buttons.login.linkType === 'button'"
-                :type="buttons.login.type === 'submit' ? 'submit' : 'button'"
-                :class="['button', { primary: buttons.login.primary }]"
+                v-if="buttonLoginOptions.linkType === 'button'"
+                :type="buttonLoginOptions.type === 'submit' ? 'submit' : 'button'"
+                :class="['button', { primary: buttonLoginOptions.primary }]"
                 @click="onClick"
                 :disabled="buttonLoginDisabled"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="buttons.login.icon.iconClass"
-                    :iconClass="buttons.login.icon.iconClass"
-                    :type="buttons.login.icon.iconType"
-                    :title="buttons.login.icon.tooltip"
+                    v-if="buttonLoginOptions.icon.iconClass"
+                    :iconClass="buttonLoginOptions.icon.iconClass"
+                    :type="buttonLoginOptions.icon.iconType"
+                    :title="buttonLoginOptions.icon.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="buttons.login.text">{{ buttons.login.text }}</span>
+                <span v-if="buttonLoginOptions.text">{{ buttonLoginOptions.text }}</span>
             </button>
             <!-- begin link-type 'button' -->
         </div>
@@ -119,14 +109,9 @@
             ref="sendPassword"
             element="input"
             type="email"
-            :fieldIconClass="cmdFormElementSendLogin.innerIconClass"
-            :labelText="cmdFormElementSendLogin.labelText"
-            :placeholder="cmdFormElementSendLogin.placeholder"
-            :name="cmdFormElementSendLogin.name"
-            :required="cmdFormElementSendLogin.required"
-            :id="cmdFormElementSendLogin.id"
             @validationStatusChange="checkValidationStatus($event, 'email')"
             v-model="sendLoginMail"
+            v-bind="cmdFormElementSendLoginOptions"
         />
         <!-- end CmdFormElement -->
 
@@ -151,19 +136,19 @@
 
             <!-- begin link-type 'button' -->
             <button
-                v-if="buttons.sendLogin?.linkType === 'button'"
-                :type="buttons.sendLogin?.type === 'submit' ? 'submit' : 'button'"
-                :class="['button', { primary: buttons.sendLogin?.primary }]"
+                v-if="buttonSendLoginOptions.linkType === 'button'"
+                :type="buttonSendLoginOptions.type === 'submit' ? 'submit' : 'button'"
+                :class="['button', { primary: buttonSendLoginOptions.primary }]"
                 :disabled="buttonSendLoginDisabled"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="buttons.sendLogin?.icon?.iconClass"
-                    :iconClass="buttons.sendLogin?.icon?.iconClass"
-                    :title="buttons.sendLogin?.icon?.tooltip"
+                    v-if="buttonSendLoginOptions.icon?.iconClass"
+                    :iconClass="buttonSendLoginOptions.icon?.iconClass"
+                    :title="buttonSendLoginOptions.icon?.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="buttons.sendLogin?.text">{{ buttons.sendLogin?.text }}</span>
+                <span v-if="buttonSendLoginOptions.text">{{ buttonSendLoginOptions.text }}</span>
             </button>
             <!-- end link-type 'button' -->
         </div>
@@ -269,16 +254,7 @@ export default {
          */
         cmdFormElementUsername: {
             type: Object,
-            default() {
-                return {
-                    labelText: "Username:",
-                    placeholder: "Type in username",
-                    innerIconClass: "icon-user-profile",
-                    name: "login-username",
-                    id: "login-username",
-                    required: true
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdFormElement-component for password-field
@@ -287,16 +263,7 @@ export default {
          */
         cmdFormElementPassword: {
             type: Object,
-            default() {
-                return {
-                    labelText: "Password:",
-                    placeholder: "Type in password",
-                    innerIconClass: "icon-security-settings",
-                    name: "login-password",
-                    id: "login-password",
-                    required: true
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdFormElement-component for email-address-field (to send login-data)
@@ -305,16 +272,7 @@ export default {
          */
         cmdFormElementSendLogin: {
             type: Object,
-            default() {
-                return {
-                    labelText: "Email-address:",
-                    placeholder: "Type in email-address you are registered with",
-                    innerIconClass: "icon-mail",
-                    name: "login-send-login",
-                    id: "login-send-login",
-                    required: true
-                }
-            }
+            required: false
         },
         /**
          * options to display
@@ -360,39 +318,84 @@ export default {
          *
          * @requiredForAccessibility: partial
          */
-        buttons: {
+        buttonLogin: {
             type: Object,
-            default() {
-                return {
-                    login: {
-                        linkType: "button", /* href, router, button */
-                        type: "submit", /* submit, button */
-                        path: "",
-                        text: "Login",
-                        primary: true,
-                        icon: {
-                            show: true,
-                            iconClass: "icon-logon",
-                            tooltip: ""
-                        }
-                    },
-                    sendLogin: {
-                        linkType: "button", /* href, router, button */
-                        type: "submit", /* submit, button */
-                        path: "",
-                        text: "Send login",
-                        primary: true,
-                        icon: {
-                            show: true,
-                            iconClass: "icon-mail",
-                            tooltip: ""
-                        }
-                    }
-                }
-            }
+            required: false
+        },
+        /**
+         * button to send-login-data
+         *
+         * @requiredForAccessibility: partial
+         */
+        buttonSendLogin: {
+            type: Object,
+            required: false
         }
     },
     computed: {
+        cmdFormElementUsernameOptions() {
+            return {
+                labelText: "Username:",
+                placeholder: "Type in username",
+                fieldIconClass: "icon-user-profile",
+                name: "login-username",
+                id: "login-username",
+                required: true,
+                ...this.cmdFormElementUsername
+            }
+        },
+        cmdFormElementPasswordOptions() {
+            return {
+                labelText: "Password:",
+                placeholder: "Type in password",
+                fieldIconClass: "icon-security-settings",
+                name: "login-password",
+                id: "login-password",
+                required: true,
+                ...this.cmdFormElementPassword
+            }
+        },
+        cmdFormElementSendLoginOptions() {
+            return {
+                labelText: "Email-address:",
+                placeholder: "Type in email-address you are registered with",
+                fieldIconClass: "icon-mail",
+                name: "login-send-login",
+                id: "login-send-login",
+                required: true,
+                ...this.cmdFormElementSendLogin
+            }
+        },
+        buttonLoginOptions() {
+            return {
+                linkType: "button", /* href, router, button */
+                type: "submit", /* submit, button */
+                path: "",
+                text: "Login",
+                primary: true,
+                icon: {
+                    show: true,
+                    iconClass: "icon-logon",
+                    tooltip: ""
+                },
+                ...this.buttonLogin
+            }
+        },
+        buttonSendLoginOptions() {
+            return {
+                linkType: "button", /* href, router, button */
+                type: "submit", /* submit, button */
+                path: "",
+                text: "Send login",
+                primary: true,
+                icon: {
+                    show: true,
+                    iconClass: "icon-mail",
+                    tooltip: ""
+                },
+                ...this.buttonSendLogin
+            }
+        },
         buttonLoginDisabled() {
             return !(this.usernameValidationStatus && this.passwordValidationStatus)
         },

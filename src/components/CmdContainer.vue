@@ -35,6 +35,8 @@ export default {
     props: {
         /**
          * define (html-)content to display above slot-content
+         *
+         * @canContainHtml: true
          */
         contentAboveSlot: {
             type: String,
@@ -42,6 +44,8 @@ export default {
         },
         /**
          * define (html-)content to display below slot-content
+         *
+         * @canContainHtml: true
          */
         contentBelowSlot: {
             type: String,
