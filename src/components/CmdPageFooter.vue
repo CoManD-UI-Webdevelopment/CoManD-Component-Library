@@ -15,7 +15,7 @@
 
             <!-- begin button print-preview -->
             <button
-                v-if="buttonPrintView.show"
+                v-if="buttonPrintView?.show"
                 :class="['button', {'primary': buttonPrintView.primary}]"
                 :title="buttonPrintView.text ? buttonPrintView.icon?.tooltip : null"
                 @click="showFancyBox"

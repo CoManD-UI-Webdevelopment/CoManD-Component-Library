@@ -1,7 +1,7 @@
 <template>
     <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}" ref="width-limitation-wrapper">
         <!-- begin slot-content in section -->
-        <section v-if="useInnerSection" :class="setSectionClass" :id="anchorId">
+        <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
             <!-- begin cmd-headline -->
             <CmdHeadline
                 v-if="cmdHeadline"
@@ -70,6 +70,13 @@ export default {
             default: true
         },
         /**
+         * set if content should be extended to full device width
+         */
+        useFullDeviceWidth: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * activate if wrapper (and its content) should be sticky (=position remains the same if content below is scrolled)
          *
          * i.e. use for site-header
@@ -79,15 +86,6 @@ export default {
         sticky: {
             type: Boolean,
             default: false
-        },
-        /**
-         * set class to inner component
-         *
-         * innerWrapper-property must be true
-         */
-        sectionClass: {
-            type: String,
-            required: false
         },
         /**
          * set id for (invisible) anchor to enable shortcuts
@@ -120,19 +118,19 @@ export default {
         }
     },
     computed: {
-        setSectionClass() {
-            if (this.sectionClass) {
-                return this.sectionClass
+        setInnerClass() {
+            if (this.useFullDeviceWidth) {
+                return "full-width"
             }
+
             if (this.innerComponent === "header") {
                 return "grid-container-create-columns"
             }
+
             if (this.innerComponent === "footer") {
                 return "flex-container"
             }
-            return ""
-        },
-        setInnerClass() {
+
             if(this.containerType === "grid") {
                 return "grid-container-create-columns"
             }

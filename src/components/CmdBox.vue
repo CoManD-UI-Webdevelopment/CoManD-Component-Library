@@ -82,6 +82,7 @@
 
                     <transition-group :name="toggleTransition">
                         <p
+                            v-if="textBody"
                             :class="{
                                'cutoff-text': cutoffTextLines > 0,
                                'fade-last-line': fadeLastLine && !showCutOffText,
@@ -335,7 +336,7 @@ export default {
          */
         fadeLastLine: {
             type: Boolean,
-            default: true
+            default: false
         },
         /**
          * use transition to expand and collapse box-body

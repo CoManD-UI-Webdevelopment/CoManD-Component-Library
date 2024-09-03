@@ -4,26 +4,24 @@ import "comand-frontend-framework/styles"
 
 import { createApp } from "vue"
 
-// import ComponentLibrary from "./ComponentLibrary.vue"
 import ComponentLibrary from "./ComponentLibrary.vue"
+
 //import { createRouter, createWebHistory } from "vue-router"
 import "clickout-event"
 
-/* import directives */
+/* begin import directives ---------------------------------------------------------------------------------------- */
 // directive to format telephone- and fax-number
 import directiveTelephone from "./directives/telephone"
 
 // directive to set focus on specific form-elements
 import directiveFocus from "./directives/focus"
+/* end import directives ---------------------------------------------------------------------------------------- */
 
-/* begin imports css from comand-component-library ---------------------------------------------------------------------------------------- */
+/* begin imports css from comand-ui-iconfonts-dependency ---------------------------------------------------------------------------------------- */
 import 'comand-ui-iconfonts/src/fonts/base-iconfont/base-iconfont.css'
-
-/* import additional iconfont containing company-logos */
 import 'comand-ui-iconfonts/src/fonts/logos-iconfont/logos-iconfont.css'
-
-/* import additional iconfont containing editmode-iconfont-icons */
 import 'comand-ui-iconfonts/src/fonts/editmode-iconfont/editmode-iconfont.css'
+/* end imports css from comand-ui-iconfonts-dependency ---------------------------------------------------------------------------------------- */
 
 /* import css for global-styles */
 import '@/assets/styles/component-library-global-styles.scss'

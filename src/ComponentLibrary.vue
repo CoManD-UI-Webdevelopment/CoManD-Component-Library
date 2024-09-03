@@ -1277,6 +1277,14 @@
                         ref="CmdContainer"
                         v-bind="cmdContainerSettingsData"
                     >
+                        <p>Slot-content (one item only)</p>
+                    </CmdContainer>
+
+                    <CmdContainer
+                        style="border: 1px dotted gray"
+                        ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData"
+                    >
                         <p>Slot-content</p>
                         <p>Slot-content</p>
                         <p>Slot-content</p>

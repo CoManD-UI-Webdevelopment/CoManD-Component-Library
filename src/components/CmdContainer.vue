@@ -86,7 +86,11 @@ export default {
             return ""
         },
         oneSlotItem() {
-            const vnodes = this.$slots.default();
+            if (!this.$slots.default) {
+                return false
+            }
+
+            const vnodes = this.$slots.default()
             if (vnodes.length === 1 && typeof vnodes[0].type === "symbol" && Array.isArray(vnodes[0].children)) {
                 return vnodes[0].children.length === 1
             }
