@@ -22,7 +22,7 @@
         <span v-if="(labelText || $slots.labeltext) && $attrs.type !== 'checkbox' && $attrs.type !== 'radio'"
               :class="['label-text', { hidden: !showLabel }]">
             <span>
-                <template v-if="labelText" v-html="labelText">labelText</template>
+                <span v-if="labelText" v-html="labelText"></span>
 
                 <!-- begin slot 'labeltext' -->
                 <slot v-else name="labeltext"/>
@@ -129,10 +129,14 @@
                 />
                 <span v-if="labelText || $slots.labeltext" :class="['label-text', { hidden: !showLabel }]">
                     <span>
-                        <template v-if="labelText">{{ labelText }}</template>
+                        <!-- begin labelText for checkbox/radio/toggle-switch (without switch-label) -->
+                        <span v-if="labelText" v-html="labelText"></span>
+                        <!-- end labelText for checkbox/radio/toggle-switch (without switch-label) -->
+
                         <!-- begin slot 'labeltext' -->
                         <slot v-else name="labeltext"/>
                         <!-- end slot 'labeltext' -->
+
                         <sup v-if="$attrs.required">*</sup>
                     </span>
                 </span>
@@ -155,9 +159,11 @@
                     <span class="label-text">{{ onLabel }}</span>
                     <span class="label-text">{{ offLabel }}</span>
                 </span>
+                <!-- begin labelText for checkbox/radio/toggle-switch (with switch-label) -->
                 <span v-if="labelText" :class="['label-text', {hidden: !showLabel}]">
-                    <span>{{ labelText }}<sup v-if="$attrs.required">*</sup></span>
+                     <span v-html="labelText"></span><sup v-if="$attrs.required">*</sup>
                 </span>
+                <!-- end labelText for checkbox/radio/toggle-switch (with switch-label) -->
             </template>
             <slot v-else></slot>
             <!-- end labels for toggle-switch with switch-label -->

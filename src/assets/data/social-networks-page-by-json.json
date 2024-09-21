@@ -1,4 +1,9 @@
 {
+  "cmdFormElement": {
+    "toggleSwitch": true,
+    "labelText": "I accept that anonymous data will be send to the platform I share this page on and accept the <a href='/content/fancybox-content.html' class='fancybox'>Data Privacy</a>!",
+    "required": true
+  },
   "networks": [
     {
       "id": "social-network-facebook",

@@ -60,6 +60,7 @@ export { default as MultipleListsOfLinks } from '@/pages/MultipleListsOfLinks.vu
 // export directives
 export { default as DirFocus } from '@/directives/focus'
 export { default as DirTelephone } from '@/directives/telephone'
+export { default as DirFancybox } from '@/directives/fancybox'
 
 // export functions
 export { createUuid, createHtmlId } from '@/utils/common'

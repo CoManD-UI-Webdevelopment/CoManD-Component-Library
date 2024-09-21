@@ -15,6 +15,9 @@ import directiveTelephone from "./directives/telephone"
 
 // directive to set focus on specific form-elements
 import directiveFocus from "./directives/focus"
+
+// directive to set focus on specific form-elements
+import directiveFancybox from "./directives/fancybox"
 /* end import directives ---------------------------------------------------------------------------------------- */
 
 /* begin imports css from comand-ui-iconfonts-dependency ---------------------------------------------------------------------------------------- */
@@ -53,4 +56,4 @@ import router from "./router"
 // })
 
 // createApp(App).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')
-createApp(ComponentLibrary).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')
+createApp(ComponentLibrary).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).directive('fancybox', directiveFancybox).mount('#app')

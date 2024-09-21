@@ -7,7 +7,6 @@
             <!-- end named slot for cmd-social-networks -->
         </CmdSocialNetworks>
         <!-- end CmdSocialNetworks -->
-
         <div class="button-wrapper">
             <!-- begin slot-content -->
             <slot></slot>
@@ -15,13 +14,13 @@
 
             <!-- begin button print-preview -->
             <button
-                v-if="buttonPrintView?.show"
-                :class="['button', {'primary': buttonPrintView.primary}]"
-                :title="buttonPrintView.text ? buttonPrintView.icon?.tooltip : null"
+                v-if="buttonPrintViewOptions?.show"
+                :class="['button', {'primary': buttonPrintViewOptions.primary}]"
+                :title="buttonPrintViewOptions.text ? buttonPrintViewOptions.icon?.tooltip : null"
                 @click="showFancyBox"
             >
-                <span v-if="buttonPrintView.icon?.show" :class="buttonPrintView.icon?.iconClass"></span>
-                <span v-if="buttonPrintView.text">{{buttonPrintView.text}}</span>
+                <span v-if="buttonPrintViewOptions.icon?.show" :class="buttonPrintViewOptions.icon?.iconClass"></span>
+                <span v-if="buttonPrintViewOptions.text">{{buttonPrintViewOptions.text}}</span>
             </button>
             <!-- end button print-preview -->
         </div>
@@ -77,6 +76,22 @@ export default {
                     defaultAriaLabelText: "print-preview"
                 }
             }
+        }
+    },
+    computed: {
+        buttonPrintViewOptions() {
+            const defaultOptions = {
+                show: true,
+                primary: false,
+                icon: {
+                    show: true,
+                    iconClass: "icon-print-preview",
+                    tooltip: "Open print preview"
+                },
+                text: "Print preview",
+            }
+
+            return { ...defaultOptions, ...this.buttonPrintView, icon: { ...defaultOptions.icon, ...this.buttonPrintView?.icon } }
         }
     },
     methods: {

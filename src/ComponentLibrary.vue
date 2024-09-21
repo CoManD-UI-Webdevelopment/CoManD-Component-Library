@@ -1,7 +1,7 @@
 <!--suppress HtmlUnknownTarget, NpmUsedModulesInstalled, JSUnresolvedVariable -->
 <template>
         <!-- begin .page-wrapper -->
-        <div class="page-wrapper" :id="templateId">
+        <div class="page-wrapper" :id="templateId" v-fancybox>
             <a id="anchor-back-to-top"></a>
             <CmdSidebar
                 v-if="showLeftSidebar"
@@ -581,6 +581,7 @@
                                 :toggleSwitch="true"
                                 :status="validationStatus"
                                 :disabled="disabledStatus"
+                                :required="true"
                             />
                             <CmdFormElement
                                 element="input"
@@ -1272,22 +1273,32 @@
                         <a href="#" class="icon-cog" title="Open Component Settings"
                            @click.prevent="openSettingsSidebar('CmdContainer')"></a>
                     </h2>
+                    <h3>Default Container</h3>
+                    <CmdContainer
+                        style="border: 1px dotted gray"
+                        ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData"
+                    />
+                    <h3>Container with vertical slots</h3>
                     <CmdContainer
                         style="border: 1px dotted gray"
                         ref="CmdContainer"
                         v-bind="cmdContainerSettingsData"
                     >
-                        <p>Slot-content (one item only)</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
                     </CmdContainer>
-
+                    <h3>Container with horizontal slots</h3>
                     <CmdContainer
                         style="border: 1px dotted gray"
                         ref="CmdContainer"
                         v-bind="cmdContainerSettingsData"
+                        contentOrientation="horizontal"
+                        innerClass="inner-class"
                     >
-                        <p>Slot-content</p>
-                        <p>Slot-content</p>
-                        <p>Slot-content</p>
+                        <component :is="componentNameForContainer" headlineText="Headline 1" headlineLevel="6" />
+                        <component :is="componentNameForContainer" headlineText="Headline 2" headlineLevel="6" />
                     </CmdContainer>
                 </CmdWidthLimitationWrapper>
                 <!-- end container ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -1498,6 +1509,23 @@
                         v-bind="cmdLinkSettingsData"
                         :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
                     />
+                    <CmdLink
+                        linkType="href"
+                        ref="CmdLink"
+                        v-bind="cmdLinkSettingsData"
+                        text="Link with fancybox"
+                        :fancybox="true"
+                        :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
+                    />
+                    <button @click="showCmdLink = true"><span>Add link</span></button>
+                    <CmdLink
+                        v-if="showCmdLink"
+                        path="#"
+                        linkType="href"
+                        text="Link added on click"
+                        :fancybox="true"
+                        :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
+                    />
                 </CmdWidthLimitationWrapper>
                 <!-- end link ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -1621,6 +1649,7 @@
                     <CmdPageFooter
                         ref="CmdPageFooter"
                         v-bind="cmdPageFooterSettingsData"
+                        :button-print-view="{text: 'Print this page'}"
                         :cmdSocialNetworks="socialNetworksData"
                     >
                         <button class="button primary" title="Button given by slot">
@@ -1745,8 +1774,7 @@
                     </h2>
                     <CmdSocialNetworks
                         ref="CmdSocialNetworks"
-                        v-bind="cmdSocialNetworksSettingsData"
-                        :networks="socialNetworksData.networks"
+                        v-bind="{...cmdSocialNetworksSettingsData, ...socialNetworksData}"
                     />
                 </CmdWidthLimitationWrapper>
                 <!-- end social-networks ------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -2087,14 +2115,17 @@ import {localizedTime} from "./components/CmdOpeningHours.vue"
 // import data and controls for settings
 import componentSettingsDataAndControls from "@/componentSettingsDataAndControls.vue"
 
+import CmdHeadline from "./components/CmdHeadline.vue"
 export default {
     name: "App",
     mixins: [componentSettingsDataAndControls],
     components: {
-        PageOverview
+        PageOverview,
+        CmdHeadline
     },
     data() {
         return {
+            componentNameForContainer: "CmdHeadline",
             listOfComponents,
             activeEntry: "CmdAddressData",
             basicFormData: {},
@@ -2155,6 +2186,7 @@ export default {
             accordionGroupOpen: false,
             showPageMultistep: 1,
             showPagePager: 1,
+            showCmdLink: false,
             selectedOption: "",
             selectedOptions: [],
             selectedCountry: "de",

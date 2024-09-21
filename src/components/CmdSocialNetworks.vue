@@ -12,7 +12,7 @@
             v-if="userMustAcceptDataPrivacy"
             element="input"
             type="checkbox"
-            :v-bind="cmdFormElement"
+            v-bind="cmdFormElement"
             v-model="dataPrivacyAccepted"
         />
         <!-- end CmdFormElement -->

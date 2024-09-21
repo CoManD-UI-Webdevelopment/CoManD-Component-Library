@@ -1,16 +1,11 @@
 <template>
     <div class="cmd-box-wrapper">
-        <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation || allowTogglingCollapsingBoxes" class="flex-container headline-wrapper">
+        <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation" class="flex-container headline-wrapper">
             <!-- begin CmdHeadline -->
             <CmdHeadline v-if="cmdHeadline.headlineText" v-bind="cmdHeadline" />
             <!-- end CmdHeadline -->
 
-            <div v-if="allowUserToToggleOrientation || allowTogglingCollapsingBoxes" class="options-wrapper">
-                <a v-if="allowTogglingCollapsingBoxes" href="#" @click.prevent="toggleCollapsingBoxes" :title="collapsingBoxesOpen ? collapseBoxesIcon.tooltip : expandBoxesIcon.tooltip">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="collapsingBoxesOpen ? expandBoxesIcon.iconClass : collapseBoxesIcon.iconClass" :type="rowView ? iconGridView.iconType : iconRowView.iconType" />
-                    <!-- end CmdIcon -->
-                </a>
+            <div v-if="allowUserToToggleOrientation" class="options-wrapper">
                 <a v-if="allowUserToToggleOrientation" href="#" @click.prevent="toggleOrientation" :title="rowView ? iconRowView.tooltip : iconGridView.tooltip">
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="rowView ? iconGridView.iconClass : iconRowView.iconClass" :type="rowView ? iconGridView.iconType : iconRowView.iconType" />
@@ -88,13 +83,6 @@ export default {
         allowUserToToggleOrientation: {
             type: Boolean,
             default: true
-        },
-        /**
-         * activate if user can toggle grid- and row-view by himself
-         */
-        allowTogglingCollapsingBoxes: {
-            type: Boolean,
-            default: false
         },
         /**
          * icon for collapsed box
@@ -289,21 +277,19 @@ export default {
         }
 
         &.stretch-boxes-vertically {
-            .stretch-vertically {
+            .box {
                 align-self: stretch;
                 height: auto; /* must be set to auto if inner boxes have als stretchVertically-property activated */
             }
 
-            &.stretch-horizontally {
+            &.box {
                 flex: 1;
             }
         }
     }
 
     .inner-box-wrapper > * {
-        flex: none;
-        flex-grow: 1;
-        flex-basis: min-content;
+        flex: 1;
 
         &.stretch-horizontally {
             flex: 1;

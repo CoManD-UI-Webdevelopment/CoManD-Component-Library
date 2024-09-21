@@ -162,6 +162,12 @@ export default {
     props: {
         /**
          * image-object including source, alternative text, tooltip (not required)
+         *
+         * {
+         *     src: "",
+         *     alt: "",
+         *     tooltip: ""
+         * }
          */
         image: {
             type: Object,

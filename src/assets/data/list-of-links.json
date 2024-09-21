@@ -14,7 +14,7 @@
       "tooltip": "Tooltip"
     },
     "type": "href",
-    "text": "Internal link",
+    "text": "Fancybox content",
     "path": "/content/fancybox-content.html",
     "fancybox": true,
     "children": [
@@ -45,7 +45,7 @@
     },
     "type": "href",
     "text": "External link",
-    "path": "http://www.comand-cms.com",
+    "path": "https://www.comand-cms.com",
     "target": "_blank",
     "tooltip": "Open CoManD-Website in new tab"
   }

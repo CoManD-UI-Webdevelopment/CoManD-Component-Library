@@ -1,5 +1,5 @@
 // import utils
-import {createHtmlId} from "@/utils/common";
+import {createHtmlId} from "../utils/common"
 
 export default {
     props: {

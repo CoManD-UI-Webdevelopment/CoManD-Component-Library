@@ -4,7 +4,6 @@
         <!-- begin CmdLink -->
         <CmdLink
             v-bind="link"
-            @click="executeLink()"
         />
         <!-- end CmdLink -->
 
@@ -69,14 +68,6 @@ export default {
                     props.text = text
                 }
             })
-        },
-        executeLink(event) {
-            if (this.link?.fancybox) {
-                event.preventDefault()
-                openFancyBox({url: this.link?.path, showSubmitButtons: this.link?.showSubmitButtons})
-                return
-            }
-            this.$emit("click", event)
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <!-- begin CmdLink -->
     <!-- begin href -->
-    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'href')">
+    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'fancybox': fancybox}]" @click="emitClick($event, 'href')">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -9,7 +9,7 @@
     <!-- end href -->
 
     <!-- begin router -->
-    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton}]" @click="emitClick($event, 'router')">
+    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'fancybox': fancybox}]" @click="emitClick($event, 'router')">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -17,7 +17,7 @@
     <!-- end router -->
 
     <!-- begin button -->
-    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton}]" type="submit" @click="emitClick($event, 'button')">
+    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -92,6 +92,13 @@ export default {
          * (type must be 'button' or styleAsButton-property must be activated)
          */
         primaryButton: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * set if path should be opened in fancybox
+         */
+        fancybox: {
             type: Boolean,
             default: false
         }
