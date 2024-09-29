@@ -100,7 +100,7 @@
                                 <li v-for="(navigationSubSubEntry, subsubindex) in navigationSubEntry.subentries"
                                     :key="subsubindex">
                                     <!-- begin type === href -->
-                                    <a v-if="navigationEntry.type === 'href'"
+                                    <a v-if="navigationSubSubEntry.type === 'href'"
                                        :href="navigationSubSubEntry.path"
                                        :title="navigationSubSubEntry.tooltip"
                                        :target="navigationSubSubEntry.target"
@@ -117,7 +117,7 @@
                                     <!-- end type === href -->
 
                                     <!-- begin type === router -->
-                                    <router-link v-if="navigationEntry.type === 'router'"
+                                    <router-link v-if="navigationSubSubEntry.type === 'router'"
                                                  :to="getRoute(navigationSubSubEntry)"
                                                  :target="navigationSubSubEntry.target">
                                         <!-- begin CmdIcon -->

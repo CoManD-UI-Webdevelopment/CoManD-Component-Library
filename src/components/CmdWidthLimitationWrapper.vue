@@ -143,15 +143,6 @@ export default {
                 }
             }
             return ""
-        },
-        setOuterId() {
-            if (this.innerComponent === "header") {
-                return "site-header"
-            }
-            if (this.innerComponent === "footer") {
-                return "site-footer"
-            }
-            return ""
         }
     },
     methods: {

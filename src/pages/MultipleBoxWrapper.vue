@@ -3,10 +3,7 @@
         <template v-for="(segment, index) in segments" :key="index">
             <!-- begin CmdBoxWrapper -->
             <CmdBoxWrapper
-                :boxesPerRow="segment.boxesPerRow"
-                :useRowViewAsDefault="segment.useRowViewAsDefault"
-                :useGap="segment.useGap"
-                :cmdHeadline="segment.cmdHeadline"
+                v-bind="segment"
             >
                 <template v-slot="slotProps">
                     <!-- begin CmdBox -->

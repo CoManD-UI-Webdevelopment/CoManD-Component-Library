@@ -87,6 +87,7 @@ export default {
          * (styledAsButton-property must be activated)
          */
         iconDarkMode: {
+            type: Object,
             default() {
                 return {
                     iconClass: "icon-moon",
@@ -100,6 +101,7 @@ export default {
          * (styledAsButton-property must be activated)
          */
         iconLightMode: {
+            type: Object,
             default() {
                 return {
                     iconClass: "icon-sun",

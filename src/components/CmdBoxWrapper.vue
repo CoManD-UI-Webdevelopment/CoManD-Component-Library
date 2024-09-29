@@ -6,7 +6,7 @@
             <!-- end CmdHeadline -->
 
             <div v-if="allowUserToToggleOrientation" class="options-wrapper">
-                <a v-if="allowUserToToggleOrientation" href="#" @click.prevent="toggleOrientation" :title="rowView ? iconRowView.tooltip : iconGridView.tooltip">
+                <a href="#" @click.prevent="toggleOrientation" :title="rowView ? iconRowView.tooltip : iconGridView.tooltip">
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="rowView ? iconGridView.iconClass : iconRowView.iconClass" :type="rowView ? iconGridView.iconType : iconRowView.iconType" />
                     <!-- end CmdIcon -->

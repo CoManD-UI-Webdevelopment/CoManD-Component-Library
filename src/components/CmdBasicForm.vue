@@ -250,7 +250,9 @@
 import I18n from "../mixins/I18n.js"
 import DefaultMessageProperties from "../mixins/CmdBasicForm/DefaultMessageProperties.js"
 import FieldValidation from "../mixins/FieldValidation.js"
-import {ContactFormValidator} from "@/utils/ContactFormValidation.js";
+import {ContactFormValidator} from "../utils/ContactFormValidation.js"
+
+import {openFancyBox} from "./CmdFancyBox.vue"
 
 export default {
     emits: ["submit"],
@@ -434,7 +436,7 @@ export default {
         }
     },
     mounted() {
-        this.$refs.dataPrivacy?.querySelector(".fancybox")?.addEventListener("click", event => {
+        this.$refs.dataPrivacy?.querySelector(".component-fancybox")?.addEventListener("click", event => {
             event.preventDefault()
             openFancyBox({url: event.target.getAttribute("href")})
         })

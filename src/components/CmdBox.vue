@@ -61,7 +61,7 @@
             <!-- begin content given slot -->
             <div v-if="useSlots?.includes('body')"
                  class="inner-box-body-wrapper"
-                 :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}"
+                 :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}"
                  ref="boxBody"
                  :style="allowContentToScroll ? 'max-height: ' + calculatedBodyHeight : null"
             >
@@ -81,7 +81,7 @@
                     </div>
 
                     <transition-group :name="toggleTransition">
-                        <p
+                        <div
                             v-if="textBody"
                             :class="{
                                'cutoff-text': cutoffTextLines > 0,
@@ -90,7 +90,7 @@
                             }"
                             v-html='textBody'
                         >
-                        </p>
+                        </div>
                         <a v-if="cutoffTextLines > 0" href="#" @click.prevent="toggleCutOffText">
                             {{
                                 showCutOffText ? getMessage("cmdbox.contentbox.collapse_text") : getMessage("cmdbox.contentbox.expand_text")
@@ -112,7 +112,7 @@
                 <!-- end CmdImage -->
 
                 <div v-if="textBody"
-                     :class="{'default-padding': useDefaultPadding, 'allow-scroll': allowContentToScroll}">
+                     :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}">
                     <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
                         <!-- begin CmdIcon -->
                         <CmdIcon v-bind="cmdIcon" />
@@ -325,7 +325,7 @@ export default {
          *
          * @affectsStyling: true
          */
-        useDefaultPadding: {
+        useBoxBodyPadding: {
             type: Boolean,
             default: true
         },
@@ -667,6 +667,10 @@ export default {
             display: flex;
             flex-grow: 1;
             border-top: var(--box-border);
+
+            .box-body-padding {
+                padding: var(--box-body-padding);
+            }
 
             & > div:only-child {
                 flex-grow: 1;

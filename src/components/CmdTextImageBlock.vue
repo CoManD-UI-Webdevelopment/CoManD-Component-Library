@@ -16,7 +16,7 @@
         />
         <!-- end cmdImage -->
 
-        <div class="flex-container vertical">
+        <div class="flex-container vertical" :class="setInnerClass">
             <!-- begin cmdHeadline -->
             <CmdHeadline
                 v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'belowImage' || orientation === 'horizontal')"
@@ -25,7 +25,7 @@
             <!-- end cmdHeadline -->
 
             <!-- begin continuous text -->
-            <div v-if="htmlContent" v-html="htmlContent" :class="textAlign"></div>
+            <div v-if="htmlContent" v-html="htmlContent"></div>
             <!-- end continuous text -->
         </div>
 
@@ -100,7 +100,7 @@ export default {
          */
         paragraphTextAlign: {
             type: String,
-            required: false,
+            default: "left",
             validator(value) {
                 return value === "left" ||
                 value === "center" ||
@@ -153,6 +153,9 @@ export default {
                 return "text-align-" + this.paragraphTextAlign
             }
             return ""
+        },
+        setInnerClass() {
+            return "inner-text-wrapper " + this.textAlign + " " + (this.innerClass || "")
         }
     },
     methods: {

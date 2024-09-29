@@ -488,6 +488,7 @@ export default {
          * @requiredForAccessiblity: true
          */
         legend: {
+            type: Object,
             default() {
                 return {
                     show: true,

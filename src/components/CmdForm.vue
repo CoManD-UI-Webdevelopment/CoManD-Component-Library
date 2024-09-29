@@ -1,8 +1,12 @@
 <template>
-    <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit" :class="{error: errorOccurred}" :novalidate="novalidate">
+    <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit"
+          :class="{error: errorOccurred}" :novalidate="novalidate">
         <template v-if="useFieldset">
             <fieldset class="flex-container">
-                <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
+                <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{
+                        legend.text
+                    }}
+                </legend>
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
@@ -33,9 +37,10 @@
                 <!-- end loop for formElements -->
 
                 <!-- begin submit-button (inside fieldset) -->
-                <button v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null) "
-                        :class="['button', {primary: submitButtonOptions.primary}]"
-                        :type="submitButtonOptions.type"
+                <button
+                    v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null) "
+                    :class="['button', {primary: submitButtonOptions.primary}]"
+                    :type="submitButtonOptions.type"
                 >
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
@@ -45,7 +50,8 @@
 
             <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="button-wrapper">
                 <!-- begin submit-button (below fieldset) -->
-                <button :class="['button', {primary: submitButtonOptions.primary}]" :type="submitButtonOptions.type || 'submit'">
+                <button :class="['button', {primary: submitButtonOptions.primary}]"
+                        :type="submitButtonOptions.type || 'submit'">
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
                 </button>
@@ -69,7 +75,7 @@ import {createHtmlId} from "@"
 export default {
     name: "CmdForm",
     emits: ["submit"],
-    data(){
+    data() {
         return {
             errorOccurred: false,
             formValues: {}
@@ -91,6 +97,7 @@ export default {
          * @requiredForAccessiblity: true
          */
         legend: {
+            type: Object,
             default() {
                 return {
                     show: true,
@@ -110,15 +117,15 @@ export default {
          * define form-elements by given array
          */
         formElements: {
-          type: Array,
-          required: false
+            type: Array,
+            required: false
         },
         /**
          * deactivate if browser-validation should be used
          */
         novalidate: {
-          type: Boolean,
-          default: true
+            type: Boolean,
+            default: true
         },
         /**
          * if activated the entire form will be validated by pre-coded validation
@@ -126,8 +133,8 @@ export default {
          * @affectsStyling: true
          */
         useValidation: {
-          type: Boolean,
-          default: true
+            type: Boolean,
+            default: true
         },
         /**
          * activate if you want to use a fieldset
@@ -163,7 +170,7 @@ export default {
         submitFormData(event) {
             // fill form-data with names and value
             let formdata = {}
-            if(this.formElements) {
+            if (this.formElements) {
                 this.formElements.forEach((element) => {
                     formdata[element.name] = this.formValues[element.name]
                 })
@@ -171,8 +178,8 @@ export default {
             this.$emit("submit", {originalEvent: event, formdata: formdata})
         },
         onSubmit(event) {
-            if(this.useValidation) {
-                if(event.target.checkValidity()) {
+            if (this.useValidation) {
+                if (event.target.checkValidity()) {
                     this.errorOccurred = false
                     this.submitFormData(event)
                 } else {
@@ -190,13 +197,13 @@ export default {
                 this.formValues = {}
 
                 this.formElements?.forEach(element => {
-                    if(element.type === "checkbox") {
+                    if (element.type === "checkbox") {
                         // create array if element is a checkbox (to contain several values)
-                        if(!this.formValues[element.name]) {
+                        if (!this.formValues[element.name]) {
                             this.formValues[element.name] = []
                         }
 
-                        if(element.value != null) {
+                        if (element.value != null) {
                             this.formValues[element.name].push(element.value)
                         }
                     } else {
@@ -245,5 +252,6 @@ export default {
         margin-top: var(--default-margin);
     }
 }
+
 /* end cmd-form ---------------------------------------------------------------------------------------- */
 </style>
