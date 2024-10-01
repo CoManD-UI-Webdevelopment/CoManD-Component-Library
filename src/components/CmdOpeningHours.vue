@@ -60,7 +60,6 @@
                 <span class="icon-plus"></span>
                 <span>Add new entry</span>
             </button>
-
             <EditComponentWrapper
                 v-else
                 v-for="(day, index) in openingHoursFormatted"

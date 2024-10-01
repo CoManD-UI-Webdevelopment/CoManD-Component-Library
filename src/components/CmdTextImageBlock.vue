@@ -27,6 +27,10 @@
             <!-- begin continuous text -->
             <div v-if="htmlContent" v-html="htmlContent"></div>
             <!-- end continuous text -->
+
+            <!-- begin slot-content -->
+            <slot></slot>
+            <!-- end slot-content -->
         </div>
 
         <!-- begin edit-mode -->

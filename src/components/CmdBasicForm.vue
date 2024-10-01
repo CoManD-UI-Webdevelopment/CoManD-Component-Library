@@ -8,6 +8,7 @@
         <CmdForm
             @submit="onSubmit"
             novalidate="novalidate"
+            v-bind="cmdForm"
             :legend="legend"
             :submitButton="submitButton"
             :formAction="formAction"
@@ -302,6 +303,13 @@ export default {
             type: String,
             required: false
         },
+        /**
+         * legend for form
+         *
+         * useFieldset-property must be activated
+         *
+         * @requiredForAccessiblity: true
+         */
         legend: {
             type: Object,
             default() {

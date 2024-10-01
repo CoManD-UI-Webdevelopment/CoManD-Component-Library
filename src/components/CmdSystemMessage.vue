@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade">
+    <transition :name="useTransition ? 'fade' : null">
         <div
             v-if="showSystemMessage"
             :class="['cmd-system-message', 'system-message', 'flex-container', 'vertical', { 'full-width': fullWidth }, validationStatus]"
@@ -49,6 +49,13 @@ export default {
         }
     },
     props: {
+        /**
+         * activate if transition for hiding message-box should be used
+         */
+        useTransition: {
+            type: Boolean,
+            default: true
+        },
         /**
          * validation-status for the message-box
          *

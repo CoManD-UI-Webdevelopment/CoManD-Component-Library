@@ -190,7 +190,7 @@
                             />
                             <!-- end CmdIcon -->
                         </a>
-                        <transition name="fade">
+                        <transition :name="useTransition ? 'fade' : null">
                             <ul v-if="showListOfFileExtensions" class="list-of-file-extensions">
                                 <li
                                     v-for="(fileExtension, index) in allowedFileExtensions"
@@ -379,6 +379,13 @@ export default {
         this.resetForm.systemMessageStatus = this.systemMessageStatus
     },
     props: {
+        /**
+         * activate if transition for hiding list of file extensions
+         */
+        useTransition: {
+            type: Boolean,
+            default: true
+        },
         /**
          * toggle visibility of total upload (number of files, total size, total progress
          */

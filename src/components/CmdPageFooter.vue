@@ -120,6 +120,7 @@ export default {
 <style>
 /* begin cmd-page-footer -------------------------------------------------------------------------------------------- */
 .cmd-page-footer {
+    margin-top: auto; /* keep page-footer at bottom if parent is (vertical) flex-container */
     align-items: flex-end;
 
     &.small-buttons {

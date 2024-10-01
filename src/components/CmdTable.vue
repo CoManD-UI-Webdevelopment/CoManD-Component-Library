@@ -41,7 +41,7 @@
                     </th>
                 </tr>
                 </thead>
-                <transition name="fade">
+                <transition :name="useTransition ? 'fade' : null">
                     <tbody v-show="showTableData" aria-expanded="true">
                     <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
                         v-for="(tablerows, indexRows) in tableData.tbody" :key="indexRows">
@@ -52,7 +52,7 @@
                     </tr>
                     </tbody>
                 </transition>
-                <transition name="fade">
+                <transition :name="useTransition ? 'fade' : null">
                     <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
                     <tr>
                         <td :class="{'active' : tableData.columnIndexHighlighted === indexFoot}"
@@ -88,6 +88,13 @@ export default {
         }
     },
     props: {
+        /**
+         * activate if transition for hiding collapsible table-data should be used
+         */
+        useTransition: {
+            type: Boolean,
+            default: true
+        },
         /**
          * table data (incl. caption, thead, tbody)
          */

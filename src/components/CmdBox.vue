@@ -276,7 +276,7 @@ export default {
             default: false
         },
         /**
-         * set boyType to show different types of boxes/contents
+         * set type to show different types of boxes/contents
          *
          * @allowedValues: content, product, user
          * @affectsStyling: true
