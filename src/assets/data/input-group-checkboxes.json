@@ -1,0 +1,23 @@
+[
+  {
+    "labelText": "Website",
+    "id": "checkbox-id-1",
+    "name": "input-group-checkbox",
+    "iconClass": "icon-globe",
+    "value": "website"
+  },
+  {
+    "labelText": "E-Mail",
+    "id": "checkbox-id-2",
+    "name": "input-group-checkbox",
+    "iconClass": "icon-mail",
+    "value": "email"
+  },
+  {
+    "labelText": "Phone",
+    "id": "checkbox-id-3",
+    "name": "input-group-checkbox",
+    "iconClass": "icon-phone",
+    "value": "phone"
+  }
+]

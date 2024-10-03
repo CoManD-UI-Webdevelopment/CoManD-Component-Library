@@ -124,9 +124,7 @@ export default {
                         htmlClass += " flex-container vertical"
                     }
                     break
-                default:
-                    htmlClass = null
-                    break
+                default: /* do nothing */
             }
             return htmlClass
         }

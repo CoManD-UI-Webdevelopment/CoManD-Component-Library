@@ -541,7 +541,7 @@ export default {
                     }
                 }
 
-                &:hover, &:active, &:focus {
+                &:hover, &:active, &:focus-visible {
                     figcaption {
                         color: var(--primary-color);
                     }

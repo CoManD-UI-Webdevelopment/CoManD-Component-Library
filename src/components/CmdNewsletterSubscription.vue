@@ -24,7 +24,7 @@
             :required="cmdFormElementEmail.required"
             :useCustomTooltip="cmdFormElementEmail.useCustomTooltip"
             v-model="email"
-            @validationStatusChange="checkValidationStatus"
+            @validation-status-change="checkValidationStatus"
         />
         <!-- end cmd-form-element -->
 
@@ -84,6 +84,7 @@ export default {
          * @requiredForAccessiblity: true
          */
         legend: {
+            type: Object,
             default() {
                 return {
                     show: true,

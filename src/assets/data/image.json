@@ -1,7 +1,7 @@
 [
   {
     "image": {
-      "src": "media/images/demo-images/large/landscape-01.jpg",
+      "src": "/media/images/demo-images/large/landscape-01.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },
@@ -14,7 +14,7 @@
   },
   {
     "image": {
-      "src": "media/images/demo-images/large/landscape-02.jpg",
+      "src": "/media/images/demo-images/large/landscape-02.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },
@@ -27,7 +27,7 @@
   },
   {
     "image": {
-      "src": "media/images/demo-images/small/landscape-06.jpg",
+      "src": "/media/images/demo-images/small/landscape-06.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },
@@ -40,7 +40,7 @@
   },
   {
     "image": {
-      "src": "media/images/demo-images/landscape-2x.jpg",
+      "src": "/media/images/demo-images/landscape-2x.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },

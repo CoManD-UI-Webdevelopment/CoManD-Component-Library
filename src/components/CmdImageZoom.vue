@@ -15,7 +15,7 @@
         <!-- begin large image -->
         <div  class="zoom-container">
             <!-- begin CmdImage for large image -->
-            <CmdImage v-bind="imageLarge" :figcaption="{}" />
+            <CmdImage v-bind="imageLarge" :useFigureTag="false" />
             <!-- end CmdImage for large image -->
         </div>
         <div class="zoom-overlay"></div>

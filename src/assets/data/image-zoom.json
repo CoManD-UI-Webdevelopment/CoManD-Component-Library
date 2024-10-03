@@ -1,12 +1,11 @@
 {
   "imageSmall": {
     "image": {
-      "src": "media/images/demo-images/small/landscape-06.jpg",
+      "src": "/media/images/demo-images/small/landscape-06.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },
     "figcaption": {
-      "show": true,
       "position": "top",
       "text": "Figcaption above image (centered)",
       "textAlign": "center"
@@ -14,12 +13,11 @@
   },
   "imageLarge": {
     "image": {
-      "src": "media/images/demo-images/landscape-2x.jpg",
+      "src": "/media/images/demo-images/landscape-2x.jpg",
       "alt": "Alternative text",
       "tooltip": "Tooltip"
     },
     "figcaption": {
-      "show": true,
       "position": "top",
       "text": "Figcaption above image (centered)",
       "textAlign": "center"

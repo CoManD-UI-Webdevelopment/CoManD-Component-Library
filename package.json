@@ -1,12 +1,11 @@
 {
   "name": "comand-component-library",
-  "version": "4.0.76",
+  "version": "4.0.84",
   "private": false,
   "type": "module",
   "license": "GPL-3.0-only",
   "author": "CoManD UI",
   "scripts": {
-    "publish": "npm publish",
     "prepublishOnly": "npm run build-lib",
     "dev": "vite",
     "build": "vite build",

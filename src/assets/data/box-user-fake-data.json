@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Douglas Mccarty",
+    "image": {
+      "src": "/media/images/user-images/fake-user-1.jpg",
+      "alt": "Douglas McCarty, UI/UX Designer"
+    },
+    "profession": "UI/UX Designer",
+    "position": "Head of Design",
+    "description": "I try to find the best graphical solution for our customer and its users.",
+    "links": [
+        {
+        "path": "mailto:",
+        "target": "",
+        "iconClass": "icon-mail",
+        "tooltip": "Send mail"
+      }
+    ]
+  },
+  {
+    "name": "Ronan Hodges",
+    "image": {
+      "src": "/media/images/user-images/fake-user-2.jpg",
+      "alt": "Ronan Hodges, Frontend Developer"
+    },
+    "profession": "Frontend Developer",
+    "position": "Development",
+    "description": "My passion is to create a stunning visible part of our digital products.",
+    "links": [
+      {
+        "path": "mailto:",
+        "target": "",
+        "iconClass": "icon-mail",
+        "tooltip": "Send mail"
+      },
+      {
+        "path": "http://www.comand-cms.com",
+        "target": "comand",
+        "iconClass": "icon-globe",
+        "tooltip": "Visit website"
+      }
+    ]
+  },
+  {
+    "name": "Zaydan Bassett",
+    "image": {
+      "src": "/media/images/user-images/fake-user-3.jpg",
+      "alt": "Zaydan Bassett, Backend Developer"
+    },
+    "profession": "Backend Developer",
+    "position": "Development",
+    "description": "Giving our products the logic to work best for all purposes is my goal.",
+    "links":  [
+      {
+        "path": "mailto:",
+        "target": "",
+        "iconClass": "icon-mail",
+        "tooltip": "Send mail"
+      },
+      {
+        "path": "http://www.comand-cms.com",
+        "target": "comand",
+        "iconClass": "icon-globe",
+        "tooltip": "Visit website"
+      },
+      {
+        "path": "tel:",
+        "target": "",
+        "iconClass": "icon-phone",
+        "tooltip": "Make call"
+      }
+    ]
+  },
+  {
+    "name": "Jena Barajas",
+    "image": {
+      "src": "/media/images/user-images/fake-user-4.jpg",
+      "alt": "Jena Barajas, Sales"
+    },
+    "profession": "Marketing Expert",
+    "position": "Sales Division",
+    "description": "I love to show and consult you about our products.",
+    "links":  [
+      {
+        "path": "mailto:",
+        "target": "",
+        "iconClass": "icon-mail",
+        "tooltip": "Send mail"
+      },
+      {
+        "path": "http://www.comand-cms.com",
+        "target": "comand",
+        "iconClass": "icon-globe",
+        "tooltip": "Visit website"
+      },
+      {
+        "path": "tel:",
+        "target": "",
+        "iconClass": "icon-phone",
+        "tooltip": "Make call"
+      }
+    ]
+  },
+  {
+    "name": "Mia-Rose Monroe",
+    "image": {
+      "src": "/media/images/user-images/fake-user-5.jpg",
+      "alt": "Mia-Rose Monroe, Customer Service"
+    },
+    "profession": "Communications Expert",
+    "position": "Customer Service",
+    "description": "I will care about all your needs as a new or an existing customer.",
+    "links":  [
+      {
+        "path": "mailto:",
+        "target": "",
+        "iconClass": "icon-mail",
+        "tooltip": "Send mail"
+      },
+      {
+        "path": "http://www.comand-cms.com",
+        "target": "comand",
+        "iconClass": "icon-globe",
+        "tooltip": "Visit website"
+      },
+      {
+        "path": "tel:",
+        "target": "",
+        "iconClass": "icon-phone",
+        "tooltip": "Make call"
+      }
+    ]
+  }
+]

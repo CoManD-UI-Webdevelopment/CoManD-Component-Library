@@ -1,0 +1,20 @@
+{
+  "cmdHeadline": {
+    "headlineText": "Text-Image-Block (with image and plain text)",
+    "headlineLevel": 3
+  },
+  "cmdImage": {
+    "image": {
+      "src": "/media/images/demo-images/large/landscape-01.jpg",
+      "alt": "alternative text",
+      "tooltip": "tooltip"
+    },
+    "figcaption": {
+      "text": "figcaption",
+      "position": "bottom",
+      "textAlign": "center",
+      "show": true
+    }
+  },
+  "htmlContent": "This text is given as plain text and show below an optional image."
+}
