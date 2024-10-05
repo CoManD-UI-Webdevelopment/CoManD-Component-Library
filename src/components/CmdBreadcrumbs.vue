@@ -26,7 +26,7 @@
                 <!-- end CmdIcon -->
                 <span v-if="link.text">{{ link.text }}</span>
             </span>
-            <span v-if="index < breadcrumbLinks.length - 1">{{ breadcrumbSeparator }}</span>
+            <span class="separator" v-if="index < breadcrumbLinks.length - 1">{{ breadcrumbSeparator }}</span>
         </li>
     </ul>
 </template>
@@ -80,7 +80,7 @@ export default {
         list-style-type: none;
         margin: 0;
 
-        > span {
+        > span.separator {
             padding: 0 calc(var(--default-padding) / 2);
         }
 
