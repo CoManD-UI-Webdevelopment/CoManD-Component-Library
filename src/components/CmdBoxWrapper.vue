@@ -290,6 +290,7 @@ export default {
 
     .inner-box-wrapper > * {
         flex: 1;
+        min-width: 20rem; /* min-width required to let boxes wrap */
 
         &.stretch-horizontally {
             flex: 1;

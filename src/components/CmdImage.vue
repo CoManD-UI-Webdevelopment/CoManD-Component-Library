@@ -455,6 +455,11 @@ export default {
     }
 }
 
+figure.cmd-image:not(:has[src$=".svg"]) {
+    display: inline-flex; /* assures figcaption is aligned correctly */
+    flex-direction: column;
+}
+
 .edit-mode .edit-component-wrapper .cmd-image {
     label.edit-mode input {
         padding: calc(var(--default-padding) / 2);

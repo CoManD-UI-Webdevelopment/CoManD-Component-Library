@@ -171,7 +171,9 @@ export default {
         onColorSchemeChange(event) {
             // assign browser/os-color-scheme to data-property (and toggle class on html-tag)
             this.darkMode = event.matches
-            document.documentElement.classList.add(this.darkMode ? "dark-mode" : "light-mode")
+            if(this.darkMode) {
+                document.documentElement.classList.add("dark-mode")
+            }
         },
         setColorScheme() {
             // save color-scheme in local-storage to avoid toggling on page-reload
