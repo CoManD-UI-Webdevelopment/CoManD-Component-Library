@@ -459,7 +459,7 @@ export default {
                     &:hover, &:active, &:focus {
                         &.active {
                             figcaption {
-                                color: var(--hyperlink-color);
+                                color: var(--hyperlink-color-highlighted);
                                 background: none;
                             }
                         }

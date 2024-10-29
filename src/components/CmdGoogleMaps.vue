@@ -1,13 +1,46 @@
 <template>
     <div class="cmd-google-maps responsive-wrapper">
-        <iframe :src="locateAddress"></iframe>
+        <!-- begin CmdSystemMessage -->
+        <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning">
+            <p>
+                {{getMessage("cmdgooglemaps.system_message.accept_terms")}}
+            </p>
+            <a href="#" @click.prevent="acceptCookies">{{getMessage("cmdgooglemaps.button_text.accept_required_cookies")}}</a>
+        </CmdSystemMessage>
+        <!-- end CmdSystemMessage -->
+
+        <!-- begin iframe with google-map -->
+        <iframe v-else :src="locateAddress"></iframe>
+        <!-- end iframe with google-map -->
     </div>
 </template>
 
 <script>
+// import mixins
+import I18n from "../mixins/I18n"
+import DefaultMessageProperties from "../mixins/CmdGoogleMaps/DefaultMessageProperties"
+
 export default {
     name: "CmdGoogleMaps",
+    mixins: [
+        I18n,
+        DefaultMessageProperties
+    ],
+    data() {
+        return {
+            cookiesAccepted: false
+        }
+    },
     props: {
+        /**
+         * toggle system-message and map-visibility depending on the accepted cookies
+         *
+         * for data-privacy reasons the google-map may not be show without accepting cookies
+         */
+        cookiesAlreadyAccepted: {
+            type: Boolean,
+            default: false
+        },
         /**
          * address to show on Google Maps&trade;
          */
@@ -26,6 +59,20 @@ export default {
             }
             return "https://maps.google.de/maps?ie=UTF8&t=&z=17&iwloc=B&output=embed"
         }
+    },
+    methods: {
+        acceptCookies() {
+            this.cookiesAccepted = true
+            this.$emit("click", this.cookiesAccepted)
+        }
+    },
+    watch: {
+        cookiesAlreadyAccepted: {
+            handler() {
+                this.cookiesAccepted = this.cookiesAlreadyAccepted
+            },
+            immediate: true
+        }
     }
 }
 </script>
@@ -37,7 +84,11 @@ export default {
     border-radius: var(--default-border-radius);
 
     iframe {
-        border-radius: inherit;
+        border-radius: var(--default-border-radius);
+    }
+
+    .cmd-system-message {
+        margin: 0;
     }
 }
 /* end cmd-google-maps ------------------------------------------------------------------------------------------ */

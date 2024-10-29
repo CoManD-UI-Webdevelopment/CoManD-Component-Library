@@ -98,9 +98,9 @@
     <!-- begin default-view -->
     <!-- begin image with figure/figcaption -->
     <figure v-else-if="useFigureTag" :class="['cmd-image', textAlign]">
-        <figcaption v-if="figcaption?.position === 'top'" v-html="figcaption?.text"/>
+        <figcaption v-if="figcaption?.position === 'top' && figcaption?.text" v-html="figcaption?.text"/>
         <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
-        <figcaption v-if="figcaption?.position !== 'top'" v-html="figcaption?.text"/>
+        <figcaption v-if="figcaption?.position !== 'top' && figcaption?.text" v-html="figcaption?.text"/>
     </figure>
     <!-- end image with figure/figcaption -->
 

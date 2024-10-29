@@ -6,7 +6,7 @@
         <template v-if="preHeadlineText">
             <component v-if="headlineText" :is="headlineTag">
                 <!-- begin CmdIcon -->
-                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
+                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                 <!-- end CmdIcon -->
 
                 <span class="pre-headline-text-wrapper">
@@ -14,11 +14,17 @@
                     <span class="pre-headline-text" v-html="preHeadlineText"></span>
                     <!-- end pre-headline-text -->
 
-                    <span>
+                    <!-- begin default headline-text without slot -->
+                    <span v-if="headlineText" v-html="headlineText"></span>
+                    <!-- end default headline-text without slot -->
+
+                    <!-- begin headline-text with slot -->
+                    <span v-else>
                         <!-- begin slot -->
-                         <slot>{{ headlineText }}</slot>
-                         <!-- end slot -->
+                        <slot></slot>
+                        <!-- end slot -->
                     </span>
+                    <!-- end headline-text with slot -->
                 </span>
             </component>
         </template>
@@ -27,14 +33,20 @@
         <!-- begin headline without pre-headline-text -->
         <component v-else :is="headlineTag">
             <!-- begin CmdIcon -->
-            <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
+            <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
             <!-- end CmdIcon -->
 
-            <span>
+            <!-- begin default headline-text without slot -->
+            <span v-if="headlineText" v-html="headlineText"></span>
+            <!-- end default headline-text without slot -->
+
+            <!-- begin headline-text with slot -->
+            <span v-else>
                 <!-- begin slot -->
-                <slot>{{ headlineText }}</slot>
+                <slot></slot>
                 <!-- end slot -->
             </span>
+            <!-- end headline-text with slot -->
         </component>
         <!-- end headline without pre-headline-text -->
     </div>
@@ -67,15 +79,15 @@
             <!-- end CmdFormElement -->
 
             <template v-else-if="headlineText"
-                 :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
+                      :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
                 <!-- begin CmdIcon -->
-                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
+                <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                 <!-- end CmdIcon -->
 
                 <template v-if="preHeadlineText">
                     <component v-if="headlineText" :is="headlineTag">
                         <!-- begin CmdIcon -->
-                        <CmdIcon v-if="cmdIcon" v-bind="cmdIcon" />
+                        <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                         <!-- end CmdIcon -->
 
                         <!-- begin pre-headline-text -->

@@ -1,6 +1,6 @@
 <template>
     <div class="cmd-copyright-information" role="contentinfo">
-        <a href="https://www.comand-cms.com" target="comand-website" lang="en" title="CoManD-Website">&copy; CoManD</a>
+        <a href="https://www.comand-ui.com" target="comand-ui-website" lang="en" title="CoManD-UI-Website">&copy; CoManD-UI</a>
     </div>
 </template>
 

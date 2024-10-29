@@ -1281,6 +1281,14 @@
                     ref="CmdContainer"
                     v-bind="cmdContainerSettingsData"
                 />
+                <h3>Container with default-text</h3>
+                <CmdContainer
+                    style="border: 1px dotted gray"
+                    ref="CmdContainer"
+                    innerText="Some inner text"
+                    containerType="flex"
+                    contentOrientation="horizontal"
+                />
                 <h3>Container with vertical slots</h3>
                 <CmdContainer
                     style="border: 1px dotted gray"
@@ -1418,6 +1426,18 @@
                     ref="CmdHeadline"
                     v-bind="cmdHeadlineSettingsData"
                 />
+                <CmdHeadline
+                    ref="CmdHeadline"
+                    headlineLevel="3"
+                    headlineText="Headline text<br /> with html given by property"
+                />
+                <CmdHeadline
+                    ref="CmdHeadline"
+                    headlineLevel="3"
+                >
+                    Headline text<br /> with html given by slot
+                </CmdHeadline>
+
             </CmdWidthLimitationWrapper>
             <!-- end headlines ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -1518,6 +1538,15 @@
                     text="Link with fancybox"
                     :fancybox="true"
                     :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
+                />
+                <CmdLink
+                    linkType="href"
+                    ref="CmdLink"
+                    style="align-self: flex-start"
+                    v-bind="cmdLinkSettingsData"
+                    text="Link styled as box"
+                    :styleAsBox="true"
+                    :icon="{iconClass: 'icon-home', position: 'top', tooltip: 'Tooltip for hyperlink'}"
                 />
                 <button @click="showCmdLink = true"><span>Add link</span></button>
                 <CmdLink
@@ -1637,6 +1666,15 @@
                     v-bind="cmdOpeningHoursSettingsData"
                     :openingHours="openingHoursData"
                     :checkInterval="0"
+                    abbreviationTextAm="h"
+                    abbreviationTextPm="h"
+                />
+                <CmdOpeningHours
+                    ref="CmdOpeningHours"
+                    v-bind="cmdOpeningHoursSettingsData"
+                    :openingHours="openingHoursData"
+                    :checkInterval="0"
+                    :use24HoursFormat="false"
                 />
             </CmdWidthLimitationWrapper>
             <!-- end opening-hours ------------------------------------------------------------------------------------------------------------------------------------------------------->

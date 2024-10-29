@@ -328,12 +328,10 @@ export default {
             default() {
                 return {
                     salutation: {
-                        name: "salutation",
                         default: "m",
                         replaceInputType: true
                     },
                     lastName: {
-                        name: "surname",
                         required: true,
                         type: "text"
                     },

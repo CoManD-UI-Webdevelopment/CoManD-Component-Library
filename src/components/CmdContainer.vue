@@ -18,7 +18,7 @@
         <!-- begin grid-/flex-container to wrap multiple columns/items -->
         <div v-else :class="[setInnerClass, 'inner-slot-wrapper']">
             <!-- begin slot-content (multiple columns only) -->
-            <slot></slot>
+            <slot><p>{{innerText}}</p></slot>
             <!-- end slot-content (multiple columns only) -->
         </div>
         <!-- end grid-/flex-container to wrap multiple columns/items -->
@@ -40,6 +40,13 @@ export default {
          */
         contentAboveSlot: {
             type: String,
+            required: false
+        },
+        /**
+         * define inner-text
+         */
+        innerText: {
+            type: String ,
             required: false
         },
         /**

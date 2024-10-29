@@ -1,7 +1,7 @@
 <template>
     <!-- begin CmdLink -->
     <!-- begin href -->
-    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'fancybox': fancybox}]" @click="emitClick($event, 'href')">
+    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" @click="emitClick($event, 'href')" :title="icon?.tooltip">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -9,7 +9,7 @@
     <!-- end href -->
 
     <!-- begin router -->
-    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'fancybox': fancybox}]" @click="emitClick($event, 'router')">
+    <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" @click="emitClick($event, 'router')" :title="icon?.tooltip">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -17,7 +17,7 @@
     <!-- end router -->
 
     <!-- begin button -->
-    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')">
+    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')" :title="icon?.tooltip">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
@@ -87,6 +87,13 @@ export default {
             default: false
         },
         /**
+         * toggle if link should be styled as box
+         */
+        styleAsBox: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * activate if button should be styled as primary-button
          *
          * (type must be 'button' or styleAsButton-property must be activated)
@@ -112,5 +119,30 @@ export default {
 </script>
 
 <style>
+/* begin cmd-link -------------------------------------------------------------------------------------------- */
+.cmd-link {
+    &.box {
+        display: inline-flex;
+        flex-direction: column;
+        gap: calc(var(--default-gap) / 2);
+        align-items: center;
+        justify-content: center;
+        border-color: var(--hyperlink-color);
+        text-decoration: none;
+        border-radius: var(--box-border-radius);
 
+        span {
+            margin: 0 auto;
+
+            &[class*="icon"] {
+                font-size: 4rem;
+            }
+        }
+
+        &:hover, &:active, &:focus {
+            border-color: var(--hyperlink-color-highlighted)M
+        }
+    }
+}
+/* end cmd-link -------------------------------------------------------------------------------------------- */
 </style>

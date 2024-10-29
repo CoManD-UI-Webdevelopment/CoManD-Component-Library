@@ -126,7 +126,7 @@
 import EditMode from "../mixins/EditMode.vue"
 import {updateHandlerProvider} from "../utils/editmode.js"
 
-function timeFormatting(separator, suffix1, suffix2, hoursLeadingZero = true) {
+function timeFormatting(separator, suffix1, suffix2, hoursLeadingZero = true, use24HoursFormat = true) {
     function addLeadingZero(time, addLeadingZero) {
         if (addLeadingZero && time < 10) {
             return "0" + time
@@ -139,7 +139,9 @@ function timeFormatting(separator, suffix1, suffix2, hoursLeadingZero = true) {
             let hour12 = hour
             let currentSuffix = suffix1
             if (hour12 > 12) {
-                hour12 -= 12
+                if(!use24HoursFormat) {
+                    hour12 -= 12
+                }
                 currentSuffix = suffix2
             }
             return addLeadingZero(hour12, hoursLeadingZero) + separator + addLeadingZero(minute, true) + currentSuffix
@@ -157,6 +159,13 @@ export default {
         }
     },
     props: {
+        /**
+         * toggle 24- and 12-hours format
+         */
+        use24HoursFormat: {
+            type: Boolean,
+            required: false
+        },
         /**
          * list of opening-hours
          */
@@ -202,7 +211,7 @@ export default {
                 return this.timeFormatter(time.hours, time.mins)
             }
 
-            return timeFormatting(":", " " + this.abbreviationTextAm, " " + this.abbreviationTextPm, false)(time.hours, time.mins)
+            return timeFormatting(":", " " + this.abbreviationTextAm, " " + this.abbreviationTextPm, false, this.use24HoursFormat)(time.hours, time.mins)
         },
         updateHandlerProvider() {
             const data = this.editableDay
@@ -228,7 +237,7 @@ export default {
     watch: {
         day: {
             handler() {
-                const timeFormatter = timeFormatting(":", "", "", true)
+                const timeFormatter = timeFormatting(":", "", "", true, this.use24HoursFormat)
                 this.editableDay = {
                     day: this.day.day,
                     amFrom: timeFormatter(this.day.am.fromTime.hours, this.day.am.fromTime.mins),

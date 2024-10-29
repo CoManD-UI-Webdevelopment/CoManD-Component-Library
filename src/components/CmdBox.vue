@@ -111,7 +111,7 @@
                 <CmdImage v-if="cmdImage" v-bind="cmdImage" />
                 <!-- end CmdImage -->
 
-                <div v-if="textBody"
+                <div v-if="cmdHeadline?.headlineText && headlinePosition === 'body' || textBody"
                      :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}">
                     <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
                         <!-- begin CmdIcon -->
@@ -581,6 +581,10 @@ export default {
 
     .box-header .cmd-headline {
         margin-bottom: 0;
+
+        &:only-child {
+            width: 100% /* stretch in flex-container */
+        }
     }
 
     &:has(.cmd-image) {
@@ -1011,5 +1015,3 @@ export default {
 
 /* end cmd-box ------------------------------------------------------------------------------------------ */
 </style>
-<script setup>
-</script>

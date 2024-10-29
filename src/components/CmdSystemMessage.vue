@@ -10,6 +10,7 @@
             <a
                 v-if="iconClose.show && iconClose.iconClass"
                 href="#"
+                class="close-button"
                 @click.prevent="showSystemMessage = false"
                 :title="iconClose.tooltip"
             >
@@ -19,18 +20,18 @@
             </a>
             <!-- end close-icon -->
 
-            <!-- begin CmdHeadline -->
-            <CmdHeadline
-                class="message-headline"
-                :cmdIcon="headlineIcon"
-                :headlineText="systemMessage"
-                :headlineLevel="messageHeadlineLevel"
-                :id="htmlId"
-            />
-            <!-- end CmdHeadline -->
-
             <!-- begin slot-content -->
-            <slot></slot>
+            <slot>
+                <!-- begin CmdHeadline -->
+                <CmdHeadline
+                    class="message-headline"
+                    :cmdIcon="headlineIcon"
+                    :headlineText="systemMessage"
+                    :headlineLevel="messageHeadlineLevel"
+                    :id="htmlId"
+                />
+                <!-- end CmdHeadline -->
+            </slot>
             <!-- end slot-content -->
         </div>
     </transition>
@@ -163,7 +164,7 @@ export default {
         }
     }
 
-    > a:not(.button) {
+    > a.close-button {
         display: flex;
         position: absolute;
         width: auto; /* avoids stretching by flex-containers */
@@ -189,7 +190,7 @@ export default {
     }
 
     &.warning {
-        > a:not(.button) {
+        > a.close-button {
             border-color: var(--default-text-color);
 
             [class*="icon-"] {

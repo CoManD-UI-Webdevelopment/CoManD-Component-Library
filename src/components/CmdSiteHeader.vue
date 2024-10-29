@@ -371,10 +371,6 @@ export default {
             }
         }
 
-        .cmd-company-logo {
-            margin: 0 auto
-        }
-
         &.navigation-inline {
             header {
                 .cmd-company-logo, .main-navigation-wrapper {

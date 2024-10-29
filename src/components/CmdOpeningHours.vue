@@ -8,7 +8,7 @@
         <!-- end cmd-headline -->
 
         <!-- begin opening-status with link to detail-page -->
-        <template v-if="!editing">
+        <template v-if="!editing && showOpenStatus">
             <template v-if="cmdLink?.path">
                 <CmdLink :linkType="cmdLink.type || 'href'" v-bind="cmdLink" :class="{closed: isClosed}">{{ textOpenClosed }}</CmdLink>
             </template>
@@ -20,7 +20,7 @@
         </template>
 
         <!-- begin edit-mode -->
-        <div v-else class="flex-container">
+        <div v-else-if="editing" class="flex-container">
             <CmdFormElement
                 element="input"
                 type="text"
@@ -49,6 +49,7 @@
                 :separator="separator"
                 :abbreviationTextAm="abbreviationTextAm"
                 :abbreviationTextPm="abbreviationTextPm"
+                :use24HoursFormat="use24HoursFormat"
             />
         </dl>
         <!-- end default view -->
@@ -78,6 +79,7 @@
                         :separator="separator"
                         :abbreviationTextAm="abbreviationTextAm"
                         :abbreviationTextPm="abbreviationTextPm"
+                        :use24HoursFormat="use24HoursFormat"
                     />
                 </dl>
             </EditComponentWrapper>
@@ -249,6 +251,20 @@ export default {
         checkInterval: {
             type: Number,
             default: 5000
+        },
+        /**
+         * toggle display of open-closed-status text above opening hours
+         */
+        showOpenStatus: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * toggle 24- and 12-hours format
+         */
+        use24HoursFormat: {
+            type: Boolean,
+            default: true
         },
         /**
          * properties for CmdLink-component
