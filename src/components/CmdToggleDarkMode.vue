@@ -232,9 +232,11 @@ export default {
                 // toggle classes to overwrite media-query styles for color-schemes
                 const htmlTag = document.documentElement
                 if (this.darkMode) {
-                    htmlTag.classList.replace("light-mode", "dark-mode")
+                    htmlTag.classList.remove("light-mode")
+                    htmlTag.classList.add("dark-mode")
                 } else {
-                    htmlTag.classList.replace("dark-mode", "light-mode")
+                    htmlTag.classList.remove("dark-mode")
+                    htmlTag.classList.add("light-mode")
                 }
 
                 // emits custom events from html-tag

@@ -299,7 +299,7 @@ export default {
 
         dt {
             display: flex;
-            top: 0.2rem;
+            align-items: center;
 
             &.address {
                 align-self: flex-start;

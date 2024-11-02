@@ -65,6 +65,7 @@ export { default as DirFancybox } from '@/directives/fancybox'
 // export functions
 export { createUuid, createHtmlId } from '@/utils/common'
 export { getFileExtension } from '@/utils/getFileExtension'
+export { setCookieDisclaimerCookie, getCookieDisclaimerCookie } from '@/utils/cookie'
 
 // export composables
 export { useSequence } from '@/composables/sequence'

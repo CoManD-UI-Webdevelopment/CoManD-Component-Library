@@ -1,141 +1,141 @@
 <template>
-    <teleport to="body">
-        <dialog
-            ref="dialog"
-            :class="['cmd-fancybox', {'show-overlay': showOverlay, 'image' : fancyBoxImageUrl || fancyBoxGallery, 'image-gallery': fancyBoxGallery}]"
-            :aria-label="ariaLabelText"
-            @cancel="onDialogCancel"
-        >
-            <header class="flex-container">
-                <!-- begin CmdHeadline -->
-                <CmdHeadline
-                    v-if="cmdHeadline?.headlineText"
-                    v-bind="cmdHeadline"
-                    :id="htmlId"
-                />
-                <!-- end CmdHeadline -->
-
-                <!-- begin button-wrapper -->
-                <div
-                    v-if="(fancyboxOptions.printButtons?.color || fancyboxOptions.printButtons?.grayscale) || fancyboxOptions.closeIcon"
-                    class="button-wrapper no-flex"
-                >  <!-- begin print buttons -->
-                    <a v-if="showPrintButtons && fancyboxOptions.printButtons?.color"
-                       href="#"
-                       class="button print-color"
-                       :title="fancyboxOptions.printButtons.color?.tooltip"
-                       @click.prevent="printInGrayscale = false">
-                        <!-- begin CmdIcon -->
-                        <CmdIcon
-                            :iconClass="fancyboxOptions.printButtons.color?.iconClass"
-                            :type="fancyboxOptions.printButtons.color?.iconType"
-                        />
-                        <!-- end CmdIcon -->
-                    </a>
-                    <a v-if="showPrintButtons && fancyboxOptions.printButtons?.grayscale"
-                       href="#"
-                       class="button print-grayscale"
-                       :title="fancyboxOptions.printButtons.grayscale?.tooltip"
-                       @click.prevent="printInGrayscale = true">
-                       <!-- begin CmdIcon -->
-                       <CmdIcon
-                           :iconClass="fancyboxOptions.printButtons.grayscale?.iconClass"
-                           :type="fancyboxOptions.printButtons.grayscale?.iconType"
-                       />
-                       <!-- end CmdIcon -->
-                    </a>
-                    <!-- end print buttons -->
-
-                    <!-- begin close-icon -->
-                    <a v-if="fancyboxOptions.closeIcon"
-                       href="#"
-                       class="button"
-                       id="close-dialog"
-                       :title="fancyboxOptions.closeIcon.tooltip"
-                       ref="close-dialog"
-                       @click.prevent="close">
-                       <!-- begin CmdIcon -->
-                       <CmdIcon
-                           :iconClass="fancyboxOptions.closeIcon.iconClass"
-                           :type="fancyboxOptions.closeIcon.iconType"
-                       />
-                       <!-- end CmdIcon -->
-                    </a>
-                    <!-- end close-icon -->
-                </div>
-                <!-- end button-wrapper -->
-            </header>
-            <div :class="['outer-content-wrapper', {'grayscale' : printInGrayscale}]">
-                <div v-if="fancyBoxImageUrl || cmdImage?.image" class="content">
-                    <!-- begin CmdImage -->
-                    <CmdImage :image="largeSingleImage" :figcaption="cmdImage?.figcaption" />
-                    <!-- end CmdImage -->
-                </div>
-                <div v-else-if="fancyBoxContent" class="content" v-html="fancyBoxContent"></div>
-                <div v-else-if="fancyBoxElements" class="content" ref="elements"></div>
-                <div v-else-if="fancyBoxGallery" class="content">
-                    <!-- begin CmdSlideButton -->
-                    <CmdSlideButton @click.prevent="showPrevItem" slideButtonType="prev"/>
-                    <!-- end CmdSlideButton -->
-
-                    <!-- begin enlarged image -->
-                    <!-- begin CmdImage -->
-                    <CmdImage :image="largeGalleryImage" :figcaption="fancyBoxGallery[index].figcaption" />
-                    <!-- end CmdImage -->
-                    <!-- end enlarged image -->
-
-                    <!-- begin CmdSlideButton -->
-                    <CmdSlideButton @click.prevent="showNextItem"/>
-                    <!-- end CmdSlideButton -->
-                </div>
-                <div v-else class="content">
-                    <!-- begin slot-content -->
-                    <slot></slot>
-                    <!-- end slot-content -->
-                </div>
-            </div>
-
-            <footer v-if="showSubmitButtons && fancyboxOptions.submitButtons" class="flex-container no-flex">
-                <!-- begin cancel-button -->
-                <button
-                    v-if="fancyboxOptions.submitButtons?.cancel"
-                    @click="cancel"
-                    :title="fancyboxOptions.submitButtons.cancel?.tooltip">
-                    <CmdIcon
-                        v-if="fancyboxOptions.submitButtons.cancel?.iconClass"
-                        :iconClass="fancyboxOptions.submitButtons.cancel?.iconClass"
-                        :type="fancyboxOptions.submitButtons.cancel?.iconType"
-                    />
-                    <span v-if="fancyboxOptions.submitButtons.cancel?.buttonText">{{fancyboxOptions.submitButtons.cancel?.buttonText}}</span>
-                </button>
-                <!-- end cancel-button -->
-
-                <!-- begin confirm-button -->
-                <button
-                    v-if="fancyboxOptions.submitButtons?.confirm"
-                    @click="confirm"
-                    :title="fancyboxOptions.submitButtons.cancel?.tooltip">
-                    <CmdIcon
-                        v-if="fancyboxOptions.submitButtons.confirm?.iconClass"
-                        :iconClass="fancyboxOptions.submitButtons.confirm?.iconClass"
-                        :type="fancyboxOptions.submitButtons.confirm?.iconType"
-                    />
-                    <span v-if="fancyboxOptions.submitButtons.confirm?.buttonText">{{fancyboxOptions.submitButtons.confirm?.buttonText}}</span>
-                </button>
-                <!-- end confirm-button -->
-            </footer>
-
-            <!-- begin CmdThumbnailScroller -->
-            <CmdThumbnailScroller
-                v-if="fancyBoxGallery"
-                :thumbnailScrollerItems="[...fancyBoxGallery]"
-                :allowOpenFancyBox="false"
-                @click="showItem"
-                :activeItemIndex="index"
+    <dialog
+        ref="dialog"
+        :class="['cmd-fancybox', {'show-overlay': showOverlay, 'image' : fancyBoxImageUrl || fancyBoxGallery, 'image-gallery': fancyBoxGallery}]"
+        :aria-label="ariaLabelText"
+        @cancel="onDialogCancel"
+    >
+        <header class="flex-container">
+            <!-- begin CmdHeadline -->
+            <CmdHeadline
+                v-if="cmdHeadline?.headlineText"
+                v-bind="cmdHeadline"
+                :id="htmlId"
             />
-            <!-- end CmdThumbnailScroller -->
-        </dialog>
-    </teleport>
+            <!-- end CmdHeadline -->
+
+            <!-- begin button-wrapper -->
+            <div
+                v-if="(fancyboxOptions.printButtons?.color || fancyboxOptions.printButtons?.grayscale) || fancyboxOptions.closeIcon"
+                class="button-wrapper no-flex"
+            >  <!-- begin print buttons -->
+                <a v-if="showPrintButtons && fancyboxOptions.printButtons?.color"
+                   href="#"
+                   class="button print-color"
+                   :title="fancyboxOptions.printButtons.color?.tooltip"
+                   @click.prevent="printInGrayscale = false">
+                    <!-- begin CmdIcon -->
+                    <CmdIcon
+                        :iconClass="fancyboxOptions.printButtons.color?.iconClass"
+                        :type="fancyboxOptions.printButtons.color?.iconType"
+                    />
+                    <!-- end CmdIcon -->
+                </a>
+                <a v-if="showPrintButtons && fancyboxOptions.printButtons?.grayscale"
+                   href="#"
+                   class="button print-grayscale"
+                   :title="fancyboxOptions.printButtons.grayscale?.tooltip"
+                   @click.prevent="printInGrayscale = true">
+                    <!-- begin CmdIcon -->
+                    <CmdIcon
+                        :iconClass="fancyboxOptions.printButtons.grayscale?.iconClass"
+                        :type="fancyboxOptions.printButtons.grayscale?.iconType"
+                    />
+                    <!-- end CmdIcon -->
+                </a>
+                <!-- end print buttons -->
+
+                <!-- begin close-icon -->
+                <a v-if="fancyboxOptions.closeIcon"
+                   href="#"
+                   class="button"
+                   id="close-dialog"
+                   :title="fancyboxOptions.closeIcon.tooltip"
+                   ref="close-dialog"
+                   @click.prevent="close">
+                    <!-- begin CmdIcon -->
+                    <CmdIcon
+                        :iconClass="fancyboxOptions.closeIcon.iconClass"
+                        :type="fancyboxOptions.closeIcon.iconType"
+                    />
+                    <!-- end CmdIcon -->
+                </a>
+                <!-- end close-icon -->
+            </div>
+            <!-- end button-wrapper -->
+        </header>
+        <div :class="['outer-content-wrapper', {'grayscale' : printInGrayscale}]">
+            <div v-if="fancyBoxImageUrl || cmdImage?.image" class="content">
+                <!-- begin CmdImage -->
+                <CmdImage :image="largeSingleImage" :figcaption="cmdImage?.figcaption"/>
+                <!-- end CmdImage -->
+            </div>
+            <div v-else-if="fancyBoxContent" class="content" v-html="fancyBoxContent"></div>
+            <div v-else-if="fancyBoxElements" class="content" ref="elements"></div>
+            <div v-else-if="fancyBoxGallery" class="content">
+                <!-- begin CmdSlideButton -->
+                <CmdSlideButton @click.prevent="showPrevItem" slideButtonType="prev"/>
+                <!-- end CmdSlideButton -->
+
+                <!-- begin enlarged image -->
+                <!-- begin CmdImage -->
+                <CmdImage :image="largeGalleryImage" :figcaption="fancyBoxGallery[index].figcaption"/>
+                <!-- end CmdImage -->
+                <!-- end enlarged image -->
+
+                <!-- begin CmdSlideButton -->
+                <CmdSlideButton @click.prevent="showNextItem"/>
+                <!-- end CmdSlideButton -->
+            </div>
+            <div v-else class="content">
+                <!-- begin slot-content -->
+                <slot></slot>
+                <!-- end slot-content -->
+            </div>
+        </div>
+
+        <footer v-if="showSubmitButtons && fancyboxOptions.submitButtons" class="flex-container no-flex">
+            <!-- begin cancel-button -->
+            <button
+                v-if="fancyboxOptions.submitButtons?.cancel"
+                @click="cancel"
+                :title="fancyboxOptions.submitButtons.cancel?.tooltip">
+                <CmdIcon
+                    v-if="fancyboxOptions.submitButtons.cancel?.iconClass"
+                    :iconClass="fancyboxOptions.submitButtons.cancel?.iconClass"
+                    :type="fancyboxOptions.submitButtons.cancel?.iconType"
+                />
+                <span
+                    v-if="fancyboxOptions.submitButtons.cancel?.buttonText">{{ fancyboxOptions.submitButtons.cancel?.buttonText }}</span>
+            </button>
+            <!-- end cancel-button -->
+
+            <!-- begin confirm-button -->
+            <button
+                v-if="fancyboxOptions.submitButtons?.confirm"
+                @click="confirm"
+                :title="fancyboxOptions.submitButtons.cancel?.tooltip">
+                <CmdIcon
+                    v-if="fancyboxOptions.submitButtons.confirm?.iconClass"
+                    :iconClass="fancyboxOptions.submitButtons.confirm?.iconClass"
+                    :type="fancyboxOptions.submitButtons.confirm?.iconType"
+                />
+                <span
+                    v-if="fancyboxOptions.submitButtons.confirm?.buttonText">{{ fancyboxOptions.submitButtons.confirm?.buttonText }}</span>
+            </button>
+            <!-- end confirm-button -->
+        </footer>
+
+        <!-- begin CmdThumbnailScroller -->
+        <CmdThumbnailScroller
+            v-if="fancyBoxGallery"
+            :thumbnailScrollerItems="[...fancyBoxGallery]"
+            :allowOpenFancyBox="false"
+            @click="showItem"
+            :activeItemIndex="index"
+        />
+        <!-- end CmdThumbnailScroller -->
+    </dialog>
 </template>
 
 <script>
@@ -333,27 +333,27 @@ const FancyBox = defineComponent({
         }
     },
     computed: {
-      largeGalleryImage() {
-          // change src-key for a single item/image in gallery to fit CmdImage-properties
-          const fancyBoxItem = {...this.fancyBoxGallery[this.index].image}
-          fancyBoxItem.src =  fancyBoxItem.srcImageLarge
-          return fancyBoxItem
-      },
-      largeSingleImage() {
-          // change src-key for a single item/image to fit CmdImage-properties
-          const fancyBoxItem = {...this.cmdImage?.image || {}}
-          if(this.fancyBoxImageUrl) {
-              fancyBoxItem.src = this.fancyBoxImageUrl
-          }
-          return fancyBoxItem
-      },
-      ariaLabelText() {
-          if(this.fancyBoxGallery?.length) {
-              return this.fancyBoxGallery[this.index].figcaption.text
-          } else {
-              return this.defaultAriaLabelText
-          }
-      }
+        largeGalleryImage() {
+            // change src-key for a single item/image in gallery to fit CmdImage-properties
+            const fancyBoxItem = {...this.fancyBoxGallery[this.index].image}
+            fancyBoxItem.src = fancyBoxItem.srcImageLarge
+            return fancyBoxItem
+        },
+        largeSingleImage() {
+            // change src-key for a single item/image to fit CmdImage-properties
+            const fancyBoxItem = {...this.cmdImage?.image || {}}
+            if (this.fancyBoxImageUrl) {
+                fancyBoxItem.src = this.fancyBoxImageUrl
+            }
+            return fancyBoxItem
+        },
+        ariaLabelText() {
+            if (this.fancyBoxGallery?.length) {
+                return this.fancyBoxGallery[this.index].figcaption.text
+            } else {
+                return this.defaultAriaLabelText
+            }
+        }
     },
     methods: {
         onDialogCancel(event) {
@@ -370,7 +370,7 @@ const FancyBox = defineComponent({
             this.$refs.dialog.showModal()
 
             // overwrite default behavior of dialog-element, which sets focus on first focusable element inside
-            this.$refs["close-dialog"].focus()
+            this.$refs["close-dialog"]?.focus()
         },
         updateContentOnPropertyChange() {
             this.fancyBoxImageUrl = this.fancyBoxContent = this.fancyBoxElements = null
@@ -629,6 +629,7 @@ export default FancyBox
 
 <style lang="scss">
 @import "../assets/styles/variables";
+
 .cmd-fancybox {
     @media only screen and (max-width: $medium-max-width) {
         .outer-content-wrapper {
@@ -678,5 +679,6 @@ export default FancyBox
         margin-top: var(--default-margin);
     }
 }
+
 /* end cmd-fancybox ------------------------------------------------------------------------------------------ */
 </style>

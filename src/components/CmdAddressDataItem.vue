@@ -1,5 +1,5 @@
 <template>
-    <dt :class="['cmd-address-data-item', {'address': addressEntry.type === 'address'}]">
+    <dt :class="['cmd-address-data-item', {'address': addressEntry.type === 'address'}]" :id="addressEntry.id">
         <!-- begin CmdIcon -->
         <CmdIcon
             v-if="addressEntry.iconClass && showLabelIcons"

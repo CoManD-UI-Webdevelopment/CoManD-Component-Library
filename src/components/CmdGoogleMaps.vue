@@ -19,6 +19,7 @@
 // import mixins
 import I18n from "../mixins/I18n"
 import DefaultMessageProperties from "../mixins/CmdGoogleMaps/DefaultMessageProperties"
+import {setCookieDisclaimerCookie, getCookieDisclaimerCookie} from "../utils/cookie"
 
 export default {
     name: "CmdGoogleMaps",
@@ -49,6 +50,11 @@ export default {
             required: true
         }
     },
+    mounted() {
+        if(getCookieDisclaimerCookie().includes("google-maps")) {
+            this.cookiesAccepted = true
+        }
+    },
     computed: {
         locateAddress() {
             if(this.address) {
@@ -62,6 +68,7 @@ export default {
     },
     methods: {
         acceptCookies() {
+            setCookieDisclaimerCookie(["google-maps"])
             this.cookiesAccepted = true
             this.$emit("click", this.cookiesAccepted)
         }

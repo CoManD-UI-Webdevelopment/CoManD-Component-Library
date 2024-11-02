@@ -26,6 +26,7 @@ export default {
         "basic_form.placeholder.additional_address_info": "Additional address information",
         "basic_form.labeltext.user_message": "Your message:",
         "basic_form.placeholder.user_message": "Your message",
+        "basic_form.text.characters_left": "Characters left",
         "basic_form.labeltext.data_privacy": "I accept handling and saving of my personal data a mentioned in the <a href='/content/data-privacy-en.html' class='fancybox'>private policy</a>."
       }
     }

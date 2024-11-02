@@ -723,12 +723,18 @@ export default {
                 border-radius: 0;
             }
 
-            .inner-box-body-wrapper:has(figure:only-child) {
-                border-bottom-left-radius: var(--box-border-radius);
-                border-bottom-right-radius: var(--box-border-radius);
+            .inner-box-body-wrapper {
+                & > * {
+                    border-radius: 0;
+                }
 
-                img {
-                    border-radius: inherit;
+                &:has(figure:only-child) {
+                    border-bottom-left-radius: var(--box-border-radius);
+                    border-bottom-right-radius: var(--box-border-radius);
+
+                    img {
+                        border-radius: inherit;
+                    }
                 }
             }
 

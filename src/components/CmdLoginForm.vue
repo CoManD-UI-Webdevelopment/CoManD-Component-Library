@@ -212,13 +212,6 @@ export default {
             }
         },
         /**
-         * toggle legend visibility
-         */
-        showLegend: {
-            type: Boolean,
-            default: true
-        },
-        /**
          * legend for forgot-login-fieldset
          *
          * @requiredForAccessibility: true
