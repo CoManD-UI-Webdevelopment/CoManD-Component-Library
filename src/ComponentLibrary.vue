@@ -983,6 +983,19 @@
                 <CmdBasicForm
                     ref="CmdBasicForm"
                     @submit="sendBasicForm"
+                    cmdHeadline=""
+                    :userMessage="{
+                        'required': false,
+                        'element': 'textarea',
+                        'maxLength': 500
+                    }"
+                    :submitButton="{
+                        'iconClass': 'icon-message-send',
+                        'text': 'Anfrage senden',
+                        'type': 'submit',
+                        'position': 'insideFieldset',
+                        'primary': true
+                    }"
                 />
                 <dl>
                     <dt>originalEvent</dt>

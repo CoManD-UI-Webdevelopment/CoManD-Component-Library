@@ -216,7 +216,7 @@
                 :required="configuration.userMessage?.required"
                 :name="configuration.userMessage?.name || 'user-message'"
                 :textCharactersLeft="getMessage('basic_form.text.characters_left')"
-                :maxLength="configuration.userMessage?.maxLength"
+                :maxlength="configuration.userMessage?.maxLength"
                 v-model="formData.userMessage.value"
                 :status="formData.userMessage.error ? 'error' : ''"
                 @validate="onValidate"
