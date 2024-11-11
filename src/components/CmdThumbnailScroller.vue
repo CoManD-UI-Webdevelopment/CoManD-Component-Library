@@ -256,12 +256,12 @@ export default {
     computed: {
         tooltip() {
             if (this.contentType === "image") {
-                return this.getMessage("cmdthumbnailscroller.tooltip.open_large_image")
+                return this.getMessage("thumbnail_scroller.tooltip.open_large_image")
             }
             if (this.executeOnClick === "url") {
-                return this.getMessage("cmdthumbnailscroller.tooltip.open_url")
+                return this.getMessage("thumbnail_scroller.tooltip.open_url")
             }
-            return this.getMessage("cmdthumbnailscroller.tooltip.open")
+            return this.getMessage("thumbnail_scroller.tooltip.open")
         },
         fullWidthClass() {
             if (this.orientation === "horizontal") {

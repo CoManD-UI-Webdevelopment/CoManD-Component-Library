@@ -2,7 +2,7 @@ export default {
   data() {
     return {
       defaultMessageProperties: {
-        "cmdimagegallery.tooltip.open_large_image": "Open large image"
+        "image_gallery.tooltip.open_large_image": "Open large image"
       }
     }
   }

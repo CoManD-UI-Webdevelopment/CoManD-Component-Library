@@ -10,53 +10,52 @@
             <CmdHeadline
                 v-if="cmdHeadline?.headlineText"
                 v-bind="cmdHeadline"
-                :id="htmlId"
             />
             <!-- end CmdHeadline -->
 
             <!-- begin button-wrapper -->
             <div
-                v-if="(fancyboxOptions.printButtons?.color || fancyboxOptions.printButtons?.grayscale) || fancyboxOptions.closeIcon"
+                v-if="(fancyBoxOptionsProperties.printButtons?.color || fancyBoxOptionsProperties.printButtons?.grayscale) || fancyBoxOptionsProperties.closeIcon"
                 class="button-wrapper no-flex"
             >  <!-- begin print buttons -->
-                <a v-if="showPrintButtons && fancyboxOptions.printButtons?.color"
+                <a v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.color"
                    href="#"
                    class="button print-color"
-                   :title="fancyboxOptions.printButtons.color?.tooltip"
-                   @click.prevent="printInGrayscale = false">
+                   :title="fancyBoxOptionsProperties.printButtons.color?.tooltip"
+                   @click.prevent="printPage('color')">
                     <!-- begin CmdIcon -->
                     <CmdIcon
-                        :iconClass="fancyboxOptions.printButtons.color?.iconClass"
-                        :type="fancyboxOptions.printButtons.color?.iconType"
+                        :iconClass="fancyBoxOptionsProperties.printButtons.color?.iconClass"
+                        :type="fancyBoxOptionsProperties.printButtons.color?.iconType"
                     />
                     <!-- end CmdIcon -->
                 </a>
-                <a v-if="showPrintButtons && fancyboxOptions.printButtons?.grayscale"
+                <a v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.grayscale"
                    href="#"
                    class="button print-grayscale"
-                   :title="fancyboxOptions.printButtons.grayscale?.tooltip"
-                   @click.prevent="printInGrayscale = true">
+                   :title="fancyBoxOptionsProperties.printButtons.grayscale?.tooltip"
+                   @click.prevent="printPage('grayscale')">
                     <!-- begin CmdIcon -->
                     <CmdIcon
-                        :iconClass="fancyboxOptions.printButtons.grayscale?.iconClass"
-                        :type="fancyboxOptions.printButtons.grayscale?.iconType"
+                        :iconClass="fancyBoxOptionsProperties.printButtons.grayscale?.iconClass"
+                        :type="fancyBoxOptionsProperties.printButtons.grayscale?.iconType"
                     />
                     <!-- end CmdIcon -->
                 </a>
                 <!-- end print buttons -->
 
                 <!-- begin close-icon -->
-                <a v-if="fancyboxOptions.closeIcon"
+                <a v-if="fancyBoxOptionsProperties.closeIcon"
                    href="#"
                    class="button"
                    id="close-dialog"
-                   :title="fancyboxOptions.closeIcon.tooltip"
+                   :title="fancyBoxOptionsProperties.closeIcon.tooltip"
                    ref="close-dialog"
                    @click.prevent="close">
                     <!-- begin CmdIcon -->
                     <CmdIcon
-                        :iconClass="fancyboxOptions.closeIcon.iconClass"
-                        :type="fancyboxOptions.closeIcon.iconType"
+                        :iconClass="fancyBoxOptionsProperties.closeIcon.iconClass"
+                        :type="fancyBoxOptionsProperties.closeIcon.iconType"
                     />
                     <!-- end CmdIcon -->
                 </a>
@@ -94,34 +93,34 @@
             </div>
         </div>
 
-        <footer v-if="showSubmitButtons && fancyboxOptions.submitButtons" class="flex-container no-flex">
+        <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container no-flex">
             <!-- begin cancel-button -->
             <button
-                v-if="fancyboxOptions.submitButtons?.cancel"
+                v-if="fancyBoxOptionsProperties.submitButtons?.cancel"
                 @click="cancel"
-                :title="fancyboxOptions.submitButtons.cancel?.tooltip">
+                :title="fancyBoxOptionsProperties.submitButtons.cancel?.tooltip">
                 <CmdIcon
-                    v-if="fancyboxOptions.submitButtons.cancel?.iconClass"
-                    :iconClass="fancyboxOptions.submitButtons.cancel?.iconClass"
-                    :type="fancyboxOptions.submitButtons.cancel?.iconType"
+                    v-if="fancyBoxOptionsProperties.submitButtons.cancel?.iconClass"
+                    :iconClass="fancyBoxOptionsProperties.submitButtons.cancel?.iconClass"
+                    :type="fancyBoxOptionsProperties.submitButtons.cancel?.iconType"
                 />
                 <span
-                    v-if="fancyboxOptions.submitButtons.cancel?.buttonText">{{ fancyboxOptions.submitButtons.cancel?.buttonText }}</span>
+                    v-if="fancyBoxOptionsProperties.submitButtons.cancel?.buttonText">{{ fancyBoxOptionsProperties.submitButtons.cancel?.buttonText }}</span>
             </button>
             <!-- end cancel-button -->
 
             <!-- begin confirm-button -->
             <button
-                v-if="fancyboxOptions.submitButtons?.confirm"
+                v-if="fancyBoxOptionsProperties.submitButtons?.confirm"
                 @click="confirm"
-                :title="fancyboxOptions.submitButtons.cancel?.tooltip">
+                :title="fancyBoxOptionsProperties.submitButtons.cancel?.tooltip">
                 <CmdIcon
-                    v-if="fancyboxOptions.submitButtons.confirm?.iconClass"
-                    :iconClass="fancyboxOptions.submitButtons.confirm?.iconClass"
-                    :type="fancyboxOptions.submitButtons.confirm?.iconType"
+                    v-if="fancyBoxOptionsProperties.submitButtons.confirm?.iconClass"
+                    :iconClass="fancyBoxOptionsProperties.submitButtons.confirm?.iconClass"
+                    :type="fancyBoxOptionsProperties.submitButtons.confirm?.iconType"
                 />
                 <span
-                    v-if="fancyboxOptions.submitButtons.confirm?.buttonText">{{ fancyboxOptions.submitButtons.confirm?.buttonText }}</span>
+                    v-if="fancyBoxOptionsProperties.submitButtons.confirm?.buttonText">{{ fancyBoxOptionsProperties.submitButtons.confirm?.buttonText }}</span>
             </button>
             <!-- end confirm-button -->
         </footer>
@@ -141,9 +140,6 @@
 <script>
 import {defineComponent, createApp} from "vue"
 
-// import mixins
-import Identifier from "../mixins/Identifier"
-
 const openFancyBox = (config) => {
     const node = document.createElement("div");
     document.querySelector("body").appendChild(node);
@@ -156,9 +152,6 @@ const openFancyBox = (config) => {
 
 const FancyBox = defineComponent({
     name: "CmdFancyBox",
-    mixins: [
-        Identifier
-    ],
     emits: ['cancel', 'confirm'],
     data() {
         return {
@@ -204,44 +197,9 @@ const FancyBox = defineComponent({
         /**
          * options to show at top (closeIcon, printButtons)
          */
-        fancyboxOptions: {
+        fancyBoxOptions: {
             type: Object,
-            default() {
-                return {
-                    closeIcon: {
-                        iconClass: "icon-cancel",
-                        iconType: "auto",
-                        tooltip: "Close"
-                    },
-                    printButtons: {
-                        color: {
-                            iconClass: "icon-print",
-                            iconType: "auto",
-                            tooltip: "print in color"
-                        },
-                        grayscale: {
-                            iconClass: "icon-print",
-                            iconType: "auto",
-                            tooltip: "print in grayscale"
-                        }
-                    },
-                    submitButtons: {
-                        cancel: {
-                            iconClass: "icon-cancel",
-                            iconType: "auto",
-                            tooltip: "Cancel",
-                            buttonText: "Cancel"
-                        },
-                        confirm: {
-                            iconClass: "icon-check",
-                            iconType: "auto",
-                            buttonText: "Confirm",
-                            tooltip: "Confirm",
-                            buttonType: "primary"
-                        }
-                    }
-                }
-            }
+            required: false
         },
         /**
          * allow closing fancybox by escape-key
@@ -333,6 +291,47 @@ const FancyBox = defineComponent({
         }
     },
     computed: {
+        fancyBoxOptionsProperties() {
+            return {
+                closeIcon: {
+                    iconClass: "icon-cancel",
+                    iconType: "auto",
+                    tooltip: "Close",
+                    ...this.fancyBoxOptions?.closeIcon
+                },
+                printButtons: {
+                    color: {
+                        iconClass: "icon-print",
+                        iconType: "auto",
+                        tooltip: "print in color",
+                        ...this.fancyBoxOptions?.printButtons?.color
+                    },
+                    grayscale: {
+                        iconClass: "icon-print",
+                        iconType: "auto",
+                        tooltip: "print in grayscale",
+                        ...this.fancyBoxOptions?.printButtons?.grayscale
+                    }
+                },
+                submitButtons: {
+                    cancel: {
+                        iconClass: "icon-cancel",
+                        iconType: "auto",
+                        tooltip: "Cancel",
+                        buttonText: "Cancel",
+                        ...this.fancyBoxOptions?.submitButtons?.cancel
+                    },
+                    confirm: {
+                        iconClass: "icon-check",
+                        iconType: "auto",
+                        buttonText: "Confirm",
+                        tooltip: "Confirm",
+                        buttonType: "primary",
+                        ...this.fancyBoxOptions?.submitButtons?.confirm
+                    }
+                }
+            }
+        },
         largeGalleryImage() {
             // change src-key for a single item/image in gallery to fit CmdImage-properties
             const fancyBoxItem = {...this.fancyBoxGallery[this.index].image}
@@ -356,6 +355,48 @@ const FancyBox = defineComponent({
         }
     },
     methods: {
+         printDialogContent() {
+             // Open a new window
+             const printWindow = window.open('', '', 'width=1000,height=600');
+
+             const dialogContent = this.elements.map( (element)=> {
+                 return element.outerHTML
+             }).join("")
+
+             let styles = Array.from(document.head.querySelectorAll("style, link[rel='stylesheet']")).map( (element)=> {
+                return element.outerHTML
+            }).join("")
+
+             if(this.printInGrayscale) {
+                 styles += "<style>body { filter: grayscale(1)}</style>"
+             }
+
+             const titleForPrintWindow = document.head.querySelector("title").innerText
+
+             // Write the content to the new window
+             printWindow.document.write(`
+            <html>
+              <head>
+                <title>${titleForPrintWindow}</title>
+                ${styles}
+              </head>
+              <body>
+                ${dialogContent}
+              </body>
+            </html>
+          `);
+
+             // Trigger print
+             printWindow.document.close();
+
+             // Optionally, close the print window after printing
+             printWindow.print();
+             printWindow.close();
+         },
+        printPage(colorScheme) {
+            this.printInGrayscale = colorScheme === 'grayscale'
+            this.printDialogContent()
+        },
         onDialogCancel(event) {
             if (!this.allowEscapeKey) {
                 event.preventDefault()

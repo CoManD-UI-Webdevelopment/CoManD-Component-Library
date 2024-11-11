@@ -14,7 +14,7 @@
             v-if="systemMessageStatus && allSystemMessages.length"
             :iconClose="{ show: false }"
             :validationStatus="systemMessageStatus"
-            :systemMessage="allSystemMessages.length === 1 ? allSystemMessages[0] : getMessage('cmduploadform.system_message.the_following_errors_occurred')"
+            :systemMessage="allSystemMessages.length === 1 ? allSystemMessages[0] : getMessage('upload_form.system_message.the_following_errors_occurred')"
         >
             <ul v-if="allSystemMessages.length > 1">
                 <li v-for="(systemMessage, index) in allSystemMessages" :key="index">
@@ -40,7 +40,7 @@
                      class="flex-container vertical list-files-wrapper">
                     <!-- begin CmdHeadline -->
                     <CmdHeadline v-bind="cmdHeadlineSummaryOfAllFiles" headlineLevel="4">
-                        {{ getMessage("cmduploadform.headline.summary_of_all_files") }}
+                        {{ getMessage("upload_form.headline.summary_of_all_files") }}
                     </CmdHeadline>
                     <!-- end CmdHeadline -->
 
@@ -48,7 +48,7 @@
                         <li class="flex-container no-flex">
                             <a
                                 href="#"
-                                :title="getMessage('cmduploadform.labeltext.remove_all_files_from_list')"
+                                :title="getMessage('upload_form.labeltext.remove_all_files_from_list')"
                                 @click.prevent="cancelUpload"
                             >
                                 <!-- begin CmdIcon -->
@@ -58,10 +58,10 @@
                             <span>
                               {{ listOfFiles.length }}
                               <template v-if="!allowMultipleFileUploads">
-                                {{ getMessage("cmduploadform.labeltext.file_uploading") }}
+                                {{ getMessage("upload_form.labeltext.file_uploading") }}
                               </template>
                               <template v-else>
-                                {{ getMessage("cmduploadform.labeltext.files_uploading") }}
+                                {{ getMessage("upload_form.labeltext.files_uploading") }}
                               </template>
                             </span>
                             <small
@@ -89,7 +89,7 @@
                     <!-- begin list of selected files -->
                     <!-- begin CmdHeadline -->
                     <CmdHeadline v-bind="cmdHeadlineListOfSelectedFiles" headlineLevel="4">
-                        {{ getMessage("cmduploadform.headline.list_of_selected_files") }}
+                        {{ getMessage("upload_form.headline.list_of_selected_files") }}
                     </CmdHeadline>
                     <!-- end CmdHeadline -->
 
@@ -101,7 +101,7 @@
                         >
                             <a
                                 href="#"
-                                :title="getMessage('cmduploadform.labeltext.remove_file_from_list', uploadFile.file.name)"
+                                :title="getMessage('upload_form.labeltext.remove_file_from_list', uploadFile.file.name)"
                                 @click.prevent="removeFile(index)"
                             >
                                 <!-- begin CmdIcon -->
@@ -136,8 +136,8 @@
                         v-if="failedUpload"
                         href="#"
                         @click.prevent="cancel"
-                        :title="getMessage('cmduploadform.all_files_will_be_removed')">
-                        {{ getMessage("cmduploadform.reset_upload") }}
+                        :title="getMessage('upload_form.all_files_will_be_removed')">
+                        {{ getMessage("upload_form.reset_upload") }}
                     </a>
                     <hr/>
                 </div>
@@ -149,40 +149,40 @@
                 <!-- begin CmdHeadline -->
                 <CmdHeadline v-if="allowMultipleFileUploads && listOfFiles.length"
                              v-bind="cmdHeadlineSelectAdditionalFiles" headlineLevel="4">
-                    {{ getMessage("cmduploadform.headline.select_additional_files") }}
+                    {{ getMessage("upload_form.headline.select_additional_files") }}
                 </CmdHeadline>
                 <!-- end CmdHeadline -->
 
                 <!-- begin CmdHeadline -->
                 <CmdHeadline v-if="!allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectNewFile"
                              headlineLevel="4">
-                    {{ getMessage("cmduploadform.headline.select_new_file") }}
+                    {{ getMessage("upload_form.headline.select_new_file") }}
                 </CmdHeadline>
                 <!-- end CmdHeadline -->
 
                 <dl class="small">
                     <template v-if="maxTotalUploadSize > 0">
                         <dt :class="{ error: totalSize > maxTotalUploadSize }">
-                            {{ getMessage("cmduploadform.max_total_upload_size") }}
+                            {{ getMessage("upload_form.max_total_upload_size") }}
                         </dt>
                         <dd :class="['text-align-right', { error: totalSize > maxTotalUploadSize }]">
                             {{ formatSize(maxTotalUploadSize) }}
                         </dd>
                     </template>
                     <dt :class="{ error: errors.fileSize }">
-                        {{ getMessage("cmduploadform.max_file_upload_size") }}
+                        {{ getMessage("upload_form.max_file_upload_size") }}
                     </dt>
                     <dd :class="['text-align-right', { error: errors.fileSize }]">
                         {{ formatSize(maxFileUploadSize) }}
                     </dd>
                     <dt :class="{ error: errors.fileType }">
-                        {{ getMessage("cmduploadform.allowed_file_types") }}
+                        {{ getMessage("upload_form.allowed_file_types") }}
                     </dt>
                     <dd>
                         <a
                             href="#"
                             @click.prevent="showListOfFileExtensions = !showListOfFileExtensions"
-                            :title="getMessage('cmduploadform.tooltip.toggle_list_of_allowed_file_types')">
+                            :title="getMessage('upload_form.tooltip.toggle_list_of_allowed_file_types')">
                             <!-- begin CmdIcon -->
                             <CmdIcon
                                 :iconClass="showListOfFileExtensions ? iconInvisible.iconClass : iconVisible.iconClass"
@@ -218,21 +218,21 @@
                     <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
                     <!-- end CmdIcon -->
                     <span v-if="allowMultipleFileUploads">{{
-                            getMessage("cmduploadform.labeltext.select_files")
+                            getMessage("upload_form.labeltext.select_files")
                         }}</span>
-                    <span v-else>{{ getMessage("cmduploadform.labeltext.select_file") }}</span>
+                    <span v-else>{{ getMessage("upload_form.labeltext.select_file") }}</span>
                 </button>
                 <p v-if="enableDragAndDrop" :class="['text-drag-and-drop', { disabled: uploadInitiated }]">
-                    <span>{{ getMessage("cmduploadform.or") }}</span>
+                    <span>{{ getMessage("upload_form.or") }}</span>
                     <strong>
-                        {{ getMessage("cmduploadform.drag_and_drop") }}
+                        {{ getMessage("upload_form.drag_and_drop") }}
                         <template v-if="allowMultipleFileUploads && listOfFiles.length">
-                            {{ getMessage("cmduploadform.additional") }}
+                            {{ getMessage("upload_form.additional") }}
                         </template>
                         <template v-if="!allowMultipleFileUploads && listOfFiles.length">
-                            {{ getMessage("cmduploadform.new") }}
+                            {{ getMessage("upload_form.new") }}
                         </template>
-                        {{ getMessage("cmduploadform.files_to_this_area") }}
+                        {{ getMessage("upload_form.files_to_this_area") }}
                     </strong>
                 </p>
             </div>
@@ -243,11 +243,11 @@
         <CmdFormElement
             v-if="enableComment"
             element="textarea"
-            :labelText="getMessage('cmduploadform.labeltext.comment')"
+            :labelText="getMessage('upload_form.labeltext.comment')"
             v-model="comment"
             :required="commentRequired"
             :validationMessage="commentStatusMessage"
-            :placeholder="getMessage('cmduploadform.placeholder.comment')"
+            :placeholder="getMessage('upload_form.placeholder.comment')"
             :status="commentStatusMessage ? 'error' : ''"
         />
         <!-- end CmdFormElement -->
@@ -274,15 +274,15 @@
                 <CmdIcon v-bind="iconUpload" />
                 <!-- end CmdIcon -->
                 <span v-if="listOfFiles.length === 1 || !allowMultipleFileUploads">
-                    {{ getMessage("cmduploadform.buttontext.upload_file") }}
+                    {{ getMessage("upload_form.buttontext.upload_file") }}
                 </span>
-                <span v-else>{{ getMessage("cmduploadform.buttontext.upload_files") }}</span>
+                <span v-else>{{ getMessage("upload_form.buttontext.upload_files") }}</span>
             </button>
             <button :class="['button', { disabled: listOfFiles.length === 0 }]" @click="cancel">
                 <!-- begin CmdIcon -->
                 <CmdIcon v-bind="iconCancel" />
                 <!-- end CmdIcon -->
-                <span>{{ getMessage("cmduploadform.buttontext.cancel") }}</span>
+                <span>{{ getMessage("upload_form.buttontext.cancel") }}</span>
             </button>
         </div>
     </fieldset>
@@ -307,26 +307,26 @@
         <slot>
             <template v-if="!enableDragAndDrop">
                 <template v-if="fileTypeImage">
-                    <span>{{ getMessage("cmduploadform.select_image") }}</span>
+                    <span>{{ getMessage("upload_form.select_image") }}</span>
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="iconImage.iconClass" :type="iconImage.iconType"/>
                     <!-- end CmdIcon -->
                 </template>
                 <template v-else>
-                    <span>{{ getMessage("cmduploadform.select_file") }}</span>
+                    <span>{{ getMessage("upload_form.select_file") }}</span>
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
                     <!-- end CmdIcon -->
                 </template>
             </template>
             <template v-else>
-                <span>{{ getMessage("cmduploadform.drag_and_drop_file_here") }}</span>
+                <span>{{ getMessage("upload_form.drag_and_drop_file_here") }}</span>
                 <!-- begin CmdIcon -->
                 <CmdIcon :iconClass="iconDragAndDrop.iconClass" :type="iconDragAndDrop.iconType"/>
                 <!-- end CmdIcon -->
             </template>
-            <small>{{ getMessage("cmduploadform.max_upload_size") }} {{ formatSize(maxFileUploadSize) }}</small>
-            <small>{{ getMessage("cmduploadform.allowed_file_types") }} {{ allowedFileExtensions }}</small>
+            <small>{{ getMessage("upload_form.max_upload_size") }} {{ formatSize(maxFileUploadSize) }}</small>
+            <small>{{ getMessage("upload_form.allowed_file_types") }} {{ allowedFileExtensions }}</small>
         </slot>
         <!-- end slot-content -->
     </a>
@@ -336,7 +336,7 @@
     <CmdFormElement
         element="input"
         type="file"
-        :labelText="getMessage('cmduploadform.labeltext.select_files')"
+        :labelText="getMessage('upload_form.labeltext.select_files')"
         :disabled="uploadInitiated"
         :multiple="allowMultipleFileUploads"
         @change="filesSelected"
@@ -664,7 +664,7 @@ export default {
     },
     computed: {
         headlineTextNoFilesToUpload() {
-            return this.allowMultipleFileUploads ? this.getMessage("cmduploadform.no_files_to_upload") : this.this.getMessage("cmduploadform.no_file_to_upload")
+            return this.allowMultipleFileUploads ? this.getMessage("upload_form.no_files_to_upload") : this.this.getMessage("upload_form.no_file_to_upload")
         },
         fileTypeImage() {
             return this.allowedFileExtensions.some(extension => extension.includes('jpg'));
@@ -691,7 +691,7 @@ export default {
         allSystemMessages() {
             if (this.maxTotalUploadSize > 0 && this.totalSize > this.maxTotalUploadSize) {
                 return [
-                    this.getMessage("cmduploadform.system_message_total_size_of_files_too_large"),
+                    this.getMessage("upload_form.system_message_total_size_of_files_too_large"),
                     ...this.systemMessages
                 ]
             }
@@ -830,7 +830,7 @@ export default {
                     this.errors.fileSize = true
                     this.systemMessages.push(
                         this.getMessage(
-                            "cmduploadform.system_message.file_size_too_large",
+                            "upload_form.system_message.file_size_too_large",
                             files[i].name,
                             files[i].size
                         )
@@ -844,7 +844,7 @@ export default {
                     this.errors.fileType = true
                     this.systemMessages.push(
                         this.getMessage(
-                            "cmduploadform.system_message.not_allowed_file_type",
+                            "upload_form.system_message.not_allowed_file_type",
                             files[i].name,
                             getFileExtension(files[i].name)
                         )
@@ -861,7 +861,7 @@ export default {
                 ) {
                     this.systemMessages.push(
                         this.getMessage(
-                            "cmduploadform.system_message.duplicate_file",
+                            "upload_form.system_message.duplicate_file",
                             files[i].name,
                             getFileExtension(files[i].name)
                         )
@@ -875,7 +875,7 @@ export default {
                 } else {
                     if (files.length > 1) {
                         this.systemMessages.push(
-                            this.getMessage("cmduploadform.system_message.only_one_file_allowed")
+                            this.getMessage("upload_form.system_message.only_one_file_allowed")
                         )
                     }
                     // assign uploadFile-object (which contains current (and valid) file to listOfFiles-array
@@ -936,7 +936,7 @@ export default {
                 this.commentStatusMessage
             ) {
                 this.defaultSystemMessageStatus = "error"
-                this.systemMessages.push(this.getMessage("cmduploadform.system_message.fill_required"))
+                this.systemMessages.push(this.getMessage("upload_form.system_message.fill_required"))
             } else {
                 this.uploadInitiated = true
 
@@ -977,13 +977,13 @@ export default {
                             this.defaultSystemMessageStatus = "error"
                             this.systemMessages.push(
                                 this.getMessage(
-                                    "cmduploadform.system_message.some_files_are_not_uploaded_successfully"
+                                    "upload_form.system_message.some_files_are_not_uploaded_successfully"
                                 )
                             )
                         } else {
                             this.defaultSystemMessageStatus = "success"
                             this.systemMessages.push(
-                                this.getMessage("cmduploadform.system_message.all_files_are_uploaded_successfully")
+                                this.getMessage("upload_form.system_message.all_files_are_uploaded_successfully")
                             )
                         }
 
@@ -1049,10 +1049,10 @@ export default {
         showMessage(result) {
             if (result === true) {
                 this.defaultSystemMessageStatus = "success"
-                this.systemMessages.push(this.getMessage("cmduploadform.system_message.upload_success"))
+                this.systemMessages.push(this.getMessage("upload_form.system_message.upload_success"))
             } else if (result === false) {
                 this.defaultSystemMessageStatus = "error"
-                this.systemMessages.push(this.getMessage("cmduploadform.system_message.upload_failed"))
+                this.systemMessages.push(this.getMessage("upload_form.system_message.upload_failed"))
             }
         },
         resetFields() {

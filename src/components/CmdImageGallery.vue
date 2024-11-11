@@ -14,7 +14,7 @@
                :key="index"
                href="#"
                @click.prevent="showFancyBox(index)"
-               :title="getMessage('cmdimagegallery.tooltip.open_large_image')">
+               :title="getMessage('image_gallery.tooltip.open_large_image')">
                 <CmdImage :image="image.image" :figcaption="figcaption(image)"/>
             </a>
             <!-- end images linked to fancybox -->

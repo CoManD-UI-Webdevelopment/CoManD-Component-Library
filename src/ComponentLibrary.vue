@@ -673,18 +673,6 @@
                             checkboxes with values: {{ checkboxValues }}
                         </p>
 
-                        <!-- begin cmd-toggle-darkmode -->
-                        <h3 class="headline-demopage" id="section-toggle-darkmode">
-                            <span>Toggle Dark-Mode</span>
-                            <a href="#" class="icon-cog" title="Open Component Settings"
-                               @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
-                        </h3>
-                        <CmdToggleDarkMode
-                            ref="CmdToggleDarkMode"
-                            v-bind="cmdToggleDarkModeSettingsData"
-                        />
-                        <!-- end cmd-toggle-darkmode -->
-
                         <h2>Checkboxes and Radiobuttons</h2>
                         <h3>Checkboxes [native]</h3>
                         <div class="label inline">
@@ -983,18 +971,13 @@
                 <CmdBasicForm
                     ref="CmdBasicForm"
                     @submit="sendBasicForm"
-                    cmdHeadline=""
                     :userMessage="{
                         'required': false,
                         'element': 'textarea',
                         'maxLength': 500
                     }"
                     :submitButton="{
-                        'iconClass': 'icon-message-send',
-                        'text': 'Anfrage senden',
-                        'type': 'submit',
-                        'position': 'insideFieldset',
-                        'primary': true
+                        'text': 'Send request'
                     }"
                 />
                 <dl>
@@ -1981,6 +1964,20 @@
             </CmdWidthLimitationWrapper>
             <!-- end thumbnail-scroller ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
+            <!-- begin toggle-darkmode ------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-toggle-dark-mode">
+                    <span>Toggle Dark-Mode</span>
+                    <a href="#" class="icon-cog" title="Open Component Settings"
+                       @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
+                </h2>
+                <CmdToggleDarkMode
+                    ref="CmdToggleDarkMode"
+                    v-bind="cmdToggleDarkModeSettingsData"
+                />
+            </CmdWidthLimitationWrapper>
+            <!-- end toggle-darkmode ------------------------------------------------------------------------------------------------------------------------------------------------------->
+
             <!-- begin tooltip ------------------------------------------------------------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-tooltip">
@@ -2089,14 +2086,9 @@
                 buttonLabelAcceptCurrentSettings="Accept current settings"
                 @closeCookieDisclaimer="closeCookieDisclaimer"
                 v-model="acceptedCookies"
-                :cmdHeadlineCookieDisclaimer="{ show: false }">
-                <template #privacy-text>
-                    <p>
-                        <strong>
-                            By browsing this web site you accept the usage and saving of anonymous data!
-                        </strong>
-                    </p>
-                </template>
+                :cmdHeadlineCookieDisclaimer="{ show: false }"
+                privacyText="By browsing this website you accept the usage and saving of anonymous data!"
+            >
             </CmdCookieDisclaimer>
             <!-- end cookie-disclaimer ------------------------------------------------------------------------------------------------------------------------------------------------------->
         </CmdFancyBox>

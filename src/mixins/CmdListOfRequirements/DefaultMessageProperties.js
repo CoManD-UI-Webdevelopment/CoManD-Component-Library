@@ -2,8 +2,8 @@ export default {
   data() {
     return {
       defaultMessageProperties: {
-        "cmdlistofrequirements.headline.requirement_for_input": "Requirement for input",
-        "cmdlistofrequirements.headline.requirements_for_input": "Requirements for input",
+        "list_of_requirements.headline.requirement_for_input": "Requirement for input",
+        "list_of_requirements.headline.requirements_for_input": "Requirements for input",
       }
     }
   }

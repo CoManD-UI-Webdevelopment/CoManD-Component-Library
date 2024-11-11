@@ -19,7 +19,7 @@
             <div class="flex-container">
                 <a :href="getHref(page)"
                    :class="{'disabled': currentPage === index + 1, 'button': linkType === 'button', 'hidden': !showPageNumbers}"
-                   :title="currentPage !== index + 1 ? getMessage('cmdpager.tooltip.go_to_page', index + 1) : getMessage('cmdpager.tooltip.not_possible')"
+                   :title="currentPage !== index + 1 ? getMessage('pagination.tooltip.go_to_page', index + 1) : getMessage('pagination.tooltip.not_possible')"
                    v-for="(page, index) in pages"
                    :key="index"
                    @click.stop.prevent="showPage(page)" aria-live="polite">

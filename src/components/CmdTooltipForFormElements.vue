@@ -9,8 +9,8 @@
 
         <!-- begin CmdListOfRequirements -->
         <CmdListOfRequirements
-            v-if="cmdListOfRequirements.showRequirements"
-            v-bind="cmdListOfRequirements"
+            v-if="cmdListOfRequirementsProperties.showRequirements"
+            v-bind="cmdListOfRequirementsProperties"
         />
         <!-- end CmdListOfRequirements -->
     </CmdTooltip>
@@ -51,17 +51,21 @@ export default {
          */
         cmdListOfRequirements: {
             type: Object,
-            default() {
-                return {
-                    showRequirements: true,
-                    validationTooltip: "",
-                    inputRequirements: [],
-                    inputAttributes: {},
-                    showHeadline: true,
-                    inputModelValue: "",
-                    helplink: {},
-                    labelText: ""
-                }
+            required: false
+        }
+    },
+    computed: {
+        cmdListOfRequirementsProperties() {
+            return {
+                showRequirements: true,
+                validationTooltip: "",
+                inputRequirements: [],
+                inputAttributes: {},
+                showHeadline: true,
+                inputModelValue: "",
+                helplink: {},
+                labelText: "",
+                ...this.cmdListOfRequirements
             }
         }
     },
@@ -87,5 +91,6 @@ export default {
         }
     }
 }
+
 /* end cmd-tooltip-for-form-elements ---------------------------------------------------------------------------------------- */
 </style>

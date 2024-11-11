@@ -10,7 +10,7 @@
             novalidate="novalidate"
             v-bind="cmdForm"
             :legend="legend"
-            :submitButton="submitButton"
+            :submitButton="submitButtonProperties"
             :formAction="formAction"
         >
             <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
@@ -23,6 +23,7 @@
                     inputValue="m"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -36,6 +37,7 @@
                     inputValue="f"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -58,6 +60,7 @@
                     :placeholder="getMessage('basic_form.placeholder.last_name')"
                     v-model="formData.lastName.value"
                     :status="formData.lastName.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -74,6 +77,7 @@
                     :name="configuration.firstName?.name || 'first-name'"
                     v-model="formData.firstName.value"
                     :status="formData.firstName.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -91,6 +95,7 @@
                     :name="configuration.email?.name || 'email'"
                     v-model="formData.email.value"
                     :status="formData.email.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -107,6 +112,7 @@
                     :required="configuration.phone?.required"
                     :name="configuration.phone?.name || 'phone'"
                     :status="formData.phone.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -123,6 +129,7 @@
                     :name="configuration.country?.name || 'country'"
                     v-model="formData.country.value"
                     :status="formData.country.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                     @update:modelValue="onCountrySelect"
                 />
@@ -139,6 +146,7 @@
                     :name="configuration.streetNo?.name || 'street-no'"
                     v-model="formData.streetNo.value"
                     :status="formData.streetNo.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -154,6 +162,7 @@
                     :name="configuration.pobox?.name || 'pobox'"
                     v-model="formData.pobox.value"
                     :status="formData.pobox.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -171,6 +180,7 @@
                         :name="configuration.zip?.name || 'zip'"
                         v-model="formData.zip.value"
                         :status="formData.zip.error ? 'error' : ''"
+                        :i18n="i18n"
                         @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
@@ -186,6 +196,7 @@
                         :name="configuration.city?.name || 'city'"
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
+                        :i18n="i18n"
                         @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
@@ -202,6 +213,7 @@
                     :name="configuration.additionalAddressInfo?.name || 'additional-address-info'"
                     v-model="formData.additionalAddressInfo.value"
                     :status="formData.additionalAddressInfo.error ? 'error' : ''"
+                    :i18n="i18n"
                     @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
@@ -219,6 +231,7 @@
                 :maxlength="configuration.userMessage?.maxLength"
                 v-model="formData.userMessage.value"
                 :status="formData.userMessage.error ? 'error' : ''"
+                :i18n="i18n"
                 @validate="onValidate"
             />
             <!-- end cmd-form-element -->
@@ -237,6 +250,7 @@
                 :replaceInputType="configuration.acceptPrivacy?.replaceInputType"
                 v-model="formData.acceptPrivacy.value"
                 :status="formData.acceptPrivacy.error ? 'error' : ''"
+                :i18n="i18n"
                 @validate="onValidate">
                 <template v-slot:labeltext>
                     <span ref="dataPrivacy" v-html="getMessage('basic_form.labeltext.data_privacy')"></span>
@@ -252,7 +266,6 @@
 // import mixins
 import I18n from "../mixins/I18n.js"
 import DefaultMessageProperties from "../mixins/CmdBasicForm/DefaultMessageProperties.js"
-import FieldValidation from "../mixins/FieldValidation.js"
 import {ContactFormValidator} from "../utils/ContactFormValidation.js"
 
 import {openFancyBox} from "./CmdFancyBox.vue"
@@ -261,8 +274,7 @@ export default {
     emits: ["submit"],
     mixins: [
         I18n,
-        DefaultMessageProperties,
-        FieldValidation
+        DefaultMessageProperties
     ],
     inject: {
         editModeContext: {
@@ -413,27 +425,14 @@ export default {
          */
         submitButton: {
             type: Object,
-            default() {
-                return {
-                    iconClass: "icon-message-send",
-                    text: "Send mail",
-                    type: "submit",
-                    position: "belowFieldset",
-                    primary: true
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdHeadline-component
          */
         cmdHeadline: {
             type: Object,
-            default() {
-                return {
-                    headlineText: "Basic Form",
-                    headlineLevel: 3
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdForm-component
@@ -448,6 +447,18 @@ export default {
             event.preventDefault()
             openFancyBox({url: event.target.getAttribute("href")})
         })
+    },
+    computed: {
+        submitButtonProperties() {
+            return {
+                iconClass: "icon-message-send",
+                text: "Send mail",
+                type: "submit",
+                position: "belowFieldset",
+                primary: true,
+                ...this.submitButton
+            }
+        }
     },
     methods: {
         onSubmit(event) {

@@ -161,19 +161,15 @@ export default {
     },
     computed: {
         listOfRequirements() {
-            if (this.cmdListOfRequirements == null) {
-                return {
-                    showRequirements: true,
-                    showHeadline: true,
-                    validationTooltip: this.validationTooltip,
-                    inputRequirements: this.inputRequirements,
-                    inputAttributes: this.$attrs,
-                    inputModelValue: this.modelValue,
-                    helplink: {},
-                    labelText: this.labelText
-                }
+            return {
+                validationTooltip: this.validationTooltip,
+                inputRequirements: this.inputRequirements,
+                inputAttributes: this.$attrs,
+                inputModelValue: this.modelValue,
+                labelText: this.labelText,
+                i18n: this.i18n,
+                ...this.cmdListOfRequirements
             }
-            return this.cmdListOfRequirements
         },
         getValidationMessage() {
             // check if all requirements are valid
@@ -186,13 +182,13 @@ export default {
                     if(this.validationMessage) {
                         return this.validationMessage
                     }
-                    return this.getMessage("cmdfieldvalidation.information_not_filled_correctly")
+                    return this.getMessage("field_validation.information_not_filled_correctly")
                 }
                 if (this.validationStatus === "warning" && this.capsLockActivated) {
-                    return this.getMessage("cmdfieldvalidation.caps_lock_is_activated")
+                    return this.getMessage("field_validation.caps_lock_is_activated")
                 }
                 if (this.validationStatus === "success") {
-                    return this.getMessage("cmdfieldvalidation.information_filled_correctly")
+                    return this.getMessage("field_validation.information_filled_correctly")
                 }
             }
 
@@ -231,7 +227,7 @@ export default {
             // check if field has a minimum length
             if(this.$attrs.minlength) {
                 standardRequirements.push({
-                    message: this.getMessage("cmdfieldvalidation.input_has_minimum_length") + " (" + this.modelValue.length + "/" + this.$attrs.minlength + ")",
+                    message: this.getMessage("field_validation.input_has_minimum_length") + " (" + this.modelValue.length + "/" + this.$attrs.minlength + ")",
                     valid(value, attributes) {
                         return value.length >= attributes.minlength
                     }
@@ -260,7 +256,7 @@ export default {
             return []
         },
         getRequirementMessage() {
-            return this.getMessage("cmdfieldvalidation.required_field_is_filled")
+            return this.getMessage("field_validation.required_field_is_filled")
         }
     },
     watch: {

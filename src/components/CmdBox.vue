@@ -93,7 +93,7 @@
                         </div>
                         <a v-if="cutoffTextLines > 0" href="#" @click.prevent="toggleCutOffText">
                             {{
-                                showCutOffText ? getMessage("cmdbox.contentbox.collapse_text") : getMessage("cmdbox.contentbox.expand_text")
+                                showCutOffText ? getMessage("box.contentbox.collapse_text") : getMessage("box.contentbox.expand_text")
                             }}
                         </a>
                     </transition-group>
@@ -163,7 +163,7 @@
 
             <!-- begin ribbons -->
             <div v-if="product.new" class="ribbon-new">
-                <span>{{ getMessage("cmdbox.productbox.new") }}</span>
+                <span>{{ getMessage("box.productbox.new") }}</span>
             </div>
             <div v-if="product.discount" class="ribbon-discount">
                 <span>{{ product.discount }}</span>
@@ -172,7 +172,7 @@
         </div>
         <!-- begin box-body -->
         <div class="box-body">
-            <p v-if="product.articleNumber">{{ getMessage("cmdbox.productbox.article_no") }} {{
+            <p v-if="product.articleNumber">{{ getMessage("box.productbox.article_no") }} {{
                     product.articleNumber
                 }}</p>
             <p v-if="product.price" class="price">

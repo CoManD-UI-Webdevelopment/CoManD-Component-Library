@@ -37,6 +37,7 @@
   "Tabs",
   "TextImageBlock",
   "ThumbnailScroller",
+  "ToggleDarkMode",
   "Tooltip",
   "UploadForm",
   "WidthLimitationWrapper"

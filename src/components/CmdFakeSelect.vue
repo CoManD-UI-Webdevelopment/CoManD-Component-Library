@@ -359,11 +359,11 @@ export default {
 
             // set default-tooltip if customTooltip is not set
             if (this.validationStatus === 'error') {
-                return this.getMessage("cmdformelement.validationTooltip.an_error_occurred")
+                return this.getMessage("cmdformelement.validation_tooltip.an_error_occurred")
             } else if (this.validationStatus === 'success') {
-                return this.getMessage("cmdformelement.validationTooltip.information_is_filled_correctly")
+                return this.getMessage("cmdformelement.validation_tooltip.information_is_filled_correctly")
             }
-            return this.getMessage("cmdformelement.validationTooltip.open_field_requirements")
+            return this.getMessage("cmdformelement.validation_tooltip.open_field_requirements")
         },
         // get the displayed option name
         optionName() {
@@ -382,7 +382,7 @@ export default {
                 if (this.modelValue.length === 1) {
                     return this.selectData.find(option => String(option.value) === String(this.modelValue[0]))?.text
                 } else if (this.modelValue.length > 1) {
-                    return this.getMessage("cmdfakeselect.option.options_selected", this.modelValue.length)
+                    return this.getMessage("fake_select.option.options_selected", this.modelValue.length)
                 }
             } else if (this.selectData?.length) {
                 // return text of first option nothing is selected (and type !== checkboxOptions && type !== content)
@@ -421,10 +421,10 @@ export default {
         selectAllOptionsText() {
             if (Array.isArray(this.modelValue) && this.modelValue.length === this.selectData.length) {
                 this.allOptionsSelected = true
-                return this.getMessage("cmdfakeselect.linktext.deselect_all_options")
+                return this.getMessage("fake_select.linktext.deselect_all_options")
             }
             this.allOptionsSelected = false
-            return this.getMessage("cmdfakeselect.linktext.select_all_options")
+            return this.getMessage("fake_select.linktext.select_all_options")
         }
     },
     methods: {
@@ -497,7 +497,7 @@ export default {
         },
         // overwrite requirement-message form fieldValidation.js
         getRequirementMessage() {
-            return this.getMessage("cmdfakeselect.headline.an_option_is_selected")
+            return this.getMessage("fake_select.headline.an_option_is_selected")
         }
     },
     watch: {

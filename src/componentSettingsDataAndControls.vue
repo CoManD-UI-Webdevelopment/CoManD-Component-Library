@@ -544,7 +544,23 @@ data() {
             }
         },
         cmdPageFooterSettingsData: {
-            useSmallButtons: false
+            useSmallButtons: false,
+            cmdFancyBox: {
+                showPrintButtons: true,
+                fancyBoxOptions: {
+                    closeIcon: {
+                        tooltip: "Schließen"
+                    },
+                    printButtons: {
+                        color: {
+                           tooltip: "In Farbe drucken"
+                        },
+                        grayscale: {
+                            tooltip: "In Graustufen drucken"
+                        }
+                    }
+                }
+            }
         },
         cmdPaginationSettingsData: {
             pages: 3,

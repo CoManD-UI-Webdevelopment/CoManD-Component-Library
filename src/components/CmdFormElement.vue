@@ -725,13 +725,13 @@ export default {
 
             // set default-tooltip if customTooltip is not set
             if (this.validationStatus === 'error') {
-                return this.getMessage("cmdformelement.validation_tooltip.an_error_occurred")
+                return this.getMessage("form_element.validation_tooltip.an_error_occurred")
             } else if (this.validationStatus === 'success') {
-                return this.getMessage("cmdformelement.validation_tooltip.information_is_filled_correctly")
+                return this.getMessage("form_element.validation_tooltip.information_is_filled_correctly")
             } else if (this.capsLockActivated) {
-                return this.getMessage("cmdformelement.validation_tooltip.caps_lock_is_activated")
+                return this.getMessage("form_element.validation_tooltip.caps_lock_is_activated")
             }
-            return this.getMessage("cmdformelement.validation_tooltip.open_field_requirements")
+            return this.getMessage("form_element.validation_tooltip.open_field_requirements")
         },
         autocomplete() {
             if (this.$attrs.type !== 'file') {
@@ -759,7 +759,7 @@ export default {
             // check if field is type "email"
             if (this.$attrs.type === "email") {
                 requirements.push({
-                    message: this.getMessage("cmdformelement.validationTooltip.is_valid_email"),
+                    message: this.getMessage("form_element.validation_tooltip.is_valid_email"),
                     valid: () => this.$refs.input.checkValidity()
                 })
             }

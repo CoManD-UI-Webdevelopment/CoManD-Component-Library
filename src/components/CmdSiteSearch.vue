@@ -74,8 +74,8 @@
                     :type="showFilters ? cmdIcon?.showFilters?.iconType : cmdIcon?.hideFilters?.iconType"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="showFilters">{{ getMessage("cmdsitesearch.hide_filter_options") }}</span>
-                <span v-else>{{ getMessage("cmdsitesearch.show_filter_options") }}</span>
+                <span v-if="showFilters">{{ getMessage("site_search.hide_filter_options") }}</span>
+                <span v-else>{{ getMessage("site_search.show_filter_options") }}</span>
             </a>
             <transition name="fade">
                 <div v-if="showFilters && cmdFakeSelect?.selectData.length" class="flex-container no-flex" role="listbox" aria-expanded="true">

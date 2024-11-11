@@ -142,9 +142,9 @@ export default {
     computed: {
         headlineRequirements() {
             if (this.inputRequirements.length > 1) {
-                return this.getMessage("cmdlistofrequirements.headline.requirements_for_input")
+                return this.getMessage("list_of_requirements.headline.requirements_for_input")
             }
-            return this.getMessage("cmdlistofrequirements.headline.requirement_for_input")
+            return this.getMessage("list_of_requirements.headline.requirement_for_input")
         }
     }
 }

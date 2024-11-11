@@ -104,7 +104,7 @@ export default {
 
             a {
                 :is(span, [class*="icon-"]) + [class*="icon-"]:last-child {
-                    color: var(--default-text-color) !important;
+                    color: var(--color-scheme-text-color) !important;
                 }
             }
 
@@ -152,7 +152,7 @@ export default {
                         border: var(--default-border);
                         border-radius: var(--full-circle);
                         background: var(--pure-white);
-                        color: var(--default-text-color);
+                        color: var(--color-scheme-text-color);
                         margin: 0;
                         position: absolute;
                         right: 0;
@@ -177,7 +177,7 @@ export default {
                 }
 
                 .number {
-                    color: var(--primary-color);
+                    color: var(--hyperlink-color);
                 }
             }
 
@@ -221,7 +221,7 @@ export default {
 
                         & + [class*="icon-"] {
                             &:last-child {
-                                color: var(--default-text-color);
+                                color: var(--color-scheme-text-color);
                             }
                         }
                     }
@@ -231,7 +231,7 @@ export default {
             .number {
                 background: var(--pure-white);
                 border-color: var(--pure-white);
-                color: var(--primary-color) !important;
+                color: var(--hyperlink-color) !important;
             }
 
             & ~ li {
@@ -257,12 +257,12 @@ export default {
                     &:hover, &:active, &:focus {
                         span, [class*="icon-"] {
                             &:not(:last-child) {
-                                color: var(--primary-color);
+                                color: var(--hyperlink-color);
                             }
                         }
 
                         .number {
-                            border-color: var(--primary-color);
+                            border-color: var(--hyperlink-color);
                         }
                     }
                 }

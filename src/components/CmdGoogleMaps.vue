@@ -3,9 +3,9 @@
         <!-- begin CmdSystemMessage -->
         <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning">
             <p>
-                {{getMessage("cmdgooglemaps.system_message.accept_terms")}}
+                {{getMessage("google_maps.system_message.accept_terms")}}
             </p>
-            <a href="#" @click.prevent="acceptCookies">{{getMessage("cmdgooglemaps.button_text.accept_required_cookies")}}</a>
+            <a href="#" @click.prevent="acceptCookies">{{getMessage("google_maps.button_text.accept_required_cookies")}}</a>
         </CmdSystemMessage>
         <!-- end CmdSystemMessage -->
 

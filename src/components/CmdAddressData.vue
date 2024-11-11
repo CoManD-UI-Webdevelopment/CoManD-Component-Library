@@ -171,12 +171,10 @@ import EditMode from "../mixins/EditMode.vue"
 import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js";
 
 // import mixins
-import I18n from "../mixins/I18n"
-import DefaultMessageProperties from "../mixins/CmdAddressData/DefaultMessageProperties"
 
 export default {
     name: "CmdAddressData",
-    mixins: [EditMode, I18n, DefaultMessageProperties],
+    mixins: [EditMode],
     props: {
         /**
          * activate if you want to use slot instead for given structure

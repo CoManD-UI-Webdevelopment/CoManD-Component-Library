@@ -7,7 +7,7 @@
             </template>
             <!-- end slot -->
 
-            <template v-else>
+            <div v-else>
                 <!-- begin CmdHeadline -->
                 <CmdHeadline
                     v-if="cmdHeadlineCookieDisclaimer?.show && cmdHeadlineCookieDisclaimer?.headlineText && cmdHeadlineCookieDisclaimer?.headlineLevel"
@@ -28,13 +28,9 @@
                         />
                         <!-- end CmdHeadline -->
 
-                        <!-- begin CmdBox -->
-                        <CmdBox v-for="(cookie, index) in cookieOptions.required.cookies || []"
-                                :useSlots="['header', 'body']"
-                                :collapsible="cmdBoxRequiredCookies?.collapsible"
-                                :key="index"
-                        >
-                            <template v-slot:header>
+                        <div v-for="(cookie, index) in cookieOptions.required.cookies || []"
+                             :key="index" class="collapsible-box">
+                            <header>
                                 <!-- begin CmdFormElement -->
                                 <CmdFormElement
                                     element="input"
@@ -45,11 +41,17 @@
                                     :disabled="cookie.disabled"
                                     :id="cookie.id"
                                     :toggleSwitch="true"
-                                    :title="getMessage('cmdcookiedisclaimer.title.cookie_cannot_be_disabled')"
+                                    :title="getMessage('cookie_disclaimer.title.cookie_cannot_be_disabled')"
                                 />
                                 <!-- end CmdFormElement -->
-                            </template>
-                            <template v-slot:body>
+
+                                <!-- begin icon to toggle box-body -->
+                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.title.toggle_box_content')">
+                                    <span :class="boxIsOpen(cookie.id) ? iconClassBoxExpanded : iconClassBoxCollapsed"></span>
+                                </a>
+                                <!-- end icon to toggle box-body -->
+                            </header>
+                            <div v-show="boxIsOpen(cookie.id)" class="collapsible-box-body">
                                 <p v-if="cookie.description">{{ cookie.description }}</p>
                                 <p v-if="cookie.linkDataPrivacy">
                                     {{ cookie.linkDataPrivacy.label }}
@@ -60,8 +62,8 @@
                                     </a>
                                 </p>
                                 <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
-                            </template>
-                        </CmdBox>
+                            </div>
+                        </div>
                         <!-- end CmdBox -->
                     </div>
                     <!-- end required cookies -->
@@ -78,13 +80,9 @@
                     "/>
                         <!-- end CmdHeadline -->
 
-                        <!-- begin CmdBox -->
-                        <CmdBox v-for="(cookie, index) in cookieOptions.optional.cookies || []"
-                                :useSlots="['header', 'body']"
-                                :collapsible="cmdBoxOptionalCookies?.collapsible"
-                                :key="index"
-                        >
-                            <template v-slot:header>
+                        <div v-for="(cookie, index) in cookieOptions.optional.cookies || []"
+                             :key="index" class="collapsible-box">
+                            <header>
                                 <!-- begin CmdFormElement -->
                                 <CmdFormElement
                                     element="input"
@@ -95,11 +93,17 @@
                                     :disabled="cookie.disabled"
                                     :id="cookie.id"
                                     :toggleSwitch="true"
-                                    :title="getMessage('cmdcookiedisclaimer.title.toggle_to_accept_cookie')"
+                                    :title="getMessage('cookie_disclaimer.title.toggle_to_accept_cookie')"
                                 />
                                 <!-- end CmdFormElement -->
-                            </template>
-                            <template v-slot:body>
+
+                                <!-- begin icon to toggle box-body -->
+                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.title.toggle_box_content')">
+                                    <span :class="boxIsOpen(cookie.id) ? iconClassBoxExpanded : iconClassBoxCollapsed"></span>
+                                </a>
+                                <!-- end icon to toggle box-body -->
+                            </header>
+                            <div v-show="boxIsOpen(cookie.id)" class="collapsible-box-body">
                                 <p v-if="cookie.description">{{ cookie.description }}</p>
                                 <p v-if="cookie.linkDataPrivacy">
                                     {{ cookie.linkDataPrivacy.label }}
@@ -110,17 +114,16 @@
                                     </a>
                                 </p>
                                 <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
-                            </template>
-                        </CmdBox>
-                        <!-- end CmdBox -->
+                            </div>
+                        </div>
                     </div>
                     <!-- end optional cookies -->
                 </slot>
                 <!-- end slot for cookie-options -->
 
-                <!-- begin slot for privacy-text -->
-                <slot name="privacy-text"></slot>
-                <!-- end slot for privacy-text -->
+                <!-- begin privacy-text -->
+                <div v-if="privacyText" class="privacy-text" v-html="privacyText"></div>
+                <!-- end privacy-text-->
 
                 <!-- begin button-wrapper for 'accept'-buttons -->
                 <div class="button-wrapper align-center">
@@ -132,7 +135,7 @@
                     </button>
                 </div>
                 <!-- end button-wrapper for 'accept'-buttons -->
-            </template>
+            </div>
         </div>
     </transition>
 </template>
@@ -148,10 +151,25 @@ export default {
     data() {
         return {
             showCookieDisclaimer: true,
-            dataPrivacyContent: ""
+            dataPrivacyContent: "",
+            openBoxes: []
         }
     },
     props: {
+        /**
+         * define icon-class for collapsed box
+         */
+        iconClassBoxCollapsed: {
+            type: String,
+            default: "icon-chevron-one-stripe-down"
+        },
+        /**
+         * define icon-class for expanded box
+         */
+        iconClassBoxExpanded: {
+            type: String,
+            default: "icon-chevron-one-stripe-up"
+        },
         /**
          * activate if you want to use slot instead for given structure
          */
@@ -215,6 +233,13 @@ export default {
             required: false
         },
         /**
+         * optional privacy-text shown at bottom of cookie-disclaimer
+         */
+        privacyText: {
+            type: String,
+            required: false
+        },
+        /**
          * label for button to accepting all cookies
          */
         buttonLabelAcceptAllCookies: {
@@ -247,6 +272,22 @@ export default {
         }
     },
     methods: {
+        boxIsOpen(cookieId) {
+            console.log("boxOpen", this.openBoxes.includes(cookieId))
+            console.log("cookieId", cookieId)
+            return this.openBoxes.includes(cookieId)
+        },
+        toggleBoxBody(cookieId) {
+            const index = this.openBoxes.indexOf(cookieId);
+
+            if (index === -1) {
+                // cookieId does not exist in the array, so add it
+                this.openBoxes.push(cookieId);
+            } else {
+                // cookieId already exists in the array, so remove it
+                this.openBoxes.splice(index, 1);
+            }
+        },
         acceptCurrentCookies() {
             this.$emit("close-cookie-disclaimer", this.acceptedCookies)
         },
@@ -298,14 +339,64 @@ export default {
     bottom: 0;
     top: auto;
 
-    .cmd-box {
-        .box-header {
-            padding: 0;
-            padding-right: var(--default-padding);
+    .collapsible-box {
+        border-radius: var(--default-border-radius);
+
+        header {
+            display: flex;
+            align-items: center;
+            border: var(--primary-border);
             justify-content: unset; /* overwrite setting for collapsible boxes */
+            background: var(--primary-color);
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+
+            &:has(input:checked) {
+                background: var(--pure-white);
+
+                span[class*="icon-"] {
+                    color: var(--hyperlink-color);
+                }
+
+                label {
+                    .label-text span {
+                        color: var(--hyperlink-color); /* required to set label-text in header to white */
+                    }
+                }
+            }
+
+            &:has(input:disabled) {
+                background: var(--disabled-background);
+
+                span[class*="icon-"] {
+                    color: var(--hyperlink-color);
+                }
+
+                label {
+                    .label-text span {
+                        color: var(--disabled-color) !important; /* required to set label-text in header to white */
+                    }
+                }
+            }
+
+            &:has(a:is(:hover, :active, :focus)) {
+                background: var(--primary-color);
+
+                label .label-text span, span[class*="icon-"] {
+                    color: var(--pure-white) !important;
+                }
+            }
+
+            span[class*="icon-"] {
+                color: var(--pure-white);
+            }
 
             label {
                 padding: calc(var(--default-padding) / 2) var(--default-padding);
+
+                .label-text span {
+                    color: var(--pure-white); /* required to set label-text in header to white */
+                }
 
                 &.disabled {
                     .label-text span {
@@ -313,43 +404,43 @@ export default {
                     }
                 }
 
-                & + .toggle-icon {
-                    padding: calc(var(--default-padding) / 2) var(--default-padding);
-                    width: 100%;
-                    justify-content: flex-end;
-                    text-align: right;
+                &:hover, &:active, &:focus {
+                    cursor: pointer;
+                }
+
+                input {
+                    &:hover, &:active, &:focus {
+                        cursor: pointer;
+                    }
                 }
             }
 
-            &:hover, &:active, &:focus {
-                background: var(--hyperlink-color);
-
-                label.disabled .label-text span {
-                    color: var(--disabled-color) !important; /* required to set label-text on hover back to disabled-color */
-                }
+            a {
+                text-decoration: none;
+                flex: 1;
+                display: flex;
+                justify-content: flex-end;
+                padding: var(--default-padding);
             }
         }
 
-        .box-body {
+        .collapsible-box-body {
             padding: var(--default-padding);
+            border: var(--default-border);
+            border-top: 0;
+            background: var(--box-background);
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+
+            p:last-child {
+                margin: 0;
+            }
         }
-    }
-
-    h1 {
-        text-align: center;
-    }
-
-    .button {
-        margin: 0 auto;
     }
 
     > p {
         text-align: center;
         color: var(--color-scheme-text-color); /* must be assigned again, because content is placed by slot */
-    }
-
-    #form-cookies {
-        margin-bottom: var(--default-margin);
     }
 
     p {
@@ -360,6 +451,10 @@ export default {
                 text-decoration: none;
             }
         }
+    }
+
+    .privacy-text, .button-wrapper {
+        margin-top: var(--default-gap);
     }
 }
 

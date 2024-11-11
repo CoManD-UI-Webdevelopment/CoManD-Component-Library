@@ -128,7 +128,7 @@
                 <template #privacy-text>
                     <p>
                         <strong>
-                            By browsing this web site you accept the usage and saving of anonymous data!
+                            By browsing this website you accept the usage and saving of anonymous data!
                         </strong>
                     </p>
                 </template>

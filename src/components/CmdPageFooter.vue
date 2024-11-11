@@ -16,6 +16,7 @@
             <button
                 v-if="buttonPrintViewOptions?.show"
                 :class="['button', {'primary': buttonPrintViewOptions.primary}]"
+                id="print-view-button"
                 :title="buttonPrintViewOptions.text ? buttonPrintViewOptions.icon?.tooltip : null"
                 @click="showFancyBox"
             >
@@ -59,6 +60,13 @@ export default {
             default: true
         },
         /**
+         * define container/selector to show in print-preview
+         */
+        containerToPrint: {
+            type: String,
+            default: "main"
+        },
+        /**
          * properties for CmdSocialNetworks-component
          */
         cmdSocialNetworks: {
@@ -100,17 +108,19 @@ export default {
             if(typeof this.cmdFancyBox.elements === "function") {
                 elements = this.cmdFancyBox.elements()
             } else {
-                elements = [document.querySelector("main")]
+                elements = [document.querySelector(this.containerToPrint)]
             }
 
             openFancyBox({
                 elements: elements,
+                fancyBoxOptions: this.cmdFancyBox.fancyBoxOptions,
                 showPrintButtons: this.cmdFancyBox.showPrintButtons,
                 defaultAriaLabelText: this.cmdFancyBox.defaultAriaLabelText,
                 cmdHeadline: this.cmdFancyBox.cmdHeadline,
                 showOverlay: this.cmdFancyBox.showOverlay,
                 showSubmitButtons: this.cmdFancyBox.showSubmitButtons,
-                allowEscapeKey: this.cmdFancyBox.allowEscapeKey
+                allowEscapeKey: this.cmdFancyBox.allowEscapeKey,
+                id: this.cmdFancyBox.id || "print-preview"
             })
         }
     }
@@ -150,15 +160,21 @@ export default {
 </style>
 
 <style lang="scss">
+/* begin cmd-page-footer -------------------------------------------------------------------------------------------- */
 @import "../assets/styles/variables";
 
-@media only screen and (max-width: $small-max-width) {
+@media only screen and (width <= $small-max-width) {
     .cmd-page-footer {
         align-items: flex-start;
 
         > .button-wrapper {
             margin-left: 0;
+
+            #print-view-button {
+                display: none;
+            }
         }
     }
 }
+/* end cmd-page-footer -------------------------------------------------------------------------------------------- */
 </style>
