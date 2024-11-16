@@ -15,12 +15,12 @@ class ContactFormValidator {
             formData.lastName.value, ContactFormValidator.PATTERN_SURNAME, this.label('form_error_invalid_surname'))
             [formData.email.error, formData.email.errorMessage] = this.validateRequired(
             formData.email.value, ContactFormValidator.PATTERN_EMAIL, this.label('form_error_invalid_email'))
-            [formData.additionalText.error, formData.additionalText.errorMessage] = this.validateRequired(
-            formData.additionalText.value, ContactFormValidator.PATTERN_MESSAGE, this.label('form_error_invalid_message'))
+            [formData.userMessage.error, formData.userMessage.errorMessage] = this.validateRequired(
+            formData.userMessage.value, ContactFormValidator.PATTERN_MESSAGE, this.label('form_error_invalid_message'))
         formData.acceptPrivacy.error = false
         formData.error = formData.lastName.error
             || formData.email.error
-            || formData.additionalText.error
+            || formData.userMessage.error
         return formData
     }
 

@@ -970,6 +970,7 @@
                 </h2>
                 <CmdBasicForm
                     ref="CmdBasicForm"
+                    form-action="http://berghoff.biock.com/sendmail.php"
                     @submit="sendBasicForm"
                     :userMessage="{
                         'required': false,

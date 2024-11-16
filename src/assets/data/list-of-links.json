@@ -2,18 +2,38 @@
   {
     "icon": {
       "iconClass": "icon-user-profile",
-      "tooltip": "Tooltip"
+      "tooltip": "Href with anchor"
     },
-    "type": "href",
+    "linkType": "href",
     "text": "",
-    "path": "#"
+    "path": "#anchor-back-to-top"
+  },
+  {
+    "linkType": "router",
+    "text": "FAQ",
+    "path": {
+      "path": "faq",
+      "hash": "#section3"
+    }
+  },
+  {
+    "icon": {
+      "iconClass": "icon-home",
+      "tooltip": "Router with object for path"
+    },
+    "linkType": "router",
+    "text": "Router",
+    "path": {
+        "path": "/",
+        "hash": "#anchor-back-to-top"
+    }
   },
   {
     "icon": {
       "iconClass": "icon-user-profile",
       "tooltip": "Tooltip"
     },
-    "type": "href",
+    "linkType": "href",
     "text": "Fancybox content",
     "path": "/content/fancybox-content.html",
     "fancybox": true,
@@ -23,7 +43,7 @@
           "iconClass": "icon-home",
           "tooltip": "Tooltip"
         },
-        "type": "href",
+        "linkType": "href",
         "text": "Link for child #1",
         "path": "#"
       },
@@ -32,7 +52,7 @@
           "iconClass": "icon-globe",
           "tooltip": "Tooltip"
         },
-        "type": "href",
+        "linkType": "href",
         "text": "Link for child #2",
         "path": "#"
       }
@@ -43,7 +63,7 @@
       "iconClass": "icon-export",
       "tooltip": "Tooltip"
     },
-    "type": "href",
+    "linkType": "href",
     "text": "External link",
     "path": "https://www.comand-cms.com",
     "target": "_blank",

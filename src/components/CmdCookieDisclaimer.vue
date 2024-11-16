@@ -273,8 +273,6 @@ export default {
     },
     methods: {
         boxIsOpen(cookieId) {
-            console.log("boxOpen", this.openBoxes.includes(cookieId))
-            console.log("cookieId", cookieId)
             return this.openBoxes.includes(cookieId)
         },
         toggleBoxBody(cookieId) {

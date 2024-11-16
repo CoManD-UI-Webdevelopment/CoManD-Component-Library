@@ -12,6 +12,7 @@
             :legend="legend"
             :submitButton="submitButtonProperties"
             :formAction="formAction"
+            ref="form"
         >
             <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
                 <!-- begin cmd-form-element -->
@@ -19,7 +20,7 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_male')"
-                    :name="configuration.salutation?.name || 'salutation'"
+                    :name="configuration.salutation?.name"
                     inputValue="m"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
@@ -33,7 +34,7 @@
                     element="input"
                     type="radio"
                     :labelText="getMessage('basic_form.labeltext.salutation_female')"
-                    :name="configuration.salutation?.name || 'salutation'"
+                    :name="configuration.salutation?.name"
                     inputValue="f"
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
@@ -56,7 +57,7 @@
                     iconClass="icon-user-profile"
                     :labelText="getMessage('basic_form.labeltext.last_name')"
                     :required="configuration.lastName?.required"
-                    :name="configuration.lastName?.name || 'last-name'"
+                    :name="configuration.lastName?.name"
                     :placeholder="getMessage('basic_form.placeholder.last_name')"
                     v-model="formData.lastName.value"
                     :status="formData.lastName.error ? 'error' : ''"
@@ -74,7 +75,7 @@
                     :labelText="getMessage('basic_form.labeltext.first_name')"
                     :placeholder="getMessage('basic_form.placeholder.first_name')"
                     :required="configuration.firstName?.required"
-                    :name="configuration.firstName?.name || 'first-name'"
+                    :name="configuration.firstName?.name"
                     v-model="formData.firstName.value"
                     :status="formData.firstName.error ? 'error' : ''"
                     :i18n="i18n"
@@ -92,7 +93,7 @@
                     :labelText="getMessage('basic_form.labeltext.email')"
                     :placeholder="getMessage('basic_form.placeholder.email')"
                     :required="configuration.email?.required"
-                    :name="configuration.email?.name || 'email'"
+                    :name="configuration.email?.name"
                     v-model="formData.email.value"
                     :status="formData.email.error ? 'error' : ''"
                     :i18n="i18n"
@@ -110,7 +111,7 @@
                     :placeholder="getMessage('basic_form.placeholder.phone')"
                     v-model="formData.phone.value"
                     :required="configuration.phone?.required"
-                    :name="configuration.phone?.name || 'phone'"
+                    :name="configuration.phone?.name"
                     :status="formData.phone.error ? 'error' : ''"
                     :i18n="i18n"
                     @validate="onValidate"
@@ -126,7 +127,7 @@
                     :labelText="getMessage('basic_form.labeltext.country')"
                     :selectOptions="configuration.country?.selectOptions"
                     :required="configuration.country?.required"
-                    :name="configuration.country?.name || 'country'"
+                    :name="configuration.country?.name"
                     v-model="formData.country.value"
                     :status="formData.country.error ? 'error' : ''"
                     :i18n="i18n"
@@ -143,7 +144,7 @@
                     :labelText="getMessage('basic_form.labeltext.street_no')"
                     :placeholder="getMessage('basic_form.placeholder.street_no')"
                     :required="configuration.streetNo?.required"
-                    :name="configuration.streetNo?.name || 'street-no'"
+                    :name="configuration.streetNo?.name"
                     v-model="formData.streetNo.value"
                     :status="formData.streetNo.error ? 'error' : ''"
                     :i18n="i18n"
@@ -159,7 +160,7 @@
                     :labelText="getMessage('basic_form.labeltext.pobox')"
                     :placeholder="getMessage('basic_form.placeholder.pobox')"
                     :required="configuration.pobox?.required"
-                    :name="configuration.pobox?.name || 'pobox'"
+                    :name="configuration.pobox?.name"
                     v-model="formData.pobox.value"
                     :status="formData.pobox.error ? 'error' : ''"
                     :i18n="i18n"
@@ -177,7 +178,7 @@
                         :labelText="getMessage('basic_form.labeltext.zip')"
                         :placeholder="getMessage('basic_form.placeholder.zip')"
                         :required="configuration.zip?.required"
-                        :name="configuration.zip?.name || 'zip'"
+                        :name="configuration.zip?.name"
                         v-model="formData.zip.value"
                         :status="formData.zip.error ? 'error' : ''"
                         :i18n="i18n"
@@ -193,7 +194,7 @@
                         :labelText="getMessage('basic_form.labeltext.city')"
                         :placeholder="getMessage('basic_form.placeholder.city')"
                         :required="configuration.city?.required"
-                        :name="configuration.city?.name || 'city'"
+                        :name="configuration.city?.name"
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
                         :i18n="i18n"
@@ -210,7 +211,7 @@
                     :labelText="getMessage('basic_form.labeltext.additional_address_info')"
                     :placeholder="getMessage('basic_form.placeholder.additional_address_info')"
                     :required="configuration.additionalAddressInfo?.required"
-                    :name="configuration.additionalAddressInfo?.name || 'additional-address-info'"
+                    :name="configuration.additionalAddressInfo?.name"
                     v-model="formData.additionalAddressInfo.value"
                     :status="formData.additionalAddressInfo.error ? 'error' : ''"
                     :i18n="i18n"
@@ -226,7 +227,7 @@
                 :labelText="getMessage('basic_form.labeltext.user_message')"
                 :placeholder="getMessage('basic_form.placeholder.user_message')"
                 :required="configuration.userMessage?.required"
-                :name="configuration.userMessage?.name || 'user-message'"
+                :name="configuration.userMessage?.name"
                 :textCharactersLeft="getMessage('basic_form.text.characters_left')"
                 :maxlength="configuration.userMessage?.maxLength"
                 v-model="formData.userMessage.value"
@@ -246,7 +247,7 @@
                 element="input"
                 type="checkbox"
                 :required="configuration.acceptPrivacy?.required"
-                :name="configuration.acceptPrivacy?.name || 'accept-privacy'"
+                :name="configuration.acceptPrivacy?.name"
                 :replaceInputType="configuration.acceptPrivacy?.replaceInputType"
                 v-model="formData.acceptPrivacy.value"
                 :status="formData.acceptPrivacy.error ? 'error' : ''"
@@ -343,27 +344,33 @@ export default {
                 return {
                     salutation: {
                         default: "m",
-                        replaceInputType: true
+                        replaceInputType: true,
+                        name: "salutation"
                     },
                     lastName: {
                         required: true,
-                        type: "text"
+                        type: "text",
+                        name: "last-name"
                     },
                     firstName: {
                         required: false,
-                        type: "text"
+                        type: "text",
+                        name: "first-name"
                     },
                     email: {
                         required: true,
-                        type: "email"
+                        type: "email",
+                        name: "email"
                     },
                     phone: {
                         required: false,
-                        type: "phone"
+                        type: "phone",
+                        name: "phone"
                     },
                     country: {
                         required: false,
                         element: "select",
+                        name: "country",
                         selectOptions: [
                             {
                                 text: "Please select...",
@@ -381,27 +388,33 @@ export default {
                     },
                     streetNo: {
                         required: false,
-                        type: "text"
+                        type: "text",
+                        name: "street-no"
                     },
                     zip: {
                         required: false,
-                        type: "number"
+                        type: "number",
+                        name: "zip"
                     },
                     city: {
                         required: false,
-                        type: "text"
+                        type: "text",
+                        name: "city"
                     },
                     additionalAddressInfo: {
                         required: false,
-                        type: "text"
+                        type: "text",
+                        name: "additional-address-info"
                     },
                     userMessage: {
-                        required: false,
-                        element: "textarea"
+                        required: true,
+                        element: "textarea",
+                        name: "user-message"
                     },
                     acceptPrivacy: {
                         required: true,
-                        replaceInputType: true
+                        replaceInputType: true,
+                        name: "accept-privacy"
                     }
                 }
             }
@@ -481,21 +494,23 @@ export default {
 
             for(let i = 0; i < configurationEntries.length; i++) {
                 // assign formData values to form-element key
-                customSubmitFormData.set(configurationEntries[i], this.formData[configurationEntries[i]].value)
+                customSubmitFormData.set(this.configuration[configurationEntries[i]].name, this.formData[configurationEntries[i]].value)
             }
 
-            fetch(this.formAction, {method: "POST", body: customSubmitFormData}).then((response) => {
+            fetch(this.formAction, {method: this.cmdForm?.formMethod || "POST", body: customSubmitFormData}).then((response) => {
                 if(response.ok) {
-                    console.log("CmdBasicForm", "ok")
+                    this.$refs.form.showMessage("success", "Message sent successfully!")
+
                 } else {
-                    console.log("CmdBasicForm", "fail")
+                    this.$refs.form.showMessage("error", "Message could not be sent!")
                 }
             }).catch((error) => {
+                this.$refs.form.showMessage("error", "Message could not be sent!")
                 console.error(error)
             })
 
             // prevent original levent form CmdForm (to avoid submit and reload)
-            event.originalEvent.preventDefault()
+           event.originalEvent.preventDefault()
         },
         onCountrySelect(event) {
           this.cityBeforeZip = event === 'us' || event === 'uk';

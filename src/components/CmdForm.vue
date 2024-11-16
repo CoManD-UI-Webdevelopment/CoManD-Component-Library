@@ -1,12 +1,13 @@
 <template>
     <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit"
-          :class="{error: errorOccurred}" :novalidate="novalidate">
+          :class="{error: errorOccurred}" :novalidate="novalidate" :method="formMethod">
         <template v-if="useFieldset">
             <fieldset class="flex-container">
                 <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{
                         legend.text
                     }}
                 </legend>
+                <CmdSystemMessage v-if="systemMessage.show && systemMessage.message" :validationStatus="systemMessage.validationStatus" :system-message="systemMessage.message"/>
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
@@ -71,14 +72,22 @@
 
 <script>
 import {createHtmlId} from "@"
+import CmdSystemMessage from "@/components/CmdSystemMessage.vue";
 
 export default {
     name: "CmdForm",
+    components: {CmdSystemMessage},
     emits: ["submit"],
     data() {
         return {
             errorOccurred: false,
-            formValues: {}
+            formValues: {},
+            showSystemMessage: false,
+            systemMessage: {
+                show: false,
+                validationStatus: "",
+                message: ""
+            }
         }
     },
     props: {
@@ -88,6 +97,16 @@ export default {
         formAction: {
             type: String,
             required: false
+        },
+        /**
+         * define method to send form
+         */
+        formMethod: {
+            type: String,
+            default: "POST",
+            validator(value) {
+                return value === "POST" || value === "GET"
+            }
         },
         /**
          * legend for form
@@ -167,6 +186,11 @@ export default {
     },
     methods: {
         createHtmlId,
+        showMessage(validationStatus, message) {
+            this.systemMessage.show = true
+            this.systemMessage.validationStatus = validationStatus
+            this.systemMessage.message = message
+        },
         submitFormData(event) {
             // fill form-data with names and value
             let formdata = {}

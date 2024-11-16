@@ -282,7 +282,7 @@ export default {
         }
     }
 
-    /* begin inline-navigation (shares spaces with company-logo */
+    /* begin inline-navigation (shares spaces with company-logo) */
     &.navigation-inline {
         header {
             &.has-navigation {
