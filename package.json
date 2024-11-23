@@ -1,6 +1,6 @@
 {
   "name": "comand-component-library",
-  "version": "4.1.14",
+  "version": "4.1.16",
   "private": false,
   "type": "module",
   "license": "GPL-3.0-only",
@@ -20,8 +20,8 @@
   ],
   "dependencies": {
     "clickout-event": "^1.1.2",
-    "comand-frontend-framework": "^4.0.94",
-    "comand-ui-iconfonts": "^1.0.10",
+    "comand-frontend-framework": "^4.1.2",
+    "comand-ui-iconfonts": "^1.0.14",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",
     "vue": "^3.2.31",

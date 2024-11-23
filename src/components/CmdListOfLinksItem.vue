@@ -2,13 +2,23 @@
     <!-- begin default-view -->
     <li v-if="!editing" class="cmd-list-of-links-item">
         <!-- begin CmdLink -->
+        <!-- do not use v-bind to avoid unnecessary props to be provided for CmdLink causing warnings -->
         <CmdLink
-            v-bind="link"
+            :linkType="link?.linkType"
+            :text="link?.text"
+            :path="link?.path"
+            :target="link?.target"
+            :icon="link?.icon"
+            :fancybox="link?.fancybox"
+            :tooltip="link?.tooltip"
+            :styleAsButton="link?.styleAsButton"
+            :primaryButton="link?.primaryButton"
+            :styleAsBox="link?.styleAsBox"
         />
         <!-- end CmdLink -->
 
         <!-- begin CmdListOfLinksItem for nested children -->
-        <ul v-if="!editModeContext">
+        <ul v-if="link?.children?.length">
             <CmdListOfLinksItem
                 v-for="(child, index) in link?.children"
                 :key="index"

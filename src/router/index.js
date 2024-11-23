@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router"
 
-const routes = []
+const routes = [
+    {
+        path: "/:pathMatch(.*)*",
+        component: {}
+    }
+]
 
 const router = createRouter({
     history: createWebHistory(),

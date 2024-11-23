@@ -98,6 +98,13 @@ export default {
             required: true
         },
         /**
+         * specify class for inner content
+         */
+        innerClass: {
+            type: String,
+            required: false
+        },
+        /**
          * text-alignment for paragraph/continuous text
          *
          * @allowedValues: "left", "center", "right"

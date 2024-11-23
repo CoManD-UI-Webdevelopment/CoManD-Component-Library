@@ -10,10 +10,9 @@
   },
   {
     "linkType": "router",
-    "text": "FAQ",
+    "text": "Router",
     "path": {
-      "path": "faq",
-      "hash": "#section3"
+      "path": "#"
     }
   },
   {
@@ -22,7 +21,7 @@
       "tooltip": "Router with object for path"
     },
     "linkType": "router",
-    "text": "Router",
+    "text": "Router (+hash)",
     "path": {
         "path": "/",
         "hash": "#anchor-back-to-top"
@@ -65,7 +64,7 @@
     },
     "linkType": "href",
     "text": "External link",
-    "path": "https://www.comand-cms.com",
+    "path": "https://www.comand-ui.com",
     "target": "_blank",
     "tooltip": "Open CoManD-Website in new tab"
   }
