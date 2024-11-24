@@ -1,6 +1,6 @@
 {
   "name": "comand-component-library",
-  "version": "4.1.16",
+  "version": "4.1.23",
   "private": false,
   "type": "module",
   "license": "GPL-3.0-only",
@@ -12,15 +12,19 @@
     "build-lib": "vite build && gulp",
     "preview": "vite preview"
   },
-  "main": "dist/comand-component-library.umd.cjs",
-  "module": "dist/comand-component-library.js",
   "files": [
     "dist",
     "src"
   ],
+  "exports": {
+    ".": "./dist/comand-component-library.js",
+    "./css.js": "./src/css.js",
+    "./style.css": "./dist/style.css",
+    "./variables.scss": "./src/assets/styles/variables.scss"
+  },
   "dependencies": {
     "clickout-event": "^1.1.2",
-    "comand-frontend-framework": "^4.1.2",
+    "comand-frontend-framework": "^4.1.4",
     "comand-ui-iconfonts": "^1.0.14",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",
@@ -36,7 +40,7 @@
     "gulp": "^4.0.2",
     "sass": "^1.54.9",
     "unplugin-vue-components": "^0.24.0",
-    "vite": "^5.3.5",
+    "vite": "^5.4.11",
     "vue-jest": "^5.0.0-0"
   }
 }

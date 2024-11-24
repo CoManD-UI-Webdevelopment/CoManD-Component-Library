@@ -73,7 +73,7 @@
             <div v-else-if="fancyBoxElements" class="content" ref="elements"></div>
             <div v-else-if="fancyBoxGallery" class="content">
                 <!-- begin CmdSlideButton -->
-                <CmdSlideButton @click.prevent="showPrevItem" slideButtonType="prev"/>
+                <CmdSlideButton @click.prevent="showPrevItem" slideButtonType="left"/>
                 <!-- end CmdSlideButton -->
 
                 <!-- begin enlarged image -->

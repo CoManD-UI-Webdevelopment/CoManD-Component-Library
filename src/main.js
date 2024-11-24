@@ -1,6 +1,5 @@
-/* begin imports css from comand-frontend-framework ---------------------------------------------------------------------------------------- */
-import "comand-frontend-framework/styles"
-/* end imports css from comand-frontend-framework ---------------------------------------------------------------------------------------- */
+// import all required css
+import "./css.js"
 
 import { createApp } from "vue"
 
@@ -19,18 +18,6 @@ import directiveFocus from "./directives/focus"
 // directive to set focus on specific form-elements
 import directiveFancybox from "./directives/fancybox"
 /* end import directives ---------------------------------------------------------------------------------------- */
-
-/* begin imports css from comand-ui-iconfonts-dependency ---------------------------------------------------------------------------------------- */
-import 'comand-ui-iconfonts/src/fonts/base-iconfont/base-iconfont.css'
-import 'comand-ui-iconfonts/src/fonts/logos-iconfont/logos-iconfont.css'
-import 'comand-ui-iconfonts/src/fonts/editmode-iconfont/editmode-iconfont.css'
-/* end imports css from comand-ui-iconfonts-dependency ---------------------------------------------------------------------------------------- */
-
-/* import css for global-styles */
-import '@/assets/styles/component-library-global-styles.scss'
-
-/* import css for global transitions */
-import '@/assets/styles/transitions.css'
 
 /* import css-example for your custom styles */
 import '@/assets/styles/template.css'

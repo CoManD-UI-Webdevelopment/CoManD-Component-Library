@@ -4,27 +4,31 @@
        :class="['cmd-slide-button', 'button', 'keep-behavior-on-small-devices', slideButtonType]"
        :title="getDirection.tooltip">
         <!-- begin CmdIcon -->
-        <CmdIcon :type="getDirection.iconType || 'auto'" :iconClass="getDirection.iconClass || 'next'" />
+        <CmdIcon :type="getDirection.iconType || 'auto'" :iconClass="getDirection.iconClass || 'right'" />
         <!-- end CmdIcon -->
     </a>
 </template>
 
 <script>
+import I18n from "../mixins/I18n.js"
+import DefaultMessageProperties from "../mixins/CmdSlideButton/DefaultMessageProperties.js"
+
 export default {
     name: "CmdSlideButton",
+    mixins: [I18n, DefaultMessageProperties],
     props: {
         /**
          * set slide-button-type
          *
-         * @allowedValues: next, prev, up, down
+         * @allowedValues: right, left, up, down
          * @affectsStyling: true
          */
         slideButtonType: {
           type: String,
-          default: "next",
+          default: "right",
             validator(value) {
-                return value === "next" ||
-                    value === "prev" ||
+                return value === "right" ||
+                    value === "left" ||
                     value === "up" ||
                     value === "down"
             }
@@ -36,32 +40,33 @@ export default {
          */
         slideButtons: {
             type: Object,
-            default: function() {
-                return {
-                    prev: {
-                        iconClass: "icon-chevron-one-stripe-left",
-                        tooltip: "Previous"
-                    },
-                    next: {
-                        iconClass: "icon-chevron-one-stripe-right",
-                        tooltip: "Next"
-                    },
-                    up: {
-                        iconClass: "icon-chevron-one-stripe-up",
-                        tooltip: "Previous"
-                    },
-                    down: {
-                        iconClass: "icon-chevron-one-stripe-down",
-                        tooltip: "Next"
-                    }
-                }
-            }
+            required: false
         }
     },
     computed: {
+        slideButtonsDefault() {
+            return {
+                left: {
+                    iconClass: this.slideButtons?.left?.iconClass || "icon-chevron-one-stripe-left",
+                    tooltip: this.getMessage('slide_buttons.tooltip.left') || "Previous"
+                },
+                right: {
+                    iconClass: this.slideButtons?.right?.iconClass || "icon-chevron-one-stripe-right",
+                    tooltip: this.getMessage('slide_buttons.tooltip.right') || "Next"
+                },
+                up: {
+                    iconClass: this.slideButtons?.up?.iconClass || "icon-chevron-one-stripe-up",
+                    tooltip: this.getMessage('slide_buttons.tooltip.up') || "Previous"
+                },
+                down: {
+                    iconClass: this.slideButtons?.down?.iconClass || "icon-chevron-one-stripe-down",
+                    tooltip: this.getMessage('slide_buttons.tooltip.down') || "Next"
+                }
+            }
+        },
         getDirection() {
-            if(this.slideButtons[this.slideButtonType]) {
-                return this.slideButtons[this.slideButtonType]
+            if(this.slideButtonsDefault[this.slideButtonType]) {
+                return this.slideButtonsDefault[this.slideButtonType]
             }
             console.warn("Property 'slideButtonType' does not match slideButtons-key")
             return {}
@@ -88,12 +93,12 @@ export default {
             align-self: center;
         }
 
-        &.prev {
+        &.left {
             left: 0;
             top: 0;
         }
 
-        &.next {
+        &.right {
             right: 0;
             top: 0;
         }

@@ -25,7 +25,7 @@
             <CmdSlideButton
                 v-if="showSlideButtons"
                 @click.prevent="scrollLeft"
-                slideButtonType="prev"
+                slideButtonType="left"
             />
             <!-- end CmdSlideButton -->
 

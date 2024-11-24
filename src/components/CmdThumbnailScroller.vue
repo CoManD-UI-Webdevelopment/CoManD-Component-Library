@@ -21,7 +21,7 @@
             <CmdSlideButton
                 v-if="showSlidebuttons"
                 @click.prevent="showPrevItem"
-                slideButtonType="prev"
+                slideButtonType="left"
             />
             <!-- end CmdSlideButton -->
 
@@ -219,7 +219,7 @@ export default {
             required: false
         },
         /**
-         * properties for CmdSlideButtons-component
+         * properties for CmdSlideButton-component
          *
          * @requiredForAccessibility: partial
          */

@@ -610,7 +610,8 @@ data() {
             autoplay: true,
             autoplayInterval: 5000,
             showQuickLinkIcons: true,
-            showCounter: true
+            showCounter: true,
+            showSlideButtons: true
         },
         cmdSocialNetworksSettingsData: {
             align: "left",

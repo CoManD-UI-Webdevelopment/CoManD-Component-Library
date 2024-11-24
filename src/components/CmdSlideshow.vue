@@ -5,7 +5,7 @@
             <CmdSlideButton
                 v-if="showSlideButtons"
                 @click.prevent="showPrevItem"
-                slideButtonType="prev"
+                slideButtonType="left"
                 :class="{'disabled': slideshowItemEditing}"
                 v-bind="tooltipForSlidebuttons"
             />
@@ -153,7 +153,7 @@ export default {
             default: false
         },
         /**
-         * properties for CmdSlideButtons-component
+         * properties for CmdSlideButton-component
          *
          * showSlideButtons-property must be activated
          *
