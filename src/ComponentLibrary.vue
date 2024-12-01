@@ -193,6 +193,7 @@
         </CmdSiteHeader>
         <!-- end site-header --------------------------------------------------------------------------------------------------------------------------------------------------->
         <main v-if="componentView" id="content">
+
             <CmdWidthLimitationWrapper>
                 <h1 class="headline-demopage">Components Overview</h1>
             </CmdWidthLimitationWrapper>
@@ -1608,8 +1609,11 @@
                 <CmdMainNavigation
                     ref="CmdMainNavigation"
                     v-bind="cmdMainNavigationSettingsData"
-                    :navigationEntries="navigationData.navigationEntries"
+                    :navigationEntries="navigationDataModified"
                 />
+                <!-- begin router-view -->
+                <router-view v-if="useRouterLinks"></router-view>
+                <!-- end router-view -->
             </CmdWidthLimitationWrapper>
             <!-- end main-navigation ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -2165,14 +2169,17 @@ import {localizedTime} from "./components/CmdOpeningHours.vue"
 // import data and controls for settings
 import componentSettingsDataAndControls from "@/componentSettingsDataAndControls.vue"
 
-import CmdHeadline from "./components/CmdHeadline.vue"
-
 export default {
     name: "App",
     mixins: [componentSettingsDataAndControls],
     components: {
-        PageOverview,
-        CmdHeadline
+        PageOverview
+    },
+    props: {
+        useRouterLinks: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
@@ -2331,6 +2338,22 @@ export default {
         }
     },
     computed: {
+        navigationDataModified() {
+            if(!this.useRouterLinks) {
+                function mapLinkTypes(navigationEntries) {
+                    return navigationEntries.map((item) => {
+                        item.type = "href"
+
+                        if(item.subentries?.length) {
+                            item.subentries = mapLinkTypes(item.subentries)
+                        }
+                        return item
+                    })
+                }
+                return mapLinkTypes(this.navigationData.navigationEntries)
+            }
+            return this.navigationData.navigationEntries
+        },
         cmdSocialNetworks() {
             return cmdSocialNetworks
         },

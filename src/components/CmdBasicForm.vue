@@ -14,7 +14,7 @@
             :formAction="formAction"
             ref="form"
         >
-            <div v-if="configuration.salutation" class="flex-container no-flex order-male-female">
+            <div v-if="configuration.salutation" class="flex-container no-flex row-for-small order-male-female">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
@@ -499,13 +499,13 @@ export default {
 
             fetch(this.formAction, {method: this.cmdForm?.formMethod || "POST", body: customSubmitFormData}).then((response) => {
                 if(response.ok) {
-                    this.$refs.form.showMessage("success", "Message sent successfully!")
+                    this.$refs.form.showMessage("success", this.getMessage("basic_form.system_message.success.message_sent_successfully"))
 
                 } else {
-                    this.$refs.form.showMessage("error", "Message could not be sent!")
+                    this.$refs.form.showMessage("error", this.getMessage("basic_form.system_message.error.message_could_not_be_sent"))
                 }
             }).catch((error) => {
-                this.$refs.form.showMessage("error", "Message could not be sent!")
+                this.$refs.form.showMessage("error", this.getMessage("basic_form.system_message.error.message_could_not_be_sent"))
                 console.error(error)
             })
 

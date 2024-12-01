@@ -5,66 +5,70 @@
   "navigationEntries": [
     {
       "type": "href",
-      "text": "Entry 1",
+      "text": "href 1",
       "path": "#",
       "iconClass": "icon-home"
     },
     {
       "type": "href",
-      "text": "Entry 2",
+      "text": "href 2",
       "path": "",
       "subentries": [
         {
           "type": "href",
-          "text": "Entry 2.1",
+          "text": "href 2.1",
           "path": "",
           "subentries": [
             {
               "type": "href",
-              "text": "Entry 2.1.1",
+              "text": "href 2.1.1",
               "path": "#"
             },
             {
               "type": "href",
-              "text": "Entry 2.1.2",
+              "text": "href 2.1.2",
               "path": "#"
             },
             {
               "type": "href",
-              "text": "Entry 2.1.3",
+              "text": "href 2.1.3",
               "path": "#"
             }
           ]
         },
         {
           "type": "href",
-          "text": "Entry 2.2",
+          "text": "href 2.2",
           "path": "#",
           "subentries": []
         }
       ]
     },
     {
-      "type": "href",
-      "text": "Entry 3",
+      "type": "router",
+      "text": "router 3",
       "path": "#",
       "subentries": [
         {
-          "type": "href",
-          "text": "Entry 3.1",
-          "path": ""
+          "type": "router",
+          "text": "router 3.1",
+          "path": {
+            "name": "home"
+          }
         },
         {
-          "type": "href",
-          "text": "Entry 3.2",
-          "path": ""
+          "type": "router",
+          "text": "router 3.2",
+          "path": {
+            "name": "home"
+          }
         }
       ]
     },
     {
       "type": "href",
-      "text": "CoManD-CMS",
-      "path": "http://www.comand-cms.com",
+      "text": "CoManD-UI",
+      "path": "https://www.comand-ui.com",
       "target": "comand-website"
     }
   ]

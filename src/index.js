@@ -51,6 +51,7 @@ export { default as CmdTooltip } from '@/components/CmdTooltip.vue'
 export { default as CmdUploadForm } from '@/components/CmdUploadForm.vue'
 export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimitationWrapper.vue'
 export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'
+export { default as ComponentLibrary } from '@/ComponentLibrary.vue'
 
 // export page-components
 export { default as ContactInformation } from '@/pages/ContactInformation.vue'
@@ -65,6 +66,8 @@ export { default as DirFancybox } from '@/directives/fancybox'
 // export functions
 export { createUuid, createHtmlId } from '@/utils/common'
 export { getFileExtension } from '@/utils/getFileExtension'
+export { capitalize } from '@/utils/string.js'
+export { useScrollspy } from '@/composables/scrollspy.js'
 export { setCookieDisclaimerCookie, getCookieDisclaimerCookie } from '@/utils/cookie'
 
 // export composables

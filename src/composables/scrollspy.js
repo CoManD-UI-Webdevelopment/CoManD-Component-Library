@@ -29,7 +29,7 @@ function buildItemList(itemSupplier, itemList) {
     }
 }
 
-export function useScrollspy(itemSupplier, initialActiveItem = 0) {
+function useScrollspy(itemSupplier, initialActiveItem = 0) {
     const itemList = []
     const scrollSpy = reactive({
         activeItem: initialActiveItem,
@@ -50,3 +50,5 @@ export function useScrollspy(itemSupplier, initialActiveItem = 0) {
     })
     return scrollSpy
 }
+
+export {useScrollspy}

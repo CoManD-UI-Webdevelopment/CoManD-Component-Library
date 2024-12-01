@@ -27,7 +27,9 @@ export default {
         "basic_form.labeltext.user_message": "Your message:",
         "basic_form.placeholder.user_message": "Your message",
         "basic_form.text.characters_left": "Characters left",
-        "basic_form.labeltext.data_privacy": "I accept handling and saving of my personal data a mentioned in the <a href='/content/data-privacy-en.html' class='fancybox'>private policy</a>."
+        "basic_form.labeltext.data_privacy": "I accept handling and saving of my personal data a mentioned in the <a href='/content/data-privacy-en.html' class='fancybox'>private policy</a>.",
+        "basic_form.system_message.success.message_sent_successfully": "Message sent successfully!",
+        "basic_form.system_message.error.message_could_not_be_sent": "Message could not be sent!"
       }
     }
   }

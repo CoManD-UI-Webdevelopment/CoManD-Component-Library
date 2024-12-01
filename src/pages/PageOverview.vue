@@ -1,5 +1,4 @@
 <template>
-
     <!-- begin basic-form ------------------------------------------------------------------------------------------------------------------------------------------------------->
     <CmdWidthLimitationWrapper>
         <h2 class="headline-demopage" id="section-contact-information">

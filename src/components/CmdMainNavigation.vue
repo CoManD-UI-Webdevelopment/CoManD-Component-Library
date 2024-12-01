@@ -60,7 +60,7 @@
 
                     <!-- begin sub-level 1 -->
                     <ul v-if="navigationEntry?.subentries?.length" :aria-expanded="openEntry ? 'true' : 'false'">
-                        <li v-for="(navigationSubEntry, subindex) in navigationEntry.subentries" :key="subindex" :class="{'open' : openSubentry === subindex}">
+                        <li v-for="(navigationSubEntry, subindex) in navigationEntry.subentries" :key="subindex" :class="{'open' : openSubentry === subindex, 'has-subentries': navigationSubEntry?.subentries?.length}">
                             <!-- begin type === href -->
                             <a v-if="navigationSubEntry.type === 'href'"
                                :href="navigationSubEntry.path"
@@ -85,6 +85,7 @@
                                 v-if="navigationSubEntry.type === 'router'"
                                 :to="getRoute(navigationSubEntry)"
                                 :title="navigationSubEntry.tooltip"
+                                @click="closeOffcanvasNavigation"
                             >
                                 <!-- begin CmdIcon -->
                                 <CmdIcon v-if="navigationSubEntry.iconClass" :iconClass="navigationSubEntry.iconClass" :type="navigationSubEntry.iconType" />
@@ -119,7 +120,9 @@
                                     <!-- begin type === router -->
                                     <router-link v-if="navigationSubSubEntry.type === 'router'"
                                                  :to="getRoute(navigationSubSubEntry)"
-                                                 :target="navigationSubSubEntry.target">
+                                                 :target="navigationSubSubEntry.target"
+                                                 @click="closeOffcanvasNavigation"
+                                    >
                                         <!-- begin CmdIcon -->
                                         <CmdIcon v-if="navigationSubSubEntry.iconClass" :iconClass="navigationSubSubEntry.iconClass" :type="navigationSubSubEntry.iconType" />
                                         <!-- end CmdIcon -->
@@ -138,14 +141,14 @@
             </ul>
             <!-- end main-level -->
         </nav>
-        <!-- begin offCanvasButton -->
+        <!-- begin off-canvas-button -->
         <a v-if="persistOnMobile === false" href="#" class="button" id="toggle-offcanvas" @click.prevent="toggleOffcanvasNavigation">
             <!-- begin CmdIcon -->
             <CmdIcon :iconClass="buttonOffcanvas.iconClass" :type="buttonOffcanvas.iconType" />
             <!-- end CmdIcon -->
             <span :class="{'hidden' : !buttonOffcanvas.showText}">{{ buttonOffcanvas.text }}</span>
         </a>
-        <!-- end offCanvasButton -->
+        <!-- end off-canvas-button -->
     </div>
 </template>
 
@@ -298,15 +301,16 @@ export default {
         },
         closeOffcanvasNavigation() {
             this.showOffcanvas = false
-            document.getElementById("toggle-offcanvas").focus()
+            document.getElementById("toggle-offcanvas")?.focus()
         },
         toggleOffcanvasNavigation() {
             if (this.showOffcanvas) {
+                // close offcanvas
                 this.closeOffcanvasNavigation()
             } else {
                 // open offcanvas
                 this.showOffcanvas = true
-                this.$nextTick(() => document.getElementById("close-offcanvas").focus())
+                this.$nextTick(() => document.getElementById("close-offcanvas")?.focus())
             }
         }
     },
@@ -414,7 +418,6 @@ export default {
             &.open-off-canvas {
                 nav {
                     height: 100%;
-                    background: var(--default-background);
                     left: 0;
                     opacity: 1;
                     padding: 0 !important;
@@ -425,7 +428,7 @@ export default {
 
                 &.show-content-overlay {
                     nav {
-                        &::before {
+                        &::after {
                             content: "";
                             position: fixed;
                             width: 100%;
@@ -439,6 +442,7 @@ export default {
                         ul {
                             z-index: 1000; /* keep ul above overlay */
                             height: 100%;
+                            background: var(--default-background);
                         }
                     }
                 }
@@ -486,10 +490,11 @@ export default {
                             }
                         }
 
-                        &:not(.open) {
+                        &.has-subentries.open {
                             &:hover, &:active, &:focus {
                                 > ul {
-                                    display: none;
+                                    display: block;
+                                    border: 1px solid red;
                                 }
                             }
                         }
