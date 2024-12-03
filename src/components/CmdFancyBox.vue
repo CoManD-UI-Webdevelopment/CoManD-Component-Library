@@ -45,17 +45,17 @@
                 <!-- end print buttons -->
 
                 <!-- begin close-icon -->
-                <a v-if="fancyBoxOptionsProperties.closeIcon"
+                <a v-if="fancyBoxOptionsProperties.closeIcon?.show"
                    href="#"
                    class="button"
                    id="close-dialog"
-                   :title="fancyBoxOptionsProperties.closeIcon.tooltip"
+                   :title="fancyBoxOptionsProperties.closeIcon?.tooltip"
                    ref="close-dialog"
                    @click.prevent="close">
                     <!-- begin CmdIcon -->
                     <CmdIcon
-                        :iconClass="fancyBoxOptionsProperties.closeIcon.iconClass"
-                        :type="fancyBoxOptionsProperties.closeIcon.iconType"
+                        :iconClass="fancyBoxOptionsProperties.closeIcon?.iconClass"
+                        :type="fancyBoxOptionsProperties.closeIcon?.iconType"
                     />
                     <!-- end CmdIcon -->
                 </a>
@@ -294,6 +294,7 @@ const FancyBox = defineComponent({
         fancyBoxOptionsProperties() {
             return {
                 closeIcon: {
+                    show: true,
                     iconClass: "icon-cancel",
                     iconType: "auto",
                     tooltip: "Close",

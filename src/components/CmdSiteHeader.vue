@@ -378,6 +378,11 @@ export default {
                 }
             }
         }
+
+        header {
+            --header-scroll-animation: none;
+            --logo-width-on-scroll: 100%;
+        }
     }
 }
 

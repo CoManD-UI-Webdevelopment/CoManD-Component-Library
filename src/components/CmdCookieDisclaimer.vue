@@ -22,15 +22,15 @@
                     <div v-if="cookieOptions?.required" class="flex-container vertical">
                         <!-- begin CmdHeadline -->
                         <CmdHeadline
-                            v-if="cmdBoxRequiredCookies?.showHeadline"
-                            :headline-text="cmdBoxRequiredCookies?.headlineText"
-                            :headline-level="cmdBoxRequiredCookies?.headlineLevel "
+                            v-if="defaultCmdBoxRequiredCookies().showHeadline && defaultCmdBoxRequiredCookies().headlineText"
+                            :headlineText="defaultCmdBoxRequiredCookies().headlineText"
+                            :headlineLevel="defaultCmdBoxRequiredCookies().headlineLevel "
                         />
                         <!-- end CmdHeadline -->
 
                         <div v-for="(cookie, index) in cookieOptions.required.cookies || []"
                              :key="index" class="collapsible-box">
-                            <header>
+                            <header :class="{open : boxIsOpen(cookie.id)}">
                                 <!-- begin CmdFormElement -->
                                 <CmdFormElement
                                     element="input"
@@ -41,12 +41,12 @@
                                     :disabled="cookie.disabled"
                                     :id="cookie.id"
                                     :toggleSwitch="true"
-                                    :title="getMessage('cookie_disclaimer.title.cookie_cannot_be_disabled')"
+                                    :title="getMessage('cookie_disclaimer.tooltip.cookie_cannot_be_disabled')"
                                 />
                                 <!-- end CmdFormElement -->
 
                                 <!-- begin icon to toggle box-body -->
-                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.title.toggle_box_content')">
+                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.tooltip.toggle_box_content')">
                                     <span :class="boxIsOpen(cookie.id) ? iconClassBoxExpanded : iconClassBoxCollapsed"></span>
                                 </a>
                                 <!-- end icon to toggle box-body -->
@@ -74,15 +74,15 @@
                     <div v-if="cookieOptions?.optional" class="flex-container vertical">
                         <!-- begin CmdHeadline -->
                         <CmdHeadline
-                            v-if="cmdBoxOptionalCookies?.showHeadline"
-                            :headline-text="cmdBoxOptionalCookies?.headlineText"
-                            :headline-level="cmdBoxOptionalCookies?.headlineLevel
-                    "/>
+                            v-if="defaultCmdBoxOptionalCookies().showHeadline && defaultCmdBoxOptionalCookies().headlineText"
+                            :headlineText="defaultCmdBoxOptionalCookies().headlineText"
+                            :headlineLevel="defaultCmdBoxOptionalCookies().headlineLevel"
+                        />
                         <!-- end CmdHeadline -->
 
                         <div v-for="(cookie, index) in cookieOptions.optional.cookies || []"
                              :key="index" class="collapsible-box">
-                            <header>
+                            <header :class="{open : boxIsOpen(cookie.id)}">
                                 <!-- begin CmdFormElement -->
                                 <CmdFormElement
                                     element="input"
@@ -93,12 +93,12 @@
                                     :disabled="cookie.disabled"
                                     :id="cookie.id"
                                     :toggleSwitch="true"
-                                    :title="getMessage('cookie_disclaimer.title.toggle_to_accept_cookie')"
+                                    :title="getMessage('cookie_disclaimer.tooltip.toggle_to_accept_cookie')"
                                 />
                                 <!-- end CmdFormElement -->
 
                                 <!-- begin icon to toggle box-body -->
-                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.title.toggle_box_content')">
+                                <a href="#" @click.prevent="toggleBoxBody(cookie.id)" :title="getMessage('cookie_disclaimer.tooltip.toggle_box_content')">
                                     <span :class="boxIsOpen(cookie.id) ? iconClassBoxExpanded : iconClassBoxCollapsed"></span>
                                 </a>
                                 <!-- end icon to toggle box-body -->
@@ -192,36 +192,8 @@ export default {
             default() {
                 return {
                     show: true,
-                    headlineText: "Cookie disclaimer",
+                    headlineText: "Cookie Disclaimer",
                     headlineLevel: 2
-                }
-            }
-        },
-        /**
-         * property for CmdBox-component surrounding the required cookies
-         */
-        cmdBoxRequiredCookies: {
-            type: Object,
-            default() {
-                return {
-                    collapsible: true,
-                    showHeadline: true,
-                    headlineText: "Required cookies",
-                    headlineLevel: 3
-                }
-            }
-        },
-        /**
-         * property for CmdBox-component surrounding the optional cookies
-         */
-        cmdBoxOptionalCookies: {
-            type: Object,
-            default() {
-                return {
-                    collapsible: true,
-                    showHeadline: true,
-                    headlineText: "Optional cookies",
-                    headlineLevel: 3
                 }
             }
         },
@@ -274,6 +246,24 @@ export default {
     methods: {
         boxIsOpen(cookieId) {
             return this.openBoxes.includes(cookieId)
+        },
+        defaultCmdBoxRequiredCookies() {
+            return {
+                collapsible: true,
+                showHeadline: true,
+                headlineText: "Required cookies",
+                headlineLevel: 3,
+                ...this.cookieOptions?.required.cmdHeadline
+            }
+        },
+        defaultCmdBoxOptionalCookies() {
+            return {
+                collapsible: true,
+                showHeadline: true,
+                headlineText: "Optional cookies",
+                headlineLevel: 3,
+                ...this.cookieOptions?.optional.cmdHeadline
+            }
         },
         toggleBoxBody(cookieId) {
             const index = this.openBoxes.indexOf(cookieId);
@@ -338,7 +328,7 @@ export default {
     top: auto;
 
     .collapsible-box {
-        border-radius: var(--default-border-radius);
+        border-radius: 1rem;
 
         header {
             display: flex;
@@ -346,8 +336,12 @@ export default {
             border: var(--primary-border);
             justify-content: unset; /* overwrite setting for collapsible boxes */
             background: var(--primary-color);
-            border-top-left-radius: inherit;
-            border-top-right-radius: inherit;
+            border-radius: inherit;
+
+            &.open {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
 
             &:has(input:checked) {
                 background: var(--pure-white);
