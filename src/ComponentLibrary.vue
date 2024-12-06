@@ -2087,8 +2087,6 @@
             <!-- begin cookie-disclaimer --------------------------------------------------------------------------------------------------->
             <CmdCookieDisclaimer
                 :cookieOptions="cookieDisclaimerData"
-                buttonLabelAcceptAllCookies="Accept all cookies"
-                buttonLabelAcceptCurrentSettings="Accept current settings"
                 @closeCookieDisclaimer="closeCookieDisclaimer"
                 v-model="acceptedCookies"
                 :cmdHeadlineCookieDisclaimer="{ show: false }"

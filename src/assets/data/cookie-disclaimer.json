@@ -1,8 +1,5 @@
 {
   "required": {
-    "cmdHeadline": {
-        "headlineText": "Required cookies"
-    },
     "cookies": [
         {
           "id": "cookie-sessionid",
@@ -32,9 +29,6 @@
       ]
   },
   "optional": {
-    "cmdHeadline": {
-      "headlineText": "Optional cookies"
-    },
     "cookies": [
       {
         "id": "cookie-google-maps",

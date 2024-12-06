@@ -494,7 +494,6 @@ export default {
                             &:hover, &:active, &:focus {
                                 > ul {
                                     display: block;
-                                    border: 1px solid red;
                                 }
                             }
                         }

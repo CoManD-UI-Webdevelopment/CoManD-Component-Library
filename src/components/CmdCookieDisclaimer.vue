@@ -122,16 +122,16 @@
                 <!-- end slot for cookie-options -->
 
                 <!-- begin privacy-text -->
-                <div v-if="privacyText" class="privacy-text" v-html="privacyText"></div>
+                <div v-if="privacyText" class="privacy-text" v-html="getMessage('cookie_disclaimer.text.data_privacy')"></div>
                 <!-- end privacy-text-->
 
                 <!-- begin button-wrapper for 'accept'-buttons -->
                 <div class="button-wrapper align-center">
-                    <button v-if="buttonLabelAcceptCurrentSettings" type="button" @click="acceptCurrentCookies">
-                        <span>{{ buttonLabelAcceptCurrentSettings }}</span>
+                    <button type="button" @click="acceptCurrentCookies">
+                        <span>{{ getMessage('cookie_disclaimer.button.accept_current_settings') }}</span>
                     </button>
-                    <button v-if="buttonLabelAcceptAllCookies" type="button" class="primary" @click="acceptAllCookies">
-                        <span>{{ buttonLabelAcceptAllCookies }}</span>
+                    <button type="button" class="primary" @click="acceptAllCookies">
+                        <span>{{ getMessage('cookie_disclaimer.button.accept_all_cookies') }}</span>
                     </button>
                 </div>
                 <!-- end button-wrapper for 'accept'-buttons -->
@@ -203,27 +203,6 @@ export default {
         cookieOptions: {
             type: Object,
             required: false
-        },
-        /**
-         * optional privacy-text shown at bottom of cookie-disclaimer
-         */
-        privacyText: {
-            type: String,
-            required: false
-        },
-        /**
-         * label for button to accepting all cookies
-         */
-        buttonLabelAcceptAllCookies: {
-            type: String,
-            default: "Accept all cookies!"
-        },
-        /**
-         * label for button for accepting current settings
-         */
-        buttonLabelAcceptCurrentSettings: {
-            type: String,
-            default: "Proceed with current settings!"
         }
     },
     computed: {
@@ -251,16 +230,17 @@ export default {
             return {
                 collapsible: true,
                 showHeadline: true,
-                headlineText: "Required cookies",
                 headlineLevel: 3,
-                ...this.cookieOptions?.required.cmdHeadline
+                headlineText: this.getMessage("cookie_disclaimer.headline.required_cookies"),
+                ...this.cookieOptions?.required.cmdHeadline,
+
             }
         },
         defaultCmdBoxOptionalCookies() {
             return {
                 collapsible: true,
                 showHeadline: true,
-                headlineText: "Optional cookies",
+                headlineText: this.getMessage("cookie_disclaimer.headline.optional_cookies"),
                 headlineLevel: 3,
                 ...this.cookieOptions?.optional.cmdHeadline
             }
@@ -328,7 +308,7 @@ export default {
     top: auto;
 
     .collapsible-box {
-        border-radius: 1rem;
+        border-radius: var(--default-border-radius);
 
         header {
             display: flex;
