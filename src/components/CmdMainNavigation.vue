@@ -48,6 +48,7 @@
                         v-if="navigationEntry.type === 'router'"
                         :to="getRoute(navigationEntry)"
                         :title="navigationEntry.tooltip"
+                        @click="closeOffcanvasNavigation"
                     >
                         <!-- begin CmdIcon -->
                         <CmdIcon v-if="navigationEntry.iconClass" :iconClass="navigationEntry.iconClass" :type="navigationEntry.iconType" />
@@ -278,11 +279,11 @@ export default {
             if(navigationEntry?.subentries?.length) {
                 event.preventDefault()
                 if(!sublevel) {
-                    // assign index for first sub-level (or close if already open)
+                    // assign index for first sublevel (or close if already open)
                     this.openEntry = this.openEntry === index ? -1 : index
                     this.openSubentry = -1 // close all sub-entries
                 } else {
-                    // assign index for second sub-level (or close if already open)
+                    // assign index for second sublevel (or close if already open)
                     this.openSubentry = this.openSubentry === index ? -1 : index
                 }
                 return
@@ -291,7 +292,7 @@ export default {
             // emit event to handle navigation from outside
             if (navigationEntry.path === '#' || navigationEntry.path === '') {
                 event.preventDefault()
-                this.$emit('click', navigationEntry.path)
+                this.$emit("click", navigationEntry.path)
             }
 
             this.showOffcanvas = false

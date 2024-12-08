@@ -46,19 +46,24 @@
     },
     {
       "type": "router",
-      "text": "router 3",
+      "text": "router 1",
+      "path": "#"
+    },
+    {
+      "type": "router",
+      "text": "router 2",
       "path": "#",
       "subentries": [
         {
           "type": "router",
-          "text": "router 3.1",
+          "text": "router 2.1",
           "path": {
             "name": "home"
           }
         },
         {
           "type": "router",
-          "text": "router 3.2",
+          "text": "router 2.2",
           "path": {
             "name": "home"
           }

@@ -545,12 +545,14 @@ export default FancyBox
         display: flex;
     }
 
-    .cmd-cookie-disclaimer {
-        padding: 0;
-    }
 
     > .grayscale {
         filter: grayscale(1);
+    }
+
+    .cmd-cookie-disclaimer {
+        max-width: 60rem;
+        padding: 0;
     }
 
     .cmd-slide-button {

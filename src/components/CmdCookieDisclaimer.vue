@@ -61,7 +61,6 @@
                                         {{ cookie.linkDataPrivacy.linkText }}
                                     </a>
                                 </p>
-                                <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
                             </div>
                         </div>
                         <!-- end CmdBox -->
@@ -113,7 +112,6 @@
                                         {{ cookie.linkDataPrivacy.linkText }}
                                     </a>
                                 </p>
-                                <div v-if="dataPrivacyContent" v-html="dataPrivacyContent"></div>
                             </div>
                         </div>
                     </div>
@@ -122,7 +120,7 @@
                 <!-- end slot for cookie-options -->
 
                 <!-- begin privacy-text -->
-                <div v-if="privacyText" class="privacy-text" v-html="getMessage('cookie_disclaimer.text.data_privacy')"></div>
+                <div v-if="showPrivacyText" class="privacy-text" v-html="getMessage('cookie_disclaimer.text.data_privacy')"></div>
                 <!-- end privacy-text-->
 
                 <!-- begin button-wrapper for 'accept'-buttons -->
@@ -151,7 +149,6 @@ export default {
     data() {
         return {
             showCookieDisclaimer: true,
-            dataPrivacyContent: "",
             openBoxes: []
         }
     },
@@ -203,6 +200,13 @@ export default {
         cookieOptions: {
             type: Object,
             required: false
+        },
+        /**
+         * toggle visibility of privacy-text
+         */
+        showPrivacyText: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
@@ -232,8 +236,7 @@ export default {
                 showHeadline: true,
                 headlineLevel: 3,
                 headlineText: this.getMessage("cookie_disclaimer.headline.required_cookies"),
-                ...this.cookieOptions?.required.cmdHeadline,
-
+                ...this.cookieOptions?.required.cmdHeadline
             }
         },
         defaultCmdBoxOptionalCookies() {

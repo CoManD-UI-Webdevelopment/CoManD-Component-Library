@@ -1825,8 +1825,9 @@
                 <h2 class="headline-demopage" id="section-switch-language">Switch Language</h2>
                 <CmdSwitchLanguage
                     :languages="languagesData"
-                    @click="doSomething"
+                    @click="updateLanguage"
                 />
+                <p>Selected language: {{selectedLanguage}} </p>
             </CmdWidthLimitationWrapper>
             <!-- end switch-language --------------------------------------------------------------------------------------------------->
 
@@ -2181,6 +2182,7 @@ export default {
     },
     data() {
         return {
+            selectedLanguage: "none",
             fancyBoxCookieDisclaimer: false,
             componentNameForContainer: "CmdHeadline",
             listOfComponents,
@@ -2367,6 +2369,9 @@ export default {
         }
     },
     methods: {
+        updateLanguage(event) {
+            this.selectedLanguage = event.iso2
+        },
         sendBasicForm(event) {
             // prevent original event
             event.originalEvent.preventDefault()
@@ -2517,8 +2522,7 @@ export default {
         submitNewsletterRegistration(event) {
             alert(event.subscription + " " + event.email)
         },
-        doSomething(event) {
-            event.preventDefault()
+        doSomething() {
             alert("Language changed!")
         },
         executeSearch() {
