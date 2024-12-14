@@ -623,7 +623,7 @@ export default {
     }
 }
 
-/* overwrite inline-style from google-recaptcha to avoid collision with back-to-top-button
+/* overwrite inline-style from google-recaptcha to avoid collision with back-to-top-button */
 .grecaptcha-badge {
     bottom: 10rem !important;
 }
