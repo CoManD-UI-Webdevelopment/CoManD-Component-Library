@@ -201,7 +201,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-address-data">
                     <span>Address Data</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdAddressData')"></a>
                 </h2>
                 <div class="flex-container">
@@ -269,7 +269,7 @@
                         <legend>Legend</legend>
                         <h2 class="headline-demopage">
                             <span>Form Element-Component</span>
-                            <a href="#" class="icon-cog" title="Open Component Settings"
+                            <a href="#" class="button small icon-cog" title="Open Component Settings"
                                @click.prevent="openSettingsSidebar('CmdFormElement')"></a>
                         </h2>
                         <CmdFormElement
@@ -466,7 +466,7 @@
                         <!-- begin FakeSelect -->
                         <h3 class="headline-demopage">
                             <span>Fake Selects</span>
-                            <a href="#" class="icon-cog" title="Open Component Settings"
+                            <a href="#" class="button small icon-cog" title="Open Component Settings"
                                @click.prevent="openSettingsSidebar('CmdFakeSelect')"></a>
                         </h3>
                         <div class="flex-container">
@@ -816,7 +816,7 @@
                         <!-- begin input-groups -->
                         <h3 class="headline-demopage" id="section-input-group">
                             Input-Group
-                            <a href="#" class="icon-cog" title="Open Component Settings"
+                            <a href="#" class="button small icon-cog" title="Open Component Settings"
                                @click.prevent="openSettingsSidebar('CmdInputGroup')"></a>
                         </h3>
                         <CmdInputGroup
@@ -951,7 +951,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-bank-account-data">
                     <span>Bank Account Data</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdBankAccountData')"></a>
                 </h2>
                 <CmdBankAccountData
@@ -966,13 +966,12 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-basic-form">
                     <span>Basic Form</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdBasicForm')"></a>
                 </h2>
                 <CmdBasicForm
                     ref="CmdBasicForm"
-                    form-action="http://berghoff.biock.com/sendmail.php"
-                    @submit="sendBasicForm"
+                    :cmdForm="{useValidation: true}"
                     :userMessage="{
                         'required': false,
                         'element': 'textarea',
@@ -996,7 +995,7 @@
                 <h2 class="headline-demopage">Boxes</h2>
                 <h3 class="headline-demopage">
                     <span>Default Box</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdBox')"></a>
                 </h3>
                 <CmdBox
@@ -1205,7 +1204,7 @@
                     </template>
                 </CmdBoxWrapper>
                 <h3><span>Boxes in BoxWrapper (collapsible)</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a>
                 </h3>
                 <CmdBoxWrapper
@@ -1239,7 +1238,7 @@
             <CmdWidthLimitationWrapper inner-component="div">
                 <h2 class="headline-demopage" id="section-breadcrumbs">
                     <span>Breadcrumbs</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
                 </h2>
                 <CmdBreadcrumbs
@@ -1255,7 +1254,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-company-logo">
                     <span>Company Logo</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdCompanyLogo')"></a>
                 </h2>
                 <CmdCompanyLogo
@@ -1270,7 +1269,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-container">
                     <span>Container</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdContainer')"></a>
                 </h2>
                 <h3>Default Container</h3>
@@ -1413,7 +1412,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-headlines">
                     <span>Headlines</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdHeadline')"></a>
                 </h2>
                 <CmdHeadline
@@ -1471,7 +1470,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-image">
                     <span>Image</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdImage')"></a>
                 </h2>
                 <div class="flex-container">
@@ -1493,7 +1492,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-image-gallery">
                     <span>Image-Gallery</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdImageGallery')"></a>
                 </h2>
                 <CmdImageGallery
@@ -1520,7 +1519,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-link">
                     <span>Link</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdLink')"></a>
                 </h2>
                 <CmdLink
@@ -1562,7 +1561,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-list-of-links">
                     <span>List Of Links</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdListOfLinks')"></a>
                 </h2>
                 <CmdListOfLinks
@@ -1577,7 +1576,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-login-form">
                     <span>Login Form</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                 </h2>
                 <CmdForm :use-validation="true" :use-fieldset="false">
@@ -1603,7 +1602,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-main-navigation">
                     <span>Main Navigation</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdMainNavigation')"></a>
                 </h2>
                 <CmdMainNavigation
@@ -1621,7 +1620,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
                     <span>Multistepform-Progressbar</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
                 </h2>
                 <h3>Steps with icons</h3>
@@ -1641,7 +1640,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-newsletter-subscription">
                     <span>Newsletter Subscription</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdNewsletterSubscription')"></a>
                 </h2>
                 <CmdForm :use-fieldset="false">
@@ -1659,7 +1658,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-opening-hours">
                     <span>Opening Hours</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdOpeningHours')"></a>
                 </h2>
                 <CmdOpeningHours
@@ -1684,7 +1683,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-page-footer">
                     <span>Page Footer</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdPageFooter')"></a>
                 </h2>
                 <CmdPageFooter
@@ -1705,7 +1704,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-page-header">
                     <span>Page Header</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdPageHeader')"></a>
                 </h2>
                 <CmdPageHeader
@@ -1724,7 +1723,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-pagination">
                     <span>Pagination</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdPagination')"></a>
                 </h2>
                 <div>
@@ -1751,7 +1750,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-site-header">
                     <span>Site Header</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdSiteHeader')"></a>
                 </h2>
                 <CmdSiteHeader
@@ -1774,7 +1773,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-site-search">
                     <span>Site Search</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdSiteSearch')"></a>
                 </h2>
                 <CmdSiteSearch
@@ -1794,7 +1793,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-slideshow">
                     <span>Slideshow</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdSlideshow')"></a>
                 </h2>
                 <CmdSlideshow
@@ -1810,7 +1809,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-social-networks">
                     <span>Social Networks</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdSocialNetworks')"></a>
                 </h2>
                 <CmdSocialNetworks
@@ -1835,7 +1834,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-system-message">
                     <span>System Message</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
                 </h2>
                 <CmdSystemMessage
@@ -1855,7 +1854,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-tables">
                     <span>Tables</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdTable')"></a>
                 </h2>
                 <h3>Table as wide as its content (with caption)</h3>
@@ -1878,7 +1877,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-tabs">
                     <span>Tabs</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdTabs')"></a>
                 </h2>
                 <CmdTabs
@@ -1905,7 +1904,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-text-image-block">
                     <span>Text-Image-Block</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdTextImageBlock')"></a>
                 </h2>
                 <div class="flex-container">
@@ -1957,7 +1956,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-thumbnail-scroller">
                     <span>Thumbnail-Scroller</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
                 </h2>
                 <div class="inline-size">
@@ -1974,7 +1973,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-toggle-dark-mode">
                     <span>Toggle Dark-Mode</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
                 </h2>
                 <CmdToggleDarkMode
@@ -1988,7 +1987,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-tooltip">
                     <span>Tooltip</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdTooltip')"></a>
                 </h2>
                 <p>
@@ -2023,7 +2022,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-upload-form">
                     <span>Upload-Form</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdUploadForm')"></a>
                 </h2>
                 <CmdUploadForm
@@ -2037,7 +2036,7 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-width-limitation-wrapper">
                     <span>Width Limitation Wrapper</span>
-                    <a href="#" class="icon-cog" title="Open Component Settings"
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdWidthLimitationWrapper')"></a>
                 </h2>
                 <CmdWidthLimitationWrapper
@@ -2634,10 +2633,23 @@ export default {
     }
 
     .headline-demopage {
+        display: flex;
+        align-items: center;
+
         [class*="icon-"] {
-            font-size: 2rem;
             color: var(--pure-white);
             margin: 0;
+        }
+
+        .button {
+            background: none;
+            border-color: var(--pure-white);
+            align-self: center;
+
+            &:hover, &:active, &:focus {
+                background: var(--pure-white);
+                color: var(--primary-color) !important;
+            }
         }
     }
 

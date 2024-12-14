@@ -303,7 +303,7 @@ export default {
                 align-self: flex-start;
 
                 [class*="icon"]:only-child {
-                    line-height: var(--default-line-height);
+                    margin-top: .2rem;
                 }
             }
         }

@@ -1,5 +1,5 @@
 <template>
-    <dt :class="['cmd-address-data-item', {'address': addressEntry.type === 'address'}]" :id="addressEntry.id">
+    <dt :class="['cmd-address-data-item', {'address': addressEntry.name === 'address'}]" :id="addressEntry.id">
         <!-- begin CmdIcon -->
         <CmdIcon
             v-if="addressEntry.iconClass && showLabelIcons"
@@ -16,15 +16,14 @@
     <!-- end labels -->
 
     <!-- begin data (except for address) -->
-    <dd v-if="addressEntry.type !== 'address' && (addressEntry.data || addressEntry.href)" :class="vCardClass(addressEntry)">
+    <dd v-if="addressEntry.name !== 'address' && (addressEntry.data || addressEntry.href)" :class="vCardClass(addressEntry)">
         <!-- begin default-view -->
         <template v-if="!editing">
             <a v-if="addressEntry.href"
                :href="getHref(addressEntry)"
-               :target="addressEntry.type === 'url' ? '_blank' : null"
+               :target="addressEntry.name === 'url' ? '_blank' : null"
                :title="addressEntry.tooltip"
-               :data-type="addressEntry.type"
-               v-telephone="addressEntry.href">
+               :data-type="addressEntry.name">
                 {{ addressEntry.data || addressEntry.href }}
             </a>
             <span v-else v-html="addressEntry.data"></span>
@@ -220,10 +219,10 @@ export default {
     },
     methods: {
         vCardClass(entry) {
-            if (entry.type === 'company') {
+            if (entry.name === 'company') {
                 return "org"
             }
-            if (entry.type === "address") {
+            if (entry.name === "address") {
                 if (entry.streetNo) {
                     return "street-address"
                 }
@@ -240,11 +239,11 @@ export default {
             return null
         },
         inputType(entry) {
-            if (entry.type === "phone") {
+            if (entry.name === "phone") {
                 return "tel"
-            } else if (entry.type === "email") {
+            } else if (entry.name === "email") {
                 return "email"
-            } else if (entry.type === "url") {
+            } else if (entry.name === "url") {
                 return "url"
             }
             return "text"
@@ -253,20 +252,20 @@ export default {
             return "https://www.google.com/maps/place/" + entry.streetNo + ", " + entry.zip + " " + entry.city
         },
         getHref(entry) {
-            if (entry.type === "phone") {
+            if (entry.name === "phone") {
                 return "tel:" + entry.href
             }
-            if (entry.type === "email") {
+            if (entry.name === "email") {
                 return "mailto:" + entry.href
             }
-            if (entry.type === "url") {
+            if (entry.name === "url") {
                 return entry.href
             }
             return null
         },
         addHandlerProvider() {
             const itemStructure = {
-                "type": "default",
+                "name": "default",
                 "iconClass": "icon-mail",
                 "data": "Your data",
                 "labelText": "Labeltext",
@@ -300,7 +299,7 @@ export default {
         addressEntry: {
             handler() {
                 // check if entry 'address' to create object
-                if (this.addressEntry.type === "address") {
+                if (this.addressEntry.name === "address") {
                     this.editableAddressEntry = {
                         streetNo: this.addressEntry.streetNo,
                         zip: this.addressEntry.zip,

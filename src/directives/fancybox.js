@@ -1,4 +1,4 @@
-import {openFancyBox} from "comand-component-library"
+import {openFancyBox} from "../components/CmdFancyBox.vue"
 
 function addClickHandlerToFancyboxLinks(fancyboxLinks) {
     for(let i = 0; i < fancyboxLinks.length; i++) {

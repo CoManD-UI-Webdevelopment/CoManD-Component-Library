@@ -1,6 +1,6 @@
 <template>
     <!-- begin advanced mode -->
-    <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container', { 'upload-initiated': uploadInitiated }]">
+    <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container vertical', { 'upload-initiated': uploadInitiated }]">
         <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <!-- begin CmdHeadlineFieldset -->
         <CmdHeadline
@@ -1207,6 +1207,10 @@ export default {
     .upload-conditions {
         .cmd-headline > * {
             text-align: center;
+        }
+
+        dl {
+            margin: 0;
         }
     }
 

@@ -11,12 +11,16 @@ class ContactFormValidator {
     }
 
     validate(formData) {
-        [formData.lastName.error, formData.lastName.errorMessage] = this.validateRequired(
-            formData.lastName.value, ContactFormValidator.PATTERN_SURNAME, this.label('form_error_invalid_surname'))
-            [formData.email.error, formData.email.errorMessage] = this.validateRequired(
-            formData.email.value, ContactFormValidator.PATTERN_EMAIL, this.label('form_error_invalid_email'))
-            [formData.userMessage.error, formData.userMessage.errorMessage] = this.validateRequired(
-            formData.userMessage.value, ContactFormValidator.PATTERN_MESSAGE, this.label('form_error_invalid_message'))
+        const lastNameValidationResult = this.validateRequired(formData.lastName.value, ContactFormValidator.PATTERN_SURNAME, this.label('form_error_invalid_surname'))
+        const emailValidationResult = this.validateRequired(formData.email.value, ContactFormValidator.PATTERN_EMAIL, this.label('form_error_invalid_email'))
+        const userMessageValidationResult = this.validateRequired(formData.userMessage.value, ContactFormValidator.PATTERN_MESSAGE, this.label('form_error_invalid_message'))
+        formData.lastName.error = lastNameValidationResult[0]
+        formData.lastName.errorMessage = lastNameValidationResult[1]
+        formData.email.error = emailValidationResult[0]
+        formData.email.errorMessage = emailValidationResult[1]
+        formData.userMessage.error = userMessageValidationResult[0]
+        formData.userMessage.errorMessage = userMessageValidationResult[1]
+        console.log("validate", formData.email)
         formData.acceptPrivacy.error = false
         formData.error = formData.lastName.error
             || formData.email.error

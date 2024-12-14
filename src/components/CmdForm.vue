@@ -7,7 +7,7 @@
                         legend.text
                     }}
                 </legend>
-                <CmdSystemMessage v-if="systemMessage.show && systemMessage.message" :validationStatus="systemMessage.validationStatus" :system-message="systemMessage.message"/>
+                <CmdSystemMessage v-if="systemMessage.show && systemMessage.message" :validationStatus="systemMessage.validationStatus" :systemMessage="systemMessage.message"/>
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
@@ -210,10 +210,10 @@ export default {
                     event.preventDefault()
                     this.errorOccurred = true
                 }
-            } else {
-                this.submitFormData(event)
+                } else {
+                    this.submitFormData(event)
+                }
             }
-        }
     },
     watch: {
         formElements: {
@@ -254,6 +254,22 @@ export default {
         :where(input, select, textarea):user-valid:focus[required],
         select:user-invalid:focus[required] option:not(:first-child) {
             color: var(--success-color);
+        }
+    }
+
+    /* must be refactored */
+    &.send-success {
+        fieldset {
+            border-color: var(--default-border-color) !important;
+
+            :is(label, .label) :is(.label-text :is(span, a[class*="icon-"], a:has([class*="icon-"])), .place-inside[class*="icon-"], input, select, textarea) {
+                --status-color: var(--default-text-color) !important;
+                border-color: var(--default-border-color) !important;
+            }
+
+            sup {
+                --status-color: var(--primary-color) !important;
+            }
         }
     }
 

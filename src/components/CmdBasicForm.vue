@@ -7,6 +7,7 @@
         <!-- begin CmdForm -->
         <CmdForm
             @submit="onSubmit"
+            :class="{'send-success': sendSuccessfully}"
             novalidate="novalidate"
             v-bind="cmdForm"
             :legend="legend"
@@ -25,7 +26,6 @@
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
 
@@ -39,7 +39,6 @@
                     :replaceInputType="configuration.salutation?.replaceInputType"
                     v-model="formData.salutation.value"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
@@ -62,7 +61,7 @@
                     v-model="formData.lastName.value"
                     :status="formData.lastName.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
+                    :showStatusIcon="false"
                 />
                 <!-- end cmd-form-element -->
 
@@ -79,7 +78,6 @@
                     v-model="formData.firstName.value"
                     :status="formData.firstName.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
@@ -97,7 +95,7 @@
                     v-model="formData.email.value"
                     :status="formData.email.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
+                    :showStatusIcon="false"
                 />
                 <!-- end cmd-form-element -->
 
@@ -114,7 +112,6 @@
                     :name="configuration.phone?.name"
                     :status="formData.phone.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
@@ -131,7 +128,6 @@
                     v-model="formData.country.value"
                     :status="formData.country.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                     @update:modelValue="onCountrySelect"
                 />
                 <!-- end cmd-form-element -->
@@ -148,7 +144,6 @@
                     v-model="formData.streetNo.value"
                     :status="formData.streetNo.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
 
@@ -164,7 +159,6 @@
                     v-model="formData.pobox.value"
                     :status="formData.pobox.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
 
@@ -182,7 +176,6 @@
                         v-model="formData.zip.value"
                         :status="formData.zip.error ? 'error' : ''"
                         :i18n="i18n"
-                        @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
 
@@ -198,7 +191,6 @@
                         v-model="formData.city.value"
                         :status="formData.city.error ? 'error' : ''"
                         :i18n="i18n"
-                        @validate="onValidate"
                     />
                     <!-- end cmd-form-element -->
                 </div>
@@ -215,7 +207,6 @@
                     v-model="formData.additionalAddressInfo.value"
                     :status="formData.additionalAddressInfo.error ? 'error' : ''"
                     :i18n="i18n"
-                    @validate="onValidate"
                 />
                 <!-- end cmd-form-element -->
             </div>
@@ -233,7 +224,7 @@
                 v-model="formData.userMessage.value"
                 :status="formData.userMessage.error ? 'error' : ''"
                 :i18n="i18n"
-                @validate="onValidate"
+                :showStatusIcon="false"
             />
             <!-- end cmd-form-element -->
 
@@ -252,12 +243,17 @@
                 v-model="formData.acceptPrivacy.value"
                 :status="formData.acceptPrivacy.error ? 'error' : ''"
                 :i18n="i18n"
-                @validate="onValidate">
+                >
                 <template v-slot:labeltext>
                     <span ref="dataPrivacy" v-html="getMessage('basic_form.labeltext.data_privacy')"></span>
                 </template>
             </CmdFormElement>
             <!-- end cmd-form-element -->
+
+            <!-- button to test a successful sending
+            <button class="button" type="button" @click="onSuccess">On Success</button>
+            -->
+
         </CmdForm>
         <!-- end CmdForm -->
     </div>
@@ -284,6 +280,7 @@ export default {
     },
     data() {
         return {
+            sendSuccessfully: false,
             validator: new ContactFormValidator(label => label),
             formData: {
                 salutation: {value: this.configuration.salutation.default},
@@ -304,6 +301,13 @@ export default {
         }
     },
     props: {
+        /**
+         * website-key for Google-recaptcha v3
+         */
+        reCaptchaWebsiteKey: {
+            type: String,
+            required: false
+        },
         /**
          * activate if native submit-event should be used
          */
@@ -474,9 +478,37 @@ export default {
         }
     },
     methods: {
+        /*
+        onSuccess() {
+            this.sendSuccessfully = true
+            try {
+                // reset global validation-status
+                this.formData.error = false
+
+                for (let key in this.formData) {
+                    // reset field-validation-status
+                    if(this.formData[key].error) {
+                        this.formData[key].error = false
+                    }
+
+                    // reset field-values
+                    if(typeof this.formData[key].value === "string") {
+                        if(key === "salutation") {
+                            this.formData[key].value = this.configuration.salutation.default
+                        } else {
+                            this.formData[key].value = ""
+                        }
+                    } else if(key === "acceptPrivacy") {
+                        this.formData[key].value = false
+                    }
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        */
         onSubmit(event) {
             this.onValidate()
-
             this.formData = Object.assign({}, this.validator.validatePrivacy(this.formData));
 
             if (this.formData.error || this.useNativeSubmit) {
@@ -487,8 +519,27 @@ export default {
                 return
             }
 
+            // prevent original levent form CmdForm (to avoid submit and reload)
+            event.originalEvent.preventDefault()
+
+            if(this.reCaptchaWebsiteKey && window.grecaptcha) {
+                grecaptcha.ready(() => {
+                    grecaptcha.execute(this.reCaptchaWebsiteKey, {action: "submit"}).then(token => this.submitForm(token)).catch(error => console.log("recaptcha error", error))
+                })
+            } else {
+                this.submitForm()
+            }
+        },
+        submitForm(token) {
+            this.sendSuccessfully = false
+
             // custom submit of form-data
             const customSubmitFormData = new FormData()
+
+            if(token) {
+                customSubmitFormData.set("recaptchaToken", token)
+            }
+
             // get keys for form-elements from configuration
             const configurationEntries = Object.keys(this.configuration)
 
@@ -499,8 +550,32 @@ export default {
 
             fetch(this.formAction, {method: this.cmdForm?.formMethod || "POST", body: customSubmitFormData}).then((response) => {
                 if(response.ok) {
+                    this.sendSuccessfully = true
                     this.$refs.form.showMessage("success", this.getMessage("basic_form.system_message.success.message_sent_successfully"))
+                    try {
+                        // reset global validation-status
+                        this.formData.error = false
 
+                        for (let key in this.formData) {
+                            // reset field-validation-status
+                            if(this.formData[key].error) {
+                                this.formData[key].error = false
+                            }
+
+                            // reset field-values
+                            if(typeof this.formData[key].value === "string") {
+                                if(key === "salutation") {
+                                    this.formData[key].value = this.configuration.salutation.default
+                                } else {
+                                    this.formData[key].value = ""
+                                }
+                            } else if (key === "acceptPrivacy") {
+                                this.formData[key].value = false
+                            }
+                        }
+                    } catch (error) {
+                        console.error(error)
+                    }
                 } else {
                     this.$refs.form.showMessage("error", this.getMessage("basic_form.system_message.error.message_could_not_be_sent"))
                 }
@@ -508,9 +583,6 @@ export default {
                 this.$refs.form.showMessage("error", this.getMessage("basic_form.system_message.error.message_could_not_be_sent"))
                 console.error(error)
             })
-
-            // prevent original levent form CmdForm (to avoid submit and reload)
-           event.originalEvent.preventDefault()
         },
         onCountrySelect(event) {
           this.cityBeforeZip = event === 'us' || event === 'uk';
@@ -549,6 +621,11 @@ export default {
             max-width: 30%;
         }
     }
+}
+
+/* overwrite inline-style from google-recaptcha to avoid collision with back-to-top-button
+.grecaptcha-badge {
+    bottom: 10rem !important;
 }
 </style>
 
