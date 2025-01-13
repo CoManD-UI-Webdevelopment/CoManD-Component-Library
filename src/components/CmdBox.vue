@@ -81,6 +81,7 @@
                     </div>
 
                     <transition-group :name="toggleTransition">
+                        <!-- begin textBody -->
                         <div
                             v-if="textBody"
                             :class="{
@@ -91,6 +92,8 @@
                             v-html='textBody'
                         >
                         </div>
+                        <!-- end textBody -->
+
                         <a v-if="cutoffTextLines > 0" href="#" @click.prevent="toggleCutOffText">
                             {{
                                 showCutOffText ? getMessage("box.contentbox.collapse_text") : getMessage("box.contentbox.expand_text")

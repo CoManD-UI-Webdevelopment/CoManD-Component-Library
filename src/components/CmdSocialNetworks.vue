@@ -277,7 +277,6 @@ export default {
         .button {
             padding: calc(var(--default-padding) / 2) var(--default-padding);
             gap: calc(var(--default-gap) / 2);
-            outline: 0;
 
             span {
                 margin: 0;

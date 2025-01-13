@@ -53,6 +53,7 @@
                 ref="tooltip"
                 :validationStatus="validationStatus"
                 :relatedId="tooltipId"
+                :scrollContainerForTooltip="scrollContainerForTooltip"
                 :cmdListOfRequirements="listOfRequirements"
                 :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             />
@@ -283,6 +284,13 @@ export default {
         }
     },
     props: {
+        /**
+         * specify a scroll-container which scrolling hides the tooltip
+         */
+        scrollContainerForTooltip: {
+            type: String,
+            required: false
+        },
         /**
          * set value for v-model (must be named modelValue in vue3 if default v-model should be used)
          */

@@ -12,6 +12,9 @@ import 'comand-ui-iconfonts/src/fonts/logos-iconfont/logos-iconfont.css'
 
 /* import additional iconfont containing editmode-icons */
 import 'comand-ui-iconfonts/src/fonts/editmode-iconfont/editmode-iconfont.css'
+
+/* import additional iconfont containing medical-icons */
+import 'comand-ui-iconfonts/src/fonts/medical-iconfont/medical-iconfont.css'
 /* end imports from comand-ui-iconfonts---------------------------------------------------------------------------------------- */
 
 /* begin imports from comand-component-library ---------------------------------------------------------------------------------------- */

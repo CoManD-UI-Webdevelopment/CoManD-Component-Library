@@ -2,8 +2,7 @@
     <li class="cmd-social-networks-item">
         <a
             :key="network.path"
-            :class="['button', {disabled: userMustAcceptDataPrivacy && !dataPrivacyAccepted}, 'text-align-' + buttonTextAlign]"
-            :id="network.id"
+            :class="['button', network.buttonClass, {disabled: userMustAcceptDataPrivacy && !dataPrivacyAccepted}, 'text-align-' + buttonTextAlign]"
             :href="getUrl(network)"
             @click="preventOnDisabled"
             target="_blank"
@@ -39,7 +38,7 @@ export default {
             required: true
         },
         /**
-         * toggle if user has to accept that anonymous data will be send while sharing
+         * toggle if user has to accept that anonymous data will be sent while sharing
          */
         userMustAcceptDataPrivacy: {
             type: Boolean
@@ -162,38 +161,45 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
+.cmd-social-networks-item {
+    .button {
+        --social-network-background-color: var(--social-network-color);
 
-[id^="social-network"] {
-    background: var(--social-network-color);
-    border-color: var(--social-network-color);
-
-    > span {
-        color: var(--pure-white);
-    }
-
-    &:hover, &:active, &:focus {
-        color: var(--pure-white);
+        background: var(--social-network-background-color);
+        border-color: var(--social-network-color);
 
         > span {
-            color: var(--social-network-color);
+            color: var(--pure-white);
+        }
+
+        &:hover, &:active, &:focus {
+            color: var(--pure-white);
+
+            > span {
+                color: var(--social-network-color);
+            }
+        }
+
+        &.social-network-facebook {
+            --social-network-color: #3c5a99;
+        }
+
+        &.social-network-x {
+            --social-network-color: #000;
+        }
+
+        &.social-network-xing {
+            --social-network-color: #007575;
+        }
+
+        &.social-network-linkedin {
+            --social-network-color: #0077b5;
+        }
+
+        &.social-network-instagram {
+            --social-network-color: #000;
         }
     }
-}
-
-#social-network-facebook {
-    --social-network-color: #3c5a99;
-}
-
-#social-network-twitter {
-    --social-network-color: #6bacde;
-}
-
-#social-network-xing {
-    --social-network-color: #007575;
-}
-
-#social-network-linkedin {
-    --social-network-color: #0077b5;
 }
 </style>

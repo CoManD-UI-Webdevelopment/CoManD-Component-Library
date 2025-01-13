@@ -5,6 +5,7 @@
         class="cmd-tooltip-for-form-elements box"
         :class="validationStatus"
         :relatedId="relatedId"
+        :scrollContainer="scrollContainerForTooltip"
         :toggle-visibility-by-click="true">
 
         <!-- begin CmdListOfRequirements -->
@@ -21,6 +22,13 @@
 export default {
     name: "CmdTooltipForFormElements",
     props: {
+        /**
+         * specify a scroll-container which scrolling hides the tooltip
+         */
+        scrollContainerForTooltip: {
+            type: String,
+            required: false
+        },
         /**
          * related-id for CmdTooltip-component
          */

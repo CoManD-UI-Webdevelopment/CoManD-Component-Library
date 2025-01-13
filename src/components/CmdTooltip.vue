@@ -117,8 +117,10 @@ export default {
             const relatedElement = document.getElementById(this.relatedId)
 
             if(relatedElement) {
-                document.querySelector(this.scrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
-                document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
+                if(this.scrollContainer) {
+                    document.querySelector(this.scrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+                    document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
+                }
 
                 if (this.toggleVisibilityByClick) {
                     relatedElement.addEventListener("click", this.toggleTooltipVisibility)

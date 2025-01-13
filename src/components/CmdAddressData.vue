@@ -67,7 +67,12 @@
                         <li v-if="entry.href || (entry.name === 'address' && entry.linkGoogleMaps) || !showIconsOnly"
                             :class="{'no-flex' : showIconsOnly}">
                             <!-- begin all entries except address (which has no href) -->
-                            <a v-if="entry.href" :href="getHref(entry)" :target="entry.name === 'url' ? '_blank' : null" :title="entry.tooltip">
+                            <a v-if="entry.href"
+                               :class="{'button' : styleLinksAsButtons}"
+                               :href="getHref(entry)"
+                               :target="entry.name === 'url' ? '_blank' : null"
+                               :title="entry.tooltip"
+                            >
                                 <template v-if="showIconsOnly">
                                     <!-- begin CmdIcon -->
                                     <CmdIcon v-if="entry.iconClass" :iconClass="entry.iconClass" :type="entry.iconType"/>
@@ -208,6 +213,17 @@ export default {
          * option to toggle labels (i.e. telephone, email etc.) in front/left of data
          */
         showLabels: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * activate if links should be styled as buttons
+         *
+         * showIconsOnly-property must be activated
+         *
+         * @affectsStyling
+         */
+        styleLinksAsButtons: {
             type: Boolean,
             default: true
         },
