@@ -350,6 +350,7 @@ export default {
                 &.open {
                     > ul {
                         display: block;
+
                         > li {
                             &.open {
                                 > ul {

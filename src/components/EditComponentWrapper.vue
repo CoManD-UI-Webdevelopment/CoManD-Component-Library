@@ -117,7 +117,7 @@
                 <!-- end delete -->
 
                 <!-- begin edit/save -->
-                <li v-if="!isOuterComponent">
+                <li v-if="allowEditComponent">
                     <a :class="['icon-hexagon use-icon-as-background button cancel', {disabled: !editing}]"
                        href="#"
                        @click.prevent="cancelComponent"
@@ -125,7 +125,7 @@
                        <CmdIcon iconClass="icon-cancel"/>
                     </a>
                 </li>
-                <li v-if="!isOuterComponent">
+                <li v-if="allowEditComponent">
                     <a v-if="editing"
                        class="icon-hexagon use-icon-as-background button confirm" href="#"
                        @click.prevent="saveComponent"
@@ -176,6 +176,10 @@ export default {
         componentPath: {
             type: Array,
             required: true
+        },
+        allowEditComponent: {
+            type: Boolean,
+            default: true
         },
         allowAddComponent: {
             type: Boolean

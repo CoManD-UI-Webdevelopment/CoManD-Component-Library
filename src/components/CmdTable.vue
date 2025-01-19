@@ -36,9 +36,7 @@
                 </caption>
                 <thead>
                 <tr>
-                    <th v-for="(tablehead, indexHead) in tableData.thead" :key="indexHead">
-                        {{ tablehead }}
-                    </th>
+                    <th v-for="(tablehead, indexHead) in tableData.thead" :key="indexHead" v-html="tablehead"></th>
                 </tr>
                 </thead>
                 <transition :name="useTransition ? 'fade' : null">
@@ -46,8 +44,7 @@
                     <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
                         v-for="(tablerows, indexRows) in tableData.tbody" :key="indexRows">
                         <td :class="{'active' : tableData.columnIndexHighlighted === indexData}"
-                            v-for="(tabledata, indexData) in tablerows" :key="indexData">
-                            {{ tabledata }}
+                            v-for="(tabledata, indexData) in tablerows" :key="indexData" v-html="tabledata">
                         </td>
                     </tr>
                     </tbody>
@@ -56,8 +53,7 @@
                     <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
                     <tr>
                         <td :class="{'active' : tableData.columnIndexHighlighted === indexFoot}"
-                            v-for="(tablefoot, indexFoot) in tableData.tfoot" :key="indexFoot">
-                            {{ tablefoot }}
+                            v-for="(tablefoot, indexFoot) in tableData.tfoot" :key="indexFoot" v-html="tablefoot">
                         </td>
                     </tr>
                     </tfoot>

@@ -164,20 +164,24 @@ export default {
 <style>
 .cmd-social-networks-item {
     .button {
+        --social-network-text-color: var(--pure-white);
+        --social-network-text-color-highlighted: var(--social-network-color);
+        --social-network-border-color: var(--social-network-color);
         --social-network-background-color: var(--social-network-color);
+        --social-network-background-color-highlighted: var(--pure-white);
 
         background: var(--social-network-background-color);
-        border-color: var(--social-network-color);
+        border-color: var(--social-network-border-color);
 
         > span {
-            color: var(--pure-white);
+            color: var(--social-network-text-color);
         }
 
         &:hover, &:active, &:focus {
-            color: var(--pure-white);
+            color: var(--social-network-background-color-highlighted);
 
             > span {
-                color: var(--social-network-color);
+                color: var(--social-network-text-color-highlighted);
             }
         }
 

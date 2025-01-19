@@ -435,14 +435,12 @@ export default {
             return timeFormatting(":", " hrs", "", false)(time.hours, time.mins)
         },
         updateHandlerProvider() {
-            const openingHours = this.editableOpeningHours
-            const textOpen = this.editableTextOpen
-            const textClosed = this.editableTextClosed
-            const textHolidays = this.editableTextHolidays
-            const textMiscInfo = this.editableTextMiscInfo
+            const textOpen = this.textOpenModel
+            const textClosed = this.textClosedModel
+            const textHolidays = this.textHolidaysModel
+            const textMiscInfo = this.textMiscInfoModel
             return updateHandlerProvider(this, {
                 update(props, childUpdateHandlers) {
-                    props.openingHours = openingHours
                     props.textOpen = textOpen
                     props.textClosed = textClosed
                     props.textHolidays = textHolidays

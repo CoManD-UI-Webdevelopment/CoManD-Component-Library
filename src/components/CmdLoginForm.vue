@@ -39,31 +39,31 @@
         <!-- end named slot for login-form -->
 
         <div class="option-wrapper flex-container">
-            <template v-if="options.forgotPassword || options.createAccount">
+            <template v-if="linkForgotPassword || linkCreateAccount">
                 <!-- begin link for 'forgot password' -->
-                <a v-if="options.forgotPassword" href="#" @click.prevent="toggleSendLoginView">
+                <a v-if="linkForgotPassword" href="#" @click.prevent="toggleSendLoginView">
                     <!-- begin CmdIcon -->
-                    <CmdIcon v-if="options.forgotPassword.icon?.show && options.forgotPassword.icon?.iconClass"
-                          :iconClass="options.forgotPassword.icon.iconClass"
-                          :type="options.forgotPassword.icon.iconType"
-                          :title="options.forgotPassword.icon.tooltip"
+                    <CmdIcon v-if="linkForgotPassword.icon?.show && linkForgotPassword.icon?.iconClass"
+                          :iconClass="linkForgotPassword.icon.iconClass"
+                          :type="linkForgotPassword.icon.iconType"
+                          :title="linkForgotPassword.icon.tooltip"
                     />
                     <!-- end CmdIcon -->
-                    <span v-if="options.forgotPassword.text">{{ options.forgotPassword.text }}</span>
+                    <span v-if="linkForgotPassword.text">{{ linkForgotPassword.text }}</span>
                 </a>
                 <!-- end link for 'forgot password' -->
 
                 <!-- begin link for 'create account' -->
-                <template v-if="options.createAccount">
+                <template v-if="linkCreateAccount">
                     <!-- begin CmdLink -->
                     <CmdLink
-                        :linkType="options.createAccount.linkType"
-                        :path="options.createAccount.path"
-                        :text="options.createAccount.text"
+                        :linkType="linkCreateAccount.linkType"
+                        :path="linkCreateAccount.path"
+                        :text="linkCreateAccount.text"
                         :icon="{
-                            iconClass: options.createAccount.icon?.iconClass,
-                            tooltip: options.createAccount.icon?.tooltip,
-                            position: options.createAccount.icon?.position
+                            iconClass: linkCreateAccount.icon?.iconClass,
+                            tooltip: linkCreateAccount.icon?.tooltip,
+                            position: linkCreateAccount.icon?.position
                         }"
                     />
                     <!-- end CmdLink -->
@@ -120,17 +120,17 @@
         <!-- end slot for send-login-form -->
 
         <div class="option-wrapper flex-container">
-            <a v-if="options.backToLoginForm" href="#" @click.prevent="toggleSendLoginView">
+            <a v-if="linkForgotPassword" href="#" @click.prevent="toggleSendLoginView">
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="options.backToLoginForm && options.backToLoginForm.icon && options.backToLoginForm.icon.show && options.backToLoginForm.icon.iconClass"
-                    :iconClass="options.backToLoginForm.icon.iconClass"
-                    :type="options.backToLoginForm.icon.iconType"
-                    :title="options.backToLoginForm.icon.tooltip"
+                    v-if="linkForgotPassword && linkForgotPassword.icon && linkForgotPassword.icon.show && linkForgotPassword.icon.iconClass"
+                    :iconClass="linkForgotPassword.icon.iconClass"
+                    :type="linkForgotPassword.icon.iconType"
+                    :title="linkForgotPassword.icon.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="options.backToLoginForm.text">
-                  {{ options.backToLoginForm.text }}
+                <span v-if="linkForgotPassword.text">
+                  {{ linkForgotPassword.text }}
                 </span>
             </a>
 
@@ -273,36 +273,44 @@ export default {
          * forgotPassword: toggles form to send password by email
          * createAccount: creates a link (href/router) which could lead to a register-form
          */
-        options: {
+        linkForgotPassword: {
             type: Object,
             default() {
                 return {
-                    forgotPassword: {
-                        icon: {
-                            show: true,
-                            iconClass: "icon-questionmark-circle",
-                            tooltip: ""
-                        },
-                        text: "Forgot password"
+                    icon: {
+                        show: true,
+                        iconClass: "icon-questionmark-circle",
+                        tooltip: ""
                     },
-                    createAccount: {
-                        linkType: "href",
-                        path: "#",
-                        icon: {
-                            show: true,
-                            iconClass: "icon-register",
-                            tooltip: ""
-                        },
-                        text: "Create new account"
+                    text: "Forgot password"
+                }
+            }
+        },
+        linkCreateAccount: {
+            type: Object,
+            default() {
+                return {
+                    linkType: "href",
+                    path: "#",
+                    icon: {
+                        show: true,
+                        iconClass: "icon-register",
+                        tooltip: ""
                     },
-                    backToLoginForm: {
-                        icon: {
-                            show: true,
-                            iconClass: "icon-chevron-one-stripe-left",
-                            tooltip: ""
-                        },
-                        text: "Back to login form"
-                    }
+                    text: "Create account"
+                }
+            }
+        },
+        linkBackToLoginForm: {
+            type: Object,
+            default() {
+                return {
+                    icon: {
+                        show: true,
+                        iconClass: "icon-chevron-one-stripe-left",
+                        tooltip: ""
+                    },
+                    text: "Back to login form"
                 }
             }
         },

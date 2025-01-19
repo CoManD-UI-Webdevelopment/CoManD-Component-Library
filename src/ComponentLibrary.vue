@@ -1579,10 +1579,10 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                 </h2>
-                <CmdForm :use-validation="true" :use-fieldset="false">
+                <CmdForm :use-fieldset="false">
                     <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
                 </CmdForm>
-                <CmdForm :use-validation="true" :use-fieldset="false">
+                <CmdForm :use-fieldset="false">
                     <CmdLoginForm
                         ref="CmdLoginForm"
                         v-bind="cmdLoginFormSettingsData"

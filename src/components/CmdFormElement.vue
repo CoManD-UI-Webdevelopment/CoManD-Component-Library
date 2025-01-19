@@ -964,10 +964,6 @@ export default {
     .search-field-wrapper {
         margin: 0;
 
-        input[type="search"] {
-            border-radius: var(--default-border-radius);
-        }
-
         a {
             position: absolute;
             top: 50%;
