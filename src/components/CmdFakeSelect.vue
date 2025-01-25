@@ -534,7 +534,7 @@ export default {
     }
 
     > ul {
-        height: var(--input-height);
+        height: var(--form-input-height);
         margin: 0;
         display: block;
         min-width: 0;

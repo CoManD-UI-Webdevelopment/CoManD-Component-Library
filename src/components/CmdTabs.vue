@@ -16,7 +16,7 @@
         <!-- being tab-content -->
         <!-- begin slot -->
         <template v-if="useSlot">
-            <div v-show="showTab === index - 1" v-for="index in tabs.length" :key="index" aria-live="assertive" :class="{'no-padding': !useDefaultPadding}">
+            <div v-show="showTab === index - 1" v-for="index in tabs.length" :key="index" aria-live="assertive" :class="['tab-content-' + (index - 1), {'no-padding': !useDefaultPadding}]">
                 <!-- begin named slot-content -->
                 <slot :name="'tab-content-' + (index - 1)"></slot>
                 <!-- end named slot-content -->

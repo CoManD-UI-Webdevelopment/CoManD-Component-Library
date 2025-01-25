@@ -1,6 +1,7 @@
 [
   {
     "image": {
+      "url": "#",
       "src": "/media/images/demo-images/medium/landscape-01.jpg",
       "srcImageLarge": "/media/images/demo-images/large/landscape-01.jpg",
       "alt": "Alternative text 1",

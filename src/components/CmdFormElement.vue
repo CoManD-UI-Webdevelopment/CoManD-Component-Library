@@ -309,9 +309,11 @@ export default {
                 return value === "input" ||
                     value === "select" ||
                     value === "textarea" ||
-                    value === "button";
+                    value === "button"
             },
-            required: true
+            default() {
+                return "input"
+            }
         },
         /**
          * hide label (and asterisk if mandatory)

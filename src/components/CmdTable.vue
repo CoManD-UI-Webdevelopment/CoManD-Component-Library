@@ -2,6 +2,7 @@
     <div
         :class="['cmd-table-wrapper', {'collapsed': !showTableData, 'full-width': fullWidth, 'has-caption': hasCaption, 'has-overflow': hasOverflow}]">
         <div v-if="collapsible || userCanToggleWidth" class="button-wrapper">
+            <!-- begin button to toggle table-width -->
             <a v-if="userCanToggleWidth" class="button"
                href="#" @click.prevent="fullWidth = !fullWidth"
                :title="iconToggleWidth.tooltip"
@@ -10,6 +11,9 @@
                 <CmdIcon :iconClass="iconToggleWidth.iconClass" :type="iconToggleWidth.iconType"/>
                 <!-- end CmdIcon -->
             </a>
+            <!-- end button to toggle table-width -->
+
+            <!-- begin button to collapse table-content -->
             <a v-if="collapsible" class="button"
                href="#" @click.prevent="showTableData = !showTableData"
                :title="showTableData ? iconCollapse.tooltip : iconExpand.tooltip"
@@ -19,6 +23,7 @@
                          :type="showTableData ? iconCollapse.iconType : iconExpand.iconType"/>
                 <!-- end CmdIcon -->
             </a>
+            <!-- end button to collapse table-content -->
         </div>
         <div class="inner-wrapper" ref="innerWrapper" @scroll="updatePosition">
             <!-- begin CmdSlideButton -->
@@ -31,32 +36,40 @@
 
             <!-- begin table -->
             <table ref="table" :class="{'full-width': fullWidth}">
-                <caption v-if="tableData.caption?.text || caption?.text" :class="{ hidden: hideCaption }">
-                    {{ caption?.text || tableData.caption?.text }}
-                </caption>
-                <thead>
-                <tr>
-                    <th v-for="(tablehead, indexHead) in tableData.thead" :key="indexHead" v-html="tablehead"></th>
-                </tr>
-                </thead>
+                <slot name="table-caption">
+                    <caption v-if="tableData.caption?.text || caption?.text" :class="{ hidden: hideCaption }">
+                        {{ caption?.text || tableData.caption?.text }}
+                    </caption>
+                </slot>
+                <slot name="table-head">
+                    <thead>
+                        <tr>
+                            <th v-for="(tablehead, indexHead) in tableData.thead" :key="indexHead" v-html="tablehead"></th>
+                        </tr>
+                    </thead>
+                </slot>
                 <transition :name="useTransition ? 'fade' : null">
-                    <tbody v-show="showTableData" aria-expanded="true">
-                    <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
-                        v-for="(tablerows, indexRows) in tableData.tbody" :key="indexRows">
-                        <td :class="{'active' : tableData.columnIndexHighlighted === indexData}"
-                            v-for="(tabledata, indexData) in tablerows" :key="indexData" v-html="tabledata">
-                        </td>
-                    </tr>
-                    </tbody>
+                    <slot name="table-body">
+                        <tbody v-show="showTableData" aria-expanded="true">
+                            <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
+                                v-for="(tablerows, indexRows) in tableData.tbody" :key="indexRows">
+                                <td :class="{'active' : tableData.columnIndexHighlighted === indexData}"
+                                    v-for="(tabledata, indexData) in tablerows" :key="indexData" v-html="tabledata">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </slot>
                 </transition>
                 <transition :name="useTransition ? 'fade' : null">
-                    <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
-                    <tr>
-                        <td :class="{'active' : tableData.columnIndexHighlighted === indexFoot}"
-                            v-for="(tablefoot, indexFoot) in tableData.tfoot" :key="indexFoot" v-html="tablefoot">
-                        </td>
-                    </tr>
-                    </tfoot>
+                    <slot name="table-foot">
+                        <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
+                            <tr>
+                                <td :class="{'active' : tableData.columnIndexHighlighted === indexFoot}"
+                                    v-for="(tablefoot, indexFoot) in tableData.tfoot" :key="indexFoot" v-html="tablefoot">
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </slot>
                 </transition>
             </table>
             <!-- end table -->

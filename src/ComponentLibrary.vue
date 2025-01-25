@@ -1572,6 +1572,21 @@
             </CmdWidthLimitationWrapper>
             <!-- end list-of-links --------------------------------------------------------------------------------------------------->
 
+            <!-- begin list-of-images --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-list-of-images">
+                    <span>List Of Images</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                       @click.prevent="openSettingsSidebar('CmdListOfImages')"></a>
+                </h2>
+                <CmdListOfImages
+                    ref="CmdListOfImages"
+                    v-bind="cmdListOfImagesSettingsData"
+                    :images="imageGalleryData"
+                />
+            </CmdWidthLimitationWrapper>
+            <!-- end list-of-images --------------------------------------------------------------------------------------------------->
+
             <!-- begin login-form --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-login-form">

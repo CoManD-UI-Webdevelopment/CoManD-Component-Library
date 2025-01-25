@@ -388,7 +388,7 @@ function buildComponentPath(component) {
         &.edit-mode input, select, .cmd-fake-select {
             padding: 0;
             height: auto;
-            min-height: calc(var(--input-height) / 2);
+            min-height: calc(var(--form-input-height) / 2);
         }
     }
 

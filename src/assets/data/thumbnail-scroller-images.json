@@ -1,6 +1,7 @@
 [
   {
     "image": {
+      "url": "#",
       "id": 1,
       "srcImageSmall": "/media/images/demo-images/small/landscape-01.jpg",
       "srcImageLarge": "/media/images/demo-images/large/landscape-01.jpg",

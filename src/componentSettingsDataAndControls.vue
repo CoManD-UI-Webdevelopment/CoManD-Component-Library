@@ -397,6 +397,22 @@ data() {
                 }
             ]
         },
+        cmdListOfImagesSettingsData: {
+            styleAsBox: false,
+            orientation: "vertical"
+        },
+        cmdListOfImagesSettingsControls: {
+            orientation: [
+                {
+                    text: "Vertical",
+                    value: "vertical"
+                },
+                {
+                    text: "Horizontal (default)",
+                    value: "horizontal"
+                }
+            ]
+        },
         cmdListOfLinksSettingsData: {
             useGap: true,
             styleAsBox: false,

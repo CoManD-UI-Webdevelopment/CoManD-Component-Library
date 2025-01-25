@@ -97,7 +97,7 @@ body.avoid-scrolling {
 
 /* begin input-wrapper for .select --------------------------------------------------------------------------------------------------------------------------------------------------- */
 .select {
-    height: var(--input-height); /* forces different browsers to render same height */
+    height: var(--form-input-height); /* forces different browsers to render same height */
 }
 
 .input-wrapper {
