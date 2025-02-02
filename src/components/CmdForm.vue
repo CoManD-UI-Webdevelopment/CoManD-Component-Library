@@ -40,7 +40,7 @@
                 <!-- begin submit-button (inside fieldset) -->
                 <button
                     v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null) "
-                    :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}]"
+                    :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
                     :type="submitButtonOptions.type"
                 >
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
@@ -51,7 +51,7 @@
 
             <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="button-wrapper">
                 <!-- begin submit-button (below fieldset) -->
-                <button :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}]"
+                <button :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type || 'submit'">
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>

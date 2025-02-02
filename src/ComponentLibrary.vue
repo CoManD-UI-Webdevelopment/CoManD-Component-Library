@@ -1974,6 +1974,10 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
                 </h2>
+                <p> date (YMD/default): {{formatDate('2025-01-28', "", "-")}}</p>
+                <p> date (DMY): {{formatDate('2025-01-28', "dmy")}}</p>
+                <p> date (MDY): {{formatDate('2025-01-28', "mdy", "/")}}</p>
+                <p> date (invalid)): {{formatDate('invalid')}}</p>
                 <div class="inline-size">
                     <CmdThumbnailScroller
                         ref="CmdThumbnailScroller"
@@ -2072,7 +2076,6 @@
             <CmdWidthLimitationWrapper>
                 <h1 class="headline-demopage">Page Overview</h1>
             </CmdWidthLimitationWrapper>
-
             <!-- begin page-overview -->
             <PageOverview/>
             <!-- end page-overview -->
@@ -2175,6 +2178,7 @@ import listOfComponents from "@/assets/data/listOfComponents.json"
 import PageOverview from "@/pages/PageOverview.vue"
 
 // import external functions
+import {formatDate} from "@/utils/date.js"
 import * as functions from "@/mixins/FieldValidation.js"
 import {openFancyBox} from "@/components/CmdFancyBox.vue"
 import {localizedTime} from "./components/CmdOpeningHours.vue"
@@ -2383,6 +2387,7 @@ export default {
         }
     },
     methods: {
+        formatDate,
         updateLanguage(event) {
             this.selectedLanguage = event.iso2
         },
