@@ -18,6 +18,9 @@ import 'comand-ui-iconfonts/src/fonts/medical-iconfont/medical-iconfont.css'
 /* end imports from comand-ui-iconfonts---------------------------------------------------------------------------------------- */
 
 /* begin imports from comand-component-library ---------------------------------------------------------------------------------------- */
+/* import css for scss-variables */
+import './assets/styles/variables.scss'
+
 /* import css for global-styles */
 import './assets/styles/component-library-global-styles.scss'
 

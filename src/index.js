@@ -66,11 +66,10 @@ export { default as DirFancybox } from '@/directives/fancybox'
 // export functions
 export { createUuid, createHtmlId } from '@/utils/common'
 export { getFileExtension } from '@/utils/getFileExtension'
-export { capitalize } from '@/utils/string'
+export { capitalizeFirstLetter, lowercaseFirstLetter, fullName } from '@/utils/string'
 export { useScrollspy } from '@/composables/scrollspy'
 export { setCookieDisclaimerCookie, getCookieDisclaimerCookie } from '@/utils/cookie'
-export { currentDate, formatDate } from "@/utils/date"
-export { fullName } from "@/utils/name"
+export { currentDate, formatDate, formatTime } from "@/utils/date"
 
 // export composables
 export { useSequence } from '@/composables/sequence'

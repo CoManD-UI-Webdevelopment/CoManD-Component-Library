@@ -507,9 +507,20 @@
                                 :status="validationStatus"
                                 :disabled="disabledStatus"
                                 :selectData="fakeSelectCountriesData"
-                                v-model="selectedCountry"
+                                v-model="selectedCountryWithFlag"
                                 defaultOptionName="Select country:"
                                 type="country"
+                            />
+                            <CmdFormElement
+                                labelText="Selectbox with all countries:"
+                                element="select"
+                                :status="validationStatus"
+                                :disabled="disabledStatus"
+                                :selectOptions="allCountriesData"
+                                v-model="selectedCountry"
+                                :groupSelectOptionsByInitialLetters="true"
+                                max-height="10rem"
+                                defaultOptionName="Select country:"
                             />
                             <CmdFakeSelect
                                 labelText="Selectbox with colors:"
@@ -521,7 +532,7 @@
                                 type="color"
                             />
                         </div>
-                        <!-- emd FakeSelect -->
+                        <!-- end FakeSelect -->
                         <hr/>
 
                         <!-- begin progress bar -->
@@ -857,11 +868,12 @@
                         </dl>
                         <h3>Input Groups with Checkboxes/Radiobuttons (toggle-switches)</h3>
                         <CmdInputGroup
-                            labelText="Grouplabel for checkbox-group styled as toggle-switches:"
+                            labelText="Grouplabel for checkbox-group styled as toggle-switches (colored):"
                             :inputElements="idForReplacedInputsInInputGroup('checkbox-group-toggle-switch')"
                             inputTypes="checkbox"
                             v-model="inputGroupValueToggleSwitchCheckbox"
                             :toggleSwitches="true"
+                            :colored="true"
                             required="required"
                             :status="validationStatus"
                             :disabled="disabledStatus"
@@ -1404,7 +1416,7 @@
             <!-- begin google-maps --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-google-maps">Google Maps&trade;</h2>
-                <CmdGoogleMaps :address="addressData"/>
+                <CmdGoogleMaps :address="addressData[1]"/>
             </CmdWidthLimitationWrapper>
             <!-- end google-maps --------------------------------------------------------------------------------------------------->
 
@@ -2171,6 +2183,8 @@ import tableDataLarge from '@/assets/data/table-large.json'
 import thumbnailScrollerImagesData from '@/assets/data/thumbnail-scroller-images.json'
 import thumbnailScrollerTextData from '@/assets/data/thumbnail-scroller-text.json'
 
+import allCountriesData from '@/assets/data/all-countries.json'
+
 import packageJson from '../package.json'
 
 import listOfComponents from "@/assets/data/listOfComponents.json"
@@ -2266,7 +2280,8 @@ export default {
             showCmdLink: false,
             selectedOption: "",
             selectedOptions: [],
-            selectedCountry: "de",
+            selectedCountry: "us",
+            selectedCountryWithFlag: "de",
             selectedColor: "",
             rangeValue: 50,
             siteSearchFilters: {
@@ -2353,6 +2368,7 @@ export default {
             tabsData,
             thumbnailScrollerImagesData,
             thumbnailScrollerTextData,
+            allCountriesData,
             packageJson
         }
     },

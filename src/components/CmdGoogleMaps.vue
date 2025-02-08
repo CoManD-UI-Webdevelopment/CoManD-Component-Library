@@ -63,11 +63,9 @@ export default {
     computed: {
         locateAddress() {
             if(this.address) {
-               // const url = new URL("https://maps.google.de/maps?ie=UTF8&t=&z=17&iwloc=B&output=embed")
-                let url = new URL("https://www.google.de/maps/place/")
-                url += this.address.streetNo + this.address.zip + "," + this.address.city + this.address.country
-               /* url.searchParams.set("hl", "de")
-                url.searchParams.set("q", [this.address.streetNo, this.address.zip, this.address.city, this.address.country, this.address.latitude, this.address.longitude, this.address.location].join(" ").trim())*/
+                const url = new URL("https://maps.google.de/maps?ie=UTF8&t=&z=17&iwloc=B&output=embed")
+                url.searchParams.set("hl", "de")
+                url.searchParams.set("q", [this.address.streetNo, this.address.zip, this.address.city, this.address.country, this.address.latitude, this.address.longitude, this.address.location].join(" ").trim())
                 return url
             }
             return "https://maps.google.de/maps?ie=UTF8&t=&z=17&iwloc=B&output=embed"

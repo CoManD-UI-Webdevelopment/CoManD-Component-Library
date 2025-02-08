@@ -1,6 +1,6 @@
 {
   "name": "comand-component-library",
-  "version": "4.1.83",
+  "version": "4.1.90",
   "license": "GPL-3.0-only",
   "author": "CoManD-UI",
   "private": false,
@@ -20,13 +20,14 @@
     ".": "./dist/comand-component-library.js",
     "./css.js": "./src/css.js",
     "./style.css": "./dist/style.css",
-    "./variables.scss": "./src/assets/styles/variables.scss",
-    "./export-data.js": "./src/assets/data/export-data.js"
+    "./export-data.js": "./src/assets/data/export-data.js",
+    "./all-countries.json": "./src/assets/data/all-countries.json",
+    "./all-currencies.json": "./src/assets/data/all-currencies.json"
   },
   "dependencies": {
     "clickout-event": "^1.1.2",
     "comand-component-library": "^4.1.63",
-    "comand-frontend-framework": "^4.1.27",
+    "comand-frontend-framework": "^4.1.29",
     "comand-ui-iconfonts": "^1.0.14",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",

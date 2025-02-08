@@ -177,14 +177,28 @@
                 :id="htmlId"
                 @blur="onBlur"
                 @change="$emit('update:modelValue', $event.target.value)">
-            <option
-                v-for="(option, index) in selectOptions"
-                :key="index"
-                :value="option.value"
-                :selected="option.value === modelValue"
-            >
-                {{ option.text }}
-            </option>
+
+                <option v-if="!groupSelectOptionsByInitialLetters"
+                    v-for="(option, index) in selectOptions"
+                    :key="index"
+                    :value="option.value"
+                    :selected="option.value === modelValue"
+                >
+                    {{ option.text }}
+                </option>
+                <optgroup v-else :label="key"
+                    v-for="(options, key) in initialLetters"
+                    :key="key"
+                >
+                    <option
+                        v-for="(option, optionIndex) in options"
+                        :key="optionIndex"
+                        :value="option.value"
+                        :selected="option.value === modelValue"
+                    >
+                        {{ option.text }}
+                    </option>
+                </optgroup>
         </select>
         <!-- end selectbox -->
 
@@ -284,6 +298,10 @@ export default {
         }
     },
     props: {
+        groupSelectOptionsByInitialLetters: {
+            type: Boolean,
+            default: false
+        },
         /**
          * specify a scroll-container which scrolling hides the tooltip
          */
@@ -680,6 +698,9 @@ export default {
         }
     },
     computed: {
+        initialLetters() {
+                return this.getInitialLetters(this.selectOptions)
+        },
         elementAttributes() {
             const commonAttributes = ["name", "required", "readonly", "disabled", "autofocus"]
             const attributes = {
@@ -761,6 +782,20 @@ export default {
         }
     },
     methods: {
+        getInitialLetters(listOfOptions) {
+            const groupedListOfOptions = {}
+            // compare the text-keys (in lower case) and sort them
+            listOfOptions.sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()))
+
+            for (let i = 0; i < listOfOptions.length; i++) {
+                const initialLetter = listOfOptions[i].text.slice(0,1)
+                if (!groupedListOfOptions[initialLetter]) {
+                    groupedListOfOptions[initialLetter] = []
+                }
+                groupedListOfOptions[initialLetter].push(listOfOptions[i])
+            }
+            return groupedListOfOptions
+        },
         setFocus() {
             this.$refs.label.querySelector("input, select, textarea")?.focus()
         },

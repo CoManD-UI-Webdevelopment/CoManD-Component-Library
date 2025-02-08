@@ -50,7 +50,7 @@
 
         <!-- begin view without slot -->
         <span v-if="!useSlot" :class="['flex-container', {'no-flex': !stretchHorizontally, 'no-gap': multipleSwitch}]">
-            <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches}">
+            <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches, colored: colored}">
                 <input
                     :type="inputTypes"
                     :id="inputElement.id"
@@ -117,6 +117,19 @@ export default {
         showStatusIcon: {
             type: Boolean,
             default: true
+        },
+        /**
+         * on/off-, yes/no-color-styling
+         *
+         * set to true, if checkbox/radio-buttons should have green/checked and red/unchecked color-coding
+         * toggleSwitch-prop must be set to "true"
+         * element-prop must be set to "input" and type-attribute must be set to "checkbox" or "radio"
+         *
+         * @affectsStyling: true
+         */
+        colored: {
+            type: Boolean,
+            required: false
         },
         /**
          * list of input-elements inside group
