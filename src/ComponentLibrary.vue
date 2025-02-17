@@ -1348,6 +1348,7 @@
                     :use-fieldset="true"
                     id="form-component"
                     novalidate="novalidate"
+                    :submitButton="{position: 'belowFieldset'}"
                     @submit="doConsoleLog"
                 >
                     <CmdFormElement
@@ -1608,18 +1609,6 @@
                 </h2>
                 <CmdForm :use-fieldset="false">
                     <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
-                </CmdForm>
-                <CmdForm :use-fieldset="false">
-                    <CmdLoginForm
-                        ref="CmdLoginForm"
-                        v-bind="cmdLoginFormSettingsData"
-                        orientation="vertical"
-                        :cmdHeadlineLoginForm="{
-                                headlineText: 'Please login',
-                                headlineLevel: 3
-                            }"
-                        v-model="loginData"
-                    />
                 </CmdForm>
                 <p>LoginData: {{ loginData }}</p>
             </CmdWidthLimitationWrapper>

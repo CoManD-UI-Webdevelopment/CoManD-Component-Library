@@ -37,19 +37,22 @@
                 />
                 <!-- end loop for formElements -->
 
-                <!-- begin submit-button (inside fieldset) -->
-                <button
-                    v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null) "
-                    :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
-                    :type="submitButtonOptions.type"
-                >
-                    <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
-                    <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
-                </button>
-                <!-- end submit-button (inside fieldset) -->
+                <div v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container">
+                    <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>
+                    <!-- begin submit-button (inside fieldset) -->
+                    <button
+                        :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
+                        :type="submitButtonOptions.type"
+                    >
+                        <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
+                        <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
+                    </button>
+                    <!-- end submit-button (inside fieldset) -->
+                </div>
             </fieldset>
 
             <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="button-wrapper">
+                <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>
                 <!-- begin submit-button (below fieldset) -->
                 <button :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type || 'submit'">
@@ -170,6 +173,13 @@ export default {
         submitButton: {
             type: Object,
             required: false
+        },
+        /**
+         * text to clarify which inputs are mandatory
+         */
+        mandatoryText: {
+            type: String,
+            default: "mandatory inputs"
         }
     },
     computed: {
@@ -281,6 +291,14 @@ export default {
     &.error {
         fieldset, *:invalid {
             border-color: var(--error-color);
+        }
+    }
+
+    .mandatory-text {
+        sup {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            top: 0;
         }
     }
 

@@ -120,17 +120,18 @@
         <!-- end slot for send-login-form -->
 
         <div class="option-wrapper flex-container">
-            <a v-if="linkForgotPassword" href="#" @click.prevent="toggleSendLoginView">
+            <a href="#" @click.prevent="toggleSendLoginView">
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="linkForgotPassword && linkForgotPassword.icon && linkForgotPassword.icon.show && linkForgotPassword.icon.iconClass"
-                    :iconClass="linkForgotPassword.icon.iconClass"
-                    :type="linkForgotPassword.icon.iconType"
-                    :title="linkForgotPassword.icon.tooltip"
+                    v-if="linkBackToLogin.icon && linkBackToLogin.icon.show && linkBackToLogin.icon.iconClass"
+                    :iconClass="linkBackToLogin.icon.iconClass"
+                    :type="linkBackToLogin.icon.iconType"
+                    :title="linkBackToLogin.icon.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="linkForgotPassword.text">
-                  {{ linkForgotPassword.text }}
+
+                <span>
+                    {{linkBackToLogin.text}}
                 </span>
             </a>
 
@@ -286,6 +287,9 @@ export default {
                 }
             }
         },
+        /**
+         * define link to create an account (that is linked to a register-form i.e.)
+         */
         linkCreateAccount: {
             type: Object,
             default() {
@@ -301,7 +305,10 @@ export default {
                 }
             }
         },
-        linkBackToLoginForm: {
+        /**
+         * define link from "forgot-login-form"-view back to the default login-form
+         */
+        linkBackToLogin: {
             type: Object,
             default() {
                 return {
@@ -310,7 +317,7 @@ export default {
                         iconClass: "icon-chevron-one-stripe-left",
                         tooltip: ""
                     },
-                    text: "Back to login form"
+                    text: "Back to login"
                 }
             }
         },

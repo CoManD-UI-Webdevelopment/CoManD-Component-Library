@@ -95,8 +95,12 @@ export default {
     border: var(--default-border);
     border-radius: var(--default-border-radius);
 
+    &:hover, &:active, &:focus {
+        border-color: var(--hyperlink-color-highlighted);
+    }
+
     iframe {
-        border-radius: var(--default-border-radius);
+        border-radius: inherit;
     }
 
     .cmd-system-message {
