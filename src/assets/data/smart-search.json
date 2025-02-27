@@ -1,0 +1,28 @@
+{
+  "listOfRecommendations": [
+    {
+      "linkType": "href",
+      "text": "Option #1",
+      "icon": {
+        "iconClass": "icon-home"
+      }
+    },
+    {
+      "linkType": "href",
+      "text": "Option #2",
+      "icon": {
+        "iconClass": "icon-company"
+      }
+    },
+    {
+      "linkType": "href",
+      "text": "Option #3",
+      "icon": {
+        "iconClass": "icon-globe"
+      }
+    }
+  ],
+  "cmdFormElement": {
+    "labelText": "Label for inputfield (search) with smart-search:"
+  }
+}

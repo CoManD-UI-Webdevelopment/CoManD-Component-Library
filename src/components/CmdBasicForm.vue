@@ -263,8 +263,9 @@
 // import mixins
 import I18n from "../mixins/I18n.js"
 import DefaultMessageProperties from "../mixins/CmdBasicForm/DefaultMessageProperties.js"
-import {ContactFormValidator} from "../utils/ContactFormValidation.js"
 
+// import functions
+import {ContactFormValidator} from "../utils/ContactFormValidation.js"
 import {openFancyBox} from "./CmdFancyBox.vue"
 
 export default {

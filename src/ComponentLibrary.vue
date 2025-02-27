@@ -314,7 +314,7 @@
                                 v-bind="{useCustomTooltip: false}"
                             />
                         </div>
-                        <h2>Inputfields in Columns</h2>
+                        <h3>Inputfields in Columns</h3>
                         <div class="flex-container">
                             <CmdFormElement
                                 element="input"
@@ -427,29 +427,37 @@
                             :status="validationStatus"
                             :disabled="disabledStatus"
                         />
-                        <CmdFormElement
-                            element="input"
-                            labelText="Label (inline) for inputfield (search) without search-button:"
-                            :displayLabelInline="true"
-                            type="search"
-                            id="inputfield-search-without-searchbutton"
-                            placeholder="Keyword(s)"
-                            v-model="inputSearch"
-                            :showSearchButton="false"
-                            :status="validationStatus"
-                            :disabled="disabledStatus"
-                        />
-                        <CmdFormElement
-                            element="input"
-                            labelText="Label (inline) for inputfield (search):"
-                            :displayLabelInline="true"
-                            type="search"
-                            id="inputfield-search-with-searchbutton"
-                            placeholder="Keyword(s)"
-                            v-model="inputSearch"
-                            :status="validationStatus"
-                            :disabled="disabledStatus"
-                        />
+                        <h3>Searchfields</h3>
+                        <div class="flex-container">
+                            <CmdFormElement
+                                element="input"
+                                labelText="Label for inputfield (search) without search-button:"
+                                type="search"
+                                id="inputfield-search-without-searchbutton"
+                                placeholder="Keyword(s)"
+                                v-model="inputSearch"
+                                :showSearchButton="false"
+                                :status="validationStatus"
+                                :disabled="disabledStatus"
+                            />
+                            <CmdFormElement
+                                element="input"
+                                labelText="Label for inputfield (search):"
+                                type="search"
+                                id="inputfield-search-with-searchbutton"
+                                placeholder="Keyword(s)"
+                                v-model="inputSearch"
+                                :status="validationStatus"
+                                :disabled="disabledStatus"
+                            />
+                            <!-- begin CmdSmartSearch -->
+                            <CmdSmartSearch
+                                v-bind="smartSearchData"
+                                :disabled="disabledStatus"
+                            />
+                            <!-- end CmdSmartSearch -->
+                        </div>
+                        <h3>Textarea</h3>
                         <CmdFormElement
                             element="textarea"
                             labelText="Label for textarea:"
@@ -1414,6 +1422,51 @@
             </CmdWidthLimitationWrapper>
             <!-- end fancybox --------------------------------------------------------------------------------------------------->
 
+            <!-- begin flexible-scroll-container --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-flexible-scroll-container">Flexible Scroll-Container</h2>
+                <CmdFlexibleScrollContainer style="border: 1px dotted gray">
+                    <template v-slot:fixed-wrapper>
+                        <div class="default-padding" style="border: 1px dotted gray">
+                            Fixed content
+                        </div>
+                    </template>
+                    <template v-slot:scroll-wrapper>
+                        <div class="default-padding" style="border: 1px dotted gray">
+                            <ul>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                                <li>Dynamic Content</li>
+                            </ul>
+                        </div>
+                    </template>
+                </CmdFlexibleScrollContainer>
+            </CmdWidthLimitationWrapper>
+            <!-- end flexible-scroll-container --------------------------------------------------------------------------------------------------->
+
+            <!-- end fancybox --------------------------------------------------------------------------------------------------->
+
             <!-- begin google-maps --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-google-maps">Google Maps&trade;</h2>
@@ -1445,7 +1498,7 @@
                     ref="CmdHeadline"
                     headlineLevel="3"
                 >
-                    Headline text<br /> with html given by slot
+                    Headline text<br/> with html given by slot
                 </CmdHeadline>
 
             </CmdWidthLimitationWrapper>
@@ -1540,6 +1593,7 @@
                     ref="CmdLink"
                     v-bind="cmdLinkSettingsData"
                     :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
+                    @click="cmdLinkOutput"
                 />
                 <CmdLink
                     linkType="href"
@@ -1567,6 +1621,11 @@
                     :fancybox="true"
                     :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
                 />
+                <dl class="output">
+                    <dt>Event:</dt><dd>{{outputCmdLink?.event?.originalEvent.originalEvent}}</dd>
+                    <dt>Target:</dt><dd>{{outputCmdLink?.event?.originalEvent.target}}</dd>
+                    <dt>LinkType:</dt><dd>{{outputCmdLink?.event?.originalEvent.linkType}}</dd>
+                </dl>
             </CmdWidthLimitationWrapper>
             <!-- end link --------------------------------------------------------------------------------------------------->
 
@@ -1581,7 +1640,13 @@
                     ref="CmdListOfLinks"
                     v-bind="cmdListOfLinksSettingsData"
                     :links="listOfLinksData"
+                    @click="cmdLinkOutput"
                 />
+                <dl class="output">
+                    <dt>Event:</dt><dd>{{outputCmdLink?.event?.originalEvent}}</dd>
+                    <dt>Target:</dt><dd>{{outputCmdLink?.event?.originalEvent.target}}</dd>
+                    <dt>LinkType:</dt><dd>{{outputCmdLink?.event?.linkType}}</dd>
+                </dl>
             </CmdWidthLimitationWrapper>
             <!-- end list-of-links --------------------------------------------------------------------------------------------------->
 
@@ -1608,11 +1673,28 @@
                        @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                 </h2>
                 <CmdForm :use-fieldset="false">
-                    <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
+                    <CmdLoginForm
+                        ref="CmdLoginForm"
+                        v-bind="cmdLoginFormSettingsData"
+                        v-model="loginData"
+                    />
                 </CmdForm>
                 <p>LoginData: {{ loginData }}</p>
             </CmdWidthLimitationWrapper>
             <!-- end login-form --------------------------------------------------------------------------------------------------->
+
+            <!-- begin mail-tool --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-mail-tool">
+                    <span>Mail Tool</span>
+                </h2>
+                <CmdMailTool
+                    ref="CmdMailTool"
+                    :mailsInbox="mailToolData.inbox"
+                    :mailsOutbox="mailToolData.outbox"
+                />
+            </CmdWidthLimitationWrapper>
+            <!-- end mail-tool --------------------------------------------------------------------------------------------------->
 
             <!-- begin main-navigation --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1842,7 +1924,7 @@
                     :languages="languagesData"
                     @click="updateLanguage"
                 />
-                <p>Selected language: {{selectedLanguage}} </p>
+                <p>Selected language: {{ selectedLanguage }} </p>
             </CmdWidthLimitationWrapper>
             <!-- end switch-language --------------------------------------------------------------------------------------------------->
 
@@ -1975,10 +2057,10 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                        @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
                 </h2>
-                <p> date (YMD/default): {{formatDate('2025-01-28', "", "-")}}</p>
-                <p> date (DMY): {{formatDate('2025-01-28', "dmy")}}</p>
-                <p> date (MDY): {{formatDate('2025-01-28', "mdy", "/")}}</p>
-                <p> date (invalid)): {{formatDate('invalid')}}</p>
+                <p> date (YMD/default): {{ formatDate('2025-01-28', "", "-") }}</p>
+                <p> date (DMY): {{ formatDate('2025-01-28', "dmy") }}</p>
+                <p> date (MDY): {{ formatDate('2025-01-28', "mdy", "/") }}</p>
+                <p> date (invalid)): {{ formatDate('invalid') }}</p>
                 <div class="inline-size">
                     <CmdThumbnailScroller
                         ref="CmdThumbnailScroller"
@@ -2160,11 +2242,13 @@ import inputGroupReplacedRadiobuttonsData from '@/assets/data/input-group-replac
 import inputGroupToggleSwitchRadiobuttonsData from '@/assets/data/input-group-toggle-switch-radiobuttons.json'
 import listOfLinksData from '@/assets/data/list-of-links.json'
 import languagesData from '@/assets/data/switch-language.json'
+import mailToolData from '@/assets/data/mail-tool.json'
 import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
 import navigationData from '@/assets/data/main-navigation.json'
 import openingHoursData from '@/assets/data/opening-hours.json'
 import selectOptionsData from '@/assets/data/select-options.json'
 import slideshowData from '@/assets/data/slideshow.json'
+import smartSearchData from '@/assets/data/smart-search.json'
 import socialNetworksData from '@/assets/data/social-networks-page-by-json.json'
 import tabsData from '@/assets/data/tabs.json'
 import tableDataSmall from '@/assets/data/table-small.json'
@@ -2325,6 +2409,12 @@ export default {
             openLeftSidebar: true,
             openRightSidebar: false,
             openBoxes: [1],
+            outputCmdLink: {
+                event: {
+                    originalEvent: {},
+                    linkType: ""
+                }
+            },
 
             // assign data from json files to data-properties
             addressData,
@@ -2347,10 +2437,12 @@ export default {
             languagesData,
             listOfLinksData,
             multistepsData,
+            mailToolData,
             navigationData,
             openingHoursData,
             selectOptionsData,
             slideshowData,
+            smartSearchData,
             socialNetworksData,
             tableDataSmall,
             tableDataLarge,
@@ -2361,19 +2453,23 @@ export default {
             packageJson
         }
     },
+    mounted() {
+        console.log("Component Library is mounted");
+    },
     computed: {
         navigationDataModified() {
-            if(!this.useRouterLinks) {
+            if (!this.useRouterLinks) {
                 function mapLinkTypes(navigationEntries) {
                     return navigationEntries.map((item) => {
                         item.type = "href"
 
-                        if(item.subentries?.length) {
+                        if (item.subentries?.length) {
                             item.subentries = mapLinkTypes(item.subentries)
                         }
                         return item
                     })
                 }
+
                 return mapLinkTypes(this.navigationData.navigationEntries)
             }
             return this.navigationData.navigationEntries
@@ -2392,6 +2488,10 @@ export default {
         }
     },
     methods: {
+        cmdLinkOutput(event, linkType) {
+            this.outputCmdLink.event.originalEvent = event
+            this.outputCmdLink.event.linkType = linkType
+        },
         formatDate,
         updateLanguage(event) {
             this.selectedLanguage = event.iso2
@@ -2463,7 +2563,7 @@ export default {
                 return navigationData
             }, 1000);
         },
-        clickOnListOfLinks(event) {
+        f(event) {
             event.originalEvent.preventDefault()
             console.log(event)
         },

@@ -14,6 +14,7 @@
             :styleAsButton="link?.styleAsButton"
             :primaryButton="link?.primaryButton"
             :styleAsBox="link?.styleAsBox"
+            @click="emitClick($event, linkType)"
         />
         <!-- end CmdLink -->
 
@@ -78,6 +79,9 @@ export default {
                     props.text = text
                 }
             })
+        },
+        emitClick(event, linkType) {
+            this.$emit("click", {originalEvent: event, linkType: linkType})
         }
     }
 }

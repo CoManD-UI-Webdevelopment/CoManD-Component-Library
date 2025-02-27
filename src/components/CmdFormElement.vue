@@ -71,7 +71,6 @@
             <!-- begin inputfield -->
             <template v-if="element === 'input' && $attrs.type !== 'search'">
                 <input
-                    v-bind="elementAttributes"
                     :id="htmlId"
                     :class="inputClass"
                     @focus="tooltip = true"
@@ -83,8 +82,10 @@
                     :autocomplete="autocomplete"
                     :list="datalist ? datalist.id : null"
                     :value="modelValue"
+                    :minlength="$attrs.type === 'password' ? '8' : null"
                     :maxlength="getMaxLength()"
                     ref="input"
+                    v-bind="elementAttributes"
                 />
             </template>
             <!-- end inputfield -->
@@ -178,27 +179,27 @@
                 @blur="onBlur"
                 @change="$emit('update:modelValue', $event.target.value)">
 
-                <option v-if="!groupSelectOptionsByInitialLetters"
+            <option v-if="!groupSelectOptionsByInitialLetters"
                     v-for="(option, index) in selectOptions"
                     :key="index"
+                    :value="option.value"
+                    :selected="option.value === modelValue"
+            >
+                {{ option.text }}
+            </option>
+            <optgroup v-else :label="key"
+                      v-for="(options, key) in initialLetters"
+                      :key="key"
+            >
+                <option
+                    v-for="(option, optionIndex) in options"
+                    :key="optionIndex"
                     :value="option.value"
                     :selected="option.value === modelValue"
                 >
                     {{ option.text }}
                 </option>
-                <optgroup v-else :label="key"
-                    v-for="(options, key) in initialLetters"
-                    :key="key"
-                >
-                    <option
-                        v-for="(option, optionIndex) in options"
-                        :key="optionIndex"
-                        :value="option.value"
-                        :selected="option.value === modelValue"
-                    >
-                        {{ option.text }}
-                    </option>
-                </optgroup>
+            </optgroup>
         </select>
         <!-- end selectbox -->
 
@@ -699,7 +700,7 @@ export default {
     },
     computed: {
         initialLetters() {
-                return this.getInitialLetters(this.selectOptions)
+            return this.getInitialLetters(this.selectOptions)
         },
         elementAttributes() {
             const commonAttributes = ["name", "required", "readonly", "disabled", "autofocus"]
@@ -788,7 +789,7 @@ export default {
             listOfOptions.sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()))
 
             for (let i = 0; i < listOfOptions.length; i++) {
-                const initialLetter = listOfOptions[i].text.slice(0,1)
+                const initialLetter = listOfOptions[i].text.slice(0, 1)
                 if (!groupedListOfOptions[initialLetter]) {
                     groupedListOfOptions[initialLetter] = []
                 }
@@ -829,8 +830,11 @@ export default {
             const useValidation = event.target.closest("form")?.dataset.useValidation === "true"
 
             if (useValidation) {
+                // get value from input-element
+                const value = event.target.value
+
                 // if input is filled, set status to success (expect for checkboxes and radiobuttons)
-                if (!["checkbox", "radio"].includes(this.$attrs.type) && this.modelValue) {
+                if (!["checkbox", "radio"].includes(this.$attrs.type) && value) {
                     this.validationStatus = "success"
                 }
 
@@ -840,7 +844,7 @@ export default {
                     if (this.customRequirements) {
                         // check if customRequirement returns invalid result
                         const invalidCustomRequirement = this.customRequirements.some(requirement => {
-                            return !requirement.valid(this.modelValue)
+                            return !requirement.valid(value)
                         })
 
                         // set validation-status if invalidCustomRequirement returns at least one invalid entry
@@ -1032,10 +1036,8 @@ export default {
     }
 
     .place-inside {
-        + .search-field-wrapper {
-            input {
-                padding-left: calc(var(--default-padding) * 3);
-            }
+        & + input {
+            padding-left: calc(var(--default-padding) * 3);
         }
     }
 

@@ -12,6 +12,7 @@ export { default as CmdCookieDisclaimer } from '@/components/CmdCookieDisclaimer
 export { default as CmdCopyrightInformation } from '@/components/CmdCopyrightInformation.vue'
 export { default as CmdFakeSelect } from '@/components/CmdFakeSelect.vue'
 export { openFancyBox, default as CmdFancyBox } from '@/components/CmdFancyBox.vue'
+export { default as CmdFlexibleScrollContainer } from '@/components/CmdFlexibleScrollContainer.vue'
 export { default as CmdForm } from '@/components/CmdForm.vue'
 export { default as CmdFormElement } from '@/components/CmdFormElement.vue'
 export { default as CmdFormFilters } from '@/components/CmdFormFilters.vue'
@@ -63,16 +64,16 @@ export { default as DirFocus } from '@/directives/focus'
 export { default as DirTelephone } from '@/directives/telephone'
 export { default as DirFancybox } from '@/directives/fancybox'
 
-// export functions
+// export utils
 export { createUuid, createHtmlId } from '@/utils/common'
 export { getFileExtension } from '@/utils/getFileExtension'
 export { capitalizeFirstLetter, lowercaseFirstLetter, fullName } from '@/utils/string'
-export { useScrollspy } from '@/composables/scrollspy'
 export { setCookieDisclaimerCookie, getCookieDisclaimerCookie } from '@/utils/cookie'
 export { currentDate, formatDate, formatTime } from "@/utils/date"
 
 // export composables
 export { useSequence } from '@/composables/sequence'
+export { useScrollspy } from '@/composables/scrollspy'
 
 // export mixins
 export { default as I18n } from '@/mixins/I18n.js'

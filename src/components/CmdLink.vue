@@ -1,20 +1,26 @@
 <template>
     <!-- begin CmdLink -->
     <!-- begin href -->
-    <a v-if="linkType === 'href'" :href="path" :target="target" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" @click="emitClick($event, 'href')" :title="icon?.tooltip">
+    <a v-if="linkType === 'href'"
+       :href="path"
+       :target="target"
+       :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]"
+       @click.prevent="emitClick($event, 'href')"
+       :title="icon?.tooltip"
+    >
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
     </a>
     <!-- end href -->
 
-    <!-- begin router -->
+    <!-- begin router-link -->
     <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" @click="emitClick($event, 'router')" :title="icon?.tooltip">
         <CmdInnerLink :text="text" :icon="icon">
             <slot></slot>
         </CmdInnerLink>
     </router-link>
-    <!-- end router -->
+    <!-- end router-link -->
 
     <!-- begin button -->
     <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')" :title="icon?.tooltip">
@@ -112,7 +118,7 @@ export default {
     },
     methods: {
         emitClick(event, linkType) {
-            this.$emit('click', {originalEvent: event, linkType: linkType})
+            this.$emit("click", {originalEvent: event, linkType: linkType})
         }
     }
 }

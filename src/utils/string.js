@@ -12,16 +12,8 @@ function lowercaseFirstLetter(string) {
     return ""
 }
 
-function fullName(firstName, middleName = null, lastName) {
-    let fullName = ""
-    fullName += firstName + " "
-
-    if(middleName) {
-        fullName += middleName + " "
-    }
-
-    fullName += lastName
-    return fullName
+function fullName(...names) {
+    return names.join(" ")
 }
 
 export {capitalizeFirstLetter, lowercaseFirstLetter, fullName}

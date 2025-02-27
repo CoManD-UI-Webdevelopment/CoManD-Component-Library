@@ -73,21 +73,22 @@
 
             <!-- begin link-type 'button' -->
             <button
-                v-if="buttonLoginOptions.linkType === 'button'"
-                :type="buttonLoginOptions.type === 'submit' ? 'submit' : 'button'"
-                :class="['button', { primary: buttonLoginOptions.primary }]"
+                v-if="buttonLoginDefaultOptions.linkType === 'button'"
+                :type="buttonLoginDefaultOptions.type === 'submit' ? 'submit' : 'button'"
+                v-bind="buttonLoginOptions"
+                :class="['button', { primary: buttonLoginDefaultOptions.primary }]"
                 @click="onClick"
                 :disabled="buttonLoginDisabled"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon
-                    v-if="buttonLoginOptions.icon.iconClass"
-                    :iconClass="buttonLoginOptions.icon.iconClass"
-                    :type="buttonLoginOptions.icon.iconType"
-                    :title="buttonLoginOptions.icon.tooltip"
+                    v-if="buttonLoginDefaultOptions.icon.iconClass"
+                    :iconClass="buttonLoginDefaultOptions.icon.iconClass"
+                    :type="buttonLoginDefaultOptions.icon.iconType"
+                    :title="buttonLoginDefaultOptions.icon.tooltip"
                 />
                 <!-- end CmdIcon -->
-                <span v-if="buttonLoginOptions.text">{{ buttonLoginOptions.text }}</span>
+                <span v-if="buttonLoginDefaultOptions.text">{{ buttonLoginDefaultOptions.text }}</span>
             </button>
             <!-- begin link-type 'button' -->
         </div>
@@ -138,6 +139,7 @@
             <!-- begin link-type 'button' -->
             <button
                 v-if="buttonSendLoginOptions.linkType === 'button'"
+                v-bind="buttonSendLoginOptions"
                 :type="buttonSendLoginOptions.type === 'submit' ? 'submit' : 'button'"
                 :class="['button', { primary: buttonSendLoginOptions.primary }]"
                 :disabled="buttonSendLoginDisabled"
@@ -222,8 +224,8 @@ export default {
             default() {
                 return {
                     show: true,
-                    align: 'right"',
-                    text: 'Forgot login form'
+                    align: "right",
+                    text: "Forgot login form"
                 }
             }
         },
@@ -374,7 +376,7 @@ export default {
                 ...this.cmdFormElementSendLogin
             }
         },
-        buttonLoginOptions() {
+        buttonLoginDefaultOptions() {
             return {
                 linkType: "button", /* href, router, button */
                 type: "submit", /* submit, button */
@@ -386,6 +388,12 @@ export default {
                     iconClass: "icon-logon",
                     tooltip: ""
                 },
+                ...this.buttonLogin
+            }
+        },
+        buttonLoginOptions() {
+            return {
+                type: "submit",
                 ...this.buttonLogin
             }
         },

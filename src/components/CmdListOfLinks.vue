@@ -23,6 +23,7 @@
                 :key="index"
                 :class="{'active': sectionAnchors && activeSection === index}"
                 :link="link"
+                @click="emitClick($event, linkType)"
             />
             <!-- end CmdListOfLinksItem-->
 
@@ -199,6 +200,9 @@ export default {
             }
                 }
             })
+        },
+        emitClick(event, linkType) {
+            this.$emit("click", {originalEvent: event, linkType: linkType})
         }
     }
 }

@@ -1,7 +1,9 @@
 <template>
-    <span v-if="icon.iconClass && icon.position === 'left' || icon.position === 'top' || !icon.position" :class="icon.iconClass" :title="icon.tooltip"></span>
+    <img v-if="image?.src && (image?.position === 'left' || image?.position === 'top' || !image?.position)" :src="image?.src" :alt="image?.alt" />
+    <span v-if="icon?.iconClass && (icon?.position === 'left' || icon?.position === 'top' || !icon?.position)" :class="icon?.iconClass" :title="icon?.tooltip"></span>
     <span v-if="text">{{ text }}</span>
-    <span v-if="icon.iconClass && icon.position === 'right' || icon.position === 'bottom'" :class="icon.iconClass" :title="icon.tooltip"></span>
+    <span v-if="icon?.iconClass && (icon?.position === 'right' || icon?.position === 'bottom')" :class="icon?.iconClass" :title="icon?.tooltip"></span>
+    <img v-if="image?.src && (image?.position === 'right' || image?.position === 'bottom' || !image?.position)" :src="imag?.src" :alt="image?.alt" />
     <!-- begin default-slot -->
     <slot></slot>
     <!-- end default-slot -->
@@ -12,18 +14,25 @@ export default {
     name: "CmdInnerLink",
     props: {
         /**
-         * icon to display
+         * displayed icon
          */
         icon: {
             type: Object,
-            default: {}
+            required: false
         },
         /**
          * displayed text
          */
         text: {
             type: String,
-            default: ""
+            required: false
+        },
+        /**
+         * displayed image
+         */
+        image: {
+            type: Object,
+            required: false
         }
     }
 }

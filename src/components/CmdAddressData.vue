@@ -172,10 +172,11 @@
 </template>
 
 <script>
-import EditMode from "../mixins/EditMode.vue"
-import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js";
+// import functions
+import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js"
 
 // import mixins
+import EditMode from "../mixins/EditMode.vue"
 
 export default {
     name: "CmdAddressData",
