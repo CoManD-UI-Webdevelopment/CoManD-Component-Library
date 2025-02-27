@@ -107,7 +107,7 @@ export default {
             default: true
         },
         /**
-         * set selector the user scrolls to resize header
+         * set selector for element that scrolls content to resize header
          *
          * resizeHeaderOnScroll-property must be activated
          */

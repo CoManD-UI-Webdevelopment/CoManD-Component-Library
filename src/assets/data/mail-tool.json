@@ -1,0 +1,50 @@
+{
+  "inbox": [
+    {
+      "id": 1,
+      "cmdImage": {
+        "src": "/public/media/images/user-images/fake-user-1.jpg",
+        "alt": "User image"
+      },
+      "contactFullName": "Name Sender #1",
+      "subject": "This is the subject of this mail #1",
+      "isoDate": "2025-02-20",
+      "time": "19:39"
+    },
+    {
+      "id": 2,
+      "cmdImage": {
+        "src": "/public/media/images/user-images/fake-user-2.jpg",
+        "alt": "User image"
+      },
+      "contactFullName": "Name Sender #2",
+      "subject": "This is the subject of this mail #2",
+      "isoDate": "2025-02-20",
+      "time": "21:08"
+    }
+  ],
+  "outbox": [
+    {
+      "id": 3,
+      "cmdImage": {
+        "src": "/public/media/images/user-images/fake-user-2.jpg",
+        "alt": "User image"
+      },
+      "contactFullName": "Name Receiver #1",
+      "subject": "This is the subject of this mail #1",
+      "isoDate": "2025-02-20",
+      "time": "19:41"
+    },
+    {
+      "id": 4,
+      "cmdImage": {
+        "src": "/public/media/images/user-images/fake-user-3.jpg",
+        "alt": "User image"
+      },
+      "contactFullName": "Name Receiver #2",
+      "subject": "This is the subject of this mail #2",
+      "isoDate": "2025-02-21",
+      "time": "15:55"
+    }
+  ]
+}

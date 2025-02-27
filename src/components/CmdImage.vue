@@ -105,7 +105,7 @@
     <!-- end image with figure/figcaption -->
 
     <!-- begin image without figure/figcaption -->
-    <img v-else :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
+    <img v-else class="cmd-image" :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
     <!-- end image without figure/figcaption -->
     <!-- end default-view -->
 </template>

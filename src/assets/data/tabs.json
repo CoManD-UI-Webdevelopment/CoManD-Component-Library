@@ -1,20 +1,20 @@
 [
   {
-    "name": "Tab 1",
+    "text": "Tab 1",
     "headlineText": "Tab 1 Headline",
     "headlineLevel": 4,
     "iconClass": "icomoon-free:airplane",
     "htmlContent": "<p>Content for Tab 1</p>"
   },
   {
-    "name": "Tab 2",
+    "text": "Tab 2",
     "headlineText": "Tab 2 Headline",
     "headlineLevel": 4,
     "iconClass": "icomoon-free:blocked",
     "htmlContent": "<p>Content for Tab  2</p>"
   },
   {
-    "name": "Tab 3",
+    "text": "Tab 3",
     "headlineText": "Tab 3 Headline",
     "headlineLevel": 4,
     "iconClass": "cmd:linkedin",

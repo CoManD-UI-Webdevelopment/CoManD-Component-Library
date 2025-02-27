@@ -222,8 +222,8 @@ export default {
             default() {
                 return {
                     show: true,
-                    align: 'right"',
-                    text: 'Forgot login form'
+                    align: "right",
+                    text: "Forgot login form"
                 }
             }
         },

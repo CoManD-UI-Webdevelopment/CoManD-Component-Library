@@ -449,15 +449,13 @@ data() {
             ]
         },
         cmdLoginFormSettingsData: {
-            legendLoginForm: {
-                show: true,
-                align: "left",
-                text: "Login form"
+            cmdHeadlineLoginForm: {
+                headlineText: "Login",
+                headlineLevel: 4
             },
-            legendForgotLoginForm: {
-                show: true,
-                align: "right",
-                text: "Forgot login form"
+            cmdHeadlineSendLoginForm: {
+                headlineText: "Send Login",
+                headlineLevel: 4
             }
         },
         cmdLoginFormSettingsControls: {
@@ -509,10 +507,6 @@ data() {
         },
         cmdNewsletterSubscriptionSettingsData: {
             buttonType: "submit",
-            legend: {
-                show: true,
-                text: "Stay up-to-date"
-            },
             cmdInputGroup: {
                 inputElements: [
                     {
@@ -615,11 +609,7 @@ data() {
             ],
         },
         cmdSiteSearchSettingsData: {
-            useFilters: true,
-            legend: {
-                show: true,
-                text: "Search"
-            }
+            useFilters: true
         },
         cmdSlideshowSettingsData: {
             useSlot: false,

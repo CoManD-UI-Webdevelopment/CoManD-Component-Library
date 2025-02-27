@@ -322,7 +322,7 @@ export default {
     /* overwrite default behavior from frontend-framework */
     > .label-text {
         display: inline-flex;
-        margin-bottom: calc(var(--default-margin) / 2);
+        margin: 0;
 
         > span + a:has([class*="icon-"]) {
             margin-left: calc(var(--default-margin) / 2);

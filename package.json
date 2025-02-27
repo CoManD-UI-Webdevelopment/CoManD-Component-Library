@@ -27,8 +27,8 @@
   "dependencies": {
     "clickout-event": "^1.1.2",
     "comand-component-library": "^4.1.63",
-    "comand-frontend-framework": "^4.1.29",
-    "comand-ui-iconfonts": "^1.0.14",
+    "comand-frontend-framework": "^4.1.33",
+    "comand-ui-iconfonts": "^1.0.19",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",
     "vue": "^3.2.31",

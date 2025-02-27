@@ -1608,11 +1608,28 @@
                        @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
                 </h2>
                 <CmdForm :use-fieldset="false">
-                    <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData"/>
+                    <CmdLoginForm
+                        ref="CmdLoginForm"
+                        v-bind="cmdLoginFormSettingsData"
+                        v-model="loginData"
+                    />
                 </CmdForm>
                 <p>LoginData: {{ loginData }}</p>
             </CmdWidthLimitationWrapper>
             <!-- end login-form --------------------------------------------------------------------------------------------------->
+
+            <!-- begin mail-tool --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-mail-tool">
+                    <span>Mail Tool</span>
+                </h2>
+                <CmdMailTool
+                    ref="CmdMailTool"
+                    :mailsInbox="mailToolData.inbox"
+                    :mailsOutbox="mailToolData.outbox"
+                />
+            </CmdWidthLimitationWrapper>
+            <!-- end mail-tool --------------------------------------------------------------------------------------------------->
 
             <!-- begin main-navigation --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -2160,6 +2177,7 @@ import inputGroupReplacedRadiobuttonsData from '@/assets/data/input-group-replac
 import inputGroupToggleSwitchRadiobuttonsData from '@/assets/data/input-group-toggle-switch-radiobuttons.json'
 import listOfLinksData from '@/assets/data/list-of-links.json'
 import languagesData from '@/assets/data/switch-language.json'
+import mailToolData from '@/assets/data/mail-tool.json'
 import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
 import navigationData from '@/assets/data/main-navigation.json'
 import openingHoursData from '@/assets/data/opening-hours.json'
@@ -2347,6 +2365,7 @@ export default {
             languagesData,
             listOfLinksData,
             multistepsData,
+            mailToolData,
             navigationData,
             openingHoursData,
             selectOptionsData,
@@ -2360,6 +2379,9 @@ export default {
             allCountriesData,
             packageJson
         }
+    },
+    mounted() {
+        console.log("Component Library is mounted");
     },
     computed: {
         navigationDataModified() {
