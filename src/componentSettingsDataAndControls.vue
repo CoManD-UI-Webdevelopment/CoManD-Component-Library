@@ -508,6 +508,10 @@ data() {
         },
         cmdNewsletterSubscriptionSettingsData: {
             buttonType: "submit",
+            legend: {
+                show: true,
+                text: "Stay up-to-date"
+            },
             cmdInputGroup: {
                 inputElements: [
                     {
@@ -610,7 +614,11 @@ data() {
             ],
         },
         cmdSiteSearchSettingsData: {
-            useFilters: true
+            useFilters: true,
+            legend: {
+                show: true,
+                text: "Search"
+            }
         },
         cmdSlideshowSettingsData: {
             useSlot: false,
