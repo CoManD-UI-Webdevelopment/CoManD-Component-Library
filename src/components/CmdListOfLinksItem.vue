@@ -14,7 +14,7 @@
             :styleAsButton="link?.styleAsButton"
             :primaryButton="link?.primaryButton"
             :styleAsBox="link?.styleAsBox"
-            @click="emitClick($event, linkType)"
+            @click="emitClick($event, link)"
         />
         <!-- end CmdLink -->
 
@@ -80,8 +80,8 @@ export default {
                 }
             })
         },
-        emitClick(event, linkType) {
-            this.$emit("click", {originalEvent: event, linkType: linkType})
+        emitClick(event, link) {
+            this.$emit("click", {originalEvent: event, link: link})
         }
     }
 }

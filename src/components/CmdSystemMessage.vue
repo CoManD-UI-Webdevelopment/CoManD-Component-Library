@@ -11,7 +11,7 @@
                 v-if="iconClose.show && iconClose.iconClass"
                 href="#"
                 class="close-button"
-                @click.prevent="showSystemMessage = false"
+                @click.prevent="hideSystemMessage"
                 :title="iconClose.tooltip"
             >
                 <!-- begin CmdIcon -->
@@ -136,6 +136,12 @@ export default {
             return null
         }
     },
+    methods: {
+        hideSystemMessage(event) {
+            this.showSystemMessage = false
+            this.$emit("hideSystemMessage", event)
+        }
+    },
     watch: {
         message() {
             this.showSystemMessage = true
@@ -173,7 +179,7 @@ export default {
         text-decoration: none;
         z-index: 100;
         line-height: 1;
-        background: var(--pure-white);
+        background: var(--color-white);
         border-radius: var(--full-circle);
 
         [class*="icon-"] {
@@ -184,7 +190,7 @@ export default {
             background: none;
 
             [class*="icon-"] {
-                color: var(--pure-white);
+                color: var(--color-white);
             }
         }
     }
@@ -201,7 +207,7 @@ export default {
                 border-color: var(--hyperlink-color);
 
                 [class*="icon-"] {
-                    color: var(--pure-white);
+                    color: var(--color-white);
                 }
             }
         }

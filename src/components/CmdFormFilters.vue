@@ -116,7 +116,7 @@ export default {
         margin-left: 0;
         margin-right: var(--default-margin);
         border: var(--default-border);
-        background: var(--pure-white);
+        background: var(--color-white);
         font-size: var(--font-size-small);
 
         &:hover, &:active, &:focus {

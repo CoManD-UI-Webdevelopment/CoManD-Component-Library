@@ -1,0 +1,19 @@
+[
+  { "text": "Atlanta", "value": "atl" },
+  { "text": "Boston", "value": "bos" },
+  { "text": "Chicago", "value": "chi" },
+  { "text": "Dallas", "value": "dal" },
+  { "text": "Denver", "value": "den" },
+  { "text": "Houston", "value": "hou" },
+  { "text": "Las Vegas", "value": "vegas" },
+  { "text": "Los Angeles", "value": "la" },
+  { "text": "Miami", "value": "mia" },
+  { "text": "New Orleans", "value": "nola" },
+  { "text": "New York City", "value": "nyc" },
+  { "text": "Philadelphia", "value": "philly" },
+  { "text": "Phoenix", "value": "phx" },
+  { "text": "San Antonio", "value": "satx" },
+  { "text": "San Francisco", "value": "sf" },
+  { "text": "Seattle", "value": "sea" },
+  { "text": "Washington, D.C.", "value": "dc" }
+]

@@ -55,7 +55,7 @@ export default {
     name: "CmdTabs",
     data() {
         return {
-            showTab: this.activeTab
+            showTab: this.defaultActiveTab
         }
     },
     emits: ["active-tab"],
@@ -91,7 +91,7 @@ export default {
         /**
          * set default active/shown tab
          */
-        activeTab: {
+        defaultActiveTab: {
             type: Number,
             default: 0
         },
@@ -110,8 +110,8 @@ export default {
       }
     },
     watch: {
-        activeTab() {
-            this.showTab = this.activeTab
+        defaultActiveTab() {
+            this.showTab = this.defaultActiveTab
         }
     }
 }
@@ -156,13 +156,13 @@ export default {
 
             &.active {
                 span, [class*="icon-"] {
-                    color: var(--pure-white);
+                    color: var(--color-white);
                 }
 
                 &:hover, &:active {
                     a, a:focus {
                         color: var(--hyperlink-color);
-                        background: var(--pure-white);
+                        background: var(--color-white);
 
                         span, [class*="icon-"] {
                             color: var(--hyperlink-color-highlighted);
@@ -171,7 +171,7 @@ export default {
                 }
                 
                 a:focus {
-                    color: var(--pure-white);
+                    color: var(--color-white);
 
                     span, span[class*="icon-"], .iconify {
                         color: inherit !important;

@@ -8,7 +8,7 @@
        @click.prevent="emitClick($event, 'href')"
        :title="icon?.tooltip"
     >
-        <CmdInnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon" :image="image">
             <slot></slot>
         </CmdInnerLink>
     </a>
@@ -16,7 +16,7 @@
 
     <!-- begin router-link -->
     <router-link v-else-if="linkType === 'router'" :to="path" :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" @click="emitClick($event, 'router')" :title="icon?.tooltip">
-        <CmdInnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon" :image="image">
             <slot></slot>
         </CmdInnerLink>
     </router-link>
@@ -24,7 +24,7 @@
 
     <!-- begin button -->
     <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')" :title="icon?.tooltip">
-        <CmdInnerLink :text="text" :icon="icon">
+        <CmdInnerLink :text="text" :icon="icon" :image="image">
             <slot></slot>
         </CmdInnerLink>
     </button>
@@ -114,6 +114,10 @@ export default {
         fancybox: {
             type: Boolean,
             default: false
+        },
+        image: {
+            type: Object,
+            required: false
         }
     },
     methods: {
@@ -127,6 +131,21 @@ export default {
 <style>
 /* begin cmd-link -------------------------------------------------------------------------------------------- */
 .cmd-link {
+    display: flex;
+    gap: calc(var(--default-gap) / 2);
+    align-items: center;
+
+    img {
+        max-height: 4rem;
+        aspect-ratio: 1/1;
+        border-radius: var(--full-circle);
+        margin: 0;
+    }
+
+    span {
+        margin: 0;
+    }
+
     &.box {
         display: inline-flex;
         flex-direction: column;

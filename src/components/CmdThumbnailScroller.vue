@@ -448,7 +448,7 @@ export default {
                         figcaption {
                             background: var(--primary-color);
                             opacity: 1;
-                            color: var(--pure-white);
+                            color: var(--color-white);
                         }
                     }
 

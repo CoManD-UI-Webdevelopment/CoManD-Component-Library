@@ -144,14 +144,14 @@ export default {
             background: var(--primary-color-reduced-opacity);
 
             :is(span, [class*="icon-"]) {
-                color: var(--pure-white);
+                color: var(--color-white);
                 font-size: var(--icon-size-medium) !important;
 
                 & + [class*="icon-"] {
                     &:last-child {
                         border: var(--default-border);
                         border-radius: var(--full-circle);
-                        background: var(--pure-white);
+                        background: var(--color-white);
                         color: var(--color-scheme-text-color);
                         margin: 0;
                         position: absolute;
@@ -173,7 +173,7 @@ export default {
                 background: var(--primary-color);
 
                 :is(span, [class*="icon-"]) {
-                    color: var(--pure-white);
+                    color: var(--color-white);
                 }
 
                 .number {
@@ -191,8 +191,8 @@ export default {
                 justify-content: center;
                 border-radius: var(--full-circle);
                 border: var(--default-border);
-                border-color: var(--pure-white);
-                background: var(--pure-white);
+                border-color: var(--color-white);
+                background: var(--color-white);
                 color: var(--primary-color-reduced-opacity);
             }
         }
@@ -212,12 +212,12 @@ export default {
                 background: var(--primary-color);
 
                 span, [class*="icon-"] {
-                    color: var(--pure-white);
+                    color: var(--color-white);
                 }
 
                 &:hover, &:active, &:focus {
                     span, [class*="icon-"] {
-                        color: var(--pure-white);
+                        color: var(--color-white);
 
                         & + [class*="icon-"] {
                             &:last-child {
@@ -229,8 +229,8 @@ export default {
             }
 
             .number {
-                background: var(--pure-white);
-                border-color: var(--pure-white);
+                background: var(--color-white);
+                border-color: var(--color-white);
                 color: var(--hyperlink-color) !important;
             }
 
@@ -239,8 +239,7 @@ export default {
                 border-left-color: var(--border-color);
 
                 a {
-                    background: none;
-                    color: var(--color-scheme-text-color);
+                    color: var(--color-white);
 
                     span, span[class*='color'] {
                         color: inherit;
@@ -248,13 +247,15 @@ export default {
                         & + [class*="icon-"] {
                             &:last-child {
                                 border-color: var(--border-color);
-                                color: var(--pure-white);
+                                color: var(--color-white);
                                 background: var(--secondary-color);
                             }
                         }
                     }
 
                     &:hover, &:active, &:focus {
+                        background: var(--color-white);
+
                         span, [class*="icon-"] {
                             &:not(:last-child) {
                                 color: var(--hyperlink-color);

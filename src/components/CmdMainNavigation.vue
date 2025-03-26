@@ -438,7 +438,7 @@ export default {
                             left: 0;
                             height: 100dvh;
                             display: block;
-                            background: var(--pure-black-reduced-opacity);
+                            background: var(--color-black-reduced-opacity);
                         }
 
                         ul {

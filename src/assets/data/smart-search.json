@@ -1,22 +1,22 @@
 {
   "listOfRecommendations": [
     {
-      "linkType": "href",
-      "text": "Option #1",
+      "id": 1,
+      "displayValue": "Option #1",
       "icon": {
         "iconClass": "icon-home"
       }
     },
     {
-      "linkType": "href",
-      "text": "Option #2",
+      "id": 2,
+      "displayValue": "Option #2",
       "icon": {
         "iconClass": "icon-company"
       }
     },
     {
-      "linkType": "href",
-      "text": "Option #3",
+      "id": 3,
+      "displayValue": "Option #3",
       "icon": {
         "iconClass": "icon-globe"
       }

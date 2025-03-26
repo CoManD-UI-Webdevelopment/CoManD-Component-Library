@@ -263,7 +263,7 @@ export default {
                 --yellow-hue: 60;
                 --yellow-saturation: 100%;
                 --yellow-lightness: 76.7%;
-                background: radial-gradient(ellipse at center, var(--pure-white) 20%, hsl(var(--yellow-hue), var(--yellow-saturation), var(--yellow-lightness)) 30%, hsla(var(--yellow-hue), var(--yellow-saturation), var(--yellow-lightness), 0) 100%);
+                background: radial-gradient(ellipse at center, var(--color-white) 20%, hsl(var(--yellow-hue), var(--yellow-saturation), var(--yellow-lightness)) 30%, hsla(var(--yellow-hue), var(--yellow-saturation), var(--yellow-lightness), 0) 100%);
                 border-color: transparent;
                 box-shadow: 0 0 1rem hsl(var(--yellow-hue), var(--yellow-saturation), var(--yellow-lightness));
             }
@@ -290,9 +290,9 @@ export default {
                 }
 
                 &::after {
-                    background: radial-gradient(ellipse at center, var(--pure-white) 50%, var(--medium-gray) 100%);
+                    background: radial-gradient(ellipse at center, var(--color-white) 50%, var(--color-medium-gray) 100%);
                     border-color: transparent;
-                    box-shadow: .2rem .1rem .2rem hsla(var(--pure-white-hue), var(--pure-white-saturation), var(--pure-white-lightness), .3);
+                    box-shadow: .2rem .1rem .2rem hsl(from var(--color-white) h s l / .3);
                 }
             }
 

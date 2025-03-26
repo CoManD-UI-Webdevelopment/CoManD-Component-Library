@@ -465,7 +465,7 @@ export default {
         font-weight: bold;
         display: table;
         margin-bottom: var(--default-margin);
-        color: var(--pure-white);
+        color: var(--color-white);
         background: var(--success-color);
         border-radius: var(--default-border-radius);
 
@@ -477,7 +477,7 @@ export default {
     > a {
         &:hover, &:active, &:focus {
             text-decoration: underline;
-            color: var(--pure-white);
+            color: var(--color-white);
         }
     }
 

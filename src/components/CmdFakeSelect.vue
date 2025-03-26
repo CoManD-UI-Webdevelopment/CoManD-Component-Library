@@ -572,7 +572,7 @@ export default {
                     }
 
                     &:hover, &:active, &:focus {
-                        background: var(--pure-white);
+                        background: var(--color-white);
                         border-color: var(--primary-color);
 
                         span, [class*="icon"] {
@@ -630,7 +630,7 @@ export default {
                 background: var(--primary-color);
 
                 span, [class*="icon"] {
-                    color: var(--pure-white);
+                    color: var(--color-white);
                 }
             }
 
@@ -647,7 +647,7 @@ export default {
             }
 
             &.active {
-                background: var(--light-gray);
+                background: var(--color-light-gray);
 
                 span {
                     color: var(--hyperlink-color);
@@ -657,7 +657,7 @@ export default {
                     background: var(--primary-color);
 
                     span, [class*="icon"] {
-                        color: var(--pure-white);
+                        color: var(--color-white);
                     }
                 }
             }

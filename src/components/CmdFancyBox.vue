@@ -624,16 +624,16 @@ export default FancyBox
                 }
 
                 &.print-grayscale {
-                    background: linear-gradient(135deg, var(--medium-gray) 0%, var(--medium-gray) 50%, var(--pure-white) 50%, var(--pure-white) 100%);
+                    background: linear-gradient(135deg, var(--color-medium-gray) 0%, var(--color-medium-gray) 50%, var(--color-white) 50%, var(--color-white) 100%);
                 }
 
                 &.print-color {
-                    background: linear-gradient(135deg, #009fe3 0%, #009fe3 25%, #e6007e 25%, #e6007e 50%, #ffed00 50%, #ffed00 50%, #ffed00 75%, var(--medium-gray) 75%, var(--medium-gray) 100%);
+                    background: linear-gradient(135deg, #009fe3 0%, #009fe3 25%, #e6007e 25%, #e6007e 50%, #ffed00 50%, #ffed00 50%, #ffed00 75%, var(--color-medium-gray) 75%, var(--color-medium-gray) 100%);
                 }
 
                 &:hover, &:active, &:focus {
                     border: var(--primary-border);
-                    background: var(--pure-white);
+                    background: var(--color-white);
 
                     [class*="icon-"] {
                         color: var(--primary-color);

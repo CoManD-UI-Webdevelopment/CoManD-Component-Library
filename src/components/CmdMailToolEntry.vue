@@ -196,7 +196,7 @@ export default {
 
     &:hover, &:active, &:focus {
         cursor: pointer;
-        background: var(--pure-white);
+        background: var(--color-white);
     }
 
     &.unread {

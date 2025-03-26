@@ -13,8 +13,8 @@ export default {
 <style>
 /* begin cmd-copyright-information ---------------------------------------------------------------------------------------- */
 .cmd-copyright-information {
-    background: var(--dark-gray);
-    border-top: var(--default-border-width) var(--default-border-style) var(--pure-white);
+    background: var(--color-dark-gray);
+    border-top: var(--default-border-width) var(--default-border-style) var(--color-white);
     text-align: center;
     padding: var(--default-padding);
     margin-top: auto;
@@ -22,11 +22,11 @@ export default {
 
     a {
         text-decoration: none;
-        color: var(--pure-white);
+        color: var(--color-white);
 
         &:hover, &:active, &:focus {
             text-decoration: underline;
-            color: var(--pure-white);
+            color: var(--color-white);
         }
     }
 }

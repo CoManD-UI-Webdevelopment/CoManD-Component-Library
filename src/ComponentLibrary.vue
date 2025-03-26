@@ -452,7 +452,10 @@
                             />
                             <!-- begin CmdSmartSearch -->
                             <CmdSmartSearch
-                                v-bind="smartSearchData"
+                                :listOfRecommendations="smartSearchData.listOfRecommendations"
+                                :cmdFormElement="smartSearchData.cmdFormElement"
+                                :openListToTop="true"
+                                v-model="smartSearch"
                                 :disabled="disabledStatus"
                             />
                             <!-- end CmdSmartSearch -->
@@ -1764,14 +1767,6 @@
                     v-bind="cmdOpeningHoursSettingsData"
                     :openingHours="openingHoursData"
                     :checkInterval="0"
-                    abbreviationTextAm="h"
-                    abbreviationTextPm="h"
-                />
-                <CmdOpeningHours
-                    ref="CmdOpeningHours"
-                    v-bind="cmdOpeningHoursSettingsData"
-                    :openingHours="openingHoursData"
-                    :checkInterval="0"
                     :use24HoursFormat="false"
                 />
             </CmdWidthLimitationWrapper>
@@ -2256,7 +2251,7 @@ import tableDataLarge from '@/assets/data/table-large.json'
 import thumbnailScrollerImagesData from '@/assets/data/thumbnail-scroller-images.json'
 import thumbnailScrollerTextData from '@/assets/data/thumbnail-scroller-text.json'
 
-import allCountriesData from '@/assets/data/all-countries.json'
+import allCountriesData from '@/assets/lists-of-data/countries.json'
 
 import packageJson from '../package.json'
 
@@ -2287,6 +2282,7 @@ export default {
     },
     data() {
         return {
+            smartSearch: {},
             selectedLanguage: "none",
             fancyBoxCookieDisclaimer: false,
             componentNameForContainer: "CmdHeadline",
@@ -2762,17 +2758,17 @@ export default {
         align-items: center;
 
         [class*="icon-"] {
-            color: var(--pure-white);
+            color: var(--color-white);
             margin: 0;
         }
 
         .button {
             background: none;
-            border-color: var(--pure-white);
+            border-color: var(--color-white);
             align-self: center;
 
             &:hover, &:active, &:focus {
-                background: var(--pure-white);
+                background: var(--color-white);
                 color: var(--primary-color) !important;
             }
         }

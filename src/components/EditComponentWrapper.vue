@@ -465,9 +465,9 @@ function buildComponentPath(component) {
             right: auto; /* avoids container to be stretched */
             flex-wrap: nowrap;
             border: var(--default-border);
-            border-color: var(--pure-white);
+            border-color: var(--color-white);
             border-bottom: 0;
-            background: var(--pure-white);
+            background: var(--color-white);
             border-radius: var(--default-border-radius);
 
             li {
@@ -542,8 +542,8 @@ function buildComponentPath(component) {
 
     &.active {
         //width: 100%; /* stretch inside flex-container */
-        background: var(--pure-white);
-        border-color: var(--pure-white);
+        background: var(--color-white);
+        border-color: var(--color-white);
         min-height: 2.5rem;
 
         .component-name {
@@ -554,7 +554,7 @@ function buildComponentPath(component) {
             &.cmd-form-element {
                 :is(input[type="checkbox"], input[type="radio"]):checked {
                     & ~ .label-text span {
-                        color: var(--pure-white);
+                        color: var(--color-white);
                     }
                 }
             }

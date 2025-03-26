@@ -1,6 +1,6 @@
 {
   "name": "comand-component-library",
-  "version": "4.1.95",
+  "version": "4.2.6",
   "license": "GPL-3.0-only",
   "author": "CoManD-UI",
   "private": false,
@@ -20,13 +20,16 @@
     ".": "./dist/comand-component-library.js",
     "./css.js": "./src/css.js",
     "./style.css": "./dist/style.css",
-    "./export-data.js": "./src/assets/data/export-data.js",
-    "./all-countries.json": "./src/assets/data/all-countries.json",
-    "./all-currencies.json": "./src/assets/data/all-currencies.json"
+    "./variables.scss": "./src/assets/styles/variables.scss",
+    "./export-example-data.js": "./src/assets/data/export-example-data.js",
+    "./countries.json": "./src/assets/lists-of-data/countries.json",
+    "./currencies.json": "./src/assets/lists-of-data/currencies.json",
+    "./dial-codes.json": "./src/assets/lists-of-data/dial-codes.json",
+    "./us-cities.json": "./src/assets/lists-of-data/us-cities.json"
   },
   "dependencies": {
     "clickout-event": "^1.1.2",
-    "comand-frontend-framework": "^4.1.35",
+    "comand-frontend-framework": "^4.2.10",
     "comand-ui-iconfonts": "^1.0.19",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",

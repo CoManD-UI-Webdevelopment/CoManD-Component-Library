@@ -952,6 +952,12 @@ export default {
         }
     }
 
+    .label-text {
+        :is(a, span)[class*="icon-"] {
+            top: .09rem;
+        }
+    }
+
     &.has-state, & + .cmd-tooltip {
         &.error {
             * {

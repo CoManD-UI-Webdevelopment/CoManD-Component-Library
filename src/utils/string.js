@@ -13,7 +13,7 @@ function lowercaseFirstLetter(string) {
 }
 
 function fullName(...names) {
-    return names.join(" ")
+    return (names.join(" ")).trim()
 }
 
 export {capitalizeFirstLetter, lowercaseFirstLetter, fullName}

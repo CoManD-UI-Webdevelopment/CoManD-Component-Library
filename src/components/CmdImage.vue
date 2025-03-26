@@ -432,7 +432,7 @@ export default {
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
             font-size: 10rem;
-            color: var(--pure-white);
+            color: var(--color-white);
             text-shadow: var(--default-text-shadow);
             z-index: 10;
         }

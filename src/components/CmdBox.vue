@@ -606,7 +606,7 @@ export default {
             border-radius: var(--box-border-radius);
 
             &:hover, &:active, &:focus {
-                background: var(--pure-white);
+                background: var(--color-white);
 
                 * {
                     color: var(--hyperlink-color);
@@ -757,7 +757,7 @@ export default {
 
                         &:hover, &:active, &:focus {
                             background: var(--primary-color);
-                            color: var(--pure-white);
+                            color: var(--color-white);
                         }
                     }
 
@@ -804,7 +804,7 @@ export default {
                 left: -25%;
                 background: var(--error-color);
                 font-weight: bold;
-                color: var(--pure-white);
+                color: var(--color-white);
                 text-transform: uppercase;
                 text-align: center;
             }
@@ -894,7 +894,7 @@ export default {
                 padding: calc(var(--default-padding) * 3);
                 border-radius: var(--full-circle);
                 background: var(--box-header-background);
-                color: var(--pure-white);
+                color: var(--color-white);
 
                 & + p, & + figcaption {
                     margin: 0 auto;
@@ -977,10 +977,10 @@ export default {
                         &:hover, &:active, &:focus {
                             a {
                                 background: var(--primary-color);
-                                color: var(--pure-white);
+                                color: var(--color-white);
 
                                 span, [class*="icon-"] {
-                                    color: var(--pure-white);
+                                    color: var(--color-white);
                                 }
                             }
                         }

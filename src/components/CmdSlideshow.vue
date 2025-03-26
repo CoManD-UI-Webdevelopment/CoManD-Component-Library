@@ -347,7 +347,7 @@ export default {
         padding: var(--default-padding);
         line-height: 100%;
         font-size: 3rem;
-        color: var(--pure-white);
+        color: var(--color-white);
         background: var(--primary-color);
     }
 
@@ -375,7 +375,7 @@ export default {
                 border: var(--primary-border);
 
                 &:hover, &:active, &:focus {
-                    background: var(--pure-white);
+                    background: var(--color-white);
                     color: var(--hyperlink-color);
                 }
             }
@@ -420,7 +420,7 @@ export default {
                 list-style-type: none;
                 margin: 0;
                 border-radius: var(--full-circle);
-                background: var(--light-gray);
+                background: var(--color-light-gray);
                 border: var(--default-border-reduced-opacity);
 
                 a {
@@ -434,7 +434,7 @@ export default {
                     border-color: var(--hyperlink-color);
 
                     a {
-                        background: var(--pure-white);
+                        background: var(--color-white);
                         transition: var(--default-transition);
                     }
                 }
@@ -451,7 +451,7 @@ export default {
 
                     &:hover, &:active, &:focus, &.active {
                         border-color: var(--primary-color);
-                        background: var(--pure-white);
+                        background: var(--color-white);
 
                         a {
                             background: var(--primary-color);
@@ -472,7 +472,7 @@ export default {
             right: 5.5rem;
             padding: 0 0.2rem;
             border-radius: var(--default-border-radius);
-            background: var(--pure-white-reduced-opacity);
+            background: var(--color-white-reduced-opacity);
         }
     }
 

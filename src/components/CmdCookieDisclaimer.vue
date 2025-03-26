@@ -327,7 +327,7 @@ export default {
             }
 
             &:has(input:checked) {
-                background: var(--pure-white);
+                background: var(--color-white);
 
                 span[class*="icon-"] {
                     color: var(--hyperlink-color);
@@ -358,24 +358,24 @@ export default {
                 background: var(--primary-color);
 
                 label .label-text span, span[class*="icon-"] {
-                    color: var(--pure-white) !important;
+                    color: var(--color-white) !important;
                 }
             }
 
             span[class*="icon-"] {
-                color: var(--pure-white);
+                color: var(--color-white);
             }
 
             label {
                 padding: calc(var(--default-padding) / 2) var(--default-padding);
 
                 .label-text span {
-                    color: var(--pure-white); /* required to set label-text in header to white */
+                    color: var(--color-white); /* required to set label-text in header to white */
                 }
 
                 &.disabled {
                     .label-text span {
-                        color: var(--pure-white) !important; /* required to set label-text in header to white */
+                        color: var(--color-white) !important; /* required to set label-text in header to white */
                     }
                 }
 

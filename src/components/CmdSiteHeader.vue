@@ -217,6 +217,10 @@ export default {
         }
     }
 
+    li a {
+        text-decoration: none;
+    }
+
     header, .cmd-main-navigation nav, .cmd-list-of-links {
         max-width: var(--max-width);
         width: 100%; /* stretch flex-item */

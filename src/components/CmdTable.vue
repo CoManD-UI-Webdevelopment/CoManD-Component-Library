@@ -350,7 +350,7 @@ export default {
                 a[class*='icon-'] {
                     &, &:hover, &:active, &:focus {
                         font-size: var(--icon-size-small);
-                        color: var(--pure-white);
+                        color: var(--color-white);
                     }
                 }
             }

@@ -1,20 +1,24 @@
 <template>
-    <div class="cmd-smart-search">
+    <div :class="['cmd-smart-search', {open: showListOfRecommendations, 'open-list-to-top': openListToTop}]">
         <!--  begin CmdFormElement -->
         <CmdFormElement
             element="input"
             type="search"
             v-bind="cmdFormElementOptions"
             v-model="searchTerm"
-            @input="showRecommendations"
+            @update:modelValue="showRecommendations"
         />
         <!-- end CmdFormElement -->
 
         <!-- begin list-of-recommendations -->
-        <ul v-if="showListOfRecommmendations" class="list-of-recommendations no-list-items">
-            <li v-for="(item, index) in listOfRecommendations" :key="index">
+        <ul v-if="showListOfRecommendations" class="list-of-recommendations no-list-items">
+            <li v-for="(item, index) in filteredListOfRecommendations" :key="index">
                 <!-- begin CmdLink -->
-                <CmdLink v-bind="item" @click="optionSelected" />
+                <CmdLink v-bind="linkItem(item)" @click="optionSelected(item)">
+                    <!-- begin slot -->
+                    <slot></slot>
+                    <!-- end slot -->
+                </CmdLink>
                 <!-- end CmdLink -->
             </li>
         </ul>
@@ -27,8 +31,9 @@ export default {
     name: "CmdSmartSearch",
     data() {
         return {
-            showListOfRecommmendations: false,
-            searchTerm: ""
+            showListOfRecommendations: false,
+            searchTerm: "",
+            item: {}
         }
     },
     props: {
@@ -36,8 +41,8 @@ export default {
          * set default v-model (must be named modelValue in Vue3)
          */
         modelValue: {
-            type: [String, Number],
-            default: ""
+            type: Object,
+            required: false
         },
         /**
          * provide list for recommendations shown below search-field
@@ -47,11 +52,30 @@ export default {
             required: true
         },
         /**
-         * define search-field
+         * define the maximum listed number of recommendations
+         */
+        maxNumberOfRecommendations: {
+            type: Number,
+            default: 3
+        },
+        /**
+         * set if list of recommendations will be filtered by first letter (else by any containing letter)
+         */
+        filterByFirstLetter: {
+            Boolean,
+            default: false
+        },
+        /**
+         * set properties for CmdFormElement-component (search-field)
          */
         cmdFormElement: {
             type: Object,
             required: false
+        },
+        // todo: replace property by computed-property that handles position of dropdown-list automatically
+        openListToTop: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -62,26 +86,46 @@ export default {
                 showSearchButton: false,
                 ...this.cmdFormElement
             }
+        },
+        filteredListOfRecommendations() {
+            return this.listOfRecommendations.filter(item => {
+                // check if there exists a correct displayValue
+                if (!item.displayValue || typeof item.displayValue !== "string") {
+                    console.error("provided item.displayValue of 'listOfRecommendations' does not exist or does not match type 'string'!")
+                    return false
+                }
+
+                // set comparable string to lowercase
+                const lowerCaseSearchTerm = this.searchTerm.toLowerCase()
+                const lowerCaseDisplayValue = item.displayValue.toLowerCase()
+
+                // check if string from listOfRecommendations starsWith or contains the provides string from the searchfield
+                return this.filterByFirstLetter ? lowerCaseDisplayValue.startsWith(lowerCaseSearchTerm) : lowerCaseDisplayValue.includes(lowerCaseSearchTerm)
+            }).slice(0, this.maxNumberOfRecommendations)
         }
     },
     methods: {
         showRecommendations() {
-            this.showListOfRecommmendations = true
+            this.item = {} // reset item
+            this.$emit("update:modelValue", {itemId: "", displayValue: ""})
+            this.showListOfRecommendations = true
         },
-        optionSelected(event) {
-            event.originalEvent.preventDefault()
-            this.showListOfRecommmendations = false
-            console.log("event", event)
-            this.searchTerm = event.target.value // set search-field to selected option
-            this.$emit("update:modelValue", this.searchTerm)
+        optionSelected(item) {
+            this.searchTerm = item.displayValue // set search-field to selected option
+            this.showListOfRecommendations = false
+            this.$emit("update:modelValue", {itemId: item.id, displayValue: item.displayValue})
+        },
+        linkItem(item) {
+            return {
+                ...item,
+                text: item.displayValue
+            }
         }
     },
     watch: {
         searchTerm() {
-            if(this.searchTerm.length) {
-                this.showRecommendations()
-            } else {
-                this.showListOfRecommmendations = false
+            if(!this.searchTerm.length) {
+                this.showListOfRecommendations = false
             }
         }
     }
@@ -89,8 +133,21 @@ export default {
 </script>
 
 <style>
+/* begin cmd-smart-search ---------------------------------------------------------------------------------------- */
 .cmd-smart-search {
+    &.open {
+        input {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
     .list-of-recommendations {
+        position: absolute;
+        width: 100%;
+        z-index: 100;
+        max-height: 15rem;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
         border: var(--default-border);
@@ -120,16 +177,60 @@ export default {
                 padding: var(--default-padding);
                 text-decoration: none;
                 width: 100%;
+                background: var(--default-background);
 
                 &:hover, &:active, &:focus {
                     background: var(--hyperlink-color);
 
                     span, span[class*="icon"] {
-                        color: var(--pure-white);
+                        color: var(--color-white);
+                    }
+                }
+            }
+        }
+    }
+
+    &.open-list-to-top {
+        &.open {
+            input {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: var(--default-border-radius);
+                border-bottom-right-radius: var(--default-border-radius);
+            }
+        }
+
+        .list-of-recommendations {
+            border-bottom: 0;
+            top: auto;
+            bottom: var(--form-input-height);
+            border-radius: 0;
+            border-top-left-radius: var(--default-border-radius);
+            border-top-right-radius: var(--default-border-radius);
+
+            li {
+                &:first-child {
+                    border-top: var(--default-border);
+                    border-top-left-radius: inherit;
+                    border-top-right-radius: inherit;
+
+                    a {
+                        border-top-left-radius: inherit;
+                        border-top-right-radius: inherit;
+                    }
+                }
+
+                &:last-child {
+                    border-bottom: 0;
+                    border-radius: inherit;
+
+                    a {
+                        border-radius: 0;
                     }
                 }
             }
         }
     }
 }
+/* end cmd-smart-search ---------------------------------------------------------------------------------------- */
 </style>

@@ -3,7 +3,7 @@
     <span v-if="icon?.iconClass && (icon?.position === 'left' || icon?.position === 'top' || !icon?.position)" :class="icon?.iconClass" :title="icon?.tooltip"></span>
     <span v-if="text">{{ text }}</span>
     <span v-if="icon?.iconClass && (icon?.position === 'right' || icon?.position === 'bottom')" :class="icon?.iconClass" :title="icon?.tooltip"></span>
-    <img v-if="image?.src && (image?.position === 'right' || image?.position === 'bottom' || !image?.position)" :src="imag?.src" :alt="image?.alt" />
+    <img v-if="image?.src && (image?.position === 'right' || image?.position === 'bottom')" :src="img?.src" :alt="image?.alt" />
     <!-- begin default-slot -->
     <slot></slot>
     <!-- end default-slot -->

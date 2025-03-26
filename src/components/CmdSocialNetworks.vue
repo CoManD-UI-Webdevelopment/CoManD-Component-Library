@@ -374,12 +374,12 @@ export default {
         border-color: var(--social-network-color);
 
         > span {
-            color: var(--pure-white);
+            color: var(--color-white);
         }
 
         &:hover, &:active, &:focus {
-            background: var(--pure-white);
-            color: var(--pure-white);
+            background: var(--color-white);
+            color: var(--color-white);
 
             > span {
                 color: var(--social-network-color);

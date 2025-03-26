@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import {getRoute} from '../utilities.js'
-import * as flags from "../assets/images/flags"
-import {switchLanguage} from "@/assets/data/export-data.js";
+import {getRoute} from "../utilities.js"
+//import * as flags from "media/images/flags"
+import {switchLanguage} from "@/assets/data/export-example-data.js"
 
 export default {
     name: "CmdSwitchLanguage",

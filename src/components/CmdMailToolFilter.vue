@@ -187,7 +187,7 @@ export default {
 .cmd-mail-tool-filter {
     display: flex;
     padding: var(--default-padding);
-    background: var(--light-gray);
+    background: var(--color-light-gray);
 
     & > * {
         flex: 1;

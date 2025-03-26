@@ -26,5 +26,21 @@
   {
     "value": "en",
     "text": "United Kingdom"
+  },
+  {
+    "value": "dk",
+    "text": "Denmark"
+  },
+  {
+    "value": "fi",
+    "text": "Finland"
+  },
+  {
+    "value": "se",
+    "text": "Sweden"
+  },
+  {
+    "value": "no",
+    "text": "Norway"
   }
 ]
