@@ -72,7 +72,7 @@
     "selectOptions": [
       {
         "text": "Please select...",
-        "value": null
+        "value": ""
       },
       {
         "text": "Option 1",
@@ -88,7 +88,6 @@
       }
     ],
     "labelText": "Select",
-    "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
@@ -101,7 +100,6 @@
     "value": "checkboxInputValue1",
     "inputValue": "checkboxInputValue1",
     "labelText": "Checkbox",
-    "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
@@ -113,7 +111,6 @@
     "id": "form-element-checkbox-id2",
     "inputValue": "checkboxInputValue2",
     "labelText": "Checkbox",
-    "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
@@ -125,7 +122,6 @@
     "id": "form-element-radio-id1",
     "inputValue": "valueRadioButton1",
     "labelText": "Radio",
-    "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
@@ -138,7 +134,6 @@
     "value": "valueRadioButton2",
     "inputValue": "valueRadioButton2",
     "labelText": "Radio",
-    "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
@@ -151,6 +146,7 @@
     "labelText": "Textarea",
     "placeholder": "Placeholdertext",
     "required": false,
-    "disabled": false
+    "disabled": false,
+    "maxlength": 500
   }
 ]

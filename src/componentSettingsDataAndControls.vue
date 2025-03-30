@@ -311,7 +311,7 @@ data() {
         cmdHeadlineSettingsData: {
             preHeadlineText: "Pre-headline text",
             headlineText: "Headline text",
-            headlineLevel: 1,
+            headlineLevel: 3,
             textAlign: "left"
         },
         cmdHeadlineSettingsControls: {

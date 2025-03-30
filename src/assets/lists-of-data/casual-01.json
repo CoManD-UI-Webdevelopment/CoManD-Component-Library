@@ -1,0 +1,113 @@
+{
+  "person": {
+    "id": 1,
+    "type": "casual",
+    "imgSrc": "https://comand-ui.com/samples/images/user-images/fake-user-2.jpg",
+    "bgImgSrc": "/images/background-images/background-matrix.jpg",
+    "lastName": "Miller",
+    "middleName": "",
+    "firstName": "Jackson",
+    "birthdate": "1975-07-11",
+    "gender": "m",
+    "profession": "Developer",
+    "countryIso": "de",
+    "companyName": "Big Tech Company",
+    "about": "I am the best developer in my home office",
+    "group": "Friends"
+  },
+  "account": {
+    "online": true,
+    "type": "premium",
+    "created": "2023-03-17"
+  },
+  "tags": [
+    {
+      "name": "Backend Development"
+    },
+    {
+      "name": "Frontend Development",
+      "description": "Frontend Development embraces the visible part of development. This includes primary the structure and its styling of websites combined by some basic logic."
+    },
+    {
+      "name": "Data Migration"
+    }
+  ],
+  "contact": [
+    {
+      "name": "companyName",
+      "iconClass": "icon-company",
+      "data": "Your company name",
+      "labelText": "companyName"
+    },
+    {
+      "name": "address",
+      "iconClass": "icon-home",
+      "labelText": "Address",
+      "streetNo": "Your Street/No",
+      "zip": "Your zip",
+      "city": "Duisburg",
+      "miscInfo": "Misc. info",
+      "country": "de"
+    },
+    {
+      "name": "phone",
+      "iconClass": "icon-phone",
+      "data": "Your phone number",
+      "labelText": "Telephone",
+      "tooltip": "Call number",
+      "href": "0123456789"
+    },
+    {
+      "name": "phone",
+      "iconClass": "icon-device-smartphone",
+      "data": "Your mobile phone number",
+      "labelText": "Mobile phone",
+      "tooltip": "Call number",
+      "href": "0123456789"
+    },
+    {
+      "name": "email",
+      "iconClass": "icon-mail",
+      "data": "Your email address",
+      "labelText": "Email",
+      "tooltip": "Send mail",
+      "href": "mail@provider.de"
+    },
+    {
+      "name": "url",
+      "iconClass": "icon-globe",
+      "data": "Your website",
+      "labelText": "Website",
+      "tooltip": "Open website in new tab",
+      "href": "https://www.domain.toplevel"
+    }
+  ],
+  "networks": [
+    {
+      "buttonClass": "social-network-facebook",
+      "iconClass": "icon-facebook",
+      "linkText": "facebook",
+      "path": "https://www.facebook.com",
+      "tooltip": "Visit profile on facebook"
+    },
+    {
+      "buttonClass": "social-network-instagram",
+      "iconClass": "icon-instagram",
+      "linkText": "instagram",
+      "path": "https://www.instagram.com",
+      "tooltip": "Visit profile on instagram"
+    },
+    {
+      "buttonClass": "social-network-linkedin",
+      "iconClass": "icon-linkedin",
+      "linkText": "linkedin",
+      "path": "https://www.linkedin.com",
+      "tooltip": "Visit profile on linkedin"
+    }
+  ],
+  "profileVisibility": {
+    "casual": [],
+    "founder": ["canSeeLocation"],
+    "investor": ["canSeeLocation"]
+  }
+}

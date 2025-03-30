@@ -1006,6 +1006,12 @@ export default {
                 width: 100%;
             }
         }
+
+        .label-text {
+           [class*="icon-"] {
+               top: -.2rem;
+           }
+        }
     }
 
     .search-field-wrapper {

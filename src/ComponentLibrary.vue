@@ -402,7 +402,20 @@
                             />
                         </div>
                         <!-- end inputfield in two columns -->
-
+                        <CmdFormElement
+                            element="input"
+                            labelText="Label for inputfield (number):"
+                            type="number"
+                            id="inputfield-number"
+                            required="required"
+                            min="0"
+                            max="9"
+                            style="width: 4rem;"
+                            v-model="inputNumber"
+                            :customRequirements="[customRequirements[2]]"
+                            :status="validationStatus"
+                            :disabled="disabledStatus"
+                        />
                         <CmdFormElement
                             element="input"
                             labelText="Label (inline) for inputfield (number):"
@@ -517,6 +530,7 @@
                                 labelText="Selectbox with country flags:"
                                 :status="validationStatus"
                                 :disabled="disabledStatus"
+                                pathFlags="https://comand-ui.com/samples/images/flags"
                                 :selectData="fakeSelectCountriesData"
                                 v-model="selectedCountryWithFlag"
                                 defaultOptionName="Select country:"
@@ -1489,19 +1503,24 @@
                     v-bind="cmdHeadlineSettingsData"
                 />
                 <CmdHeadline
-                    ref="CmdHeadline"
                     v-bind="cmdHeadlineSettingsData"
+                    :cmdIcon="{iconClass: 'icon-home'}"
+                />
+                <CmdHeadline
+                    headlineLevel="3"
+                    headlineText="Headline text"
+                    :cmdIcon="{iconClass: 'icon-home'}"
                 />
                 <CmdHeadline
                     ref="CmdHeadline"
                     headlineLevel="3"
-                    headlineText="Headline text<br /> with html given by property"
+                    headlineText="Headline text<br /> with html-content given by property"
                 />
                 <CmdHeadline
                     ref="CmdHeadline"
                     headlineLevel="3"
                 >
-                    Headline text<br/> with html given by slot
+                    Headline text<br/> with html-content given by slot
                 </CmdHeadline>
 
             </CmdWidthLimitationWrapper>
@@ -1916,7 +1935,8 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-switch-language">Switch Language</h2>
                 <CmdSwitchLanguage
-                    :languages="languagesData"
+                    :pathFlags="switchLanguage.pathFlags"
+                    :languages="switchLanguage.languages"
                     @click="updateLanguage"
                 />
                 <p>Selected language: {{ selectedLanguage }} </p>
@@ -2236,7 +2256,7 @@ import inputGroupRadiobuttonsData from '@/assets/data/input-group-radiobuttons.j
 import inputGroupReplacedRadiobuttonsData from '@/assets/data/input-group-replaced-radiobuttons.json'
 import inputGroupToggleSwitchRadiobuttonsData from '@/assets/data/input-group-toggle-switch-radiobuttons.json'
 import listOfLinksData from '@/assets/data/list-of-links.json'
-import languagesData from '@/assets/data/switch-language.json'
+import switchLanguage from '@/assets/data/switch-language.json'
 import mailToolData from '@/assets/data/mail-tool.json'
 import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
 import navigationData from '@/assets/data/main-navigation.json'
@@ -2430,7 +2450,7 @@ export default {
             imageGalleryData,
             inputGroupReplacedRadiobuttonsData,
             inputGroupToggleSwitchRadiobuttonsData,
-            languagesData,
+            switchLanguage,
             listOfLinksData,
             multistepsData,
             mailToolData,
@@ -2710,7 +2730,6 @@ export default {
                         "pathDarkmodeLogo": "/media/images/logos/logo-darkmode.svg",
                         "altText": "Company Logo"
                     }
-
             }
 
             // change logo

@@ -4,14 +4,15 @@
             <!-- begin CmdHeadline -->
             <CmdHeadline
                 v-if="cmdHeadline"
-               v-bind="cmdHeadline"
+                v-bind="cmdHeadline"
             />
             <!-- end CmdHeadline -->
 
             <!-- begin icon to close tooltip -->
-            <a v-if="iconClose.show && toggleVisibilityByClick" href="#" @click.prevent="hideTooltip" :title="iconClose.tooltip">
+            <a v-if="iconClose.show && toggleVisibilityByClick" href="#" @click.prevent="hideTooltip"
+               :title="iconClose.tooltip">
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
+                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType"/>
                 <!-- end CmdIcon -->
             </a>
             <!-- end icon to close tooltip -->
@@ -41,7 +42,8 @@ export default {
          */
         cmdHeadline: {
             type: Object,
-            default() {}
+            default() {
+            }
         },
         /**
          * text shown as tooltip
@@ -95,14 +97,14 @@ export default {
          * @requiredForAccessibility: partial
          */
         iconClose: {
-          type: Object,
-          default() {
-              return {
-                  show: true,
-                  iconClass: "icon-cancel",
-                  tooltip: "Close this tooltip!"
-              }
-          }
+            type: Object,
+            default() {
+                return {
+                    show: true,
+                    iconClass: "icon-cancel",
+                    tooltip: "Close this tooltip!"
+                }
+            }
         },
         /**
          * enable toggling tooltip-visibility by click
@@ -113,11 +115,11 @@ export default {
         }
     },
     mounted() {
-        if(this.relatedId) {
+        if (this.relatedId) {
             const relatedElement = document.getElementById(this.relatedId)
 
-            if(relatedElement) {
-                if(this.scrollContainer) {
+            if (relatedElement) {
+                if (this.scrollContainer) {
                     document.querySelector(this.scrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
                     document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
                 }
@@ -140,20 +142,20 @@ export default {
             // if delay is set
             if (this.delayToShowTooltip > 0) {
                 setTimeout(() => {
-                   this.toggleVisibility(event)
+                    this.toggleVisibility(event)
                 }, this.delayToShowTooltip)
             } else {
                 this.toggleVisibility(event)
             }
         },
         toggleVisibility(event) {
-            if(!this.toggleVisibilityByClick) {
+            if (!this.toggleVisibilityByClick) {
                 this.tooltipVisibility = true
             }
             this.getPointerPosition(event)
         },
         hideTooltipOnEsc(event) {
-            if(this.allowEscapeKey) {
+            if (this.allowEscapeKey) {
                 if (event.key === 'Escape' || event.key === 'Esc') {
                     this.hideTooltip()
                 }
@@ -168,10 +170,10 @@ export default {
         }
     },
     unmounted() {
-        if(this.relatedId) {
+        if (this.relatedId) {
             const relatedElement = document.getElementById(this.relatedId)
 
-            if(relatedElement) {
+            if (relatedElement) {
                 document.removeEventListener("scroll", this.hideTooltip)
                 document.removeEventListener("keyup", this.hideTooltipOnEsc)
 
@@ -186,11 +188,11 @@ export default {
     },
     watch: {
         tooltipVisibility() {
-            if(this.tooltipVisibility) {
-                this.$nextTick( () => {
+            if (this.tooltipVisibility) {
+                this.$nextTick(() => {
                     const verticalOffset = 25
                     // this.$refs.tooltip.addEventListener("keyup", this.hideTooltip)
-                    this.$refs.tooltip.style.left = (this.pointerX  / 10) + "rem"
+                    this.$refs.tooltip.style.left = (this.pointerX / 10) + "rem"
                     this.$refs.tooltip.style.top = ((this.pointerY + verticalOffset) / 10) + "rem"
                 })
             }
@@ -238,8 +240,8 @@ export default {
     .headline-wrapper {
         display: flex;
 
-        a {
-            margin-left: auto;
+        > a {
+            margin-left: auto !important;
 
             [class*="icon-"] {
                 padding-left: 1rem;

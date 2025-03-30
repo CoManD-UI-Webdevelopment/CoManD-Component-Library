@@ -50,6 +50,7 @@ export { default as CmdTextImageBlock } from '@/components/CmdTextImageBlock.vue
 export { default as CmdThumbnailScroller } from '@/components/CmdThumbnailScroller.vue'
 export { default as CmdToggleDarkMode } from '@/components/CmdToggleDarkMode.vue'
 export { default as CmdTooltip } from '@/components/CmdTooltip.vue'
+export { default as CmdTooltipForFormElements } from '@/components/CmdTooltipForFormElements.vue'
 export { default as CmdUploadForm } from '@/components/CmdUploadForm.vue'
 export { default as CmdWidthLimitationWrapper } from '@/components/CmdWidthLimitationWrapper.vue'
 export { default as EditComponentWrapper } from '@/components/EditComponentWrapper.vue'

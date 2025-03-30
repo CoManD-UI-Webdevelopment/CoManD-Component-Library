@@ -533,6 +533,18 @@ export default {
         }
     }
 
+    a {
+        gap: calc(var(--icon-and-text-gap) / 2) !important;
+
+        span {
+            text-decoration: none !important;
+
+            &[class*="icon"]:last-child {
+                margin-left: auto !important;
+            }
+        }
+    }
+
     > ul {
         height: var(--form-input-height);
         margin: 0;
@@ -584,7 +596,6 @@ export default {
         }
 
         &.open {
-            border-bottom: 0;
             ul {
                 border-bottom-left-radius: var(--default-border-radius);
                 border-bottom-right-radius: var(--default-border-radius);
@@ -730,9 +741,11 @@ export default {
         > ul {
             > li:first-child {
                 > a {
+                    text-decoration: none !important;
                     border-color: var(--status-color);
 
                     > span, [class*="icon-"] {
+                        text-decoration: none !important;
                         color: var(--status-color);
                     }
 

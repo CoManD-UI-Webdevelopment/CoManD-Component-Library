@@ -582,11 +582,14 @@ export default {
         align-self: auto;
     }
 
-    .box-header .cmd-headline {
-        margin-bottom: 0;
+    .box-header {
+        .cmd-headline {
+            margin-bottom: 0;
+            text-decoration: none;
 
-        &:only-child {
-            width: 100% /* stretch in flex-container */
+            &:only-child {
+                width: 100% /* stretch in flex-container */
+            }
         }
     }
 

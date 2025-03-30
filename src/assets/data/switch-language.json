@@ -1,20 +1,32 @@
-[
-  {
-    "iso2": "de",
-    "name": "Deutsch",
-    "tooltip": "Sprache zu deutsch wechseln",
-    "link": {
-      "type": "href",
-      "path": "/"
-    }
-  },
-  {
-    "iso2": "en",
-    "name": "English",
-    "tooltip": "Switch language to English",
-    "link": {
-      "type": "href",
-      "path": "/"
-    }
-  }
+{
+  "pathFlags": "https://comand-ui.com/samples/images/flags",
+  "languages": [
+{
+"iso2": "de",
+"name": "Deutsch",
+"tooltip": "Sprache zu deutsch wechseln",
+"link": {
+"type": "href",
+"path": "/"
+}
+},
+{
+"iso2": "en",
+"name": "English",
+"tooltip": "Switch language to English",
+"link": {
+"type": "href",
+"path": "/"
+}
+},
+{
+"iso2": "es",
+"name": "Español",
+"tooltip": "cambiar el idioma a español",
+"link": {
+"type": "href",
+"path": "/"
+}
+}
 ]
+}

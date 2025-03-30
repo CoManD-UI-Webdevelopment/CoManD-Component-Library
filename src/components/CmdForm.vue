@@ -3,8 +3,8 @@
           :class="{error: errorOccurred}" :novalidate="novalidate" :method="formMethod">
         <template v-if="useFieldset">
             <fieldset class="flex-container">
-                <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{
-                        legend.text
+                <legend :class="{hidden : !legendOptions.show, 'align-left': legendOptions.align === 'left'}">{{
+                        legendOptions.text
                     }}
                 </legend>
                 <CmdSystemMessage v-if="systemMessage.show && systemMessage.message" :validationStatus="systemMessage.validationStatus" :systemMessage="systemMessage.message"/>
@@ -120,13 +120,7 @@ export default {
          */
         legend: {
             type: Object,
-            default() {
-                return {
-                    show: true,
-                    align: "left",
-                    text: "Legend"
-                }
-            }
+            required: false
         },
         /**
          * activate if form-elements should be given by slot
@@ -183,6 +177,14 @@ export default {
         }
     },
     computed: {
+        legendOptions() {
+            return {
+                show: true,
+                align: "left",
+                text: "Legend",
+                ...this.legend
+            }
+        },
         submitButtonOptions() {
             return {
                 iconClass: "icon-check",

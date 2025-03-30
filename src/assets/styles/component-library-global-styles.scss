@@ -91,6 +91,12 @@ body.avoid-scrolling {
     width: 3rem;
     background-size: 100% 100%;
     display: block;
+    aspect-ratio: 3/2;
+}
+
+a img.flag {
+    border: 0;
+    outline: var(--default-border);
 }
 
 /* end flags ----------------------------------------------------------------------------------------------------------------------------------------------------- */

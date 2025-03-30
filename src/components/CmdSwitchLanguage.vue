@@ -8,7 +8,7 @@
                    :class="['flag', language.iso2, {'active': activeLanguage(language.iso2)}]"
                    :title="language.tooltip"
                    @click.prevent="changeLanguage(language.iso2, $event)">
-                   <img :src="imageSources[index]" :alt="language.name" />
+                   <img :src="pathFlag(language.iso2)" :alt="language.name" />
                 </a>
 
                 <!-- end link-type 'href' -->
@@ -19,7 +19,7 @@
                      :class="['flag', language.iso2]"
                      :title="language.tooltip"
                      @click.prevent="changeLanguage(language.iso2, $event)">
-                    <img :src="imageSources[index]" :alt="language.name" />
+                    <img :src="pathFlag(language.iso2)" :alt="language.name" />
                 </router-link>
                 <!-- end link-type 'router' -->
             </li>
@@ -48,6 +48,13 @@ export default {
         languages: {
             type: Array,
             required: true
+        },
+        /**
+         * path to flag-files (will be combined with flag isoCode to load svg)
+         */
+        pathFlags: {
+            type: String,
+            default: "/media/images/flags"
         }
     },
     mounted() {
@@ -65,6 +72,9 @@ export default {
         activeLanguage(iso2) {
             return this.currentLanguage === iso2
         },
+        pathFlag(isoCode) {
+            return this.pathFlags + "/flag-" + isoCode + ".svg"
+        },
         changeLanguage(iso2, event) {
             // set selected language as current language (in data-property)
             this.currentLanguage = iso2
@@ -74,31 +84,6 @@ export default {
 
             // emit original event
             this.$emit("click", { originalEvent: event, iso2} )
-        }
-    },
-    watch: {
-        languages: {
-            handler() {
-                this.imageSources = []
-                this.languages.forEach(
-                    async (item) => {
-                        // get iso-code
-                        const isoCode = item.iso2
-
-                        // get path of current flag
-                        // const path = "../assets/images/flags/flag-" + isoCode + ".svg"
-
-                        // assign value of imported file (returns object with default-key)
-                        // const { default: dynamicImage } = await import(/* @vite-ignore */ path)
-
-                        // push image to data-property-array
-                        // this.imageSources.push(dynamicImage)
-                        this.imageSources.push(flags[isoCode].default)
-                    }
-                )
-            },
-            immediate: true,
-            deep: true
         }
     }
 }
