@@ -29,8 +29,6 @@
 
 <script>
 import {getRoute} from "../utilities.js"
-//import * as flags from "media/images/flags"
-import {switchLanguage} from "@/assets/data/export-example-data.js"
 
 export default {
     name: "CmdSwitchLanguage",
@@ -61,7 +59,6 @@ export default {
           this.getInitialLanguage()
     },
     methods: {
-        switchLanguage,
         getInitialLanguage() {
             // assign initially set value for lang in html-tag to data-property
             this.currentLanguage = document.documentElement.lang

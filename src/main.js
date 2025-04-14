@@ -43,4 +43,8 @@ import router from "./router"
 // })
 
 // createApp(App).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).mount('#app')
-createApp(ComponentLibrary).use(router).directive('telephone', directiveTelephone).directive('focus', directiveFocus).directive('fancybox', directiveFancybox).mount('#app')
+createApp(ComponentLibrary)
+    .use(router).directive('telephone', directiveTelephone)
+    .directive('focus', directiveFocus)
+    .directive('fancybox', directiveFancybox)
+    .mount('#app')

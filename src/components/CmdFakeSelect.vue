@@ -359,11 +359,11 @@ export default {
 
             // set default-tooltip if customTooltip is not set
             if (this.validationStatus === 'error') {
-                return this.getMessage("cmdformelement.validation_tooltip.an_error_occurred")
+                return this.getMessage("form_element.validation_tooltip.an_error_occurred")
             } else if (this.validationStatus === 'success') {
-                return this.getMessage("cmdformelement.validation_tooltip.information_is_filled_correctly")
+                return this.getMessage("form_element.validation_tooltip.information_is_filled_correctly")
             }
-            return this.getMessage("cmdformelement.validation_tooltip.open_field_requirements")
+            return this.getMessage("form_element.validation_tooltip.open_field_requirements")
         },
         // get the displayed option name
         optionName() {
@@ -540,7 +540,7 @@ export default {
             text-decoration: none !important;
 
             &[class*="icon"]:last-child {
-                margin-left: auto !important;
+                margin-left: auto !important; /* overwrite default settings from frontend-framework */
             }
         }
     }
@@ -579,7 +579,7 @@ export default {
                     }
 
                     > [class*="icon-"]:last-child {
-                        margin-left: auto;
+                        margin-left: auto !important; /* overwrite default settings from frontend-framework */
                         font-size: var(--icon-size-small);
                     }
 

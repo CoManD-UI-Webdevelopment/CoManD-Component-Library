@@ -1,7 +1,7 @@
 <template>
     <div class="cmd-image-zoom flex-container">
         <!-- begin small image -->
-        <a href="#" class="no-flex thumbnails-imagezoom" :title="imageSmall.image.tooltip">
+        <a href="#" class="no-flex thumbnail-imagezoom" :title="imageSmall.image.tooltip">
             <!-- begin CmdImage for small image -->
             <CmdImage v-bind="imageSmall" :figcaption="{}"
                 @mouseover="onMouseOver"
@@ -9,16 +9,17 @@
                 @mouseout="onMouseOut"
             />
             <!-- end CmdImage for small image -->
+            <div class="zoom-overlay"></div>
         </a>
         <!-- end small image -->
 
         <!-- begin large image -->
-        <div  class="zoom-container">
+        <div class="zoom-container">
             <!-- begin CmdImage for large image -->
             <CmdImage v-bind="imageLarge" :useFigureTag="false" />
             <!-- end CmdImage for large image -->
         </div>
-        <div class="zoom-overlay"></div>
+
         <!-- end large image -->
     </div>
 </template>
@@ -77,8 +78,8 @@ function positionOverlay(vm, e) {
     const largeImageWidth = largeImage.getBoundingClientRect().width
     const largeImageHeight = largeImage.getBoundingClientRect().height
 
-    const mouseX = e.pageX - e.target.getBoundingClientRect().x - window.pageXOffset
-    const mouseY = e.pageY - e.target.getBoundingClientRect().y - window.pageYOffset
+    const mouseX = e.pageX - e.target.getBoundingClientRect().x - window.scrollX
+    const mouseY = e.pageY - e.target.getBoundingClientRect().y - window.scrollY
 
     const overlayWidth = Math.min(smallImageWidth, largeImageContainer.getBoundingClientRect().width / largeImageWidth * smallImageWidth)
     const overlayHeight = Math.min(smallImageHeight, largeImageContainer.getBoundingClientRect().height / largeImageHeight * smallImageHeight)
@@ -115,12 +116,16 @@ function clamp(value, min, max) {
 .cmd-image-zoom {
     overflow: hidden;
 
+    .thumbnail-imagezoom {
+        align-self: flex-start;
+    }
+
     .zoom-container {
-        display: block !important;
         overflow: hidden;
 
         > img {
             max-width: none;
+            max-height: none;
         }
     }
 
@@ -133,5 +138,26 @@ function clamp(value, min, max) {
     }
 }
 
+</style>
+
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $small-max-width) {
+    .cmd-image-zoom {
+        .thumbnail-imagezoom {
+            align-self: center;
+        }
+
+        .zoom-container {
+            max-height: 40vh;
+            flex: none;
+
+            > img {
+                max-height: none;
+            }
+        }
+    }
+}
 /* end cmd-imagezoom ------------------------------------------------------------------------------------------ */
 </style>

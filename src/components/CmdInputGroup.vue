@@ -272,11 +272,11 @@ export default {
 
             // set default-tooltip if customTooltip is not set
             if (this.validationStatus === 'error') {
-                return this.getMessage("cmdformelement.validation_tooltip.an_error_occurred")
+                return this.getMessage("form_element.validation_tooltip.an_error_occurred")
             } else if (this.validationStatus === 'success') {
-                return this.getMessage("cmdformelement.validation_tooltip.information_is_filled_correctly")
+                return this.getMessage("form_element.validation_tooltip.information_is_filled_correctly")
             }
-            return this.getMessage("cmdformelement.validation_tooltip.open_field_requirements")
+            return this.getMessage("form_element.validation_tooltip.open_field_requirements")
         },
         inputValue: {
             // read inputValue
@@ -322,7 +322,6 @@ export default {
     /* overwrite default behavior from frontend-framework */
     > .label-text {
         display: inline-flex;
-        margin: 0;
 
         > span + a:has([class*="icon-"]) {
             margin-left: calc(var(--default-margin) / 2);

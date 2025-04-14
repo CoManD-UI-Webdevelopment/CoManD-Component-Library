@@ -12,7 +12,7 @@
         <!-- end CmdHeadline -->
 
         <!-- begin Google-Login-Button -->
-        <button v-if="enableLoginWithGoogle" class="gsi-material-button">
+        <button v-if="enableLoginWithGoogle" class="gsi-material-button stretch-on-small-devices">
             <div class="gsi-material-button-state"></div>
             <div class="gsi-material-button-content-wrapper">
                 <div class="gsi-material-button-icon">
@@ -37,7 +37,7 @@
 
         <!-- begin Facebook-Login-Button -->
         <div v-if="enableLoginWithFacebook"
-             class="fb-login-button"
+             class="fb-login-button stretch-on-small-devices"
              data-width="200"
              data-size=""
              data-button-type=""
@@ -47,8 +47,19 @@
         </div>
         <!-- end Facebook-Login-Button -->
 
-        <button v-if="enableLoginWithGoogle || enableLoginWithFacebook" @click.prevent="showLogin = true">
-            <span>Login with your data</span>
+        <button v-if="enableLoginWithGoogle || enableLoginWithFacebook"
+                class="button stretch-on-small-devices"
+                v-bind="buttonLoginWithYourDataDefaultOptions"
+                @click.prevent="showLogin = true">
+                <!-- begin CmdIcon -->
+                <CmdIcon
+                    v-if="buttonLoginWithYourDataDefaultOptions.icon?.iconClass"
+                    :iconClass="buttonLoginWithYourDataDefaultOptions.icon.iconClass"
+                    :type="buttonLoginWithYourDataDefaultOptions.icon.iconType"
+                    :title="buttonLoginWithYourDataDefaultOptions.icon.tooltip"
+                />
+                <!-- end CmdIcon -->
+                <span v-if="buttonLoginWithYourDataDefaultOptions.text">{{ buttonLoginWithYourDataDefaultOptions.text }}</span>
         </button>
 
         <!-- begin form elements -->
@@ -81,14 +92,15 @@
         <!-- end named slot for login-form -->
 
         <div class="option-wrapper flex-container">
-            <template v-if="linkForgotPassword || linkCreateAccount">
+            <div class="flex-container reset-flex no-wrap-on-small-devices justify-content-space-around" v-if="linkForgotPassword || linkCreateAccount">
                 <!-- begin link for 'forgot password' -->
                 <a v-if="linkForgotPassword" href="#" @click.prevent="toggleSendLoginView">
                     <!-- begin CmdIcon -->
-                    <CmdIcon v-if="linkForgotPassword.icon?.show && linkForgotPassword.icon?.iconClass"
-                             :iconClass="linkForgotPassword.icon.iconClass"
-                             :type="linkForgotPassword.icon.iconType"
-                             :title="linkForgotPassword.icon.tooltip"
+                    <CmdIcon
+                        v-if="linkForgotPassword.icon?.show && linkForgotPassword.icon?.iconClass"
+                        :iconClass="linkForgotPassword.icon.iconClass"
+                        :type="linkForgotPassword.icon.iconType"
+                        :title="linkForgotPassword.icon.tooltip"
                     />
                     <!-- end CmdIcon -->
                     <span v-if="linkForgotPassword.text">{{ linkForgotPassword.text }}</span>
@@ -111,14 +123,14 @@
                     <!-- end CmdLink -->
                 </template>
                 <!-- end link for 'create account' -->
-            </template>
+            </div>
 
             <!-- begin link-type 'button' -->
             <button
                 v-if="buttonLoginDefaultOptions.linkType === 'button'"
                 :type="buttonLoginDefaultOptions.type === 'submit' ? 'submit' : 'button'"
                 v-bind="buttonLoginOptions"
-                :class="['button', { primary: buttonLoginDefaultOptions.primary }]"
+                :class="['button stretch-on-small-devices', { primary: buttonLoginDefaultOptions.primary }]"
                 @click="onClick"
                 :disabled="buttonLoginDisabled"
             >
@@ -185,7 +197,7 @@
                 v-if="buttonSendLoginOptions.linkType === 'button'"
                 v-bind="buttonSendLoginOptions"
                 :type="buttonSendLoginOptions.type === 'submit' ? 'submit' : 'button'"
-                :class="['button', { primary: buttonSendLoginOptions.primary }]"
+                :class="['button stretch-on-small-devices', { primary: buttonSendLoginOptions.primary }]"
                 :disabled="buttonSendLoginDisabled"
             >
                 <!-- begin CmdIcon -->
@@ -394,6 +406,15 @@ export default {
             }
         },
         /**
+         * button to show login if multiple login possibilities (i.e. google, facebook) are enabled
+         *
+         * @requiredForAccessibility: partial
+         */
+        buttonLoginWithYourData: {
+            type: Object,
+            required: false
+        },
+        /**
          * button to login
          *
          * @requiredForAccessibility: partial
@@ -444,6 +465,16 @@ export default {
                 id: "login-send-login",
                 required: true,
                 ...this.cmdFormElementSendLogin
+            }
+        },
+        buttonLoginWithYourDataDefaultOptions() {
+            return {
+                linkType: "button", /* href, router, button */
+                type: "button", /* submit, button */
+                path: "",
+                text: "Login with your data",
+                primary: false,
+                ...this.buttonLoginWithYourData
             }
         },
         buttonLoginDefaultOptions() {
@@ -612,68 +643,66 @@ export default {
         background-color: var(--color-white);
         height: var(--input-height);
         padding: var(--button-padding);
-    }
 
-    .gsi-material-button .gsi-material-button-icon {
-        height: 2rem;
-        aspect-ratio: 1/1;
-        margin-right: calc(var(--default-margin) / 2);
-    }
-
-    .gsi-material-button .gsi-material-button-content-wrapper {
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        height: 100%;
-        justify-content: space-between;
-        position: relative;
-        width: 100%;
-    }
-
-    .gsi-material-button .gsi-material-button-contents {
-        flex-grow: 1;
-        font-family: 'Roboto', arial, sans-serif;
-        font-weight: 500;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: top;
-    }
-
-    .gsi-material-button .gsi-material-button-state {
-        transition: opacity .218s;
-        bottom: 0;
-        left: 0;
-        opacity: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-    .gsi-material-button:disabled {
-        background-color: #ffffff61;
-        border-color: #1f1f1f1f;
-    }
-
-    .gsi-material-button:disabled {
-        .gsi-material-button-contents, .gsi-material-button-icon {
-            opacity: 38%;
+        .gsi-material-button-icon {
+            height: 2rem;
+            aspect-ratio: 1/1;
+            margin-right: calc(var(--default-margin) / 2);
         }
-    }
 
-    .gsi-material-button:not(:disabled):is(:active, :focus) .gsi-material-button-state {
-        background-color: #303030;
-        opacity: 12%;
-    }
+        .gsi-material-button-content-wrapper {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            height: 100%;
+            justify-content: space-between;
+            position: relative;
+            width: 100%;
+        }
 
-    .gsi-material-button:not(:disabled):hover {
-        box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+        .gsi-material-button-contents {
+            flex-grow: 1;
+            font-family: 'Roboto', arial, sans-serif;
+            font-weight: 500;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
 
         .gsi-material-button-state {
-            background-color: #303030;
-            opacity: 8%;
+            transition: opacity .218s;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .gsi-material-button:disabled {
+            background-color: #ffffff61;
+            border-color: #1f1f1f1f;
+
+            .gsi-material-button-contents, .gsi-material-button-icon {
+                opacity: 38%;
+            }
+
+            &:not(:disabled):is(:active, :focus) .gsi-material-button-state {
+                background-color: #303030;
+                opacity: 12%;
+            }
+
+            &:not(:disabled):hover {
+                box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+
+                .gsi-material-button-state {
+                    background-color: #303030;
+                    opacity: 8%;
+                }
+            }
         }
     }
+
     /* end google-login-button */
 }
 

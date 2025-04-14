@@ -23,7 +23,7 @@
     <!-- end router-link -->
 
     <!-- begin button -->
-    <button v-else-if="linkType === 'button'" :class="['cmd-link button', {'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')" :title="icon?.tooltip">
+    <button v-else-if="linkType === 'button' || linkType === 'submit'" :class="['cmd-link button', {'primary': primaryButton, 'box': styleAsBox, 'fancybox': fancybox}]" type="submit" @click="emitClick($event, 'button')" :title="icon?.tooltip">
         <CmdInnerLink :text="text" :icon="icon" :image="image">
             <slot></slot>
         </CmdInnerLink>
@@ -48,7 +48,8 @@ export default {
             validator(value) {
                 return value === "href" ||
                     value === "router" ||
-                    value === "button"
+                    value === "button" ||
+                    value === "submit"
             }
         },
         /**

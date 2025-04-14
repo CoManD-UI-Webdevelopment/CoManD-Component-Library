@@ -3,7 +3,7 @@
         <!-- being tab-list -->
         <ul :class="{'stretch-tabs' : stretchTabs}" role="tablist">
             <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="tab">
-                <a href="#" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined">
+                <a href="#" class="button" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined">
                     <!-- begin CmdIcon -->
                     <CmdIcon v-if="tab.iconClass" :iconClass="tab.iconClass" :type="tab.iconType" />
                     <!-- end CmdIcon -->
@@ -141,7 +141,11 @@ export default {
                 border-bottom: 0;
                 border-top-left-radius: var(--default-border-radius);
                 border-top-right-radius: var(--default-border-radius);
-                text-decoration: none;
+                text-decoration: none !important;
+
+                span, span[class*="icon-"] {
+                    text-decoration: none !important;
+                }
 
                 &:hover, &:active, &:focus {
                     cursor: pointer;

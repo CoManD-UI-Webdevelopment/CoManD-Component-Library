@@ -143,9 +143,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.cmd-mail-tool {
-
-}
-</style>

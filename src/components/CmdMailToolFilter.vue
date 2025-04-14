@@ -1,10 +1,10 @@
 <template>
-    <div class="cmd-mail-tool-filter align-items-center">
+    <div class="cmd-mail-tool-filter">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="headlineText" :headlineText="headlineText" :headlineLevel="headlineLevel"/>
         <!-- end CmdHeadline -->
 
-        <div class="flex-container horizontal align-items-center">
+        <div class="flex-container align-items-center">
             <!-- begin CmdFormElement -->
             <CmdFormElement
                 element="input"
@@ -18,31 +18,33 @@
             />
             <!-- end CmdFormElement -->
 
-            <!-- begin CmdFormElement -->
-            <CmdFormElement
-                element="input"
-                type="checkbox"
-                name="search-filters"
-                id="search-subject"
-                labelText="Search subjects"
-                v-model="searchFilterOptions"
-                inputValue="subjects"
-            />
-            <!-- end CmdFormElement -->
+            <div class="flex-container reset-flex">
+                <!-- begin CmdFormElement -->
+                <CmdFormElement
+                    element="input"
+                    type="checkbox"
+                    name="search-filters"
+                    id="search-subject"
+                    labelText="Search subjects"
+                    v-model="searchFilterOptions"
+                    inputValue="subjects"
+                />
+                <!-- end CmdFormElement -->
 
-            <!-- begin CmdFormElement -->
-            <CmdFormElement
-                element="input"
-                type="checkbox"
-                name="search-filters"
-                :id="'search-' + senderReceiver"
-                :labelText="'Search ' + senderReceiver"
-                v-model="searchFilterOptions"
-                :inputValue="senderReceiver"
-            />
-            <!-- end CmdFormElement -->
+                <!-- begin CmdFormElement -->
+                <CmdFormElement
+                    element="input"
+                    type="checkbox"
+                    name="search-filters"
+                    :id="'search-' + senderReceiver"
+                    :labelText="'Search ' + senderReceiver"
+                    v-model="searchFilterOptions"
+                    :inputValue="senderReceiver"
+                />
+                <!-- end CmdFormElement -->
+            </div>
         </div>
-        <div class="flex-container horizontal sort-wrapper">
+        <div class="flex-container sort-wrapper">
             <!-- begin link sort ascending -->
             <a v-if="sortOrderAsc" href="#" @click.prevent="sortByDate('asc')" :title="linkSortAscending.title">
                 <span v-if="linkSortAscending.text">{{ linkSortAscending.text }}</span>
@@ -188,13 +190,17 @@ export default {
     display: flex;
     padding: var(--default-padding);
     background: var(--color-light-gray);
-
-    & > * {
-        flex: 1;
-    }
+    align-items: center;
+    justify-content: space-between;
 
     .cmd-headline {
         margin: 0;
+    }
+
+    .label-text {
+        white-space: nowrap;
+
+
     }
 
     .sort-wrapper {

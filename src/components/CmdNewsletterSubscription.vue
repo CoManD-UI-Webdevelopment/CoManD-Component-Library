@@ -35,6 +35,7 @@
                 :type="buttonType"
                 :disabled="buttonDisabled"
                 :nativeButton="cmdFormElementSubmitDynamicLabel"
+                class="stretch-on-small-devices"
                 @click="sendData"
             />
             <!-- end cmd-form-element -->

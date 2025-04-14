@@ -268,7 +268,7 @@ export default {
     }
 }
 
-function validateSpecialCharacters(message = "special character - replace with getMessage") {
+function validateSpecialCharacters(message = "special character") {
   return {
       message,
       valid(value) {

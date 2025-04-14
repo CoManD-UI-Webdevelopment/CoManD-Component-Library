@@ -1,18 +1,18 @@
 {
   "person": {
     "id": 1,
-    "type": "casual",
-    "imgSrc": "https://comand-ui.com/samples/images/user-images/fake-user-2.jpg",
-    "bgImgSrc": "/images/background-images/background-matrix.jpg",
-    "lastName": "Casual",
+    "type": "founder",
+    "imgSrc": "https://comand-ui.com/samples/images/user-images/fake-user-6.jpg",
+    "bgImgSrc": "/images/background-images/background-abstract-1.jpg",
+    "lastName": "Founder",
     "middleName": "",
-    "firstName": "Jackson",
-    "birthdate": "1975-07-11",
+    "firstName": "Michael",
+    "birthdate": "1985-08-12",
     "gender": "m",
-    "profession": "Developer",
+    "profession": "Marketing",
     "countryIso": "de",
-    "companyName": "Big Tech Company",
-    "about": "I am the best developer in my home office",
+    "companyName": "The Next Unicorn Inc.",
+    "about": "Making the world better step by step!",
     "group": "Friends"
   },
   "account": {
@@ -22,14 +22,13 @@
   },
   "tags": [
     {
-      "name": "Backend Development"
+      "name": "Marketing"
     },
     {
-      "name": "Frontend Development",
-      "description": "Frontend Development embraces the visible part of development. This includes primary the structure and its styling of websites combined by some basic logic."
+      "name": "Sales"
     },
     {
-      "name": "Data Migration"
+      "name": "Procurement"
     }
   ],
   "contact": [
@@ -41,13 +40,14 @@
     },
     {
       "name": "address",
-      "iconClass": "icon-home",
+      "iconClass": "icon-location-set",
       "labelText": "Address",
       "streetNo": "Your Street/No",
       "zip": "Your zip",
-      "city": "Duisburg",
+      "city": "Grevenbroich",
       "miscInfo": "Misc. info",
-      "country": "de"
+      "country": "de",
+      "tooltip": "Open address on GoogleMaps™ (in new tab)"
     },
     {
       "name": "phone",
@@ -55,7 +55,7 @@
       "data": "Your phone number",
       "labelText": "Telephone",
       "tooltip": "Call number",
-      "href": "0123456789"
+      "href": "00492181818123"
     },
     {
       "name": "phone",
@@ -63,7 +63,7 @@
       "data": "Your mobile phone number",
       "labelText": "Mobile phone",
       "tooltip": "Call number",
-      "href": "0123456789"
+      "href": "00491721055725"
     },
     {
       "name": "email",
@@ -71,43 +71,41 @@
       "data": "Your email address",
       "labelText": "Email",
       "tooltip": "Send mail",
-      "href": "mail@provider.de"
+      "href": "biock@biock.com"
     },
     {
       "name": "url",
       "iconClass": "icon-globe",
-      "data": "Your website",
-      "labelText": "Website",
-      "tooltip": "Open website in new tab",
-      "href": "https://www.domain.toplevel"
+      "data": "Your web site",
+      "labelText": "Web site",
+      "tooltip": "Open website in browser",
+      "href": "https://www.biock.com"
     }
   ],
   "networks": [
     {
       "buttonClass": "social-network-facebook",
       "iconClass": "icon-facebook",
-      "linkText": "facebook",
+      "type": "href",
       "path": "https://www.facebook.com",
+      "target": "_blank",
       "tooltip": "Visit profile on facebook"
     },
     {
-      "buttonClass": "social-network-instagram",
-      "iconClass": "icon-instagram",
-      "linkText": "instagram",
-      "path": "https://www.instagram.com",
-      "tooltip": "Visit profile on instagram"
+      "buttonClass": "social-network-x",
+      "iconClass": "icon-x",
+      "type": "href",
+      "path": "https://www.twitter.com",
+      "target": "_blank",
+      "tooltip": "Visit profile on X"
     },
     {
       "buttonClass": "social-network-linkedin",
       "iconClass": "icon-linkedin",
-      "linkText": "linkedin",
+      "type": "href",
       "path": "https://www.linkedin.com",
+      "target": "_blank",
       "tooltip": "Visit profile on linkedin"
     }
-  ],
-  "profileVisibility": {
-    "casual": [],
-    "founder": ["canSeeLocation"],
-    "investor": ["canSeeLocation"]
-  }
+  ]
 }

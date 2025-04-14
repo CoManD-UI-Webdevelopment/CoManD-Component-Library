@@ -6,7 +6,7 @@
     ]">
         <!-- begin cmd-headline -->
         <CmdHeadline
-            v-if="cmdHeadline?.headlineText || editModeContext"
+            v-if="cmdHeadline?.headlineText"
             v-bind="cmdHeadline"
         />
         <!-- end cmd-headline -->
@@ -32,7 +32,7 @@
 
 <script>
 // import mixins (editMode only)
-// import EditMode from "../mixins/EditMode.vue"
+import EditMode from "../mixins/EditMode.vue"
 
 // import utils (editMode only)
 // import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js"
@@ -40,7 +40,7 @@
 export default {
     name: "CmdListOfImages",
     emits: ["click"],
-//   mixins: [EditMode],
+    //mixins: [EditMode],
     props: {
         /**
          * style component like a box
@@ -80,7 +80,7 @@ export default {
         }
     },
     methods: {
-        /*
+/*
         onAddItem() {
             this.editModeContext.content.addContent(
                 buildComponentPath(this, 'props', 'links', -1),
@@ -107,7 +107,7 @@ export default {
                 }
             })
         }
-         */
+*/
     }
 }
 </script>

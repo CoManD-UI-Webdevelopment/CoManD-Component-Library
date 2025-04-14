@@ -2,7 +2,7 @@
     <div class="cmd-list-of-requirements">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="showHeadline" :headline-level="cmdHeadline.headlineLevel">
-             {{ headlineRequirements }}<template v-if="labelText"><br/><em>{{ labelText }}</em></template>
+             {{ headlineRequirements }}<template v-if="labelText"><br/>"{{ labelText }}"</template>
         </CmdHeadline>
         <!-- end CmdHeadline -->
 
@@ -159,22 +159,22 @@ export default {
         }
 
         .error, .error span {
-            --status-color: var(--error-color);
+            --status-color: var(--error-color) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .warning, .warning span {
-            --status-color: var(--warning-color);
+            --status-color: var(--warning-color) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .success, .success span {
-            --status-color: var(--success-color);
+            --status-color: var(--success-color) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .info, .info span {
-            --status-color: var(--info-color);
+            --status-color: var(--info-color) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
-        dt {
+        dt, dt span[class*="icon-"] {
             color: var(--status-color);
         }
 

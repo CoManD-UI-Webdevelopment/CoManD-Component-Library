@@ -7,12 +7,12 @@
             :title="getMessage('mail_tool_entry.tooltip.read_this_mail')"
         >
             <dl class="no-flex">
-                <dt class="flex-container align-items-center">
+                <dt class="flex-container">
                     {{
                         boxType === "inbox" ? getMessage("mail_tool_entry.description_label.from") : getMessage("mail_tool_entry.description_label.to")
                     }}
                 </dt>
-                <dd class="sender-receiver-wrapper flex-container align-items-center no-flex">
+                <dd class="sender-receiver-wrapper flex-container no-wrap-on-small-devices align-items-center no-flex">
                     <!-- begin CmdImage for contact image -->
                     <CmdImage v-if="mail.cmdImage?.src"
                               :src="mail.cmdImage.src"
@@ -25,15 +25,15 @@
                 <dt>{{ getMessage("mail_tool_entry.description_label.subject") }}</dt>
                 <dd><a href="#" @click.prevent="readMail(mail.id)">{{ mail.subject }}</a></dd>
             </dl>
-            <div class="flex-container vertical no-flex">
+            <div class="flex-container received-and-options-wrapper no-wrap-on-small-devices">
                 <dl class="no-list-items date-time-wrapper">
-                    <dt>Received:</dt>
-                    <dd>
+                    <dt>{{ getMessage("mail_tool_entry.description_label.received") }}</dt>
+                    <dd class="flex-container no-wrap-on-small-devices">
                         <time :datetime="mail.isoDate">{{ mailFormatDate(mail.isoDate) }}</time>
                         <time :datetime="mail.time">{{ mailFormatTime(mail.time) }}</time>
                     </dd>
                 </dl>
-                <div class="options-wrapper flex-container no-flex">
+                <div class="options-wrapper flex-container no-wrap-on-small-devices no-flex">
                     <a href="#" @click.prevent="deleteMail(mail.id)" title="Delete this mail">
                         <span class="icon-delete"></span>
                     </a>
@@ -208,6 +208,11 @@ export default {
     dl {
         margin: 0;
 
+        dt {
+            align-items: center;
+            justify-content: flex-start;
+        }
+
         dd {
             gap: calc(var(--default-gap) / 2);
         }
@@ -224,7 +229,47 @@ export default {
     .options-wrapper {
         justify-content: flex-end;
     }
-}
 
+    .sender-receiver-wrapper {
+        justify-content: flex-start !important;
+    }
+
+    .received-and-options-wrapper {
+        flex-direction: column;
+        flex: none;
+
+        .date-time-wrapper {
+            time {
+                flex: none;
+            }
+        }
+
+        .options-wrapper {
+            margin-left: auto;
+        }
+    }
+}
+</style>
+
+<style lang="scss">
+@import "../assets/styles/variables";
+
+
+@media only screen and (max-width: $small-max-width) {
+    .cmd-mail-tool-entry {
+        dl {
+
+            dt {
+                align-items: flex-start;
+                justify-content: center;
+            }
+        }
+
+        .received-and-options-wrapper {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}
 /* end cmd-mail-tool-entry -------------------------------------------------------------------------------------------- */
 </style>

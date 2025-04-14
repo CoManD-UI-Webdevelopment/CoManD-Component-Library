@@ -404,8 +404,9 @@
                         <!-- end inputfield in two columns -->
                         <CmdFormElement
                             element="input"
-                            labelText="Label for inputfield (number):"
+                            labelText="Label:"
                             type="number"
+                            class="flex-none"
                             id="inputfield-number"
                             required="required"
                             min="0"
@@ -418,7 +419,7 @@
                         />
                         <CmdFormElement
                             element="input"
-                            labelText="Label (inline) for inputfield (number):"
+                            labelText="Label for inputfield (number):"
                             :displayLabelInline="true"
                             type="number"
                             id="inputfield-number"
@@ -1634,7 +1635,26 @@
                     :styleAsBox="true"
                     :icon="{iconClass: 'icon-home', position: 'top', tooltip: 'Tooltip for hyperlink'}"
                 />
-                <button @click="showCmdLink = true"><span>Add link</span></button>
+                <CmdLink
+                    linkType="href"
+                    :styleAsButton="true"
+                    text="Link styled as button"
+                    :icon="{iconClass: 'icon-home', position: 'left'}"
+                    @click="cmdLinkOutput"
+                />
+                <CmdLink
+                    linkType="submit"
+                    text="Submit button"
+                    :icon="{iconClass: 'icon-home', position: 'left'}"
+                    @click="cmdLinkOutput"
+                />
+                <CmdLink
+                    linkType="button"
+                    text="Add link"
+                    :primaryButton="true"
+                    :icon="{iconClass: 'icon-link', position: 'right'}"
+                    @click="showCmdLink = true"
+                />
                 <CmdLink
                     v-if="showCmdLink"
                     path="#"
@@ -2403,7 +2423,6 @@ export default {
             replacedCheckboxValue: "checkboxValue1",
             radiobuttonValue: "radiobuttonValue1",
             replacedRadiobuttonValue: "radiobuttonValue1",
-            f: false,
             fakeSelectDefault: "",
             fakeSelectCheckbox: [1],
             fakeSelectFilters: [],
@@ -2579,7 +2598,7 @@ export default {
                 return navigationData
             }, 1000);
         },
-        f(event) {
+        clickOnListOfLinks(event) {
             event.originalEvent.preventDefault()
             console.log(event)
         },

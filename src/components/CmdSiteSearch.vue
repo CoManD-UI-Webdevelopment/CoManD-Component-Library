@@ -238,7 +238,8 @@ export default {
                         position: "before",
                         iconClass: "icon-search"
                     },
-                    text: "Search"
+                    text: "Search",
+                    primary: true
                 }
             }
         },
@@ -399,6 +400,10 @@ export default {
 @media only screen and (max-width: $small-max-width) {
     .cmd-box-site-search {
         flex-wrap: nowrap;
+
+        > a.filter-options {
+            align-self: center;
+        }
     }
 }
 /* end cmd-box-site-search ---------------------------------------------------------------------------------------- */

@@ -252,7 +252,8 @@
         />
         <!-- end CmdFormElement -->
 
-        <div class="button-wrapper no-flex">
+        <!-- begin button-wrapper -->
+        <div class="button-wrapper stretch-on-small-devices">
             <button
                 :class="[
                     'button primary',
@@ -285,6 +286,7 @@
                 <span>{{ getMessage("upload_form.buttontext.cancel") }}</span>
             </button>
         </div>
+        <!-- end button-wrapper -->
     </fieldset>
     <!-- end advanced mode -->
 

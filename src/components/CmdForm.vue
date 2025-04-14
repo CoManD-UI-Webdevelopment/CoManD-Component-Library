@@ -304,7 +304,7 @@ export default {
         }
     }
 
-    .button, .button:last-child {
+    [type="submit"].button {
         margin-left: auto;
     }
 

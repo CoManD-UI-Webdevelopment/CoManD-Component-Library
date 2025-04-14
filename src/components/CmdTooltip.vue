@@ -36,6 +36,11 @@ export default {
             pointerY: 0
         }
     },
+    inject: {
+        injectScrollContainer: {
+            default: ""
+        }
+    },
     props: {
         /**
          * properties for CmdHeadline-component
@@ -119,8 +124,17 @@ export default {
             const relatedElement = document.getElementById(this.relatedId)
 
             if (relatedElement) {
-                if (this.scrollContainer) {
-                    document.querySelector(this.scrollContainer).addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+                const scrollContainerSelector = this.injectScrollContainer || this.scrollContainer
+
+                if (scrollContainerSelector) {
+                    const scrollContainerElement = document.querySelector(scrollContainerSelector)
+
+                    if(scrollContainerElement) {
+                        scrollContainerElement.addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+                    } else {
+                        console.warn( "'CmdTooltip-Component': Element accessed by " + scrollContainerSelector + " does not exist! Please provide selector for an existing element!")
+                    }
+
                     document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
                 }
 
