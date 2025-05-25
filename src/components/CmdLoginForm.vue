@@ -4,6 +4,7 @@
         <legend :class="{hidden : !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left'}">
             {{ legendLoginForm.text }}
         </legend>
+
         <!-- begin CmdHeadline -->
         <CmdHeadline
             v-if="cmdHeadlineLoginForm"
@@ -47,7 +48,8 @@
         </div>
         <!-- end Facebook-Login-Button -->
 
-        <button v-if="enableLoginWithGoogle || enableLoginWithFacebook"
+        <!-- begin default-login-button -->
+        <button v-if="(enableLoginWithGoogle || enableLoginWithFacebook) && !showLogin"
                 class="button stretch-on-small-devices"
                 v-bind="buttonLoginWithYourDataDefaultOptions"
                 @click.prevent="showLogin = true">
@@ -61,6 +63,7 @@
                 <!-- end CmdIcon -->
                 <span v-if="buttonLoginWithYourDataDefaultOptions.text">{{ buttonLoginWithYourDataDefaultOptions.text }}</span>
         </button>
+        <!-- end default-login-button -->
 
         <!-- begin form elements -->
         <div v-show="showLogin" :class="['login-fields flex-container', {'vertical': orientation === 'vertical'}]">

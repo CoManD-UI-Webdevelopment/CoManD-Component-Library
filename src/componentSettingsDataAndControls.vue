@@ -397,23 +397,7 @@ data() {
                 }
             ]
         },
-        cmdListOfImagesSettingsData: {
-            styleAsBox: false,
-            orientation: "vertical"
-        },
-        cmdListOfImagesSettingsControls: {
-            orientation: [
-                {
-                    text: "Vertical",
-                    value: "vertical"
-                },
-                {
-                    text: "Horizontal (default)",
-                    value: "horizontal"
-                }
-            ]
-        },
-        cmdListOfLinksSettingsData: {
+        cmdListSettingsData: {
             useGap: true,
             styleAsBox: false,
             largeIcons: false,
@@ -422,7 +406,21 @@ data() {
             align: "left",
             showListStyleItems: false
         },
-        cmdListOfLinksSettingsControls: {
+        cmdListSettingsControls: {
+            listType: [
+                {
+                    text: "Links",
+                    value: "links"
+                },
+                {
+                    text: "Images",
+                    value: "images"
+                },
+                {
+                    text: "Tags",
+                    value: "tags"
+                }
+            ],
             align: [
                 {
                     text: "Left (default)",

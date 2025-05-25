@@ -1,6 +1,6 @@
 {
   "name": "comand-component-library",
-  "version": "4.2.12",
+  "version": "4.2.19",
   "license": "GPL-3.0-only",
   "author": "CoManD-UI",
   "private": false,
@@ -29,8 +29,7 @@
   },
   "dependencies": {
     "clickout-event": "^1.1.2",
-    "comand-component-library": "^4.2.10",
-    "comand-frontend-framework": "^4.2.32",
+    "comand-frontend-framework": "^4.2.42",
     "comand-ui-iconfonts": "^1.0.19",
     "core-js": "^3.20.1",
     "prismjs": "^1.27.0",

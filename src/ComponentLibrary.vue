@@ -175,13 +175,13 @@
         <!-- begin site-header ------------------------------------------------------------------------------------------->
         <CmdSiteHeader :sticky="true">
             <template v-slot:top-header>
-                <!-- begin list-of-links ------------------------------------------------------------------------------------------->
-                <CmdListOfLinks
-                    :links="listOfLinksData"
+                <!-- begin list ------------------------------------------------------------------------------------------->
+                <CmdList
+                    :links="listData"
                     orientation="horizontal"
                     align="right"
                 />
-                <!-- end list-of-links ------------------------------------------------------------------------------------------->
+                <!-- end list ------------------------------------------------------------------------------------------->
             </template>
             <template v-slot:logo>
                 <!-- begin company-logo ------------------------------------------------------------------------------------------->
@@ -260,9 +260,9 @@
                     </ul>
                 </div>
 
-                <!-- begin cmd-form-filters -->
+                <!-- begin form-filters -->
                 <CmdFormFilters v-model="fakeSelectFilters" :selectedOptionsName="getOptionName"/>
-                <!-- end cmd-form-filters -->
+                <!-- end form-filters -->
 
                 <CmdForm :use-fieldset="false" id="advanced-form-elements" novalidate="novalidate">
                     <fieldset class="flex-container">
@@ -1622,6 +1622,13 @@
                     linkType="href"
                     ref="CmdLink"
                     v-bind="cmdLinkSettingsData"
+                    :icon="{iconClass: 'icon-chevron-one-stripe-left', position: 'left', tooltip: 'Tooltip for hyperlink'}"
+                    @click="cmdLinkOutput"
+                />
+                <CmdLink
+                    linkType="href"
+                    ref="CmdLink"
+                    v-bind="cmdLinkSettingsData"
                     text="Link with fancybox"
                     :fancybox="true"
                     :icon="{iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink'}"
@@ -1671,17 +1678,19 @@
             </CmdWidthLimitationWrapper>
             <!-- end link --------------------------------------------------------------------------------------------------->
 
-            <!-- begin list-of-links --------------------------------------------------------------------------------------------------->
+            <!-- begin list --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-list-of-links">
-                    <span>List Of Links</span>
+                <h2 class="headline-demopage" id="section-list">
+                    <span>List</span>
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
-                       @click.prevent="openSettingsSidebar('CmdListOfLinks')"></a>
+                       @click.prevent="openSettingsSidebar('CmdList')"></a>
                 </h2>
-                <CmdListOfLinks
-                    ref="CmdListOfLinks"
-                    v-bind="cmdListOfLinksSettingsData"
-                    :links="listOfLinksData"
+                <CmdList
+                    :cmdHeadline="{headlineText: 'List of links', headlineLevel: 3}"
+                    ref="CmdList"
+                    v-bind="cmdListSettingsData"
+                    :items="listData"
+                    listType="links"
                     @click="cmdLinkOutput"
                 />
                 <dl class="output">
@@ -1689,23 +1698,20 @@
                     <dt>Target:</dt><dd>{{outputCmdLink?.event?.originalEvent.target}}</dd>
                     <dt>LinkType:</dt><dd>{{outputCmdLink?.event?.linkType}}</dd>
                 </dl>
-            </CmdWidthLimitationWrapper>
-            <!-- end list-of-links --------------------------------------------------------------------------------------------------->
-
-            <!-- begin list-of-images --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-list-of-images">
-                    <span>List Of Images</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                       @click.prevent="openSettingsSidebar('CmdListOfImages')"></a>
-                </h2>
-                <CmdListOfImages
-                    ref="CmdListOfImages"
-                    v-bind="cmdListOfImagesSettingsData"
-                    :images="imageGalleryData"
+                <CmdList
+                    :cmdHeadline="{headlineText: 'List of images', headlineLevel: 3}"
+                    :items="imageGalleryData"
+                    orientation="horizontal"
+                    listType="images"
+                />
+                <CmdList
+                    :cmdHeadline="{headlineText: 'List of tags', headlineLevel: 3}"
+                    :items="listOfTagsData"
+                    orientation="horizontal"
+                    listType="tags"
                 />
             </CmdWidthLimitationWrapper>
-            <!-- end list-of-images --------------------------------------------------------------------------------------------------->
+            <!-- end list --------------------------------------------------------------------------------------------------->
 
             <!-- begin login-form --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1873,7 +1879,13 @@
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-site-footer">Site Footer</h2>
                 <CmdSiteFooter>
-                    Slotcontent
+                    <CmdLink
+                        linkType="href"
+                        ref="CmdLink"
+                        v-bind="cmdLinkSettingsData"
+                        :icon="{iconClass: 'icon-chevron-one-stripe-left', position: 'left', tooltip: 'Tooltip for hyperlink'}"
+                        @click="cmdLinkOutput"
+                    />
                 </CmdSiteFooter>
             </CmdWidthLimitationWrapper>
             <!-- end site-footer --------------------------------------------------------------------------------------------------->
@@ -1891,8 +1903,8 @@
                     :cmdCompanyLogo="companyLogoData"
                 >
                     <template v-slot:topheader>
-                        <CmdListOfLinks
-                            :links="listOfLinksData"
+                        <CmdList
+                            :items="listData"
                             orientation="horizontal"
                             align="right"
                         />
@@ -2275,7 +2287,8 @@ import imageGalleryData from '@/assets/data/image-gallery.json'
 import inputGroupRadiobuttonsData from '@/assets/data/input-group-radiobuttons.json'
 import inputGroupReplacedRadiobuttonsData from '@/assets/data/input-group-replaced-radiobuttons.json'
 import inputGroupToggleSwitchRadiobuttonsData from '@/assets/data/input-group-toggle-switch-radiobuttons.json'
-import listOfLinksData from '@/assets/data/list-of-links.json'
+import listData from '@/assets/data/list.json'
+import listOfTagsData from '@/assets/data/list-of-tags.json'
 import switchLanguage from '@/assets/data/switch-language.json'
 import mailToolData from '@/assets/data/mail-tool.json'
 import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
@@ -2470,7 +2483,8 @@ export default {
             inputGroupReplacedRadiobuttonsData,
             inputGroupToggleSwitchRadiobuttonsData,
             switchLanguage,
-            listOfLinksData,
+            listData,
+            listOfTagsData,
             multistepsData,
             mailToolData,
             navigationData,

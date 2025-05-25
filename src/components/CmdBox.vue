@@ -232,7 +232,7 @@
 
         <!-- begin box-footer -->
         <div v-if="user.links && user.links.length" class="box-footer">
-            <CmdListOfLinks :links="user.links" orientation="horizontal" :useGap="false"/>
+            <CmdList :links="user.links" orientation="horizontal" :useGap="false"/>
         </div>
         <!-- end box-footer -->
     </div>
@@ -358,7 +358,7 @@ export default {
             required: false
         },
         /**
-         * set default profile-icon (will eb shown if no user-image exists)
+         * set the default profile-icon (will eb shown if no user-image exists)
          */
         defaultProfileIconClass: {
             type: String,
@@ -975,6 +975,10 @@ export default {
                             border-left: var(--box-border);
                             border-radius: inherit;
                             line-height: 100%;
+                        }
+
+                        .cmd-link:has(span[class*="icon-"]) {
+                            justify-content: center;
                         }
 
                         &:hover, &:active, &:focus {

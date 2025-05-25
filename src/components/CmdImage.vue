@@ -99,13 +99,13 @@
     <!-- begin image with figure/figcaption -->
     <figure v-else-if="useFigureTag" :class="['cmd-image', textAlign]">
         <figcaption v-if="figcaption?.position === 'top' && figcaption?.text && figcaption?.show" v-html="figcaption?.text"/>
-        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
+        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" :loading="image?.lazyLoading !== false ? 'lazy' : null" @load="onImageLoaded"/>
         <figcaption v-if="figcaption?.position !== 'top' && figcaption?.text && figcaption?.show" v-html="figcaption?.text"/>
     </figure>
     <!-- end image with figure/figcaption -->
 
     <!-- begin image without figure/figcaption -->
-    <img v-else class="cmd-image" :src="imageSource" :alt="image?.alt" :title="image?.tooltip" @load="onImageLoaded"/>
+    <img v-else class="cmd-image" :src="imageSource" :alt="image?.alt" :title="image?.tooltip" :loading="image?.lazyLoading ? 'lazy' : null" @load="onImageLoaded"/>
     <!-- end image without figure/figcaption -->
     <!-- end default-view -->
 </template>

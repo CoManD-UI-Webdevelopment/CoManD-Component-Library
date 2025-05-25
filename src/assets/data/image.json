@@ -16,7 +16,8 @@
     "image": {
       "src": "/media/images/demo-images/medium/landscape-02.jpg",
       "alt": "Alternative text",
-      "tooltip": "Tooltip"
+      "tooltip": "Tooltip",
+      "lazyLoading": true
     },
     "figcaption": {
       "show": true,

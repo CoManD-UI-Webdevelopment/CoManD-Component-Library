@@ -16,7 +16,7 @@
         />
         <!-- end cmdImage -->
 
-        <div class="flex-container vertical" :class="setInnerClass">
+        <div v-if="!editModeContext" class="flex-container vertical" :class="setInnerClass">
             <!-- begin cmdHeadline -->
             <CmdHeadline
                 v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'belowImage' || orientation === 'horizontal')"

@@ -1,11 +1,12 @@
 <template>
-    <div :class="['cmd-list-of-links',
+    <div :class="['cmd-list',
         {
-            box: styleAsBox, horizontal: orientation === 'horizontal',
+            box: styleAsBox,
             'section-anchors': sectionAnchors,
             'large-icons': largeIcons,
-            'show-list-style-items': showListStyleItems
-        }
+            'show-list-style-items': showListStyleItems,
+        },
+        'list-type-' + listType
     ]">
         <!-- begin cmd-headline -->
         <CmdHeadline
@@ -15,46 +16,72 @@
         <!-- end cmd-headline -->
 
         <!-- begin list of links -->
-        <ul :class="['flex-container', {'no-gap': !useGap}, 'align-' + align, setStretchClass]">
-            <!-- begin CmdListOfLinksItem-->
-            <CmdListOfLinksItem
-                v-if="!editModeContext"
-                v-for="(link, index) in links"
-                :key="index"
-                :class="{'active': sectionAnchors && activeSection === index}"
-                :link="link"
-                @click="emitClick($event, linkType)"
-            />
-            <!-- end CmdListOfLinksItem-->
+        <ul :class="['flex-container', {'no-gap': !useGap}, 'align-' + align, setStretchClass, {horizontal: orientation === 'horizontal'}]">
+            <template v-if="listType === 'links'">
+                <!-- begin CmdListOfLinksItem-->
+                <CmdListOfLinksItem
+                    v-if="!editModeContext"
+                    v-for="(link, index) in items"
+                    :key="index"
+                    :class="{'active': sectionAnchors && activeSection === index}"
+                    :link="link"
+                    @click="emitClick($event, linkType)"
+                />
+                <!-- end CmdListOfLinksItem-->
 
-            <!-- begin edit-mode -->
-            <li v-else>
-                <EditComponentWrapper
-                    v-for="(link, index) in links"
-                    :key="'x' + index"
-                    class="edit-items"
-                    :showComponentName="false"
-                    componentTag="ul"
-                    componentName="CmdLinkItem"
-                    :componentProps="link"
-                    :allowedComponentTypes="[]"
-                    :componentPath="['props', 'links', index]"
-                    :itemProvider="itemProvider"
-                >
-                    <!-- begin CmdListOfLinksItem-->
-                    <CmdListOfLinksItem
-                        :class="{'active': sectionAnchors && activeSection === index}"
-                        :link="link"
-                    />
-                    <!-- end CmdListOfLinksItem-->
-                </EditComponentWrapper>
+                <!-- begin edit-mode -->
+                <li v-else>
+                    <EditComponentWrapper
+                        v-for="(link, index) in links"
+                        :key="'x' + index"
+                        class="edit-items"
+                        :showComponentName="false"
+                        componentTag="ul"
+                        componentName="CmdLinkItem"
+                        :componentProps="link"
+                        :allowedComponentTypes="[]"
+                        :componentPath="['props', 'links', index]"
+                        :itemProvider="itemProvider"
+                    >
+                        <!-- begin CmdListOfLinksItem-->
+                        <CmdListOfLinksItem
+                            :class="{'active': sectionAnchors && activeSection === index}"
+                            :link="link"
+                        />
+                        <!-- end CmdListOfLinksItem-->
+                    </EditComponentWrapper>
 
-                <button v-if="links.length === 0" type="button" class="button confirm small" @click="onAddItem">
-                    <span class="icon-plus"></span>
-                    <span>Add new entry</span>
-                </button>
-            </li>
-            <!-- end edit-mode -->
+                    <button v-if="links.length === 0" type="button" class="button confirm small" @click="onAddItem">
+                        <span class="icon-plus"></span>
+                        <span>Add new entry</span>
+                    </button>
+                </li>
+                <!-- end edit-mode -->
+            </template>
+
+            <!-- begin list of images -->
+            <template v-if="listType === 'images'">
+                <li v-for="(image, index) in items" :key="index">
+                    <!-- begin CmdImage with link-->
+                    <a v-if="image.image.url" :href="image.image.url">
+                        <CmdImage v-bind="image"/>
+                    </a>
+                    <!-- end CmdImage with link-->
+
+                    <!-- begin CmdImage without link-->
+                    <CmdImage v-else v-bind="image"/>
+                    <!-- end CmdImage without link-->
+                </li>
+            </template>
+            <!-- end list of images -->
+
+            <!-- begin tags -->
+            <template v-if="listType === 'tags'">
+                <li v-for="(tag, index) in items" :key="index">
+                    <small class="tag">{{ tag }}</small>
+                </li>
+            </template>
+            <!-- end tags -->
         </ul>
         <!-- end list of links -->
     </div>
@@ -72,6 +99,20 @@ export default {
     emits: ["click"],
     mixins: [EditMode],
     props: {
+        /**
+         * set list-type
+         *
+         * @allowedValues: links, images, tags
+         */
+        listType: {
+            typ: String,
+            default: "links",
+            validator(value) {
+                return value === "links" ||
+                    value === "images" ||
+                    value === "tags"
+            }
+        },
         /**
          * toggle gab between links
          */
@@ -139,9 +180,9 @@ export default {
             }
         },
         /**
-         * list of displayed links
+         * list of displayed items
          */
-        links: {
+        items: {
             type: Array,
             required: false
         },
@@ -168,7 +209,7 @@ export default {
     },
     computed: {
         setStretchClass() {
-            if(this.largeIcons && this.orientation === "horizontal") {
+            if (this.largeIcons && this.orientation === "horizontal") {
                 return "stretch"
             }
             return null
@@ -197,7 +238,7 @@ export default {
                     if (cmdHeadlineUpdateHandler) {
                         props.cmdHeadline = props.cmdHeadline || {}
                         cmdHeadlineUpdateHandler.update(props.cmdHeadline)
-            }
+                    }
                 }
             })
         },
@@ -209,8 +250,8 @@ export default {
 </script>
 
 <style>
-/* begin cmd-list-of-links ---------------------------------------------------------------------------------------- */
-.cmd-list-of-links {
+/* begin cmd-list ---------------------------------------------------------------------------------------- */
+.cmd-list {
     > ul {
         flex-direction: column;
         gap: calc(var(--default-gap) / 2);
@@ -243,26 +284,24 @@ export default {
         }
     }
 
-    &.horizontal {
-        > ul {
-            gap: var(--default-gap);
-            flex-direction: row;
+    .horizontal {
+        gap: var(--default-gap);
+        flex-direction: row;
 
-            > li {
-                flex: none;
-                display: flex;
-                flex-direction: column;
-            }
-
-            &.align-right {
-                justify-content: flex-end;
-            }
-
-            &.stretch {
-                justify-content: space-around;
-            }
+        > li {
+            flex: none;
+            display: flex;
+            flex-direction: column;
+            max-width: 100%; /* avoid li to be stretched by large content */
         }
 
+        &.align-right {
+            justify-content: flex-end;
+        }
+
+        &.stretch {
+            justify-content: space-around;
+        }
     }
 
     &.large-icons {
@@ -294,7 +333,7 @@ export default {
 @import '../assets/styles/variables';
 
 @media only screen and (max-width: $medium-max-width) {
-    .cmd-list-of-links {
+    .cmd-list {
         > ul {
             ul {
                 gap: calc(var(--default-gap) / 2);
@@ -306,5 +345,6 @@ export default {
         }
     }
 }
-/* end cmd-list-of-links------------------------------------------------------------------------------------------ */
+
+/* end cmd-list ------------------------------------------------------------------------------------------ */
 </style>

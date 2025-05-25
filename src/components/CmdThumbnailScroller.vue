@@ -16,7 +16,7 @@
         />
         <!-- end cmd-headline -->
 
-        <div class="inner-thumbnail-wrapper">
+        <div :class="['inner-thumbnail-wrapper', {box: styleAsBox}]">
             <!-- begin CmdSlideButton -->
             <CmdSlideButton
                 v-if="showSlidebuttons"
@@ -136,6 +136,13 @@ export default {
             default: false
         },
         /**
+         * activate if thumbnail-scroller should be styled as a box
+         */
+        styleAsBox: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * activate if large icons should be displayed above link text
          *
          * @affectsStyling: true
@@ -179,7 +186,7 @@ export default {
             required: true
         },
         /**
-         * allow large version of images to be opened in CmdFancyBox-component
+         * allow the large version of images to be opened in CmdFancyBox-component
          */
         allowOpenFancyBox: {
             type: Boolean,
@@ -398,13 +405,12 @@ export default {
     }
 
     > .inner-thumbnail-wrapper {
-        border-radius: var(--default-border-radius);
-        padding: calc(var(--default-padding) * 2);
-        padding-top: 0;
-        margin: 0 auto;
-        border: var(--default-border);
-        background: var(--color-scheme-background);
+        margin: var(--default-margin) 0;
         overflow: hidden;
+
+        &.box {
+            padding: calc(var(--default-padding) * 2); /* overwrite default-padding from frontend-framework */
+        }
 
         > ul {
             overflow: hidden;
@@ -418,7 +424,6 @@ export default {
                 align-self: center;
                 list-style-type: none;
                 margin: 0;
-                margin-top: 2rem;
                 flex: none; /* avoids items to shrink to small on small screens */
 
                 img {

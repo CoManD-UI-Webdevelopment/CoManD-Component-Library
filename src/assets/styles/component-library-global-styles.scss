@@ -49,8 +49,8 @@ html {
     display: flex;
     flex-direction: column;
     scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    height: 100dvh;
+    overflow-y: auto;
+    min-height: 100dvh;
     scroll-behavior: smooth;
     scroll-padding-top: 11.7rem;
 }
@@ -289,25 +289,10 @@ a img.flag {
 /* ----------------------------------------------- END COMPONENTS AND GLOBAL STYLES --------------------------------------------------- */
 
 /* ---------------------------------------------- BEGIN MEDIA QUERIES AND BROWSER SPECIFIC STYLES -------------------------------------------------- */
-/* begin styles for medium screens --------------------------------------------------------------------------------------------------------------------------------------------------- */
-@media only screen and (width <= $medium-max-width) {
-    html {
-        --grid-small-span: 3; /* default column span smaller part */
-        --grid-large-span: 3; /* default column span larger part */
-    }
-}
-
-/* end styles for medium screens ----------------------------------------------------------------------------------------------------------------------------------------------------- */
-
 /* begin styles for small screens --------------------------------------------------------------------------------------------------------------------------------------------------- */
 @media only screen and (width <= $small-max-width) {
     body, html {
         height: auto;
-    }
-
-    html {
-        --grid-small-span: 4; /* default column span smaller part */
-        --grid-large-span: 4; /* default column span larger part */
     }
 
     .section-wrapper {

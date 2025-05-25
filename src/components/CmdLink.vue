@@ -132,9 +132,13 @@ export default {
 <style>
 /* begin cmd-link -------------------------------------------------------------------------------------------- */
 .cmd-link {
-    display: flex;
-    gap: calc(var(--default-gap) / 2);
+    display: inline-flex;
+    gap: var(--icon-and-text-gap);
     align-items: center;
+
+    &.button.active {
+        padding: var(--button-padding); /* overwrite padding for active links */
+    }
 
     img {
         max-height: 4rem;

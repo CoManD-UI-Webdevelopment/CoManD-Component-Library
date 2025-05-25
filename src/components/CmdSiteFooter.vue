@@ -63,8 +63,13 @@ export default {
 @media only screen and (max-width: $medium-max-width) {
     .cmd-site-footer {
         footer {
-            li {
-                margin-bottom: calc(var(--default-margin) * 2);
+            &.flex-container {
+                gap: calc(var(--default-gap) * 2); /* ensure elements are not to close, to be clicked */
+            }
+
+
+            .cmd-list-of-links > ul {
+                gap: var(--default-gap); /* overwrite default-settings from component-library */
             }
         }
 

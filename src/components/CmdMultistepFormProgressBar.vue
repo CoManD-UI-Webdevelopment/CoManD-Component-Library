@@ -5,10 +5,10 @@
             <CmdLink
                 :linkType="step.linkType"
                 :class="['stretch-on-small-devices', {active : activeLink === index}]"
+                :styleAsButton="usePrimaryButtons"
                 :primaryButton="usePrimaryButtons"
                 :path="step.path"
                 :title="step.tooltip"
-                :styleAsButton="false"
                 @click="clickedStep($event, index)"
             >
                 <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
