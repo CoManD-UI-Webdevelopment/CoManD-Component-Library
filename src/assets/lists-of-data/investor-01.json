@@ -1,0 +1,114 @@
+{
+  "person": {
+    "id": 1,
+    "type": "investor",
+    "imgSrc": "/images/user-images/fake-user-1.jpg",
+    "bgImgSrc": "/images/background-images/golden-gate-bridge.jpg",
+    "imgStyle": "color",
+    "lastName": "Investor",
+    "middleName": "",
+    "firstName": "Julia",
+    "birthdate": "1980-12-22",
+    "gender": "f",
+    "countryIso": "de",
+    "gmt": "+1",
+    "profession": "Owner",
+    "companyName": "VC Investments",
+    "companyLink": "",
+    "about": "I am a great investor!"
+  },
+  "account": {
+    "online": true,
+    "type": "premium",
+    "isMyAccount": true,
+    "created": "2023-03-18"
+  },
+  "tags": [
+    {
+      "name": "Trainings"
+    },
+    {
+      "name": "Investment"
+    },
+    {
+      "name": "Fundings"
+    }
+  ],
+  "contact": [
+    {
+      "name": "companyName",
+      "iconClass": "icon-company",
+      "data": "Your company name",
+      "labelText": "companyName"
+    },
+    {
+      "name": "address",
+      "iconClass": "icon-location-set",
+      "labelText": "Address",
+      "streetNo": "Your Street/No",
+      "zip": "Your zip",
+      "city": "San Francisco",
+      "miscInfo": "Misc. info",
+      "country": "de",
+      "tooltip": "Open address on GoogleMaps™ (in new tab)"
+    },
+    {
+      "name": "phone",
+      "iconClass": "icon-phone",
+      "data": "Your phone number",
+      "labelText": "Telephone",
+      "tooltip": "Call number",
+      "href": "00492181818123"
+    },
+    {
+      "name": "phone",
+      "iconClass": "icon-device-smartphone",
+      "data": "Your mobile phone number",
+      "labelText": "Mobile phone",
+      "tooltip": "Call number",
+      "href": "00491721055725"
+    },
+    {
+      "name": "email",
+      "iconClass": "icon-mail",
+      "data": "Your email address",
+      "labelText": "Email",
+      "tooltip": "Send mail",
+      "href": "biock@biock.com"
+    },
+    {
+      "name": "url",
+      "iconClass": "icon-globe",
+      "data": "Your web site",
+      "labelText": "Web site",
+      "tooltip": "Open website in browser",
+      "href": "https://www.biock.com"
+    }
+  ],
+  "networks": [
+    {
+      "buttonClass": "social-network-facebook",
+      "iconClass": "icon-facebook",
+      "type": "href",
+      "path": "https://www.facebook.com",
+      "target": "_blank",
+      "tooltip": "Visit profile on facebook"
+    },
+    {
+      "buttonClass": "social-network-x",
+      "iconClass": "icon-x",
+      "type": "href",
+      "path": "https://www.twitter.com",
+      "target": "_blank",
+      "tooltip": "Visit profile on X"
+    },
+    {
+      "buttonClass": "social-network-linkedin",
+      "iconClass": "icon-linkedin",
+      "type": "href",
+      "path": "https://www.linkedin.com",
+      "target": "_blank",
+      "tooltip": "Visit profile on linkedin"
+    }
+  ]
+}

@@ -59,7 +59,7 @@ export default {
          */
         useGap: {
             type: Boolean,
-            default: false
+            default: true
         },
         /**
          * activate if boxes should be arranged vertically (each box is a row) by default

@@ -32,9 +32,9 @@
         <!-- end day -->
 
         <!-- begin hours -->
-        <dd class="flex-container no-flex">
+        <dd class="flex-container flex-none">
             <!-- begin AM -->
-            <div class="flex-container no-flex am-wrapper">
+            <div class="flex-container flex-none am-wrapper">
             <template v-if="editableDay.amClosed">
                 <CmdFormElement
                     element="input"
@@ -76,7 +76,7 @@
             <!-- end AM -->
 
             <!-- begin PM -->
-            <div class="flex-container no-flex pm-wrapper">
+            <div class="flex-container flex-none pm-wrapper">
                 <template v-if="editableDay.pmClosed">
                     <CmdFormElement
                         element="input"

@@ -45,7 +45,7 @@
                     <!-- end CmdHeadline -->
 
                     <ul v-if="showTotalUpload && listOfFiles.length !== 1" class="list-of-files total-files">
-                        <li class="flex-container no-flex">
+                        <li class="flex-container flex-none">
                             <a
                                 href="#"
                                 :title="getMessage('upload_form.labeltext.remove_all_files_from_list')"
@@ -97,7 +97,7 @@
                         <li
                             v-for="(uploadFile, index) in listOfFiles"
                             :key="index"
-                            class="flex-container no-flex"
+                            class="flex-container flex-none"
                         >
                             <a
                                 href="#"

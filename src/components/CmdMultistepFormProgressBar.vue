@@ -4,7 +4,7 @@
             <!-- begin CmdLink -->
             <CmdLink
                 :linkType="step.linkType"
-                :class="['stretch-on-small-devices', {active : activeLink === index}]"
+                :class="['stretch-on-small-devices', activeLinkClass(step.linkTyp, index)]"
                 :styleAsButton="usePrimaryButtons"
                 :primaryButton="usePrimaryButtons"
                 :path="step.path"
@@ -78,6 +78,15 @@ export default {
         }
     },
     methods: {
+        activeLinkClass(linkType, index) {
+            if(this.activeLink === index) {
+                if(linkType === "router") {
+                    return "router-link-exact-active"
+                } else {
+                    return "active"
+                }
+            }
+        },
         clickedStep(event, index) {
             this.activeLink = index;
             this.$emit("click", {event: event, index: index, stepPath: this.multisteps[index].path})
@@ -111,7 +120,7 @@ export default {
         gap: calc(var(--default-gap) / 2);
 
         li {
-            a, a.active {
+            a:not(.button), a.active:not(.button) {
                 border: 0;
                 border-radius: inherit;
 
@@ -233,6 +242,10 @@ export default {
         }
 
         &.active {
+            a {
+                background: var(--button-primary-background-highlighted);
+            }
+
             .number {
                 background: var(--primary-color);
                 border-color: var(--color-white);

@@ -89,7 +89,7 @@ export default {
                 htmlClasses.push("no-gap")
             }
             if (this.noFlex) {
-                htmlClasses.push("no-flex")
+                htmlClasses.push("flex-none")
             }
             if (this.alignItems) {
                 htmlClasses.push("align-items-" + this.alignItems)

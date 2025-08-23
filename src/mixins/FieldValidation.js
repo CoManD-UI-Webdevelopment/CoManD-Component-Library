@@ -227,7 +227,7 @@ export default {
             // check if field has a minimum length
             if(this.$attrs.minlength) {
                 standardRequirements.push({
-                    message: this.getMessage("field_validation.input_has_minimum_length") + " (" + this.modelValue.length + "/" + this.$attrs.minlength + ")",
+                    message: this.getMessage("field_validation.input_has_minimum_length") + " (" + this.modelValue?.length + "/" + this.$attrs.minlength + ")",
                     valid(value, attributes) {
                         return value.length >= attributes.minlength
                     }

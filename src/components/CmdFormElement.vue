@@ -64,8 +64,7 @@
         <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio' && $attrs.type !== 'search'"
               class="flex-container inner-input-wrapper"><!-- container required to place inner icons correctly -->
             <!-- begin CmdIcon (for icon inside field) -->
-            <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"
-            />
+            <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass" />
             <!-- end CmdIcon (for icon inside field) -->
 
             <!-- begin inputfield -->
@@ -87,6 +86,17 @@
                     ref="input"
                     v-bind="elementAttributes"
                 />
+                <!-- begin delete-icon -->
+                <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'phone')" 
+                    class="deleteicon" 
+                    href="#" 
+                    @click.prevent="deleteInput"
+                   :title="iconDelete?.tooltip">
+                    <!-- begin CmdIcon -->
+                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType"/>
+                    <!-- end CmdIcon -->
+                </a>
+                <!-- end delete-icon -->
             </template>
             <!-- end inputfield -->
 
@@ -117,6 +127,7 @@
 
         <!-- begin checkbox and radiobutton -->
         <template v-else-if="element === 'input' && ($attrs.type === 'checkbox' || $attrs.type === 'radio')">
+            <!-- begin default checkbox/radiobutton -->
             <template v-if="!(onLabel && offLabel)">
                 <input
                     v-bind="elementAttributes"
@@ -143,7 +154,8 @@
                     </span>
                 </span>
             </template>
-
+            <!-- end default checkbox/radiobutton -->
+            
             <!-- begin labels for toggle-switch with switch-label -->
             <template v-else-if="onLabel && offLabel">
                 <span class="switch-label-wrapper">
@@ -221,7 +233,7 @@
 
         <!-- begin searchfield -->
         <template v-else-if="element === 'input' && $attrs.type === 'search'">
-            <span class="search-field-wrapper flex-container no-gap">
+            <span class="inner-input-wrapper flex-container no-gap">
                 <!-- begin CmdIcon (for icon inside field) -->
                 <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"/>
                 <!-- end CmdIcon (for icon inside field) -->
@@ -232,13 +244,13 @@
                     :maxlength="getMaxLength()"
                     :value="modelValue"
                 />
-                <a v-if="showSearchButton" href="#" :class="['button no-flex', {disabled: $attrs.disabled}]"
+                <a v-if="showSearchButton" href="#" :class="['button flex-none', {disabled: $attrs.disabled}]"
                    :title="iconSearch.tooltip" @click.prevent="executeSearch">
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="iconSearch.iconClass"/>
                     <!-- end CmdIcon -->
                 </a>
-                <a v-if="iconDelete?.show" href="#" @click.prevent="$emit('update:modelValue', '')"
+                <a v-if="iconDelete?.show && !$attrs.disabled" class="deleteicon" href="#" @click.prevent="deleteInput"
                    :title="iconDelete?.tooltip">
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType"/>
@@ -783,6 +795,10 @@ export default {
         }
     },
     methods: {
+        deleteInput() {
+            this.setFocus()
+            this.$emit('update:modelValue', '')
+        },
         getInitialLetters(listOfOptions) {
             const groupedListOfOptions = {}
             // compare the text-keys (in lower case) and sort them
@@ -1014,15 +1030,16 @@ export default {
         }
     }
 
-    .search-field-wrapper {
+    .inner-input-wrapper {
         margin: 0;
 
-        a {
+        a.deleteicon {
             position: absolute;
             top: 50%;
             right: 1rem;
             transform: translateY(-50%);
             z-index: 100;
+            width: auto; /* avoid to be stretched to keep correct position */
 
             /* set styles to avoid overwriting by has-state-colors */
             &.button {

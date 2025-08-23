@@ -13,7 +13,7 @@
         <!-- end CmdHeadline -->
 
         <!-- begin Google-Login-Button -->
-        <button v-if="enableLoginWithGoogle" class="gsi-material-button stretch-on-small-devices">
+        <button v-if="enableLoginWithGoogle" class="gsi-material-button stretch-on-small-devices" @click="loginWithGoogle">
             <div class="gsi-material-button-state"></div>
             <div class="gsi-material-button-content-wrapper">
                 <div class="gsi-material-button-icon">
@@ -49,7 +49,7 @@
         <!-- end Facebook-Login-Button -->
 
         <!-- begin default-login-button -->
-        <button v-if="(enableLoginWithGoogle || enableLoginWithFacebook) && !showLogin"
+        <button v-if="!showLogin"
                 class="button stretch-on-small-devices"
                 v-bind="buttonLoginWithYourDataDefaultOptions"
                 @click.prevent="showLogin = true">
@@ -241,7 +241,7 @@ export default {
         enableLoginWithGoogle:
             {
                 type: Boolean,
-                default: true
+                default: false
             },
         /**
          * activate if login with facebook should be enabled
@@ -540,6 +540,9 @@ export default {
         }
     },
     methods: {
+        loginWithGoogle() {
+            this.$emit("login-with-google")
+        },
         toggleSendLoginView() {
             this.sendLogin = !this.sendLogin
 

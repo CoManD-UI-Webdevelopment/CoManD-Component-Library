@@ -14,8 +14,9 @@
             :submitButton="submitButtonProperties"
             :formAction="formAction"
             ref="form"
+            class="flex-container flex-direction-column"
         >
-            <div v-if="configuration.salutation" class="flex-container no-flex row-for-small order-male-female">
+            <div v-if="configuration.salutation" class="flex-container flex-none row-for-small order-male-female">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"
@@ -237,6 +238,7 @@
                 v-if="configuration.acceptPrivacy"
                 element="input"
                 type="checkbox"
+                class="flex-none"
                 :required="configuration.acceptPrivacy?.required"
                 :name="configuration.acceptPrivacy?.name"
                 :replaceInputType="configuration.acceptPrivacy?.replaceInputType"
@@ -253,7 +255,6 @@
             <!-- button to test a successful sending
             <button class="button" type="button" @click="onSuccess">On Success</button>
             -->
-
         </CmdForm>
         <!-- end CmdForm -->
     </div>

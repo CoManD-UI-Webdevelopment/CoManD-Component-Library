@@ -71,7 +71,7 @@ export { createUuid, createHtmlId } from '@/utils/common'
 export { getFileExtension } from '@/utils/getFileExtension'
 export { capitalizeFirstLetter, lowercaseFirstLetter, fullName } from '@/utils/string'
 export { setCookieDisclaimerCookie, getCookieDisclaimerCookie } from '@/utils/cookie'
-export { currentDate, formatDate, formatTime } from "@/utils/date"
+export { currentDate, currentTime, formatDate, formatTime } from "@/utils/date"
 
 // export composables
 export { useSequence } from '@/composables/sequence'

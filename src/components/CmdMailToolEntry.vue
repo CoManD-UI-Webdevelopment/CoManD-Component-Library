@@ -6,13 +6,13 @@
             :class="['cmd-mail-tool-entry flex-container box', { unread : !mailIsRead.has(mail.id)}]"
             :title="getMessage('mail_tool_entry.tooltip.read_this_mail')"
         >
-            <dl class="no-flex">
+            <dl class="flex-none">
                 <dt class="flex-container">
                     {{
                         boxType === "inbox" ? getMessage("mail_tool_entry.description_label.from") : getMessage("mail_tool_entry.description_label.to")
                     }}
                 </dt>
-                <dd class="sender-receiver-wrapper flex-container no-wrap-on-small-devices align-items-center no-flex">
+                <dd class="sender-receiver-wrapper flex-container no-wrap-on-small-devices align-items-center flex-none">
                     <!-- begin CmdImage for contact image -->
                     <CmdImage v-if="mail.cmdImage?.src"
                               :src="mail.cmdImage.src"
@@ -33,7 +33,7 @@
                         <time :datetime="mail.time">{{ mailFormatTime(mail.time) }}</time>
                     </dd>
                 </dl>
-                <div class="options-wrapper flex-container no-wrap-on-small-devices no-flex">
+                <div class="options-wrapper flex-container no-wrap-on-small-devices flex-none">
                     <a href="#" @click.prevent="deleteMail(mail.id)" title="Delete this mail">
                         <span class="icon-delete"></span>
                     </a>

@@ -136,8 +136,12 @@ export default {
     gap: var(--icon-and-text-gap);
     align-items: center;
 
-    &.button.active {
-        padding: var(--button-padding); /* overwrite padding for active links */
+    &.active, &.router-link-active {
+        background: var(--button-primary-background-highlighted); /* overwrite background for active links/buttons */
+        
+        &.button {
+            padding: var(--button-padding); /* overwrite padding for active links/buttons */
+        }
     }
 
     img {

@@ -235,7 +235,7 @@ export default {
 <style>
 /* begin cmd-headline ------------------------------------------------------------------------------------------ */
 .cmd-headline {
-    margin-bottom: var(--default-margin);
+    margin-bottom: var(--headline-margin-bottom);
     gap: calc(var(--default-gap) / 2);
 
     &.text-center > * {

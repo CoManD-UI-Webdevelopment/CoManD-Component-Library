@@ -16,7 +16,7 @@
             <!-- begin button-wrapper -->
             <div
                 v-if="(fancyBoxOptionsProperties.printButtons?.color || fancyBoxOptionsProperties.printButtons?.grayscale) || fancyBoxOptionsProperties.closeIcon"
-                class="button-wrapper no-flex"
+                class="button-wrapper flex-none"
             >  <!-- begin print buttons -->
                 <a v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.color"
                    href="#"
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container no-flex">
+        <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container flex-none">
             <!-- begin cancel-button -->
             <button
                 v-if="fancyBoxOptionsProperties.submitButtons?.cancel"

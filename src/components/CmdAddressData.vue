@@ -65,7 +65,7 @@
                 <ul v-else :class="['flex-container', {'vertical': !showIconsOnly}]">
                     <template v-for="(entry, index) in addressData" :key="index">
                         <li v-if="entry.href || (entry.name === 'address' && entry.linkGoogleMaps) || !showIconsOnly"
-                            :class="{'no-flex' : showIconsOnly}">
+                            :class="{'flex-none' : showIconsOnly}">
                             <!-- begin all entries except address (which has no href) -->
                             <a v-if="entry.href"
                                :class="{'button' : styleLinksAsButtons}"

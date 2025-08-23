@@ -2,6 +2,15 @@ function currentDate(returnTime = false) {
     return returnTime ? new Date().toISOString() : new Date().toISOString().split('T')[0];
 }
 
+function currentTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    return hours + ":" + minutes
+}
+  
+
 function getDate(inputDate, operator = "+", days = 1) {
     const date = new Date(inputDate)
 
@@ -68,4 +77,4 @@ function formatTime(timeString = "00:00", format = 24, textAfter = "h") {
     }
 }
 
-export {currentDate, formatDate, formatTime}
+export {currentDate, currentTime, formatDate, formatTime}

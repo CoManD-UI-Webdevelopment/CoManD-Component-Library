@@ -574,7 +574,7 @@
                         <h2>Slider [native]</h2>
                         <div class="label" :class="validationStatus">
                             <span class="label-text">Single-Slider (with in- and output):</span>
-                            <span class="flex-container no-flex">
+                            <span class="flex-container flex-none">
                                     <label class="inline" for="range-value">
                                         <span class="label-text">
                                             <span>Range Value:</span>
@@ -715,7 +715,7 @@
                         <h3>Checkboxes [native]</h3>
                         <div class="label inline">
                             <span class="label-text">Label for native checkboxes:</span>
-                            <div class="flex-container no-flex">
+                            <div class="flex-container flex-none">
                                 <CmdFormElement
                                     element="input"
                                     labelText="Label for checkbox with boolean"
@@ -762,7 +762,7 @@
                         <h3>Checkboxes (replaced)</h3>
                         <div class="label inline">
                             <span class="label-text">Label for Replaced Input-Type-Checkbox:</span>
-                            <div class="flex-container no-flex">
+                            <div class="flex-container flex-none">
                                 <CmdFormElement
                                     element="input"
                                     labelText="Label for replaced checkbox"
@@ -790,7 +790,7 @@
                         <h3>Radiobuttons [native]</h3>
                         <div class="label inline">
                             <span class="label-text">Label for native radiobuttons:</span>
-                            <div class="flex-container no-flex">
+                            <div class="flex-container flex-none">
                                 <CmdFormElement
                                     element="input"
                                     labelText="Label for native radiobutton"
@@ -821,7 +821,7 @@
                         <h3>Radiobuttons (replaced)</h3>
                         <div class="label inline">
                             <span class="label-text">Label for Replaced Input-Type-Radio:</span>
-                            <div class="flex-container no-flex">
+                            <div class="flex-container flex-none">
                                 <CmdFormElement
                                     element="input"
                                     labelText="Label for replaced radiobutton"
@@ -962,7 +962,7 @@
                     <!-- end fieldset -->
                     <div class="flex-container">
                         <small>(values will not be submitted with the form!)</small>
-                        <div class="button-wrapper no-flex">
+                        <div class="button-wrapper flex-none">
                             <CmdFormElement
                                 element="button"
                                 :nativeButton="{text: 'Submit-button from component'}"

@@ -1,5 +1,9 @@
 <template>
     <div class="cmd-google-maps responsive-wrapper">
+        <!-- begin CmdHeadline -->
+         <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <!-- end CmdHeadline-->
+        
         <!-- begin CmdSystemMessage -->
         <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning">
             <p>
@@ -53,6 +57,13 @@ export default {
         address: {
             type: Object,
             required: true
+        },
+        /**
+         * properties for cmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
         }
     },
     mounted() {

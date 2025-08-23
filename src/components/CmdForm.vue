@@ -37,11 +37,23 @@
                 />
                 <!-- end loop for formElements -->
 
-                <div v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container">
+                <div v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container no-wrap-on-small-devices">
                     <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>
+                    <!-- begin cancel-button (below fieldset) -->
+                    <button 
+                        v-if="cancelButtonOptions !== undefined"
+                        :class="['button', {'stretch-on-small-devices': cancelButtonOptions.stretchOnSmallDevices, disabled: cancelButtonOptions.disabled, cancel: cancelButtonOptions.useDefaultStyling}]" 
+                        type="button"
+                        @click="cancelFormSubmit"
+                    >
+                        <span v-if="cancelButtonOptions.iconClass" :class="cancelButtonOptions.iconClass"></span>
+                        <span v-if="cancelButtonOptions.text">{{ cancelButtonOptions.text }}</span>
+                    </button>
+                    <!-- end cancel-button (below fieldset) -->
+                    
                     <!-- begin submit-button (inside fieldset) -->
                     <button
-                        :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
+                        :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type"
                     >
                         <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
@@ -51,10 +63,22 @@
                 </div>
             </fieldset>
 
-            <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="button-wrapper">
-                <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>
+            <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="flex-container no-wrap-on-small-devices">
+                <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>     
+                <!-- begin cancel-button (below fieldset) -->
+                <button 
+                    v-if="cancelButtonOptions !== undefined"
+                    :class="['button', {'stretch-on-small-devices': cancelButtonOptions.stretchOnSmallDevices, disabled: cancelButtonOptions.disabled, cancel: cancelButtonOptions.useDefaultStyling}]" 
+                    type="button"
+                    @click="cancelFormSubmit"
+                >
+                    <span v-if="cancelButtonOptions.iconClass" :class="cancelButtonOptions.iconClass"></span>
+                    <span v-if="cancelButtonOptions.text">{{ cancelButtonOptions.text }}</span>
+                </button>
+                <!-- end cancel-button (below fieldset) -->
+
                 <!-- begin submit-button (below fieldset) -->
-                <button :class="['button stretch-on-small-devices', {primary: submitButtonOptions.primary}, {disabled: submitButtonOptions.disabled}]"
+                <button :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type || 'submit'">
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
@@ -161,19 +185,26 @@ export default {
             type: Boolean,
             default: true
         },
-        /**
-         * submit-button to submit all form-data
+         /**
+         * text to clarify which inputs are mandatory
          */
-        submitButton: {
+         mandatoryText: {
+            type: String,
+            default: "mandatory inputs"
+        },
+        /**
+         * cancel-button to not submit any form-data
+         */
+        cancelButton: {
             type: Object,
             required: false
         },
-        /**
-         * text to clarify which inputs are mandatory
+                /**
+         * submit-button to submit all form-data
          */
-        mandatoryText: {
-            type: String,
-            default: "mandatory inputs"
+         submitButton: {
+            type: Object,
+            required: false
         }
     },
     computed: {
@@ -185,11 +216,22 @@ export default {
                 ...this.legend
             }
         },
+        cancelButtonOptions() {
+            return {
+                iconClass: "icon-cancel-circle",
+                text: "Cancel",
+                useDefaultStyling: false,
+                stretchOnSmallDevices: false,
+                position: "insideFieldset",
+                ...this.cancelButton
+            }
+        },
         submitButtonOptions() {
             return {
-                iconClass: "icon-check",
+                iconClass: "icon-check-circle",
                 text: "Submit",
                 type: "submit",
+                stretchOnSmallDevices: false,
                 position: "insideFieldset",
                 primary: true,
                 ...this.submitButton
@@ -202,6 +244,13 @@ export default {
             this.systemMessage.show = true
             this.systemMessage.validationStatus = validationStatus
             this.systemMessage.message = message
+        },
+        cancelFormSubmit(event) {
+            const isConfirmed = window.confirm("Are you sure you want to cancel the form submit (all entered data will be lost)?");
+      
+            if (isConfirmed) {
+                this.$emit("cancel-form-submit", event)
+            }
         },
         submitFormData(event) {
             // fill form-data with names and value

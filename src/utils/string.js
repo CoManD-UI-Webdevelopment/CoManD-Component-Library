@@ -13,7 +13,11 @@ function lowercaseFirstLetter(string) {
 }
 
 function fullName(...names) {
-    return (names.join(" ")).trim()
+    return names
+    .filter(part => typeof part === 'string') // ignore non-strings like undefined/null
+    .map(part => part.trim())                // trim spaces
+    .filter(part => part.length > 0)         // skip empty strings
+    .join(' ');                              // join with single space
 }
 
 export {capitalizeFirstLetter, lowercaseFirstLetter, fullName}

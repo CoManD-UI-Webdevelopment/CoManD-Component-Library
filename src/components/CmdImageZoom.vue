@@ -1,7 +1,7 @@
 <template>
     <div class="cmd-image-zoom flex-container">
         <!-- begin small image -->
-        <a href="#" class="no-flex thumbnail-imagezoom" :title="imageSmall.image.tooltip">
+        <a href="#" class="flex-none thumbnail-imagezoom" :title="imageSmall.image.tooltip">
             <!-- begin CmdImage for small image -->
             <CmdImage v-bind="imageSmall" :figcaption="{}"
                 @mouseover="onMouseOver"

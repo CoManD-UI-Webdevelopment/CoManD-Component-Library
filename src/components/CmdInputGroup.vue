@@ -5,7 +5,7 @@
         {
             inline: labelInline,
             'multiple-switch': multipleSwitch,
-            disabled: disabled,
+            disabled: disableGroup,
             'toggle-switches': toggleSwitches,
             'has-state': validationStatus
         }
@@ -49,7 +49,7 @@
         <!-- end label -->
 
         <!-- begin view without slot -->
-        <span v-if="!useSlot" :class="['flex-container', {'vertical': orientation === 'vertical','no-flex': !stretchHorizontally, 'no-gap': multipleSwitch}]">
+        <span v-if="!useSlot" :class="['flex-container', {'vertical': orientation === 'vertical','flex-none': !stretchHorizontally, 'no-gap': multipleSwitch}]">
             <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches, colored: colored}">
                 <input
                     :type="inputTypes"
@@ -57,7 +57,7 @@
                     :name="inputElement.name"
                     :value="inputElement.value"
                     v-model="inputValue"
-                    :disabled="disabled"
+                    :disabled="inputElement.disabled"
                     :class="{'replace-input-type': replaceInputType}"
                 />
                 <!-- begin CmdIcon -->
@@ -73,7 +73,7 @@
         <!-- end view without slot -->
 
         <!-- begin useSlot -->
-        <div v-else class="flex-container no-flex">
+        <div v-else class="flex-container flex-none">
             <!-- begin slot -->
             <slot></slot>
             <!-- end slot -->
@@ -259,7 +259,7 @@ export default {
          *
          * component cannot handle native disabled-attribute, because it is no native form-element
          */
-        disabled: {
+        disableGroup: {
             type: Boolean,
             default: false
         }
