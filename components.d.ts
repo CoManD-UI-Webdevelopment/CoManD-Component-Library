@@ -53,6 +53,7 @@ declare module '@vue/runtime-core' {
     CmdPageHeader: typeof import('./src/components/CmdPageHeader.vue')['default']
     CmdPagination: typeof import('./src/components/CmdPagination.vue')['default']
     CmdProgressBar: typeof import('./src/components/CmdProgressBar.vue')['default']
+    CmdSection: typeof import('./src/components/CmdSection.vue')['default']
     CmdSidebar: typeof import('./src/components/CmdSidebar.vue')['default']
     CmdSiteFooter: typeof import('./src/components/CmdSiteFooter.vue')['default']
     CmdSiteHeader: typeof import('./src/components/CmdSiteHeader.vue')['default']

@@ -41,7 +41,7 @@ export default {
          * set default v-model (must be named modelValue in Vue3)
          */
         modelValue: {
-            type: Object,
+            type: [Object, String],
             required: false
         },
         /**
@@ -107,13 +107,22 @@ export default {
     methods: {
         showRecommendations() {
             this.item = {} // reset item
-            this.$emit("update:modelValue", {itemId: "", displayValue: ""})
+            if(typeof this.modelValue === "string") {
+                this.$emit("update:modelValue", "")
+            } else {
+                this.$emit("update:modelValue", {itemId: "", displayValue: ""})
+            }
+
             this.showListOfRecommendations = true
         },
         optionSelected(item) {
             this.searchTerm = item.displayValue // set search-field to selected option
             this.showListOfRecommendations = false
-            this.$emit("update:modelValue", {itemId: item.id, displayValue: item.displayValue})
+            if(typeof this.modelValue === "string") {
+                this.$emit("update:modelValue", item.displayValue)
+            } else {
+                this.$emit("update:modelValue", {itemId: item.id, displayValue: item.displayValue})
+            }
         },
         linkItem(item) {
             return {

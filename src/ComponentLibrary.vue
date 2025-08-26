@@ -469,7 +469,14 @@
                                 :listOfRecommendations="smartSearchData.listOfRecommendations"
                                 :cmdFormElement="smartSearchData.cmdFormElement"
                                 :openListToTop="true"
-                                v-model="smartSearch"
+                                v-model="smartSearchObject"
+                                :disabled="disabledStatus"
+                            />
+                            <CmdSmartSearch
+                                :listOfRecommendations="smartSearchData.listOfRecommendations"
+                                :cmdFormElement="smartSearchData.cmdFormElement"
+                                :openListToTop="true"
+                                v-model="smartSearchString"
                                 :disabled="disabledStatus"
                             />
                             <!-- end CmdSmartSearch -->
@@ -1875,6 +1882,31 @@
             </CmdWidthLimitationWrapper>
             <!-- end pagination --------------------------------------------------------------------------------------------------->
 
+            <!-- begin section --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-section">
+                    <span>Section</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                       @click.prevent="openSettingsSidebar('CmdSection')"></a>
+                </h2>
+                <h3>Section with content provided by properties</h3>
+                <CmdSection 
+                    :cmdHeadline="{headlineText: 'Headline for section provided by property', headlineLevel: 4}" 
+                    content="Content for section provided by property."
+                />
+                <h3>Section with content provided by slot</h3>
+                <CmdSection :useSlot="true">
+                    <h4>Headline for section provided by slot</h4>
+                    <p>Content for section provided by slot.</p>
+                </CmdSection>
+                <h3>Section styled as box</h3>
+                <CmdSection :useSlot="true" :styleAsBox="true">
+                    <h4>Headline for section styled as box</h4>
+                    <p>Content for section styled as box.</p>
+                </CmdSection>
+            </CmdWidthLimitationWrapper>
+            <!-- end section --------------------------------------------------------------------------------------------------->
+
             <!-- begin site-footer --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-site-footer">Site Footer</h2>
@@ -2335,7 +2367,8 @@ export default {
     },
     data() {
         return {
-            smartSearch: {},
+            smartSearchObject: {},
+            smartSearchString: "",
             selectedLanguage: "none",
             fancyBoxCookieDisclaimer: false,
             componentNameForContainer: "CmdHeadline",
