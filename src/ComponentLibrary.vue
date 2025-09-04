@@ -1783,6 +1783,13 @@
                     v-bind="cmdMultistepFormProgressBarSettingsData"
                     @click="showPageMultistep = $event.index + 1"
                 />
+                <h3>Router</h3>
+                <CmdMultistepFormProgressBar
+                    ref="CmdMultistepFormProgressBar"
+                    :multisteps="multistepsData.router"
+                    v-bind="cmdMultistepFormProgressBarSettingsData"
+                    @click="showPageMultistep = $event.index + 1"
+                />
                 <div>
                     <p>Page {{ showPageMultistep }}</p>
                 </div>

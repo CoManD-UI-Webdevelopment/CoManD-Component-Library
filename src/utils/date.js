@@ -25,6 +25,25 @@ function getDate(inputDate, operator = "+", days = 1) {
     return date
 }
 
+function getWeekday(dateString, format = "short") {
+    // Create date object from YYYY-MM-DD string
+    const date = new Date(dateString);
+  
+    // Arrays for codes and full names
+    const codes = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+    const fullNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  
+    // Decide what to return
+    if (format === "short") {
+      return codes[date.getDay()];
+    } else if (format === "long") {
+      return fullNames[date.getDay()];
+    } else {
+      throw new Error("Invalid format. Use 'short' or 'long'.");
+    }
+}
+  
+
 function formatDate(inputDate, format = "dmy", separator= ".") {
     // Ensure the input is a valid date object or string
     const date = new Date(inputDate)
@@ -77,4 +96,4 @@ function formatTime(timeString = "00:00", format = 24, textAfter = "h") {
     }
 }
 
-export {currentDate, currentTime, formatDate, formatTime}
+export {currentDate, currentTime, getDate, getWeekday, formatDate, formatTime}

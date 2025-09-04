@@ -59,5 +59,34 @@
       "path": "#",
       "text": "Summary"
     }
+  ],
+  "router": [
+    {
+      "linkType": "router",
+      "path": "#",
+      "text": "Contact",
+      "tooltip": "This is a tooltip for step 1"
+    },
+    {
+      "linkType": "router",
+      "path": "#",
+      "text": "Settings"
+    },
+    {
+      "linkType": "router",
+      "path": "#",
+      "text": "Attachments"
+    },
+    {
+      "linkType": "router",
+      "path": "#",
+      "text": "Terms and Conditions"
+    },
+    {
+      "linkType": "router",
+      "path": "#",
+      "text": "Summary",
+      "disabled": true
+    }
   ]
 }

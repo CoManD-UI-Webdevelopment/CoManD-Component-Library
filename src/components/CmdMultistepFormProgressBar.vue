@@ -9,6 +9,7 @@
                 :primaryButton="usePrimaryButtons"
                 :path="step.path"
                 :title="step.tooltip"
+                :disabled="step.disabled"
                 @click="clickedStep($event, index)"
             >
                 <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
