@@ -29,6 +29,7 @@
 import {getRoute} from "../utilities.js"
 
 export default {
+    emits: ["click"],
     name: "CmdMultistepFormProgressBar",
     data() {
         return {

@@ -93,6 +93,12 @@ data() {
                 }
             ]
         },
+        cmdCodeOutputSettingsData: {
+            preformatted: true,
+            styleAsBox: true,
+            allowCopyByClick: true,
+            maxHeight: "20rem"
+        },
         cmdContainerSettingsData: {
             cmdHeadline: {
                 headlineText: "Container Headline",

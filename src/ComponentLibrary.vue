@@ -1295,6 +1295,20 @@
             </CmdWidthLimitationWrapper>
             <!-- end breadcrumbs --------------------------------------------------------------------------------------------------->
 
+            <!-- begin code-output ---------------------------------------------------------------------------------------------------> 
+            
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-code-output">
+                    <span>Code Output</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                       @click.prevent="openSettingsSidebar('CmdCodeOutput')"></a>
+                </h2>
+                <CmdCodeOutput ref="CmdCodeOutput" v-bind="cmdCodeOutputSettingsData">
+                    {{ cmdCodeOutputSlotContent }}
+                </CmdCodeOutput>
+            </CmdWidthLimitationWrapper>
+            <!-- end code-output --------------------------------------------------------------------------------------------------->           
+
             <!-- begin company-logo --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-company-logo">
@@ -2382,6 +2396,7 @@ export default {
             listOfComponents,
             activeEntry: "CmdAddressData",
             basicFormData: {},
+            cmdCodeOutputSlotContent: "<p>This is text for the slot provided as string to not render the HTML.</p>",
             componentControls: {},
             componentView: true,
             colorScheme: "none",
