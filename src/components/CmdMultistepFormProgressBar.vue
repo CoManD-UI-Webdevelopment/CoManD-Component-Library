@@ -1,11 +1,11 @@
 <template>
     <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap, 'full-width': fullWidth}]">
-        <li v-for="(step, index) in multisteps" :key="index" :class="{active : activeLink === index}">
+        <li v-for="(step, index) in multisteps" :key="index">
             <!-- begin CmdLink -->
             <CmdLink
                 :linkType="step.linkType"
-                :class="['stretch-on-small-devices', activeLinkClass(step.linkTyp, index)]"
-                :styleAsButton="usePrimaryButtons"
+                :class="['stretch-on-small-devices', activeLinkClass(step.linkType, index)]"
+                :styleAsButton="styleAsButtons"
                 :primaryButton="usePrimaryButtons"
                 :path="step.path"
                 :title="step.tooltip"
@@ -19,7 +19,10 @@
                 <span v-if="step.text">{{ step.text }}</span>
             </CmdLink>
             <!-- end CmdLink -->
+
+            <!-- begin separator -->
             <span v-if="index + 1 !== multisteps.length && useGap" :class="['separator', separatorIconClass]"></span>
+            <!-- end separator -->
         </li>
     </ol>
 </template>
@@ -52,7 +55,18 @@ export default {
             default: false
         },
         /**
-         * activate if step-buttons should be primary-buttons (linkType for steps must be "button" or styleAsButton-property must be activated=)
+         * activate if router-links or hyperlinks should be displayed as buttons
+         * 
+         * @affectsStyling: true
+         */
+        styleAsButtons: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * activate if step-buttons should be primary-buttons (linkType for steps must be "button" or styleAsButton-property must be activated)
+         * 
+         * @affectsStyling: true
          */
         usePrimaryButtons: {
             type: Boolean,
@@ -82,12 +96,11 @@ export default {
     methods: {
         activeLinkClass(linkType, index) {
             if(this.activeLink === index) {
-                if(linkType === "router") {
-                    return "router-link-exact-active"
-                } else {
+                if(linkType !== "router") {
                     return "active"
                 }
             }
+            return ""
         },
         clickedStep(event, index) {
             this.activeLink = index;
@@ -118,6 +131,11 @@ export default {
         }
     }
 
+    
+    .button {
+        border-radius: 0;
+    }
+
     &.use-gap {
         gap: calc(var(--default-gap) / 2);
 
@@ -139,13 +157,17 @@ export default {
                 }
             }
 
+            .button {
+                border-radius: var(--button-border-radius);
+            }
+
             .separator {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
-            &.active {
+            &:has(.active, .router-link-exact-active) {
                 .separator {
                     color: var(--color-scheme-text-color); /* overwrite icon-color inside active links */
                 }
@@ -163,6 +185,11 @@ export default {
         &:first-child, &:first-child > a {
             border-top-left-radius: inherit;
             border-bottom-left-radius: inherit;
+        }
+
+        &:last-child, &:last-child > a {
+            border-top-right-radius: inherit;
+            border-bottom-right-radius: inherit;
         }
 
         &:has(:not(.button)) {
@@ -218,7 +245,6 @@ export default {
             }
 
             .number {
-                margin-right: calc(var(--default-margin) / 2);
                 line-height: 100%;
                 width: 2rem;
                 height: 2rem;
@@ -230,6 +256,10 @@ export default {
                 background: var(--color-white);
                 text-decoration: none !important;
                 color: var(--primary-color);
+
+                & + span {
+                    margin-left: calc(var(--default-margin) / 2);
+                }
             }
         }
 
@@ -243,7 +273,7 @@ export default {
             }
         }
 
-        &.active {
+        :is(.active, .router-link-exact-active):not(.disabled) {
             a {
                 background: var(--button-primary-background-highlighted);
             }
