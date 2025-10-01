@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdTableWrapper ---------------------------------------------------------------------------------------- -->
     <div
         :class="['cmd-table-wrapper', {'collapsed': !showTableData, 'full-width': fullWidth, 'has-caption': hasCaption, 'has-overflow': hasOverflow}]">
         <div v-if="collapsible || userCanToggleWidth" class="button-wrapper">
@@ -48,7 +49,7 @@
                         </tr>
                     </thead>
                 </slot>
-                <transition :name="useTransition ? 'fade' : null">
+                <transition :name="transition">
                     <slot name="table-body">
                         <tbody v-show="showTableData" aria-expanded="true">
                             <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
@@ -60,7 +61,7 @@
                         </tbody>
                     </slot>
                 </transition>
-                <transition :name="useTransition ? 'fade' : null">
+                <transition :name="transition">
                     <slot name="table-foot">
                         <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
                             <tr>
@@ -82,6 +83,7 @@
             <!-- end CmdSlideButton -->
         </div>
     </div>
+    <!-- end CmdTableWrapper ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -98,11 +100,13 @@ export default {
     },
     props: {
         /**
-         * activate if transition for hiding collapsible table-data should be used
+         * define the transition for table-body and -footer when collapsible table-data is used
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
          */
-        useTransition: {
-            type: Boolean,
-            default: true
+         transition: {
+            type: String,
+            default: "fade"
         },
         /**
          * table data (incl. caption, thead, tbody)

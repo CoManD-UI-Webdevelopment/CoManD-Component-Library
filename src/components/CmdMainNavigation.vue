@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdMainNavigationWrapper ---------------------------------------------------------------------------------------- -->
     <div
         :class="[
             'cmd-main-navigation main-navigation-wrapper',
@@ -151,6 +152,7 @@
         </a>
         <!-- end off-canvas-button -->
     </div>
+    <!-- end CmdMainNavigationWrapper ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

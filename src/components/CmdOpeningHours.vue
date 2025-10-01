@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdOpeningHours ---------------------------------------------------------------------------------------- -->
     <div class="cmd-opening-hours">
         <!-- begin cmd-headline -->
         <CmdHeadline
@@ -116,6 +117,7 @@
         </div>
         <!-- end edit-mode -->
     </div>
+    <!-- end CmdOpeningHours ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

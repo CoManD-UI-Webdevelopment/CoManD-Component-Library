@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdUploadForm ---------------------------------------------------------------------------------------- -->
     <!-- begin advanced mode -->
     <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container vertical', { 'upload-initiated': uploadInitiated }]">
         <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
@@ -190,7 +191,8 @@
                             />
                             <!-- end CmdIcon -->
                         </a>
-                        <transition :name="useTransition ? 'fade' : null">
+                        <!-- begin list of file extensions -->
+                        <transition :name="transitionListOfFileExtensions">
                             <ul v-if="showListOfFileExtensions" class="list-of-file-extensions">
                                 <li
                                     v-for="(fileExtension, index) in allowedFileExtensions"
@@ -201,6 +203,7 @@
                                 </li>
                             </ul>
                         </transition>
+                        <!-- end list of file extensions -->
                     </dd>
                 </dl>
             </div>
@@ -345,6 +348,7 @@
         ref="formElement"
     />
     <!-- end CmdFormElement -->
+    <!-- end CmdUploadForm ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -381,6 +385,15 @@ export default {
         this.resetForm.systemMessageStatus = this.systemMessageStatus
     },
     props: {
+         /**
+         * define the transition when the list of file extensions is toggled
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+         transitionListOfFileExtensions: {
+            type: String,
+            default: "fade"
+        },
         /**
          * activate if transition for hiding list of file extensions
          */

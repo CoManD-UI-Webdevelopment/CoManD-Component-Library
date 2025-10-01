@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSwitchLanguage ---------------------------------------------------------------------------------------- -->
     <div class="cmd-switch-language">
         <ul>
             <li v-for="(language, index) in languages" :key="index">
@@ -25,6 +26,7 @@
             </li>
         </ul>
     </div>
+    <!-- end CmdSwitchLanguage ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSocialNetworksItem ---------------------------------------------------------------------------------------- -->
     <li class="cmd-social-networks-item">
         <a
             :key="network.path"
@@ -15,6 +16,7 @@
             <span v-if="network.linkText">{{ network.linkText }}</span>
         </a>
     </li>
+    <!-- end CmdSocialNetworksItem ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

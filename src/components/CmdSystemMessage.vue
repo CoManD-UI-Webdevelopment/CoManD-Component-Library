@@ -1,5 +1,6 @@
 <template>
-    <transition :name="useTransition ? 'fade' : null">
+    <!-- begin CmdSystemMessage ---------------------------------------------------------------------------------------- -->
+    <transition :name="transition">
         <div
             v-if="showSystemMessage"
             :class="['cmd-system-message', 'system-message', 'flex-container', 'vertical', { 'full-width': fullWidth }, validationStatus]"
@@ -35,6 +36,7 @@
             <!-- end slot-content -->
         </div>
     </transition>
+    <!-- end CmdSystemMessage ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -51,11 +53,13 @@ export default {
     },
     props: {
         /**
-         * activate if transition for hiding message-box should be used
+         * define the transition when system message disappears
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
          */
-        useTransition: {
-            type: Boolean,
-            default: true
+         transition: {
+            type: String,
+            default: "fade"
         },
         /**
          * validation-status for the message-box
@@ -156,6 +160,7 @@ export default {
     display: inline-flex;
     margin: var(--default-margin) 0;
     align-items: center;
+    align-self: flex-start; /* if used in flex-container component should not be stretched */
 
     > :last-child {
         margin-bottom: 0;

@@ -1,9 +1,10 @@
 <template>
-    <div class="cmd-tabs">
+    <!-- begin CmdTabs ---------------------------------------------------------------------------------------- -->
+    <div :class="['cmd-tabs', highlightLevel]">
         <!-- being tab-list -->
         <ul :class="{'stretch-tabs' : stretchTabs}" role="tablist">
             <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="tab">
-                <a href="#" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined">
+                <a href="#" :class="highlightLevel" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined">
                     <!-- begin CmdIcon -->
                     <CmdIcon v-if="tab.iconClass" :iconClass="tab.iconClass" :type="tab.iconType" />
                     <!-- end CmdIcon -->
@@ -40,6 +41,7 @@
         </div>
         <!-- end tab-content -->
     </div>
+    <!-- end CmdTabs ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -87,6 +89,21 @@ export default {
         useSlot: {
             type: Boolean,
             default: false
+        },
+        /**
+         * set highlight-level for tabs
+         * 
+         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         */
+         highlightLevel: {
+            type: Boolean,
+            default: "primary",
+            validator(value) {
+                return value === "none" ||
+                    value === "primary" ||
+                    value === "secondary" ||
+                    value === "tertiary"
+            }
         },
         /**
          * set default active/shown tab
@@ -202,15 +219,34 @@ export default {
 
     > div {
         padding: var(--default-padding);
-        border: var(--primary-border);
+        border: var(--default-border);
         border-radius: var(--default-border-radius);
         background: var(--color-scheme-background);
         border-top-left-radius: 0;
+
 
         > div {
             *:last-child {
                 margin-bottom: 0;
             }
+        }
+    }
+
+    &.primary {
+        & > div {
+            border-color: var(--primary-color);
+        }
+    }
+
+    &.secondary {
+        & > div {
+            border-color: var(--secondary-color);
+        }
+    }
+
+    &.tertiary {
+        & > div {
+            border-color: var(--tertiary-color);
         }
     }
 }

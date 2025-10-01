@@ -104,24 +104,22 @@ data() {
                 headlineText: "Container Headline",
                 headlineLevel: 3
             },
-            contentAboveSlot: "<p>Content above slot</p>",
-            contentBelowSlot: "<p>Content below slot</p>",
-            containerType: "flex"
+            containerType: "default"
         },
         cmdContainerSettingsControls: {
             containerType: [
                 {
-                    text: "flex (default)",
+                    text: "default (default)",
+                    text: "default",
+                },
+                {
+                    text: "flex",
                     value: "flex"
                 },
                 {
                     text: "grid",
                     value: "grid"
-                },
-                {
-                    text: "none",
-                    value: ""
-                },
+                }
             ],
             contentOrientation: [
                 {
@@ -334,6 +332,24 @@ data() {
                     text: "Right",
                     value: "right"
                 }
+            ],
+            highlightLevel: [
+                {
+                    text: "none (default)",
+                    value: "none"
+                },
+                {
+                    text: "primary",
+                    value: "primary"
+                },
+                {
+                    text: "secondary",
+                    value: "secondary"
+                },
+                {
+                    text: "tertiary",
+                    value: "tertiary"
+                }
             ]
         },
         cmdInputGroupSettingsData: {
@@ -400,6 +416,24 @@ data() {
                 {
                     text: "button",
                     value: "button"
+                }
+            ],
+            highlightLevel: [
+                {
+                    text: "none",
+                    value: "none"
+                },
+                {
+                    text: "primary (default)",
+                    value: "primary"
+                },
+                {
+                    text: "secondary",
+                    value: "secondary"
+                },
+                {
+                    text: "tertiary",
+                    value: "tertiary"
                 }
             ]
         },
@@ -508,6 +542,24 @@ data() {
                     text: "icon-chevron-two-stripes-right",
                     value: "icon-chevron-two-stripes-right"
                 }
+            ],
+            highlightLevel: [
+                {
+                    text: "none",
+                    value: "none"
+                },
+                {
+                    text: "primary (default)",
+                    value: "primary"
+                },
+                {
+                    text: "secondary",
+                    value: "secondary"
+                },
+                {
+                    text: "tertiary",
+                    value: "tertiary"
+                }
             ]
         },
         cmdNewsletterSubscriptionSettingsData: {
@@ -599,6 +651,31 @@ data() {
                 }
             ]
         },
+        cmdParagraphSettingsData: {
+            content: "This is a paragraph with content provided per property with <dfn title='HyperText Markup Language'>HTML</dfn> inside. Its alignment can be adjusted with the <em>textAlign</em>-property. Additionally the number of columns (1-4) can be defined by <em>numberOfColumns</em>-property.",
+            numberOfColumns: 1,
+            textAlign: "left",
+        },
+        cmdParagraphSettingsControls: {
+            textAlign: [
+                {
+                    text: "left",
+                    value: "left"
+                },
+                {
+                    text: "center",
+                    value: "center"
+                },
+                {
+                    text: "right",
+                    value: "right"
+                },
+                {
+                    text: "justify",
+                    value: "justify"
+                }
+            ]
+        },
         cmdSiteHeaderSettingsData: {
             sticky: false,
             navigationInline: false,
@@ -669,7 +746,7 @@ data() {
         cmdSystemMessageSettingsData: {
             validationStatus: "error",
             fullWidth: true,
-            systemMessage: "This is an error message!",
+            systemMessage: "This is an system message!",
             messageHeadlineLevel: 4
         },
         cmdSystemMessageSettingsControls: {
@@ -702,6 +779,50 @@ data() {
             stretchTabs: false,
             useSlot: false,
             activeTab: 0
+        },
+        cmdTabsSettingsControls: {
+            highlightLevel: [
+                {
+                    text: "none",
+                    value: "none"
+                },
+                {
+                    text: "primary (default)",
+                    value: "primary"
+                },
+                {
+                    text: "secondary",
+                    value: "secondary"
+                },
+                {
+                    text: "tertiary",
+                    value: "tertiary"
+                }
+            ]
+        },
+        cmdTagSettingsData: {
+            tagText: "Text for Tag",
+            removeByClick: false
+        },
+        cmdTagSettingsControls: {
+            highlightLevel: [
+                {
+                    text: "none (default)",
+                    value: "none"
+                },
+                {
+                    text: "primary",
+                    value: "primary"
+                },
+                {
+                    text: "secondary",
+                    value: "secondary"
+                },
+                {
+                    text: "tertiary",
+                    value: "tertiary"
+                }
+            ]
         },
         cmdTextImageBlockSettingsData: {
             htmlContent: "Text given as html-content",

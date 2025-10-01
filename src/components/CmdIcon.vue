@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdIcon ---------------------------------------------------------------------------------------- -->
     <!-- begin iconify-icon -->
     <Icon v-if="isIconify" :icon="iconClass" :title="tooltip" :class="$attrs.class"></Icon>
     <!-- end iconify-icon -->
@@ -6,6 +7,7 @@
     <!-- begin icon from local iconfont -->
     <span v-else :class="[iconClass, $attrs.class]" :title="tooltip"></span>
     <!-- end icon from local iconfont -->
+    <!-- end CmdIcon ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

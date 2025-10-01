@@ -5,7 +5,7 @@
     "gender": "m",
     "image": {
       "src": "/media/images/user-images/fake-user-1.jpg",
-      "altText": "Alt text"
+      "alt": "Alt text"
     },
     "profession": "User profession",
     "position": "User position",
@@ -41,7 +41,7 @@
         }
       },
       {
-        "path": "https://www.comand-cms.com",
+        "path": "https://www.comand-ui.com",
         "target": "comand",
         "icon": {
           "iconClass": "icon-globe",
@@ -56,7 +56,7 @@
     "gender": "m",
     "image": {
       "src": "/media/images/user-images/fake-user-3.jpg",
-      "altText": "Alt text"
+      "alt": "Alt text"
     },
     "profession": "User profession",
     "position": "User position",
@@ -70,7 +70,7 @@
         }
       },
       {
-        "path": "https://www.comand-cms.com",
+        "path": "https://www.comand-ui.com",
         "target": "comand",
         "icon": {
           "iconClass": "icon-globe",
@@ -92,7 +92,7 @@
     "gender": "m",
     "image": {
       "src": "/media/images/user-images/fake-user-4.jpg",
-      "altText": "Alt text"
+      "alt": "Alt text"
     },
     "profession": "User profession",
     "position": "User position",
@@ -106,7 +106,7 @@
         }
       },
       {
-        "path": "https://www.comand-cms.com",
+        "path": "https://www.comand-ui.com",
         "target": "comand",
         "icon": {
           "iconClass": "icon-globe",
@@ -128,7 +128,7 @@
     "gender": "m",
     "image": {
       "src": "/media/images/user-images/fake-user-5.jpg",
-      "altText": "Alt text"
+      "alt": "Alt text"
     },
     "profession": "User profession",
     "position": "User position",
@@ -142,7 +142,7 @@
         }
       },
       {
-        "path": "https://www.comand-cms.com",
+        "path": "https://www.comand-ui.com",
         "target": "comand",
         "icon": {
           "iconClass": "icon-globe",

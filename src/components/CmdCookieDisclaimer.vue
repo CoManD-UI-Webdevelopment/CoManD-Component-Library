@@ -1,5 +1,6 @@
 <template>
-    <transition name="fade">
+    <transition :name="transition">
+        <!-- begin CmdCookieDisclaimer ---------------------------------------------------------------------------------------- -->
         <div class="cmd-cookie-disclaimer flex-container vertical">
             <!-- begin slot -->
             <template v-if="useSlot">
@@ -135,6 +136,7 @@
                 <!-- end button-wrapper for 'accept'-buttons -->
             </div>
         </div>
+        <!-- end CmdCookieDisclaimer ---------------------------------------------------------------------------------------- -->
     </transition>
 </template>
 
@@ -153,6 +155,15 @@ export default {
         }
     },
     props: {
+         /**
+         * define the transition when cookie disclaimer disappears
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+         transition: {
+            type: String,
+            default: "fade"
+        },
         /**
          * define icon-class for collapsed box
          */

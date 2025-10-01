@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSocialNetworks ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-social-networks', {'stretch': stretchButtons}, alignment]">
         <!-- begin CmdHeadline -->
         <CmdHeadline
@@ -64,6 +65,7 @@
         </button>
         <!-- end list of networks -->
     </div>
+    <!-- end CmdSocialNetworks ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

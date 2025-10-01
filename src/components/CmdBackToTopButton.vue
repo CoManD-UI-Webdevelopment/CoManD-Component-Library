@@ -1,13 +1,13 @@
 <template>
-    <!-- begin cmd-back-to-top-button -->
-    <transition name="fade">
+    <!-- begin CmdBackToTopButton ---------------------------------------------------------------------------------------- -->
+    <transition :name="transition">
         <a v-if="show" class="cmd-back-to-top-button button" id="back-to-top-button" href="#" role="button" :title="cmdIcon.tooltip" @click.prevent="onBackToTop">
             <!-- begin CmdIcon -->
             <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.iconType" />
             <!-- end CmdIcon -->
         </a>
     </transition>
-    <!-- end cmd-back-to-top-button -->
+    <!-- end CmdBackToTopButton ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -21,6 +21,15 @@ export default {
         }
     },
     props: {
+        /**
+         * define the transition when button appears/disappears
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+        transition: {
+            type: String,
+            default: "fade"
+        },
         /**
          * define which container's scroll-behavior should be observed (can be any selector)
          */

@@ -1,5 +1,6 @@
 
 <template>
+    <!-- begin CmdOutput ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-code-output', {box : styleAsBox}]" style="max-height: maxHeight">
         <a v-if="allowCopyByClick" href="#" @click.prevent="copyToClipboard()" :title="cmdIcon.tooltip">
             <!-- begin CmdIcon -->
@@ -20,11 +21,10 @@
         </code>
         <!-- end unformatted code -->
     </div>
+    <!-- end CmdOutput ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
-import { ref } from "vue"
-
 export default {
     name: "CmdCodeOutput",
     props: {

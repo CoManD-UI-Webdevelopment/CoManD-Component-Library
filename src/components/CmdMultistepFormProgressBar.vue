@@ -1,12 +1,13 @@
 <template>
+    <!-- begin CmdMultistepFormProgressBar ---------------------------------------------------------------------------------------- -->
     <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap, 'full-width': fullWidth}]">
         <li v-for="(step, index) in multisteps" :key="index">
             <!-- begin CmdLink -->
             <CmdLink
                 :linkType="step.linkType"
-                :class="['stretch-on-small-devices', activeLinkClass(step.linkType, index)]"
+                :class="['stretch-on-small-devices', activeLinkClass(index)]"
                 :styleAsButton="styleAsButtons"
-                :primaryButton="usePrimaryButtons"
+                :highlightLevel="highlightLevel"
                 :path="step.path"
                 :title="step.tooltip"
                 :disabled="step.disabled"
@@ -25,6 +26,7 @@
             <!-- end separator -->
         </li>
     </ol>
+    <!-- end CmdMultistepFormProgressBar ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -40,6 +42,28 @@ export default {
         }
     },
     props: {
+         /**
+         * set highlight-level for steps
+         * 
+         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         */
+         highlightLevel: {
+            type: Boolean,
+            default: "primary",
+            validator(value) {
+                return value === "none" ||
+                    value === "primary" ||
+                    value === "secondary" ||
+                    value === "tertiary"
+            }
+        },
+        /**
+         * set active step
+         */
+        activeStep: {
+            type: Number,
+            default: 0
+        },
         /**
          * toggle if steps should be stretched to full-width of parent container (else steps will be centered)
          */
@@ -64,15 +88,6 @@ export default {
             default: false
         },
         /**
-         * activate if step-buttons should be primary-buttons (linkType for steps must be "button" or styleAsButton-property must be activated)
-         * 
-         * @affectsStyling: true
-         */
-        usePrimaryButtons: {
-            type: Boolean,
-            default: true
-        },
-        /**
          * list of multisteps
          */
         multisteps: {
@@ -94,11 +109,9 @@ export default {
         }
     },
     methods: {
-        activeLinkClass(linkType, index) {
+        activeLinkClass(index) {
             if(this.activeLink === index) {
-                if(linkType !== "router") {
                     return "active"
-                }
             }
             return ""
         },
@@ -108,6 +121,14 @@ export default {
         },
         getRoute(step) {
             return getRoute(step)
+        }
+    },
+    watch: {
+        activeStep: {
+            handler() {
+                this.activeLink = this.activeStep
+            },
+            immediate: true
         }
     }
 }

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdTextImageBlock ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-text-image-block flex-container', orientation]">
         <!-- begin cmdHeadline -->
         <CmdHeadline
@@ -57,6 +58,7 @@
         </EditComponentWrapper>
         <!-- end edit-mode -->
     </div>
+    <!-- end CmdTextImageBlock ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

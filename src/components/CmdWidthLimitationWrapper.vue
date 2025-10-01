@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdWidthLimitationWrapper ---------------------------------------------------------------------------------------- -->
     <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}" ref="width-limitation-wrapper">
         <!-- begin slot-content in section -->
         <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
@@ -32,6 +33,7 @@
         </template>
         <!-- end slot-content without section -->
     </div>
+    <!-- end CmdWidthLimitationWrapper ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

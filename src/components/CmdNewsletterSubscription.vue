@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdNewsletterSubscription ---------------------------------------------------------------------------------------- -->
     <fieldset class="cmd-newsletter-subscription flex-container">
         <!-- begin legend -->
         <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
@@ -41,6 +42,7 @@
             <!-- end cmd-form-element -->
         </div>
     </fieldset>
+    <!-- end CmdNewsletterSubscription ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

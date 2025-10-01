@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdMailToolFilter ---------------------------------------------------------------------------------------- -->
     <div class="cmd-mail-tool-filter">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="headlineText" :headlineText="headlineText" :headlineLevel="headlineLevel"/>
@@ -60,6 +61,7 @@
             <!-- end link sort descending -->
         </div>
     </div>
+    <!-- end CmdMailToolFilter ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdCompanyLogo ---------------------------------------------------------------------------------------- -->
     <div class="cmd-company-logo company-logo">
         <router-link v-if="link?.type === 'router'" :to="link?.path" :title="link?.tooltip">
             <!-- begin CmdImage -->
@@ -14,6 +15,7 @@
         <CmdImage v-else :image="image" @image-loaded="onImageLoaded" />
         <!-- end CmdImage -->
     </div>
+    <!-- end CmdCompanyLogo ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

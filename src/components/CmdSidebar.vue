@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSidebar ---------------------------------------------------------------------------------------- -->
     <aside :class="['cmd-sidebar', wrapperClass, {'box': styledAsBox, 'collapse-to-right': !collapseToLeft}]">
         <!-- begin inner-sidebar-wrapper -->
         <div class="inner-sidebar-wrapper">
@@ -34,6 +35,7 @@
         </a>
         <!-- end column to toggle sidebar open-closed-status -->
     </aside>
+    <!-- end CmdSidebar ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

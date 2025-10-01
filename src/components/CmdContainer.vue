@@ -1,77 +1,44 @@
 <template>
+    <!-- begin CmdContainer ---------------------------------------------------------------------------------------- -->
     <div class="cmd-container">
-        <!-- begin cmd-headline -->
-        <CmdHeadline
-            v-if="cmdHeadline"
-            v-bind="cmdHeadline"
-        />
-        <!-- end cmd-headline -->
+        <!-- begin CmdHeadline -->
+        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <!-- end CmdHeadline -->
 
-        <!-- begin contentAboveSlot -->
-        <div v-if="contentAboveSlot" v-html="contentAboveSlot"></div>
-        <!-- end contentAboveSlot -->
-
-        <!-- begin slot-content (one column/slot-item only) -->
-        <slot v-if="oneSlotItem()"></slot>
-        <!-- end slot-content (one column/slot-item only) -->
-
-        <!-- begin grid-/flex-container to wrap multiple columns/items -->
-        <div v-else :class="[setInnerClass, 'inner-slot-wrapper']">
-            <!-- begin slot-content (multiple columns only) -->
-            <slot><p>{{innerText}}</p></slot>
-            <!-- end slot-content (multiple columns only) -->
+        <div :class="htmlClasses">
+            <!-- begin slot-content -->
+            <slot></slot>
+            <!-- end slot-content -->
         </div>
-        <!-- end grid-/flex-container to wrap multiple columns/items -->
-
-        <!-- begin contentBelowSlot -->
-        <div v-if="contentBelowSlot" v-html="contentBelowSlot"></div>
-        <!-- end contentBelowSlot -->
     </div>
+    <!-- end CmdContainer ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
 export default {
     name: "CmdContainer",
     props: {
-        /**
-         * define (html-)content to display above slot-content
+        /** define container-type
          *
-         * @canContainHtml: true
-         */
-        contentAboveSlot: {
-            type: String,
-            required: false
-        },
-        /**
-         * define inner-text
-         */
-        innerText: {
-            type: String ,
-            required: false
-        },
-        /**
-         * define (html-)content to display below slot-content
-         *
-         * @canContainHtml: true
-         */
-        contentBelowSlot: {
-            type: String,
-            required: false
-        },
-        /**
-         * define container-type
-         *
-         * @allowedValues: "grid", "flex"
+         * @affectsStyling: true
+         * @allowedValues: "", "default", "flex", "grid"
          */
         containerType: {
             type: String,
-            required: false
+            default: "default",
+            validator(value) {
+                return value === "" ||
+                    value === "default" ||
+                    value === "flex" ||
+                    value === "grid"
+            }
         },
         /**
          * define content-orientation
          *
          * containerType-property must be set to "flex"
          *
+         * @affectsStyling: true
          * @allowedValues: "vertical", "horizontal"
          */
         contentOrientation: {
@@ -83,11 +50,62 @@ export default {
             }
         },
         /**
-         * define a class to set on inner div
+         * activate if no gap between items should be used
+         *
+         * @affectsStyling: true
          */
-        innerClass: {
+        noGap: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * activate if items should not behave like flex-items (they are now shrunk to their content)
+         *
+         * @affectsStyling: true
+         */
+        flexNone: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * define how the items will be aligned vertically
+         *
+         * attention: if alignContentVertical is activated, this property defines the horizontal alignment
+         *
+         * @allowedValues: top, flex-start, center, flex-end, bottom
+         * @affectsStyling: true
+         */
+        alignItems: {
             type: String,
-            required: false
+            required: false,
+            validator(value) {
+                return value === "top" ||
+                    value === "flex-start" ||
+                    value === "center" ||
+                    value === "flex-end" ||
+                    value === "bottom"
+            }
+        },
+        /**
+         * define how the items will be aligned/justified horizontally.
+         *
+         * attention: if alignContentVertical is activated, this property defines the vertical alignment/justification
+         *
+         * @allowedValues: top, flex-start, center, flex-end, bottom, space-between, space-around
+         * @affectsStyling: true
+         */
+        justifyContent: {
+            type: String,
+            required: false,
+            validator(value) {
+                return value === "top" ||
+                    value === "flex-start" ||
+                    value === "center" ||
+                    value === "flex-end" ||
+                    value === "bottom" ||
+                    value === "space-between" ||
+                    value === "space-around"
+            }
         },
         /**
          * properties for CmdHeadline-component
@@ -97,43 +115,38 @@ export default {
             required: false
         }
     },
-    methods: {
-        addHandlerProvider() {
-            return ""
-        },
-        oneSlotItem() {
-            if (typeof this.$slots.default !== "function") {
-                return false
-            }
-
-            const vnodes = this.$slots.default()
-
-            if (vnodes.length === 1 && typeof vnodes[0].type === "symbol" && Array.isArray(vnodes[0].children)) {
-                return vnodes[0].children.length === 1
-            }
-            if (vnodes.length === 1 && typeof vnodes[0].type === "object" && vnodes[0].type.name === "RenderComponents" && typeof vnodes[0].props === "object" && Array.isArray(vnodes[0].props.components)) {
-                return vnodes[0].props.components.length === 1
-            }
-            return vnodes.length === 1
-        }
-    },
     computed: {
-        setInnerClass() {
-            let htmlClass = this.innerClass || ""
-            switch (this.containerType) {
-                case "grid":
-                    htmlClass += " grid-container-create-columns"
-                    break
-                case "flex":
-                    if (this.contentOrientation === "horizontal") {
-                        htmlClass += " flex-container"
-                    } else if (this.contentOrientation === "vertical") {
-                        htmlClass += " flex-container vertical"
+        htmlClasses() {
+            const htmlClasses = []
+
+            if (this.containerType !== 'default') {
+                if (this.containerType === "flex") {
+                    htmlClasses.push("flex-container")
+
+                    if (this.contentOrientation) {
+                        htmlClasses.push(this.contentOrientation === "vertical" ? "flex-direction-column" : null)
                     }
-                    break
-                default: /* do nothing */
+                    if (this.useGap) {
+                        htmlClasses.push("no-gap")
+                    }
+                    if (this.flexNone) {
+                        htmlClasses.push("flex-none")
+                    }
+                    if (this.alignItems) {
+                        htmlClasses.push("align-items-" + this.alignItems)
+                    }
+                }
+
+                if (this.containerType === "grid") {
+                    htmlClasses.push("grid-container-create-columns")
+                }
             }
-            return htmlClass
+
+            if (this.justifyContent) {
+                htmlClasses.push("justify-content-" + this.justifyContent)
+            }
+
+            return htmlClasses.join(" ")
         }
     }
 }

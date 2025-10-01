@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdOpeningHoursItem ---------------------------------------------------------------------------------------- -->
     <!-- begin opening-days and -hours -->
     <template v-if="!editing">
         <dt class="cmd-opening-hours-item">{{ day.day }}</dt>
@@ -120,6 +121,7 @@
         <!-- end hours -->
     </template>
     <!-- end edit-mode -->
+    <!-- end CmdOpeningHoursItem ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

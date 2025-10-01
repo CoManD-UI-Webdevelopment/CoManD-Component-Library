@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSlideButton ---------------------------------------------------------------------------------------- -->
     <a href="#"
        @click.prevent
        :class="['cmd-slide-button', 'button', 'keep-behavior-on-small-devices', slideButtonType]"
@@ -7,6 +8,7 @@
         <CmdIcon :type="getDirection.iconType || 'auto'" :iconClass="getDirection.iconClass || 'right'" />
         <!-- end CmdIcon -->
     </a>
+    <!-- end CmdSlideButton ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -75,14 +77,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* begin cmd-slide-button ---------------------------------------------------------------------------------------- */
 .cmd-slide-button {
     &.button {
         font-size: 2rem;
         z-index: 10;
-        height: 100%;
         position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
         display: flex;
         justify-content: center;
         text-decoration: none;
@@ -95,12 +98,10 @@ export default {
 
         &.left {
             left: 0;
-            top: 0;
         }
 
         &.right {
             right: 0;
-            top: 0;
         }
 
         &.up, &.down {

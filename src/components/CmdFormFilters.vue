@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdFormFilters ---------------------------------------------------------------------------------------- -->
     <ul v-if="options.length" class="cmd-form-filters">
         <li v-if="options.length > 1">
             <a href="#" @click.prevent="deleteAllFilters">
@@ -17,6 +18,7 @@
             </a>
         </li>
     </ul>
+    <!-- end CmdFormElement ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

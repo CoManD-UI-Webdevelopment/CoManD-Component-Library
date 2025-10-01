@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdMailToolEntry ---------------------------------------------------------------------------------------- -->
     <template v-if="mails.length"
               v-for="(mail, index) in mails"
               :key="index">
@@ -59,7 +60,7 @@
     <!-- begin CmdSystemMessage (if no mails exist) -->
     <CmdSystemMessage v-else v-bind="cmdSystemMessage"/>
     <!-- end CmdSystemMessage (if no mails exist) -->
-
+    <!-- end CmdMailToolEntry ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

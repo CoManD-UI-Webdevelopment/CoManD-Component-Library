@@ -1,10 +1,10 @@
 <template>
-    <!-- begin CmdLink -->
+    <!-- begin CmdLink ---------------------------------------------------------------------------------------- -->
     <!-- begin href -->
     <a v-if="linkType === 'href'"
        :href="!disabled ? path : null"
        :target="target"
-       :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]"
+       :class="['cmd-link', highlightLevel, {'button': styleAsButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]"
        @click.prevent="emitClick($event, 'href')"
        :title="icon?.tooltip"
     >
@@ -21,7 +21,8 @@
     <!-- begin router-link -->
     <router-link v-else-if="linkType === 'router'" 
         :to="!disabled ? path : {}" 
-        :class="['cmd-link', {'button': styleAsButton, 'primary': primaryButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
+        exact-active-class="router-link-exact-active active"
+        :class="['cmd-link', highlightLevel, {'button': styleAsButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
         @click="emitClick($event, 'router')" 
         :title="icon?.tooltip">
         <!-- begin CmdInnterLink -->
@@ -36,7 +37,7 @@
 
     <!-- begin button -->
     <button v-else-if="linkType === 'button' || linkType === 'submit'" 
-        :class="['cmd-link button', {'primary': primaryButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
+        :class="['cmd-link button', highlightLevel, {'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
         type="submit"
         :disabled="disabled" 
         @click="emitClick($event, 'button')" 
@@ -51,7 +52,7 @@
         <!-- end CmdInnterLink -->
     </button>
     <!-- end button -->
-    <!-- end CmdLink -->
+    <!-- end CmdLink ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -123,13 +124,19 @@ export default {
             default: false
         },
         /**
-         * activate if button should be styled as primary-button
-         *
-         * (type must be 'button' or styleAsButton-property must be activated)
+         * set highlight-level for link/button
+         * 
+         * @allowedValues: "none", "primary", "secondary", "tertiary"
          */
-        primaryButton: {
+         highlightLevel: {
             type: Boolean,
-            default: false
+            default: "primary",
+            validator(value) {
+                return value === "none" ||
+                    value === "primary" ||
+                    value === "secondary" ||
+                    value === "tertiary"
+            }
         },
         /**
          * activate if link/button should be disabled
@@ -168,9 +175,7 @@ export default {
     gap: var(--icon-and-text-gap);
     align-items: center;
 
-    &.active, &.router-link-active:not(.button) {
-        background: var(--button-primary-background-highlighted); /* overwrite background for active links/buttons */
-        
+    &.active, &.router-link-active {
         &.button {
             padding: var(--button-padding); /* overwrite padding for active links/buttons */
         }

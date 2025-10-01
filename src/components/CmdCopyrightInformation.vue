@@ -1,7 +1,9 @@
 <template>
+    <!-- begin CmdCopyrightInformation ---------------------------------------------------------------------------------------- -->
     <div class="cmd-copyright-information" role="contentinfo">
         <a href="https://www.comand-ui.com" target="comand-ui-website" lang="en" title="CoManD-UI-Website">&copy; CoManD-UI</a>
     </div>
+    <!-- end CmdCopyrightInformation ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

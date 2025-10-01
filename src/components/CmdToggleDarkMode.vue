@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdToggleDarkMode ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-toggle-dark-mode', {'styled-layout': useStyledLayout, 'dark-mode': darkMode}]">
         <template v-if="!editing">
         <!-- begin button-style -->
@@ -53,6 +54,7 @@
             <!-- end edit-mode -->
         </template>
     </div>
+    <!-- end CmdToggleDarkMode ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

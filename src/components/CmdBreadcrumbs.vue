@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdBreadcrumbs ---------------------------------------------------------------------------------------- -->
     <ul class="cmd-breadcrumbs">
         <li v-if="breadcrumbLabel" class="breadcrumb-label">{{ breadcrumbLabel }}</li>
         <li v-for="(link, index) in breadcrumbLinks || []" :key="index">
@@ -29,6 +30,7 @@
             <span class="separator" v-if="index < breadcrumbLinks.length - 1">{{ breadcrumbSeparator }}</span>
         </li>
     </ul>
+    <!-- end CmdBreadcrumbs ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

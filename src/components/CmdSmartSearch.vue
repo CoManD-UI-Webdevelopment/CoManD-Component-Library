@@ -76,6 +76,13 @@ export default {
         openListToTop: {
             type: Boolean,
             default: false
+        },
+        /**
+         * allows user to enter a new term, that is not included in the listOfRecommendations-property
+         */
+        allowUserToEnterNewTerm: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
@@ -107,27 +114,35 @@ export default {
     methods: {
         showRecommendations() {
             this.item = {} // reset item
-            if(typeof this.modelValue === "string") {
-                this.$emit("update:modelValue", "")
-            } else {
-                this.$emit("update:modelValue", {itemId: "", displayValue: ""})
-            }
-
             this.showListOfRecommendations = true
         },
         optionSelected(item) {
             this.searchTerm = item.displayValue // set search-field to selected option
             this.showListOfRecommendations = false
-            if(typeof this.modelValue === "string") {
-                this.$emit("update:modelValue", item.displayValue)
-            } else {
-                this.$emit("update:modelValue", {itemId: item.id, displayValue: item.displayValue})
-            }
+            this.emitValue(item)
         },
         linkItem(item) {
             return {
                 ...item,
                 text: item.displayValue
+            }
+        },
+        emitValue(item) {
+            let entryOfRecommendations = null
+
+            if(typeof item === "string") {
+                entryOfRecommendations = this.listOfRecommendations.find((entry) => {
+                    return entry.displayValue === item
+                })
+            }
+
+            const displayValue = typeof item === "string" ? item : item.displayValue
+
+            if(typeof this.modelValue === "string") {
+                this.$emit("update:modelValue", displayValue)
+            } else {
+                // modelValue is object, check if it exist as entry in listOfRecommendations and emit id and displayValue, if just a string is ented, emit id: 0 and the displayValue
+                this.$emit("update:modelValue", {id: entryOfRecommendations ? entryOfRecommendations.id : (typeof item === "string" ? 0 : item.id), displayValue})
             }
         }
     },
@@ -136,6 +151,22 @@ export default {
             if(!this.searchTerm.length) {
                 this.showListOfRecommendations = false
             }
+            if(this.allowUserToEnterNewTerm) {
+                this.emitValue(this.searchTerm)
+            }
+        },
+        modelValue: {
+            handler() {
+                if(typeof this.modelValue === "string") {
+                    this.searchTerm = this.modelValue
+                } else {
+                    const idExists = this.listOfRecommendations.find((entry) => {
+                        return entry.id === this.modelValue?.id
+                    })
+                    this.searchTerm = idExists?.displayValue || this.modelValue?.displayValue || ""
+                }
+            },
+            immediate: true
         }
     }
 }

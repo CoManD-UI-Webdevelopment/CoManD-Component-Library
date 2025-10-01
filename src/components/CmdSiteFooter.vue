@@ -1,9 +1,11 @@
 <template>
+    <!-- begin CmdSiteFooter ---------------------------------------------------------------------------------------- -->
     <div class="cmd-site-footer site-footer">
         <footer :class="['flex-container', {vertical: orientation === 'vertical'}]">
             <slot></slot>
         </footer>
     </div>
+    <!-- end CmdSiteFooter ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

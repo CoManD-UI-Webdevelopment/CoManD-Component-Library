@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdListOfRequirements ---------------------------------------------------------------------------------------- -->
     <div class="cmd-list-of-requirements">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="showHeadline" :headline-level="cmdHeadline.headlineLevel">
@@ -47,6 +48,7 @@
         </template>
         <!-- end helplink -->
     </div>
+    <!-- end CmdListOfRequirements ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

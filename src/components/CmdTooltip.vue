@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdTooltip ---------------------------------------------------------------------------------------- -->
     <div v-if="tooltipVisibility" :class="['cmd-tooltip', validationStatus]" ref="tooltip">
         <div v-if="cmdHeadline || iconClose.show" class="headline-wrapper">
             <!-- begin CmdHeadline -->
@@ -23,6 +24,7 @@
             {{ tooltipText }}
         </slot>
         <!-- end slot-content -->
+         <!-- end CmdTooltip ---------------------------------------------------------------------------------------- -->
     </div>
 </template>
 

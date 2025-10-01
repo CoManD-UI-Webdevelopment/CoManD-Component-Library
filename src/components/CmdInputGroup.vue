@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdInputGroup ---------------------------------------------------------------------------------------- -->
     <div :class="[
         'cmd-input-group label',
         validationStatus,
@@ -80,6 +81,7 @@
         </div>
         <!-- end useSlot -->
     </div>
+    <!-- end CmdInputGroup ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdGoogleMaps ---------------------------------------------------------------------------------------- -->
     <div class="cmd-google-maps responsive-wrapper">
         <!-- begin CmdHeadline -->
          <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
@@ -22,6 +23,7 @@
         </iframe>
         <!-- end iframe with google-map -->
     </div>
+    <!-- end CmdGoogleMaps ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

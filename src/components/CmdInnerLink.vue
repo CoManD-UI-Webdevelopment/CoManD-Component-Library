@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdInnerLink ---------------------------------------------------------------------------------------- -->
     <img v-if="image?.src && (image?.position === 'left' || image?.position === 'top' || !image?.position)" :src="image?.src" :alt="image?.alt" />
     <span v-if="icon?.iconClass && (icon?.position === 'left' || icon?.position === 'top' || !icon?.position)" :class="icon?.iconClass" :title="icon?.tooltip"></span>
     <span v-if="text">{{ text }}</span>
@@ -7,6 +8,7 @@
     <!-- begin default-slot -->
     <slot></slot>
     <!-- end default-slot -->
+    <!-- end CmdInnerLink ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

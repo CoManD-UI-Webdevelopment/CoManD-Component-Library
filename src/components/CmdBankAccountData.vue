@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdBankAccountData ---------------------------------------------------------------------------------------- -->
     <div class="cmd-bank-account-data">
         <!-- begin slot -->
         <template v-if="useSlot">
@@ -33,6 +34,7 @@
             <!-- end additional information -->
         </template>
     </div>
+    <!-- end CmdBankAccountData ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

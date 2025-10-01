@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdFormElement ---------------------------------------------------------------------------------------- -->
     <label
         v-if="(element === 'input' || element === 'select' || element === 'textarea')"
         :class="[
@@ -283,6 +284,7 @@
         <!-- end CmdIcon -->
     </button>
     <!-- end button -->
+    <!-- end CmdFormElement ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -1033,6 +1035,13 @@ export default {
     .inner-input-wrapper {
         margin: 0;
 
+        &:has(.button, button) {
+            input {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
         a.deleteicon {
             position: absolute;
             top: 50%;
@@ -1057,7 +1066,8 @@ export default {
 
         a.button {
             right: 0;
-
+            align-self: stretch;
+            aspect-ratio: 1 / 1;  /* square */
             & + a {
                 right: 5rem;
             }

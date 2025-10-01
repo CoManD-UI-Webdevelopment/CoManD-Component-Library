@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdBoxSiteSearch ---------------------------------------------------------------------------------------- -->
     <fieldset class="cmd-box-site-search flex-container">
         <!-- begin legend -->
         <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
@@ -77,7 +78,7 @@
                 <span v-if="showFilters">{{ getMessage("site_search.hide_filter_options") }}</span>
                 <span v-else>{{ getMessage("site_search.show_filter_options") }}</span>
             </a>
-            <transition name="fade">
+            <transition :name="transitionFilters">
                 <div v-if="showFilters && cmdFakeSelect?.selectData.length" class="flex-container flex-none" role="listbox" aria-expanded="true">
                     <!-- begin CmdFakeSelect -->
                     <CmdFakeSelect
@@ -98,6 +99,7 @@
     <!-- begin CmdFormFilters -->
     <CmdFormFilters v-if="useFilters" v-model="searchFilters" :selectedOptionsName="getOptionName"/>
     <!-- end CmdFormFilters -->
+     <!-- end CmdBoxSiteSearch ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -121,6 +123,15 @@ export default {
         }
     },
     props: {
+        /**
+         * define the transition when filters disappear
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+        transitionFilters: {
+            type: String,
+            default: "fade"
+        },
         /**
          * custom modelValue for first input-field
          */

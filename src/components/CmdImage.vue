@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdImage ---------------------------------------------------------------------------------------- -->
     <!-- begin edit-mode -->
     <EditComponentWrapper
         v-if="editModeContext"
@@ -108,7 +109,9 @@
     <img v-else class="cmd-image" :src="imageSource" :alt="image?.alt" :title="image?.tooltip" :loading="image?.lazyLoading ? 'lazy' : null" @load="onImageLoaded"/>
     <!-- end image without figure/figcaption -->
     <!-- end default-view -->
+     <!-- end CmdImage ---------------------------------------------------------------------------------------- -->
 </template>
+
 <script>
 import {createUuid} from "../utils/common.js"
 import {checkAndUploadFile} from "../utils/checkAndUploadFile"

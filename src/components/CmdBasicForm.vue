@@ -1,5 +1,6 @@
 <template>
-    <div class="cmd-pages-basic-form">
+    <!-- begin CmdBasicForm---------------------------------------------------------------------------------------- -->
+    <div class="cmd-basic-form">
         <!-- begin CmdHeadline -->
         <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
         <!-- end CmdHeadline -->
@@ -258,6 +259,7 @@
         </CmdForm>
         <!-- end CmdForm -->
     </div>
+    <!-- end CmdBasicForm---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -611,7 +613,8 @@ export default {
 </script>
 
 <style>
-.cmd-pages-basic-form {
+/* begin cmd-basic-form ---------------------------------------------------------------------------------------- */
+.cmd-basic-form {
     fieldset {
         margin: 0;
 
@@ -629,5 +632,6 @@ export default {
 .grecaptcha-badge {
     bottom: 10rem !important;
 }
+/* end cmd-basic-form ---------------------------------------------------------------------------------------- */
 </style>
 

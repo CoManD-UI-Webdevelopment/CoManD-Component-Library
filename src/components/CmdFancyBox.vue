@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdFancybox ---------------------------------------------------------------------------------------- -->
     <dialog
         ref="dialog"
         :class="['cmd-fancybox', {'show-overlay': showOverlay, 'image' : fancyBoxImageUrl || fancyBoxGallery, 'image-gallery': fancyBoxGallery}]"
@@ -135,6 +136,7 @@
         />
         <!-- end CmdThumbnailScroller -->
     </dialog>
+    <!-- end CmdFancybox ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

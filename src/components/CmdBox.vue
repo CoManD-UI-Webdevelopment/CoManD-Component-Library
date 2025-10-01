@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdBox ---------------------------------------------------------------------------------------- -->
     <!-- begin boxType 'content' -->
     <div v-if="boxType === 'content'"
          ref="cmdBox"
@@ -158,11 +159,7 @@
        href="#"
        @click.prevent="clickOnProduct(product)">
         <div class="box-header flex-container vertical">
-            <figure v-if="product.image !== undefined">
-                <img :src="product.image.src" :alt="product.image.alt"/>
-                <figcaption>{{ product.name }}</figcaption>
-            </figure>
-            <p v-else>{{ product.name }}</p>
+            <CmdImage v-if="product.image?.src" v-bind="product.image" />
 
             <!-- begin ribbons -->
             <div v-if="product.new" class="ribbon-new">
@@ -200,16 +197,28 @@
          ]">
         <!-- begin box-header -->
         <div class="box-header flex-container vertical">
-            <figure v-if="user.image">
+            <!-- begin user-image -->
+            <figure v-if="user.image?.src">
                 <img :src="user.image.src" :alt="user.image.alt"/>
-                <figcaption v-if="!rowView" class="user-name">{{ user.name }}<span v-if="user.age" class="user-age"> ({{
-                        user.age
-                    }})</span></figcaption>
+                <figcaption v-if="!rowView" class="user-name">
+                    {{ user.name }}
+                    <span v-if="user.age" class="user-age"> 
+                        ({{ user.age }})
+                    </span>
+                </figcaption>
             </figure>
-            <div v-else>
-                <span :class="defaultProfileIconClass" :title="user.name"></span>
+            <!-- end no user-image -->
+
+            <!-- begin no user-image -->
+            <div v-else class="no-user-image">
+                <CmdIcon
+                  :iconClass="iconUserProfile.iconClass"
+                  :type="iconUserProfile.iconType"
+                  :title="user.name" 
+                />
                 <p v-if="!rowView" class="user-name">{{ user.name }}</p>
             </div>
+            <!-- end no user-image -->
         </div>
         <!-- end box-header -->
 
@@ -237,6 +246,7 @@
         <!-- end box-footer -->
     </div>
     <!-- end boxType 'user' -->
+    <!-- end CmdBox ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -358,13 +368,6 @@ export default {
             required: false
         },
         /**
-         * set the default profile-icon (will eb shown if no user-image exists)
-         */
-        defaultProfileIconClass: {
-            type: String,
-            default: "icon-user-profile"
-        },
-        /**
          * the shown product (incl. name, price, image, description)
          *
          * @required: only available for boxtype===product
@@ -428,6 +431,20 @@ export default {
             default: ""
         },
         /**
+         * icon for user-profile if no user-image exists
+         *
+         * @requiredForAccessibility: partial
+         */
+         iconUserProfile: {
+            type: Object,
+            default: function () {
+                return {
+                    iconClass: "icon-user-profile",
+                    iconType: "auto"
+                }
+            }
+        },
+        /**
          * icon to expand an accordion
          *
          * @requiredForAccessibility: partial
@@ -440,7 +457,7 @@ export default {
                     tooltip: "Close content",
                     iconType: "auto"
                 }
-            },
+            }
         },
         /**
          * icon to collapse an accordion
@@ -597,7 +614,7 @@ export default {
         align-self: auto !important; /* overwrite settings form frontend-framework */
     }
 
-    &:has(.cmd-image:only-child) {
+    &:has(> .cmd-image:only-child) {
         align-self: start !important;
     }
 
@@ -849,10 +866,13 @@ export default {
         .box-body {
             flex-grow: 1;
             padding: var(--default-padding);
-            padding-bottom: 0;
 
             > * {
                 text-align: center;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
 
             .price {
@@ -884,20 +904,19 @@ export default {
         > .box-header {
             --default-icon-size: 6rem;
             --box-header-text-color: var(--primary-color);
-
+            
             background: none;
 
             > div:first-child > [class*="icon-"] {
                 aspect-ratio: 1/1;
             }
 
-            img, > div:first-child > [class*="icon-"] {
-                display: table;
-                margin: 0 auto var(--default-margin) auto !important;
-                padding: calc(var(--default-padding) * 3);
-                border-radius: var(--full-circle);
-                background: var(--box-header-background);
-                color: var(--color-white);
+            &:has(img) {
+                --box-header-padding: var(--default-padding);
+            }
+
+            img {
+                margin: 0 auto var(--default-margin) auto;
 
                 & + p, & + figcaption {
                     margin: 0 auto;
@@ -907,13 +926,17 @@ export default {
                 }
             }
 
-            img {
+            img, .no-user-image {
                 padding: 0;
                 width: calc(var(--default-icon-size) * 2);
                 aspect-ratio: 1/1;
-            }
-
-            > div:first-child > [class*="icon-"] {
+                max-width: 12rem;
+                border-radius: var(--full-circle);
+                background: var(--box-header-background);
+                display: flex;
+                color: var(--color-white);
+                justify-content: center;
+                align-items: center;
                 margin: 0;
                 font-size: var(--default-icon-size);
             }
@@ -1003,8 +1026,12 @@ export default {
         }
 
         &.row-view {
-            .box-body p {
-                text-align: left;
+            .box-body {
+                padding: 0;
+
+                p {
+                    text-align: left;
+                }
             }
 
             .box-footer {

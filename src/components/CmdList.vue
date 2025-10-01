@@ -1,90 +1,121 @@
 <template>
-    <div :class="['cmd-list',
-        {
-            box: styleAsBox,
-            'section-anchors': sectionAnchors,
-            'large-icons': largeIcons,
-            'show-list-style-items': showListStyleItems,
-        },
-        'list-type-' + listType
-    ]">
-        <!-- begin cmd-headline -->
-        <CmdHeadline
-            v-if="cmdHeadline?.headlineText || editModeContext"
-            v-bind="cmdHeadline"
-        />
-        <!-- end cmd-headline -->
+    <!-- begin CmdList ---------------------------------------------------------------------------------------- -->
+    <transition :name="transition">
+        <div :class="['cmd-list',
+            {
+                box: styleAsBox,
+                'section-anchors': sectionAnchors,
+                'large-icons': largeIcons,
+                'show-list-style-items': showListStyleItems,
+            },
+            'list-content-type-' + listContentType
+        ]">
+            <!-- begin cmd-headline -->
+            <CmdHeadline v-if="cmdHeadline?.headlineText || editModeContext" v-bind="cmdHeadline" />
+            <!-- end cmd-headline -->
 
-        <!-- begin list of links -->
-        <ul :class="['flex-container', {'no-gap': !useGap}, 'align-' + align, setStretchClass, {horizontal: orientation === 'horizontal'}]">
-            <template v-if="listType === 'links'">
-                <!-- begin CmdListOfLinksItem-->
-                <CmdListOfLinksItem
-                    v-if="!editModeContext"
-                    v-for="(link, index) in items"
-                    :key="index"
-                    :class="{'active': sectionAnchors && activeSection === index}"
-                    :link="link"
-                    @click="emitClick($event, linkType)"
-                />
-                <!-- end CmdListOfLinksItem-->
-
-                <!-- begin edit-mode -->
-                <li v-else>
-                    <EditComponentWrapper
-                        v-for="(link, index) in links"
-                        :key="'x' + index"
-                        class="edit-items"
-                        :showComponentName="false"
-                        componentTag="ul"
-                        componentName="CmdLinkItem"
-                        :componentProps="link"
-                        :allowedComponentTypes="[]"
-                        :componentPath="['props', 'links', index]"
-                        :itemProvider="itemProvider"
-                    >
+            <!-- begin list of links ordered/unordered -->
+            <component v-if="listType !== 'description'" :is="listTag"
+                :class="['flex-container', { 'no-gap': !useGap }, 'align-' + align, setStretchClass, { horizontal: orientation === 'horizontal' }]">
+                <template v-if="listContentType === 'links'">
+                    <slot>
                         <!-- begin CmdListOfLinksItem-->
-                        <CmdListOfLinksItem
-                            :class="{'active': sectionAnchors && activeSection === index}"
-                            :link="link"
-                        />
+                        <CmdListOfLinksItem v-if="!editModeContext" v-for="(link, index) in items" :key="index"
+                            :class="{ 'active': sectionAnchors && activeSection === index }" :link="link"
+                            @click="emitClick($event, linkType)" />
                         <!-- end CmdListOfLinksItem-->
-                    </EditComponentWrapper>
 
-                    <button v-if="links.length === 0" type="button" class="button confirm small" @click="onAddItem">
-                        <span class="icon-plus"></span>
-                        <span>Add new entry</span>
-                    </button>
-                </li>
-                <!-- end edit-mode -->
-            </template>
+                        <!-- begin edit-mode -->
+                        <li v-else>
+                            <EditComponentWrapper v-for="(link, index) in links" :key="'x' + index" class="edit-items"
+                                :showComponentName="false" componentTag="ul" componentName="CmdLinkItem"
+                                :componentProps="link" :allowedComponentTypes="[]"
+                                :componentPath="['props', 'links', index]" :itemProvider="itemProvider">
+                                <!-- begin CmdListOfLinksItem-->
+                                <CmdListOfLinksItem :class="{ 'active': sectionAnchors && activeSection === index }"
+                                    :link="link" />
+                                <!-- end CmdListOfLinksItem-->
+                            </EditComponentWrapper>
 
-            <!-- begin list of images -->
-            <template v-if="listType === 'images'">
-                <li v-for="(image, index) in items" :key="index">
-                    <!-- begin CmdImage with link-->
-                    <a v-if="image.image.url" :href="image.image.url">
-                        <CmdImage v-bind="image"/>
-                    </a>
-                    <!-- end CmdImage with link-->
+                            <button v-if="links.length === 0" type="button" class="button confirm small"
+                                @click="onAddItem">
+                                <span class="icon-plus"></span>
+                                <span>Add new entry</span>
+                            </button>
+                        </li>
+                        <!-- end edit-mode -->
+                    </slot>
+                </template>
 
-                    <!-- begin CmdImage without link-->
-                    <CmdImage v-else v-bind="image"/>
-                    <!-- end CmdImage without link-->
-                </li>
-            </template>
-            <!-- end list of images -->
+                <!-- begin list of images -->
+                <template v-if="listContentType === 'images'">
+                    <slot>
+                        <li v-for="(image, index) in items" :key="index">
+                            <!-- begin CmdImage with link-->
+                            <a v-if="image.image.url" :href="image.image.url">
+                                <CmdImage v-bind="image" />
+                            </a>
+                            <!-- end CmdImage with link-->
 
-            <!-- begin tags -->
-            <template v-if="listType === 'tags'">
-                <li v-for="(tag, index) in items" :key="index">
-                    <small class="tag">{{ tag }}</small>
-                </li>
-            </template>
-            <!-- end tags -->
-        </ul>
-        <!-- end list of links -->
-    </div>
+                            <!-- begin CmdImage without link-->
+                            <CmdImage v-else v-bind="image" />
+                            <!-- end CmdImage without link-->
+                        </li>
+                    </slot>
+                </template>
+                <!-- end list of images -->
+
+                <!-- begin tags -->
+                <template v-if="listContentType === 'tags'">
+                    <slot>
+                        <li v-for="(tag, index) in listOfTagItems" :key="index">
+                            <!-- begin CmdTag -->
+                            <CmdTag 
+                                :tagText="tag"
+                                :highlightLevel="highlightLevel" 
+                                :removeTagByClick="true" 
+                                @click.prevent="removeTag(event, index)" 
+                            />
+                            <!-- end CmdTag -->
+                        </li>
+                    </slot>
+                </template>
+                <!-- end tags -->
+            </component>
+            <!-- end list of links ordered/unordered -->
+
+            <!-- begin description list -->
+            <dl v-else>
+                <template v-for="(entry, index) in items" :key="index">
+                    <dt v-if="!alignDescriptionTermRight">
+                        <CmdIcon 
+                            v-if="entry.descriptionTerm?.cmdIcon?.iconClass" 
+                            v-bind="entry.descriptionTerm.cmdIcon"
+                        />
+                        <span v-if="entry.descriptionTerm?.text">{{ entry.descriptionTerm?.text }}</span>
+                    </dt>
+                    <dd>
+                        <CmdLink 
+                            v-if="entry.descriptionData.cmdLink !== undefined" 
+                            v-bind="entry.descriptionData.cmdLink">
+                        </CmdLink>
+                        <template v-else>
+                            {{ entry.descriptionData.text }}
+                        </template>
+                    </dd>
+                    <dt v-if="alignDescriptionTermRight">
+                        <CmdIcon 
+                            v-if="entry.descriptionTerm?.cmdIcon?.iconClass" 
+                            v-bind="entry.descriptionTerm.cmdIcon"
+                        />
+                        <span v-if="entry.descriptionTerm?.text">{{ entry.descriptionTerm?.text }}</span>
+                    </dt>
+                </template>
+            </dl>
+            <!-- end description list -->
+        </div>
+    </transition>
+    <!-- end CmdList ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -92,19 +123,63 @@
 import EditMode from "../mixins/EditMode.vue"
 
 // import utils (editMode only)
-import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js"
+import { buildComponentPath, updateHandlerProvider } from "../utils/editmode.js"
 
 export default {
     name: "CmdListOfLinks",
     emits: ["click"],
     mixins: [EditMode],
+    data() {
+        return {
+            listOfTagItems: [...(this.items || [])]
+        }
+    },
     props: {
+        /**
+         * define the transition when the list appears/disappears
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+        transition: {
+            type: String,
+            default: "fade"
+        },
+        /**
+         * define the highlight-level
+         * 
+         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         */
+        highlightLevel: {
+            type: String,
+            default: "none",
+            validator(value) {
+                return value === "none" ||
+                    value === "primary" ||
+                    value === "secondary" ||
+                    value === "tertiary"
+            }
+        },
+        /**
+         * define the list type
+         * 
+         * @affectsStyling: true
+         * @allowedValues: "unordered", "ordered", "description"
+         */
+        listType: {
+            typ: String,
+            default: "unordered",
+            validator(value) {
+                return value === "unordered" ||
+                    value === "ordered" ||
+                    value === "description"
+            }
+        },
         /**
          * set list-type
          *
          * @allowedValues: links, images, tags
          */
-        listType: {
+        listContentType: {
             typ: String,
             default: "links",
             validator(value) {
@@ -164,6 +239,15 @@ export default {
             default: false
         },
         /**
+         * set if description term should be aligned right
+         * 
+         * @affectsStyling: true
+         */
+         alignDescriptionTermRight: {
+            type: Boolean,
+            default: false
+         },
+        /**
          * set horizontal alignment
          *
          * orientation-property must be set to 'horizontal'
@@ -200,6 +284,19 @@ export default {
             }
         },
         /**
+         * define remove-icon/link for tags
+         */
+        iconRemoveTag: {
+            type: Object,
+            default: () => (
+                {
+                    show: true,
+                    title: "Remove this tag",
+                    iconClass: "icon-cancel"
+                }
+            )
+        },
+        /**
          * properties for CmdHeadline-component
          */
         cmdHeadline: {
@@ -207,19 +304,32 @@ export default {
             required: false
         }
     },
+    mounted() {
+        this.updateActiveClass()
+    },
     computed: {
         setStretchClass() {
             if (this.largeIcons && this.orientation === "horizontal") {
                 return "stretch"
             }
             return null
+        },
+        listTag() {
+            if(this.listType !== "description") {
+                return this.listType === "ordered" ? "ol" : "ul"
+            }
         }
     },
     methods: {
+        removeTag(event, index) {
+            this.listOfTagItems.splice(index, 1);
+            this.$emit("remove-tag", { originalEvent: event, tagIndex: index })
+        },
         onAddItem() {
             this.editModeContext.content.addContent(
                 buildComponentPath(this, 'props', 'links', -1),
-                this.itemProvider)
+                this.itemProvider
+            )
         },
         itemProvider() {
             return {
@@ -243,9 +353,18 @@ export default {
             })
         },
         emitClick(event, linkType) {
-            this.$emit("click", {originalEvent: event, linkType: linkType})
+            this.$emit("click", { originalEvent: event, linkType: linkType })
+        },
+        updateActiveClass() {
+            // remove "active" from all links first
+            document.querySelectorAll(".router-link-exact-active").forEach(el => {
+                el.classList.add("active")
+            })
         }
-    }
+    },
+    watch: (() => route.fullPath, () => {
+        this.updateActiveClass();
+    })
 }
 </script>
 
@@ -259,7 +378,24 @@ export default {
 
         li {
             list-style: none;
-            margin-left: 0 !important; /* overwrite default-settings from frontend-framework */
+            margin-left: 0 !important;
+            /* overwrite default-settings from frontend-framework */
+
+            &:has(.tag) {
+                .tag {
+                    gap: var(--default-gap-half);
+
+                    &.primary, &.secondary, &.tertiary {
+                        [class*="icon-"] {
+                            color: var(--color-white);
+                        }
+                    }
+                }
+
+                [class*="icon-"] {
+                    font-size: var(--icon-size-small);
+                }
+            }
         }
 
         &.align-center {
@@ -292,7 +428,8 @@ export default {
             flex: none;
             display: flex;
             flex-direction: column;
-            max-width: 100%; /* avoid li to be stretched by large content */
+            max-width: 100%;
+            /* avoid li to be stretched by large content */
         }
 
         &.align-right {

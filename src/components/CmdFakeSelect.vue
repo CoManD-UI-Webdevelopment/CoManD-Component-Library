@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdFakeSelect ---------------------------------------------------------------------------------------- -->
     <div
         :class="[
             validationStatus,
@@ -174,6 +175,7 @@
             </li>
         </ul>
     </div>
+    <!-- end CmdFakeSelect ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -525,7 +527,7 @@ export default {
 /* begin cmd-fake-select ------------------------------------------------------------------------------------------ */
 .cmd-fake-select {
     align-self: flex-end;
-    border-radius: var(--default-border-radius);
+    border-radius: var(--form-input-border-radius);
 
     > span:first-child {
         a {
@@ -551,16 +553,16 @@ export default {
         display: block;
         min-width: 0;
         box-shadow: none;
-        border-radius: var(--default-border-radius);
+        border-radius: var(--form-input-border-radius);
 
         > li {
             height: 100%;
-            border-radius: var(--default-border-radius);
+            border-radius: var(--form-input-border-radius);
 
             &:first-child {
                 > a {
                     height: inherit;
-                    border: var(--default-border);
+                    border: var(--form-input-border);
                     background: var(--color-scheme-background);
                     color: var(--color-scheme-text-color);
                     border-radius: var(--default-border-radius);
@@ -631,8 +633,10 @@ export default {
             display: flex;
             align-items: center;
             width: 100%;
-            padding: .7rem;
-            padding-top: .8rem;
+            padding: var(--form-input-padding);
+            padding-top: calc(var(--default-padding) - .06rem);
+            padding-right: calc(var(--default-padding) / 2);
+            padding-bottom: calc(var(--default-padding) - .06rem);
             outline: none;
             border-bottom: var(--default-border);
             text-decoration: none;

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdFlexibleScrollContainer ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-flexible-scroll-container flexible-scroll-container', {'reverse-order': fixedContainerAtBottom}]">
         <div class="fixed-wrapper">
             <!-- begin slot for fixed-wrapper -->
@@ -11,6 +12,7 @@
             <!-- end slot for scroll-wrapper -->
         </div>
     </div>
+    <!-- end CmdFlexibleScrollContainer ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

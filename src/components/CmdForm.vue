@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdForm ---------------------------------------------------------------------------------------- -->
     <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit"
           :class="{error: errorOccurred}" :novalidate="novalidate" :method="formMethod">
         <template v-if="useFieldset">
@@ -95,6 +96,7 @@
         <slot v-else></slot>
         <!-- end default-slot-content -->
     </form>
+    <!-- end CmdForm ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

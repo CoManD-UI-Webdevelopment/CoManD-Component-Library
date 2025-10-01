@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdMailTool ---------------------------------------------------------------------------------------- -->
     <CmdTabs class="cmd-mail-tool" v-bind="cmdTabs">
         <!-- begin tab "inbox" -->
         <template v-slot:tab-content-0>
@@ -24,6 +25,7 @@
         </template>
         <!-- end tab "outbox" -->
     </CmdTabs>
+    <!-- end CmdMailTool ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

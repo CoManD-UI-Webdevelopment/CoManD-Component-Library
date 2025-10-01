@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdPageFooter ---------------------------------------------------------------------------------------- -->
     <footer :class="['cmd-page-footer flex-container', {'small-buttons': useSmallButtons}]">
         <!-- begin CmdSocialNetworks -->
         <CmdSocialNetworks v-if="cmdSocialNetworks" v-bind="cmdSocialNetworks">
@@ -26,6 +27,7 @@
             <!-- end button print-preview -->
         </div>
     </footer>
+    <!-- end CmdPageFooter ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

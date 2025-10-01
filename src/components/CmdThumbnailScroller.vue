@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdThumbnailScroller ---------------------------------------------------------------------------------------- -->
     <div :class="[
         'cmd-thumbnail-scroller',
         {
@@ -25,8 +26,8 @@
             />
             <!-- end CmdSlideButton -->
 
-            <!-- begin list of images to slide -->
-            <transition-group name="slide" tag="ul">
+            <!-- begin list of images -->
+            <transition-group :name="transition" tag="ul">
                 <li v-for="(item, index) in items" :key="index">
                     <a v-if="!editModeContext" :href="executeOnClick === 'url' ? item.url : '#'"
                        @click="executeLink(index, $event)"
@@ -78,7 +79,7 @@
                     <!-- end show placeholder if no image exists (and component is not edited) -->
                 </li>
             </transition-group>
-            <!-- end list of images to slide -->
+            <!-- end list of images -->
 
             <!-- begin CmdSlideButton -->
             <CmdSlideButton
@@ -89,6 +90,7 @@
             <!-- end CmdSlideButton -->
         </div>
     </div>
+    <!-- end CmdThumbnailScroller ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -117,6 +119,15 @@ export default {
         }
     },
     props: {
+        /**
+         * define the transition when thumbnails should change
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+         transition: {
+            type: String,
+            default: "scroll"
+        },
         /**
          * orientation for scroller
          *

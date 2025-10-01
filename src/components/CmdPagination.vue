@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdPagination ---------------------------------------------------------------------------------------- -->
     <div class="cmd-pagination">
         <!-- begin button/link to previous page -->
         <a
@@ -42,6 +43,7 @@
         </a>
         <!-- end button/link to next page -->
     </div>
+    <!-- end CmdPagination ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

@@ -1,5 +1,6 @@
 <template>
-    <div class="grid-container-create-columns cmd-image-gallery">
+    <!-- begin CmdImageGallery ---------------------------------------------------------------------------------------- -->
+    <div class="cmd-image-gallery grid-container-create-columns">
         <!-- begin cmd-headline -->
         <CmdHeadline
             v-if="cmdHeadline?.headlineText || editModeContext"
@@ -47,6 +48,7 @@
         </button>
         <!-- end show placeholder if no image exists (and component is not edited) -->
     </div>
+    <!-- end CmdImageGallery ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

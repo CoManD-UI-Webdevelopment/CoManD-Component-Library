@@ -1,0 +1,74 @@
+{
+  "text": [
+    {
+      "descriptionTerm": {
+        "text": "Description Term #1"
+      },
+      "descriptionData": {
+        "text": "Description Data #1"
+      }
+    },
+    {
+      "descriptionTerm": {
+        "text": "Description Term #2"
+      },
+      "descriptionData": {
+        "text": "Description Data #2"
+      }
+    },
+    {
+      "descriptionTerm": {
+        "text": "Description Term #3"
+      },
+      "descriptionData": {
+        "text": "Description Data #3"
+      }
+    }
+  ],
+  "icons": [
+    {
+      "descriptionTerm": {
+        "cmdIcon": {
+          "show": true,
+          "iconClass": "icon-home",
+          "tooltip": "Href with anchor"
+        }
+      },
+      "descriptionData": {
+        "cmdLink": {
+          "linkType": "href",
+          "text": "Description data in link ",
+          "path": "#anchor-back-to-top"
+        }
+      }
+    },
+    {
+      "descriptionTerm": {
+        "cmdIcon": {
+          "show": true,
+          "iconClass": "icon-user-profile",
+          "tooltip": "Href with anchor"
+        }
+      },
+      "descriptionData": {
+        "text": "Data without link"
+      }
+    },
+    {
+      "descriptionTerm": {
+        "cmdIcon": {
+          "show": true,
+          "iconClass": "icon-phone",
+          "tooltip": "Href with anchor"
+        }
+      },
+      "descriptionData": {
+        "cmdLink": {
+          "linkType": "href",
+          "text": "Description data in link",
+          "path": "#anchor-back-to-top"
+        }
+      }
+    }
+  ]
+}

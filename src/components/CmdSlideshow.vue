@@ -12,7 +12,7 @@
             <!-- end CmdSlideButton -->
 
             <!-- begin area to slide -->
-            <transition-group name="fade">
+            <transition-group :name="transition">
                 <template v-if="currentItem">
                     <template v-if="!useSlot">
                         <template v-if="!editModeContext">
@@ -103,6 +103,15 @@ export default {
         }
     },
     props: {
+         /**
+         * define the transition when images change
+         * 
+         * @allowedValues: "none", "fade", "scroll" 
+         */
+         transition: {
+            type: String,
+            default: "fade"
+        },
         /**
          * use slot for images
          */

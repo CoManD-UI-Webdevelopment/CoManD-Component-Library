@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdSection ---------------------------------------------------------------------------------------- -->
     <section :class="['cmd-section flex-container', {box: styleAsBox, 'vertical': orientation === 'vertical'}]">
         <!-- begin CmdHeadline -->
         <CmdHeadline
@@ -15,6 +16,7 @@
         <slot v-else></slot>
         <!-- end slot -->
     </section>
+    <!-- end CmdSection ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

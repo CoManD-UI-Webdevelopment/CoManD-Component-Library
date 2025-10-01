@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdBoxWrapper ---------------------------------------------------------------------------------------- -->
     <div class="cmd-box-wrapper">
         <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation" class="flex-container headline-wrapper">
             <!-- begin CmdHeadline -->
@@ -31,6 +32,7 @@
             </slot>
         </div>
     </div>
+    <!-- end CmdBoxWrapper ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -312,6 +314,10 @@ export default {
             flex-direction: row;
             padding: var(--default-padding);
             align-items: center;
+
+            img {
+                margin-bottom: 0;
+            }
 
             .box-footer {
                 margin-top: 0;

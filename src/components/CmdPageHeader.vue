@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdPageHeader ---------------------------------------------------------------------------------------- -->
     <header v-if="cmdBreadcrumbs || cmdHeadline || $slots.default" class="cmd-page-header flex-container">
         <div v-if="cmdBreadcrumbs || cmdHeadline" class="headline-wrapper flex-container vertical">
             <!-- begin CmdBreadcrumbs -->
@@ -14,6 +15,7 @@
         <slot v-if="$slots.default"></slot>
         <!-- end slot -->
     </header>
+    <!-- end CmdPageHeader ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

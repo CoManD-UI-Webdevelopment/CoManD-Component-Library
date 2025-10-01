@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdImageZoom ---------------------------------------------------------------------------------------- -->
     <div class="cmd-image-zoom flex-container">
         <!-- begin small image -->
         <a href="#" class="flex-none thumbnail-imagezoom" :title="imageSmall.image.tooltip">
@@ -22,6 +23,7 @@
 
         <!-- end large image -->
     </div>
+    <!-- end CmdImageZoom ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

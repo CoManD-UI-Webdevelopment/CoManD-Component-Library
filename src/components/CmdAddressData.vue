@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdAddressData ---------------------------------------------------------------------------------------- -->
     <div class="cmd-address-data vcard">
         <!-- begin slot -->
         <template v-if="useSlot">
@@ -169,6 +170,7 @@
             <!-- end address-data in vCard microformat -->
         </template>
     </div>
+    <!-- end CmdAddressData ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

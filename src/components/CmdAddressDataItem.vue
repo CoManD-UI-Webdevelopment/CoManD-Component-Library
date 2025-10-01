@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdAddressDataItem ---------------------------------------------------------------------------------------- -->
     <dt :class="['cmd-address-data-item', {'address': addressEntry.name === 'address'}]" :id="addressEntry.id">
         <!-- begin CmdIcon -->
         <CmdIcon
@@ -165,7 +166,7 @@
         <!-- end unlinked address -->
     </dd>
     <!-- end data for address -->
-
+    <!-- end CmdAddressDataItem ---------------------------------------------------------------------------------------- -->
 </template>
 <!-- end data (except for address) -->
 <script>

@@ -1,4 +1,5 @@
 <template>
+    <!-- begin CmdLinkOfLinksItem ---------------------------------------------------------------------------------------- -->
     <!-- begin default-view -->
     <li v-if="!editing" class="cmd-list-of-links-item">
             <!-- begin CmdLink -->
@@ -44,6 +45,7 @@
         </div>
     </template>
     <!-- end edit-mode -->
+    <!-- end CmdLinkOfLinksItem ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

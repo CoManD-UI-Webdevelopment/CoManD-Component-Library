@@ -2,8 +2,9 @@
   {
     "name": "Product name 1",
     "image": {
-      "src": "media/images/demo-images/medium/landscape-01.jpg",
-      "alt": "Alternative text"
+      "src": "/media/images/demo-images/medium/landscape-01.jpg",
+      "alt": "Alternative text",
+      "figcaption": "Product name 1"
     },
     "articleNumber": "AB12345",
     "price": 123.45,
@@ -14,8 +15,9 @@
   {
     "name": "Product name 2",
     "image": {
-      "src": "media/images/demo-images/medium/landscape-02.jpg",
-      "alt": "Alternative text"
+      "src": "/media/images/demo-images/medium/landscape-02.jpg",
+      "alt": "Alternative text",
+      "figcaption": "Product name 2"
     },
     "articleNumber": "AB12346",
     "price": 123.46,
@@ -26,8 +28,9 @@
   {
     "name": "Product name 3",
     "image": {
-      "src": "media/images/demo-images/medium/landscape-03.jpg",
-      "alt": "Alternative text"
+      "src": "/media/images/demo-images/medium/landscape-03.jpg",
+      "alt": "Alternative text",
+      "figcaption": "Product name 3"
     },
     "articleNumber": "AB12347",
     "price": 123.47,
@@ -38,8 +41,9 @@
   {
     "name": "Product name 4",
     "image": {
-      "src": "media/images/demo-images/medium/landscape-04.jpg",
-      "alt": "Alternative text"
+      "src": "/media/images/demo-images/medium/landscape-04.jpg",
+      "alt": "Alternative text",
+      "figcaption": "Product name 4"
     },
     "articleNumber": "AB12348",
     "price": 123.48,
@@ -50,8 +54,9 @@
   {
     "name": "Product name 5",
     "image": {
-      "src": "media/images/demo-images/medium/landscape-05.jpg",
-      "alt": "Alternative text"
+      "src": "/media/images/demo-images/medium/landscape-05.jpg",
+      "alt": "Alternative text",
+      "figcaption": "Product name 5"
     },
     "articleNumber": "AB12349",
     "price": 123.49,

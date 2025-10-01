@@ -1,5 +1,5 @@
 <template>
-    <!-- begin login-form -->
+    <!-- begin CmdLoginForm ---------------------------------------------------------------------------------------- -->
     <fieldset v-show="!sendLogin" class="cmd-login-form flex-container">
         <legend :class="{hidden : !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left'}">
             {{ legendLoginForm.text }}
@@ -215,7 +215,7 @@
             <!-- end link-type 'button' -->
         </div>
     </fieldset>
-    <!-- end send-login-form -->
+    <!-- end CmdLoginForm ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>

@@ -1,10 +1,11 @@
 <template>
+    <!-- begin CmdHeadline ---------------------------------------------------------------------------------------- -->
     <!-- begin default-view -->
     <div v-if="!editModeContext || settingsContext || mainSidebarContext || headlineText"
          :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
         <!-- begin headline with pre-headline-text -->
         <template v-if="preHeadlineText">
-            <component v-if="headlineText" :is="headlineTag">
+            <component v-if="headlineText" :is="headlineTag" :class="highlightLevel">
                 <!-- begin CmdIcon -->
                 <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                 <!-- end CmdIcon -->
@@ -115,6 +116,7 @@
         </template>
     </EditComponentWrapper>
     <!-- end edit-mode -->
+    <!-- end CmdHeadline ---------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -144,6 +146,21 @@ export default {
         headlineLevel: {
             type: [String, Number],
             default: "2"
+        },
+        /**
+         * set highlight-level for headline
+         * 
+         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         */
+         highlightLevel: {
+            type: Boolean,
+            default: "none",
+            validator(value) {
+                return value === "none" ||
+                    value === "primary" ||
+                    value === "secondary" ||
+                    value === "tertiary"
+            }
         },
         /**
          * small pre-headline-text above main-headline
@@ -314,6 +331,11 @@ export default {
         }
 
         &.has-icon {
+            h1, h2, h3, h4, h5, h6 {
+                display: flex;
+                align-items: center;
+            }
+
             &.text-center {
                 justify-content: center;
 
