@@ -68,7 +68,7 @@
                 <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>     
                 <!-- begin cancel-button (below fieldset) -->
                 <button 
-                    v-if="cancelButtonOptions !== undefined"
+                    v-if="cancelButtonOptions.show"
                     :class="['button', {'stretch-on-small-devices': cancelButtonOptions.stretchOnSmallDevices, disabled: cancelButtonOptions.disabled, cancel: cancelButtonOptions.useDefaultStyling}]" 
                     type="button"
                     @click="cancelFormSubmit"
@@ -79,7 +79,8 @@
                 <!-- end cancel-button (below fieldset) -->
 
                 <!-- begin submit-button (below fieldset) -->
-                <button :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
+                <button v-if="submitButtonOptions.show"
+                        :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type || 'submit'">
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
@@ -220,6 +221,7 @@ export default {
         },
         cancelButtonOptions() {
             return {
+                show: true,
                 iconClass: "icon-cancel-circle",
                 text: "Cancel",
                 useDefaultStyling: false,
@@ -230,6 +232,7 @@ export default {
         },
         submitButtonOptions() {
             return {
+                show: true,
                 iconClass: "icon-check-circle",
                 text: "Submit",
                 type: "submit",

@@ -284,7 +284,18 @@ export default {
             }
         },
         /**
+         * allow tags to be remove by click 
+         * 
+         * (listContentType-property must be set to "tags")
+         */
+        removeTagByClick: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * define remove-icon/link for tags
+         * 
+         * (listContentType-property must be set to "tags" and removeTabByClick-property must be set to true)
          */
         iconRemoveTag: {
             type: Object,

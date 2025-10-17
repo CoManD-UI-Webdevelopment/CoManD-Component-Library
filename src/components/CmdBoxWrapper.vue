@@ -300,8 +300,6 @@ export default {
     }
 
     .row-view {
-        flex-direction: column;
-
         p.cutoff-text {
             height: auto;
 
@@ -332,8 +330,6 @@ export default {
             grid-template-columns: repeat(1, minmax(0, 1fr));
         }
     }
-
-
 }
 </style>
 

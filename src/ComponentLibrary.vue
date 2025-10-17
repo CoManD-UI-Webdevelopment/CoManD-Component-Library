@@ -20,7 +20,8 @@
                                     <span>Select template</span>
                                     <select id="select-template" v-model="selectedTemplate">
                                         <option value="blank">Blank/Unstyled</option>
-                                        <option value="dating">Material-Web</option>
+                                        <option value="material-web">Material-Web</option>
+                                        <option value="tailwind">Tailwind</option>
                                     </select>
                                 </label>
                                 <div>
@@ -2235,7 +2236,7 @@ export default {
             }
 
             // change logo
-            if (this.selectedTemplate === "dating") {
+            if (this.selectedTemplate === "material-web") {
                 this.companyLogoData =
                 {
                     "link": {
@@ -2243,8 +2244,6 @@ export default {
                         "path": "./",
                         "tooltip": "Tooltip"
                     },
-                    "pathDefaultLogo": "/media/images/logos/logo-dating.svg",
-                    "pathDarkmodeLogo": "/media/images/logos/logo-dating-darkmode.svg",
                     "altText": "Company Logo"
                 }
 

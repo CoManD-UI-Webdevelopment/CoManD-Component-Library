@@ -7,20 +7,6 @@
             :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             :aria-labelledby="htmlId"
         >
-            <!-- begin close-icon -->
-            <a
-                v-if="iconClose.show && iconClose.iconClass"
-                href="#"
-                class="close-button"
-                @click.prevent="hideSystemMessage"
-                :title="iconClose.tooltip"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
-                <!-- end CmdIcon -->
-            </a>
-            <!-- end close-icon -->
-
             <!-- begin slot-content -->
             <slot>
                 <!-- begin CmdHeadline -->
@@ -34,6 +20,20 @@
                 <!-- end CmdHeadline -->
             </slot>
             <!-- end slot-content -->
+
+            <!-- begin close-icon -->
+            <a
+                v-if="iconClose.show && iconClose.iconClass"
+                href="#"
+                class="close-button"
+                @click.prevent="hideSystemMessage"
+                :title="iconClose.tooltip"
+            >
+                <!-- begin CmdIcon -->
+                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
+                <!-- end CmdIcon -->
+            </a>
+            <!-- end close-icon -->
         </div>
     </transition>
     <!-- end CmdSystemMessage ---------------------------------------------------------------------------------------- -->

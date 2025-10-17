@@ -159,7 +159,7 @@
        href="#"
        @click.prevent="clickOnProduct(product)">
         <div class="box-header flex-container vertical">
-            <CmdImage v-if="product.image?.src" v-bind="product.image" />
+            <CmdImage v-if="product.image?.src" v-bind="{image:{...product.image}}" />
 
             <!-- begin ribbons -->
             <div v-if="product.new" class="ribbon-new">
@@ -208,16 +208,23 @@
                 </figcaption>
             </figure>
             <!-- end no user-image -->
-
+            
             <!-- begin no user-image -->
-            <div v-else class="no-user-image">
-                <CmdIcon
-                  :iconClass="iconUserProfile.iconClass"
-                  :type="iconUserProfile.iconType"
-                  :title="user.name" 
-                />
-                <p v-if="!rowView" class="user-name">{{ user.name }}</p>
-            </div>
+            <template v-else>
+                <div class="no-user-image">
+                    <CmdIcon
+                    :iconClass="iconUserProfile.iconClass"
+                    :type="iconUserProfile.iconType"
+                    :title="user.name" 
+                    />
+                </div>
+                <p v-if="!rowView" class="user-name">
+                    {{ user.name }}
+                    <span v-if="user.age" class="user-age"> 
+                        ({{ user.age }})
+                    </span>
+                </p>
+            </template>
             <!-- end no user-image -->
         </div>
         <!-- end box-header -->
@@ -241,7 +248,7 @@
 
         <!-- begin box-footer -->
         <div v-if="user.links && user.links.length" class="box-footer">
-            <CmdList :links="user.links" orientation="horizontal" :useGap="false"/>
+            <CmdList :items="user.links" orientation="horizontal" :useGap="false"/>
         </div>
         <!-- end box-footer -->
     </div>
@@ -390,7 +397,7 @@ export default {
          *
          * @required: only available for boxtype===user
          *
-         * @allowedValues: 'business', 'influencer', 'dating'
+         * @allowedValues: 'business', 'influencer', 'material-web'
          */
         profileType: {
             type: String,
@@ -398,7 +405,7 @@ export default {
             validator(value) {
                 return value === "business" ||
                     value === "influencer" ||
-                    value === "dating"
+                    value === "material-web"
             }
         },
         /**
@@ -433,6 +440,10 @@ export default {
         /**
          * icon for user-profile if no user-image exists
          *
+         * {
+         *      iconClass: string,
+         *      iconType: string
+         * }
          * @requiredForAccessibility: partial
          */
          iconUserProfile: {
@@ -600,6 +611,8 @@ export default {
     }
 
     .box-header {
+        overflow: hidden; /* hide edges of optional badges */
+        
         .cmd-headline {
             margin-bottom: 0;
             text-decoration: none;
@@ -624,6 +637,7 @@ export default {
             justify-content: space-between;
             background: var(--box-header-background);
             border-radius: var(--box-border-radius);
+            border-bottom: 0;
 
             &:hover, &:active, &:focus {
                 background: var(--color-white);
@@ -632,6 +646,10 @@ export default {
                     color: var(--hyperlink-color);
                 }
             }
+        }
+
+        .box-body {
+            border-top: var(--box-border);
         }
     }
 
@@ -693,7 +711,6 @@ export default {
         .box-body {
             display: flex;
             flex-grow: 1;
-            border-top: var(--box-border);
 
             .box-body-padding {
                 padding: var(--box-body-padding);
@@ -855,12 +872,6 @@ export default {
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
             }
-
-            figcaption {
-                font-size: 2rem;
-                font-weight: bold;
-                padding: var(--default-padding);
-            }
         }
 
         .box-body {
@@ -888,13 +899,22 @@ export default {
         &:hover, &:active, &:focus {
             border-color: var(--hyperlink-color-highlighted);
         }
+
+        
+        &.row-view {
+            flex-direction: row;
+            align-items: center;
+        }
     }
 
     /* boxType === 'user' */
     &.user {
+        --box-header-padding: var(--default-padding);
+
         .user-name {
             color: var(--color-scheme-text-color);
             font-size: 2rem;
+            font-weight: bold;
         }
 
         .user-age {
@@ -906,13 +926,10 @@ export default {
             --box-header-text-color: var(--primary-color);
             
             background: none;
+            gap: calc(var(--default-gap) / 2);
 
             > div:first-child > [class*="icon-"] {
                 aspect-ratio: 1/1;
-            }
-
-            &:has(img) {
-                --box-header-padding: var(--default-padding);
             }
 
             img {
@@ -937,15 +954,19 @@ export default {
                 color: var(--color-white);
                 justify-content: center;
                 align-items: center;
-                margin: 0;
                 font-size: var(--default-icon-size);
+            }
+
+            .no-user-image {
+                background: var(--default-background);
             }
         }
 
         .box-body {
             flex-grow: 1;
             padding: var(--default-padding);
-            padding-top: 0;
+
+            border-bottom: 0;
 
             p {
                 text-align: center;
@@ -966,7 +987,7 @@ export default {
             padding: 0;
             border-top: var(--box-border);
 
-            .cmd-list-of-links {
+            .cmd-list {
                 ul {
                     width: 100%;
                     margin-bottom: 0;
@@ -1026,6 +1047,10 @@ export default {
         }
 
         &.row-view {
+            .box-header {
+                border: 0;
+            }
+
             .box-body {
                 padding: 0;
 

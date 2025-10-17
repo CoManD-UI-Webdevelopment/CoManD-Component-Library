@@ -98,7 +98,7 @@ export default {
          */
         icon: {
             type: Object,
-            default: {}
+            default: null
         },
         /**
          * displayed text

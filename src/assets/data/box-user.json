@@ -63,6 +63,7 @@
     "description": "User with a long text as description that wraps over multiple lines",
     "links":  [
       {
+        "linkType": "href",
         "path": "mailto:",
         "icon": {
           "iconClass": "icon-mail",
@@ -70,6 +71,7 @@
         }
       },
       {
+        "linkType": "href",
         "path": "https://www.comand-ui.com",
         "target": "comand",
         "icon": {
@@ -78,6 +80,7 @@
         }
       },
       {
+        "linkType": "href",
         "path": "tel:",
         "icon": {
           "iconClass": "icon-phone",

@@ -93,7 +93,6 @@
                 <!-- end slot-content -->
             </div>
         </div>
-
         <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container flex-none">
             <!-- begin cancel-button -->
             <button
@@ -545,8 +544,9 @@ export default FancyBox
 
     > header {
         display: flex;
+        height: auto; /* overwrite possible overwrites by global header */
+        max-height: none; /* overwrite possible overwrites by global header */
     }
-
 
     > .grayscale {
         filter: grayscale(1);
