@@ -634,8 +634,7 @@ data() {
             }
         },
         cmdPaginationSettingsData: {
-            pages: 3,
-            itemsPerPage: 1,
+            numberOfPages: 3,
             showPageNumbers: true,
             linkType: "button"
         },

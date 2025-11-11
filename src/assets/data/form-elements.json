@@ -148,5 +148,34 @@
     "required": false,
     "disabled": false,
     "maxlength": 500
+  },
+  {
+    "component": "CmdInputGroup",
+    "labelText": "Input Group (Radio):",
+    "toggleSwitches": true,
+    "value": "website",
+    "inputElements": [
+      {
+        "labelText": "Website",
+        "id": "radio-id-1",
+        "name": "input-group-radio",
+        "iconClass": "icon-globe",
+        "value": "website"
+      },
+      {
+        "labelText": "E-Mail",
+        "id": "radio-id-2",
+        "name": "input-group-radio",
+        "iconClass": "icon-mail",
+        "value": "email"
+      },
+      {
+        "labelText": "Phone",
+        "id": "radio-id-3",
+        "name": "input-group-radio",
+        "iconClass": "icon-phone",
+        "value": "phone"
+      }
+    ]
   }
 ]

@@ -1,11 +1,11 @@
 <template>
     <!-- begin CmdMultistepFormProgressBar ---------------------------------------------------------------------------------------- -->
     <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap, 'full-width': fullWidth}]">
-        <li v-for="(step, index) in multisteps" :key="index">
+        <li v-for="(step, index) in multisteps" :key="index" :class="errorLinkClass(index)">
             <!-- begin CmdLink -->
             <CmdLink
                 :linkType="step.linkType"
-                :class="['stretch-on-small-devices', activeLinkClass(index)]"
+                :class="['stretch-on-small-devices', activeLinkClass(index), errorLinkClass(index)]"
                 :styleAsButton="styleAsButtons"
                 :highlightLevel="highlightLevel"
                 :path="step.path"
@@ -91,9 +91,18 @@ export default {
          * list of multisteps
          */
         multisteps: {
-            type: Array,
+            type: Array, 
             required: true
         },
+        /**
+         * provide a list of steps, that should be highlighted as "error"
+         * 
+         * @affectStyling: true
+         */
+         errorSteps: {
+            type: Array,
+            required: false
+         },
         /**
          * icon-class for separator shown between multisteps
          */
@@ -103,6 +112,11 @@ export default {
                 return "icon-chevron-one-stripe-right"
             }
         },
+        /**
+         * toggle if a gap between the steps should be displayes
+         * 
+         * @affectStyling: true
+         */
         useGap: {
             type: Boolean,
             default: true
@@ -113,11 +127,17 @@ export default {
             if(this.activeLink === index) {
                     return "active"
             }
-            return ""
+            return null
+        },
+        errorLinkClass(index) {
+            if(this.errorSteps?.includes(index + 1)) {
+                    return "error"
+            }
+            return null
         },
         clickedStep(event, index) {
             this.activeLink = index;
-            this.$emit("click", {event: event, index: index, stepPath: this.multisteps[index].path})
+            this.$emit("click", {originalEvent: event, index: index, stepPath: this.multisteps[index]?.path})
         },
         getRoute(step) {
             return getRoute(step)
@@ -152,7 +172,6 @@ export default {
         }
     }
 
-    
     .button {
         border-radius: 0;
     }
@@ -290,6 +309,19 @@ export default {
                     &:last-of-type {
                         display: none;
                     }
+                }
+            }
+        }
+
+        &.error {
+            .number {
+                border-color: var(--error-color);
+                color: var(--error-color);
+            }
+
+            .active {
+                .number {
+                    background: var(--error-color) !important;
                 }
             }
         }

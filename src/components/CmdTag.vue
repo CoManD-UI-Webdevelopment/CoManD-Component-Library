@@ -91,6 +91,10 @@ export default {
     align-self: start; /* if used in vertical flex-container */
     gap: var(--default-gap-half);
 
+    > span:only-child {
+        margin: 0 auto;
+    }
+
     .primary, .secondary, .tertiary {
         span[class*="icon-"] {
             color: var(--color-white);

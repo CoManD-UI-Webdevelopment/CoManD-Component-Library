@@ -2,46 +2,48 @@
     <!-- begin CmdPagination ---------------------------------------------------------------------------------------- -->
     <div class="cmd-pagination">
         <!-- begin button/link to previous page -->
-        <a
-            :href="getPreviousHref"
-            :class="['page-change', {'disabled': currentPage === 1, 'button': linkType === 'button'}]"
-            @click.prevent="previousPage"
-            :title="!prevLink.showText ? prevLink.text : null"
-        >
-            <!-- begin CmdIcon -->
-            <CmdIcon :iconClass="prevLink.iconClass" :type="prevLink.iconType"/>
-            <!-- end CmdIcon -->
-            <span v-if="prevLink.showText">{{ prevLink.text }}</span>
-        </a>
-        <!-- end button/link to previous page -->
+         <slot>
+            <a
+                :href="getPreviousHref"
+                :class="['page-change', {'disabled': currentPage === 1, 'button': linkType === 'button'}]"
+                @click.stop.prevent="previousPage"
+                :title="!prevLink.showText ? prevLink.text : null"
+            >
+                <!-- begin CmdIcon -->
+                <CmdIcon :iconClass="prevLink.iconClass" :type="prevLink.iconType"/>
+                <!-- end CmdIcon -->
+                <span v-if="prevLink.showText">{{ prevLink.text }}</span>
+            </a>
+            <!-- end button/link to previous page -->
 
-        <!-- begin buttons/link with page numbers -->
-        <div class="page-index">
-            <div class="flex-container">
-                <a :href="getHref(page)"
-                   :class="{'disabled': currentPage === index + 1, 'button': linkType === 'button', 'hidden': !showPageNumbers}"
-                   :title="currentPage !== index + 1 ? getMessage('pagination.tooltip.go_to_page', index + 1) : getMessage('pagination.tooltip.not_possible')"
-                   v-for="(page, index) in pages"
-                   :key="index"
-                   @click.stop.prevent="showPage(page)" aria-live="polite">
-                    <span>{{ index + 1 }}</span>
-                </a>
+            <!-- begin buttons/link with page numbers -->
+            <div class="page-index">
+                <div class="flex-container">
+                    <a :href="getHref(page)"
+                    :class="{'disabled': currentPage === index + 1, 'button': linkType === 'button', 'hidden': !showPageNumbers}"
+                    :title="currentPage !== index + 1 ? getMessage('pagination.tooltip.go_to_page', index + 1) : getMessage('pagination.tooltip.not_possible')"
+                    v-for="(page, index) in numberOfPages"
+                    :key="index"
+                    @click.stop.prevent="showPage($event, page)" aria-live="polite">
+                        <span>{{ index + 1 }}</span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <!-- end buttons/link with page numbers -->
+            <!-- end buttons/link with page numbers -->
 
-        <!-- begin button/link to next page -->
-        <a :href="getNextHref"
-           :class="['page-change', {'disabled': currentPage === numberOfPages, 'button': linkType === 'button'}]"
-           @click.prevent="nextPage"
-           :title="!nextLink.showText ? nextLink.text : null"
-        >
-            <span v-if="nextLink.showText">{{ nextLink.text }}</span>
-            <!-- begin CmdIcon -->
-            <CmdIcon :iconClass="nextLink.iconClass" :type="nextLink.iconType"/>
-            <!-- end CmdIcon -->
-        </a>
-        <!-- end button/link to next page -->
+            <!-- begin button/link to next page -->
+            <a :href="getNextHref"
+                :class="['page-change', {'disabled': currentPage === numberOfPages, 'button': linkType === 'button'}]"
+                @click.stop.prevent="nextPage"
+                :title="!nextLink.showText ? nextLink.text : null"
+            >
+                <span v-if="nextLink.showText">{{ nextLink.text }}</span>
+                <!-- begin CmdIcon -->
+                <CmdIcon :iconClass="nextLink.iconClass" :type="nextLink.iconType"/>
+                <!-- end CmdIcon -->
+            </a>
+            <!-- end button/link to next page -->
+        </slot>
     </div>
     <!-- end CmdPagination ---------------------------------------------------------------------------------------- -->
 </template>
@@ -57,7 +59,7 @@ export default {
         I18n,
         DefaultMessageProperties
     ],
-    emits: ['click'],
+    emits: ["click"],
     data() {
         return {
             currentPage: 1
@@ -65,16 +67,16 @@ export default {
     },
     props: {
         /**
-         * number of pages displayed
+         * set the active page/step
          */
-        pages: {
+        activePage: {
             type: Number,
-            required: true
+            default: 1
         },
         /**
-         * number of items shown per page
+         * number of pages displayed
          */
-        itemsPerPage: {
+        numberOfPages: {
             type: Number,
             required: true
         },
@@ -130,9 +132,6 @@ export default {
         }
     },
     computed: {
-        numberOfPages() {
-            return Math.ceil(this.pages / this.itemsPerPage)
-        },
         getPreviousHref() {
             if (this.currentPage === 1) {
                 return null
@@ -153,20 +152,28 @@ export default {
             }
             return "#"
         },
-        showPage(page) {
+        showPage(event, page) {
             this.currentPage = page
-            this.$emit("click", page)
+            this.$emit("click", {orignalEvent: event, page: page})
         },
-        nextPage() {
+        nextPage(event) {
             if (this.currentPage < this.numberOfPages) {
-                this.showPage(this.currentPage + 1)
+                this.showPage(event, this.currentPage + 1)
             }
-
         },
-        previousPage() {
+        previousPage(event) {
             if (this.currentPage > 1) {
-                this.showPage(this.currentPage - 1)
+                this.showPage(event, this.currentPage - 1)
             }
+        }
+    },
+    watch: {
+        activePage: {
+            handler() {
+            
+            this.currentPage = this.activePage
+        },
+            immediate: true
         }
     }
 }

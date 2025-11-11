@@ -48,7 +48,6 @@
                 <!-- begin close-icon -->
                 <a v-if="fancyBoxOptionsProperties.closeIcon?.show"
                    href="#"
-                   class="button"
                    id="close-dialog"
                    :title="fancyBoxOptionsProperties.closeIcon?.tooltip"
                    ref="close-dialog"
@@ -677,6 +676,13 @@ export default FancyBox
 @import "../assets/styles/variables";
 
 .cmd-fancybox {
+    > header {
+        flex-direction: row; /* avoid overwriting by global header styles */
+        align-items: center;
+    }
+}
+
+.cmd-fancybox {
     @media only screen and (max-width: $medium-max-width) {
         .outer-content-wrapper {
             .content {
@@ -690,8 +696,6 @@ export default FancyBox
         }
 
         > header {
-            flex-direction: row;
-
             .button:not(#close-dialog) {
                 display: none;
             }

@@ -508,12 +508,6 @@
                         <CmdInputGroup ref="CmdInputGroup" v-bind="cmdInputGroupSettingsData"
                             labelText="Grouplabel for radio-group given by property:"
                             :inputElements="idForReplacedInputsInInputGroup('radio-group')" v-model="inputGroup">
-                            <CmdFormElement element="input" labelText="Label for radiobutton" type="radio"
-                                id="input-group-radiobutton" name="radiogroup2" inputValue="radiobuttonValue1"
-                                v-model="inputGroup" :status="validationStatus" :disabled="disabledStatus" />
-                            <CmdFormElement element="input" labelText="Label for radiobutton" type="radio"
-                                id="input-group-radiobutton" name="radiogroup2" inputValue="radiobuttonValue2"
-                                v-model="inputGroup" :status="validationStatus" :disabled="disabledStatus" />
                         </CmdInputGroup>
                         <dl>
                             <dt>Selected value:</dt>
@@ -1265,6 +1259,107 @@
                 <!-- end router-view -->
             </CmdWidthLimitationWrapper>
             <!-- end main-navigation --------------------------------------------------------------------------------------------------->
+
+            <!-- begin multistep-form-wrapper --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-multistep-form-wrapper">
+                    <span>Multistepform-Wrapper</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')">
+                    </a>
+                </h2>
+                <h3>Data provided by property</h3>
+                <CmdMultistepFormWrapper>
+                    <template v-slot:page-1="props">
+                        Content Page 1<br />
+                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a><br />
+                        <a href="#" @click.prevent="props.removeErrorOnPage">Remove Error</a>
+                    </template>
+                    <template v-slot:page-2="props">
+                        Content Page 2<br />
+                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                    </template>
+                    <template v-slot:page-3>
+                        Content Page 3
+                    </template>
+                    <template v-slot:page-4>
+                        Content Page 4
+                    </template>
+                    <template v-slot:page-5>
+                        Content Page 5
+                    </template>
+                </CmdMultistepFormWrapper>
+                <h3>Data provided by slot</h3>
+                <CmdMultistepFormWrapper>
+                    <template v-slot:progress-bar="props">
+                        <ul class="flex-container">
+                            <li v-for="index of props.numberOfPages" :key="index">
+                                <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">{{ index }}</a>
+                            </li>
+                        </ul>
+                    </template>
+                    <template v-slot:page-1="props">
+                        Content Page 1
+                        <span v-if="props.hasError">Error</span>
+                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                    </template>
+                    <template v-slot:page-2="props">
+                        Content Page 2
+                        <span v-if="props.hasError">Error</span>
+                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                    </template>
+                    <template v-slot:page-3="props">
+                        Content Page 3
+                        <span v-if="props.hasError">Error</span>
+                    </template>
+                    <template v-slot:page-4="props">
+                        Content Page 4
+                        <span v-if="props.hasError">Error</span>
+                    </template>
+                    <template v-slot:page-5="props">
+                        Content Page 5
+                        <span v-if="props.hasError">Error</span>
+                    </template>
+                    <template v-slot:pagination="props">
+                        <div class="button-wrapper reverse justify-content-space-between">
+                            <CmdLink
+                                linkType="button" 
+                                highlightLevel="none"    
+                                :icon='{
+                                    iconClass: "icon-chevron-one-stripe-right",
+                                    tooltip: "To next page",
+                                    position: "right"
+                                }'
+                                text="Next"
+                                :disabled="props.disabledNextLink"
+                                @click="props.setNextPage"
+                            />
+                            <CmdLink 
+                                linkType="button"
+                                class="cancel"
+                                highlightLevel="none"
+                                :icon='{
+                                    iconClass: "icon-cancel-circle",
+                                }'
+                                text="Cancel"
+                            />
+                            <CmdLink 
+                                linkType="button"
+                                highlightLevel="none"
+                                :icon='{
+                                    iconClass: "icon-chevron-one-stripe-left",
+                                    tooltip: "To previous page"
+                                }'
+                                text="Back"
+                                @click="props.setPrevPage"
+                                :disabled="props.disabledPrevLink"
+                            />
+                            props.disabledPrevLink: {{ props.disabledPrevLink }}
+                        </div>
+                    </template>
+                </CmdMultistepFormWrapper>
+            </CmdWidthLimitationWrapper>
+            <!-- end multistep-form-wrapper --------------------------------------------------------------------------------------------------->
 
             <!-- begin multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -2117,7 +2212,8 @@ export default {
                         show: true,
                         headlineText: "Fancybox with text", headlineLevel: 3
                     },
-                    ariaLabelText: ariaLabelText
+                    ariaLabelText: ariaLabelText,
+                    showPrintButtons: true
                 })
             } else if (type === "url") {
                 openFancyBox({

@@ -23,6 +23,7 @@
   "LoginForm",
   "MailTool",
   "MainNavigation",
+  "MultistepFormWrapper",
   "MultistepFormProgressBar",
   "NewsletterSubscription",
   "OpeningHours",

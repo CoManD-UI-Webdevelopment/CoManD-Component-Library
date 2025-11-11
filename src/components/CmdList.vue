@@ -73,7 +73,7 @@
                             <CmdTag 
                                 :tagText="tag"
                                 :highlightLevel="highlightLevel" 
-                                :removeTagByClick="true" 
+                                :removeTagByClick="removeTagByClick" 
                                 @click.prevent="removeTag(event, index)" 
                             />
                             <!-- end CmdTag -->
@@ -384,7 +384,7 @@ export default {
 .cmd-list {
     > ul {
         flex-direction: column;
-        gap: calc(var(--default-gap) / 2);
+        gap: var(--default-gap-half);
         margin: 0;
 
         li {
@@ -432,15 +432,11 @@ export default {
     }
 
     .horizontal {
-        gap: var(--default-gap);
-        flex-direction: row;
-
         > li {
             flex: none;
             display: flex;
             flex-direction: column;
-            max-width: 100%;
-            /* avoid li to be stretched by large content */
+            max-width: 100%; /* avoid li to be stretched by large content */
         }
 
         &.align-right {

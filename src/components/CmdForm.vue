@@ -13,29 +13,36 @@
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
 
-                <!-- begin loop for formElements -->
-                <CmdFormElement
-                    v-else
-                    v-for="(item, index) in formElements"
-                    :key="index"
-                    :element="item.element || 'input'"
-                    :type="item.type || 'text'"
-                    :name="item.name"
-                    :class="item.htmlClass"
-                    :id="item.id || createHtmlId()"
-                    v-model="formValues[item.name]"
-                    :inputValue="item.inputValue"
-                    :fieldIconClass="item.innerIconClass"
-                    :selectOptions="item.selectOptions"
-                    :labelText="item.labelText"
-                    :placeholder="item.placeholder"
-                    :required="item.required"
-                    :disabled="item.disabled"
-                    :autocomplete="item.autocomplete"
-                    :minlength="item.minlength"
-                    :maxlength="item.maxlength"
-                    :nativeButton="item.nativeButton"
-                />
+                <template v-else v-for="(item, index) in formElements" :key="index">
+                    <!-- begin loop for formElements -->
+                    <CmdFormElement
+                        v-if="!item.component || item.component === 'CmdFormElement'"
+                        :key="index"
+                        :element="item.element || 'input'"
+                        :type="item.type || 'text'"
+                        :name="item.name"
+                        :class="item.htmlClass"
+                        :id="item.id || createHtmlId()"
+                        v-model="formValues[item.name]"
+                        :inputValue="item.inputValue"
+                        :fieldIconClass="item.innerIconClass"
+                        :selectOptions="item.selectOptions"
+                        :labelText="item.labelText"
+                        :placeholder="item.placeholder"
+                        :required="item.required"
+                        :disabled="item.disabled"
+                        :autocomplete="item.autocomplete"
+                        :minlength="item.minlength"
+                        :maxlength="item.maxlength"
+                        :nativeButton="item.nativeButton"
+                    />
+                    <CmdInputGroup
+                        v-else-if="item.component === 'CmdInputGroup'"
+                        v-model="formValues[item.name]"
+                        :labelText="item.labelText" 
+                        :inputElements="item.inputElements"
+                    />
+                </template>
                 <!-- end loop for formElements -->
 
                 <div v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container no-wrap-on-small-devices">
