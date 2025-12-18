@@ -6,7 +6,7 @@
         <!-- end CmdHeadline-->
         
         <!-- begin CmdSystemMessage -->
-        <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning">
+        <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning" textAlign="center" :iconClose="{show: false}">
             <p>
                 {{getMessage("google_maps.system_message.accept_terms")}}
             </p>
@@ -120,6 +120,8 @@ export default {
         margin: 0;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        height: 100%;
+        justify-content: center;
     }
 }
 /* end cmd-google-maps ------------------------------------------------------------------------------------------ */

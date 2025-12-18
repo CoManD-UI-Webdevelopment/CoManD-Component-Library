@@ -65,12 +65,12 @@ export default {
             type: Object,
             default() {
                 return {
-                  iconClass: "icon-error-circle",
-                  tooltip: "Error",
-                  iconType: "auto"
+                    iconClass: "icon-error-circle",
+                    tooltip: "Error",
+                    iconType: "auto"
                 }
             }
-        } ,
+        },
         /**
          * icon to show that the validation-status of a field is 'warning'
          * icon will be displayed inside the field on the left (in front of the input)
@@ -179,7 +179,7 @@ export default {
 
             if (this.validationStatus !== "") {
                 if (this.validationStatus === "error") {
-                    if(this.validationMessage) {
+                    if (this.validationMessage) {
                         return this.validationMessage
                     }
                     return this.getMessage("field_validation.information_not_filled_correctly")
@@ -214,7 +214,7 @@ export default {
         inputRequirements() {
             const standardRequirements = []
             // check if field is required
-            if(this.$attrs.required || (Object.hasOwn(this, "required") && this.required)) {
+            if (this.$attrs.required || (Object.hasOwn(this, "required") && this.required)) {
                 const inputRequired = Object.hasOwn(this, "required") ? this.required : this.$attrs.required
                 standardRequirements.push({
                     message: this.getRequirementMessage(),
@@ -225,7 +225,7 @@ export default {
             }
 
             // check if field has a minimum length
-            if(this.$attrs.minlength) {
+            if (this.$attrs.minlength) {
                 standardRequirements.push({
                     message: this.getMessage("field_validation.input_has_minimum_length") + " (" + this.modelValue?.length + "/" + this.$attrs.minlength + ")",
                     valid(value, attributes) {
@@ -247,7 +247,7 @@ export default {
             if ((["password", "number", "url", "email"].includes(this.$attrs.type)) && event.getModifierState("CapsLock")) {
                 this.capsLockActivated = true
                 this.validationStatus = "warning"
-            } else if(this.capsLockActivated && this.validationStatus === "warning") {
+            } else if (this.capsLockActivated && this.validationStatus === "warning") {
                 this.capsLockActivated = false
                 this.validationStatus = ""
             }
@@ -269,12 +269,12 @@ export default {
 }
 
 function validateSpecialCharacters(message = "special character") {
-  return {
-      message,
-      valid(value) {
-          return !/^[a-z0-9\s]*$/i.test(value)
-      }
-  }
+    return {
+        message,
+        valid(value) {
+            return !/^[a-z0-9\s]*$/i.test(value)
+        }
+    }
 }
 
 function validateNumbers(message = "Field contains numbers") {

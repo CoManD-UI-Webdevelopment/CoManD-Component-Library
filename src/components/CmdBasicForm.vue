@@ -17,7 +17,7 @@
             ref="form"
             class="flex-container flex-direction-column"
         >
-            <div v-if="configuration.salutation" class="flex-container flex-none row-for-small order-male-female">
+            <div v-if="configuration.salutation" class="flex-container flex-items-flex-none row-for-small order-male-female">
                 <!-- begin cmd-form-element -->
                 <CmdFormElement
                     element="input"

@@ -1,0 +1,23 @@
+[
+    {
+        "element": "input",
+        "type": "text",
+        "name": "form-element-text-surname",
+        "htmlClass": "form-element-text-class",
+        "labelText": "Surname",
+        "placeholder": "Surname",
+        "required": true,
+        "disabled": false
+    },
+    {
+        "element": "input",
+        "type": "text",
+        "name": "form-element-text-first-name",
+        "htmlClass": "form-element-text-class",
+        "value": "Raphael",
+        "labelText": "First Name",
+        "placeholder": "First Name",
+        "required": true,
+        "disabled": false
+    }
+]

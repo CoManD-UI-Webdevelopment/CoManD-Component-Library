@@ -50,7 +50,7 @@ html {
     flex-direction: column;
     scroll-snap-type: y mandatory;
     overflow-y: auto;
-    min-height: 100dvh;
+    height: 100dvh;
     scroll-behavior: smooth;
     scroll-padding-top: 11.7rem;
 }
@@ -244,42 +244,44 @@ a img.flag {
         top: 0 !important; /* overwrite calculated inline-styles from javascript for cmd-tooltip-component */
     }
 
-    &.has-state, & + .cmd-tooltip {
-        .label-text {
-            > span, > a, sup {
-                color: var(--status-color);
+    &:has([required]) {
+        &.has-state, & + .cmd-tooltip {
+            .label-text {
+                > span, > a, sup {
+                    color: var(--status-color);
+                }
             }
-        }
-
-        &.error {
-            --status-color: var(--error-color);
-        }
-
-        &.warning {
-            --status-color: var(--warning-color);
-        }
-
-        &.success {
-            --status-color: var(--success-color);
-
-            .label-text > a {
-                &:has([class*="icon-"]) {
-                    &:hover, &:active, &:focus {
-                        cursor: default;
-
-                        [class*="icon-"] {
-                            color: var(--success-color);
+    
+            &.error {
+                --status-color: var(--error-color);
+            }
+    
+            &.warning {
+                --status-color: var(--warning-color);
+            }
+    
+            &.success {
+                --status-color: var(--success-color);
+    
+                .label-text > a {
+                    &:has([class*="icon-"]) {
+                        &:hover, &:active, &:focus {
+                            cursor: default;
+    
+                            [class*="icon-"] {
+                                color: var(--success-color);
+                            }
                         }
                     }
                 }
             }
-        }
-
-        &.info {
-            --status-color: var(--info-color);
-        }
+    
+            &.info {
+                --status-color: var(--info-color);
+            }
+        }    
     }
-
+   
     & + .cmd-tooltip {
         border-color: var(--status-color);
     }

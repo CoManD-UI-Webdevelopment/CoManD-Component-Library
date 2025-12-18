@@ -59,11 +59,20 @@ export default {
             default: true
         },
         /**
+        * activate if container itself should not be handled as a flex-item by its parent
+        *
+        * @affectsStyling: true
+        */
+        flexNone: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * activate if items should not behave like flex-items (they are now shrunk to their content)
          *
          * @affectsStyling: true
          */
-        flexNone: {
+        flexItemsFlexNone: {
             type: Boolean,
             default: false
         },
@@ -131,6 +140,9 @@ export default {
                     }
                     if (this.flexNone) {
                         htmlClasses.push("flex-none")
+                    }
+                    if (this.flexItemsFlexNone) {
+                        htmlClasses.push("flex-items-flex-none")
                     }
                     if (this.alignItems) {
                         htmlClasses.push("align-items-" + this.alignItems)

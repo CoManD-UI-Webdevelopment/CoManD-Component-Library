@@ -211,7 +211,7 @@ export default {
         }
 
         &:hover, &:active, &:focus {
-            border-color: var(--hyperlink-color-highlighted)M
+            border-color: var(--hyperlink-color-highlighted);
         }
     }
 }

@@ -432,6 +432,7 @@ export default {
     methods: {
         toggleAllOptions() {
             this.validationStatus = "success"
+            
             const checkboxValues = []
             if (this.modelValue.length === this.selectData.length) {
                 if (this.$attrs.required) {
@@ -444,7 +445,9 @@ export default {
             }
 
             this.$emit("update:modelValue", checkboxValues)
+            this.$emit('validation-status-change', this.validationStatus)
         },
+        // toggle options/dropdown
         toggleOptions() {
             if (this.$attrs.disabled !== 'disabled') {
                 this.showOptions = !this.showOptions
@@ -465,8 +468,11 @@ export default {
                 }
             }
 
+            // hide options after selection
             this.showOptions = false
+            
             this.$emit('update:modelValue', optionValue)
+            this.$emit('validation-status-change', this.validationStatus)
         },
         // check if a checkbox is changed for selectbox with checkboxes
         optionSelect(event) {
@@ -484,18 +490,23 @@ export default {
 
             this.$emit('update:modelValue', value)
         },
+        // hide options (in dropdown)
         closeOptions() {
             this.showOptions = false
         },
+        // set path for flag-icons (type-property must be 'country')
         pathFlag(isoCode) {
             return this.pathFlags + "/flag-" + isoCode + ".svg"
         },
+        // validate on blur
         onBlur() {
             this.validationStatus = "success"
 
             if (this.$attrs.required !== undefined && (!this.modelValue || this.modelValue.length === 0)) {
                 this.validationStatus = "error"
             }
+            
+            this.$emit('validation-status-change', this.validationStatus)
         },
         // overwrite requirement-message form fieldValidation.js
         getRequirementMessage() {

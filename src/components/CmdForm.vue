@@ -1,55 +1,96 @@
 <template>
     <!-- begin CmdForm ---------------------------------------------------------------------------------------- -->
-    <form class="cmd-form" :action="formAction" :data-use-validation="useValidation" @submit="onSubmit"
-          :class="{error: errorOccurred}" :novalidate="novalidate" :method="formMethod">
+    <form 
+        :class="['cmd-form', {error: errorOccurred}]" 
+        :action="formAction" 
+        :data-use-validation="useValidation" 
+        @submit="onSubmit"
+        :novalidate="novalidate" 
+        :method="formMethod"
+    >
         <template v-if="useFieldset">
-            <fieldset class="flex-container">
+            <fieldset class="flex-container flex-direction-column"><!-- do not remove .flex-direction-column to keep specificity -->
+                <!-- begin (mandatory) legend-->
                 <legend :class="{hidden : !legendOptions.show, 'align-left': legendOptions.align === 'left'}">{{
                         legendOptions.text
                     }}
                 </legend>
-                <CmdSystemMessage v-if="systemMessage.show && systemMessage.message" :validationStatus="systemMessage.validationStatus" :systemMessage="systemMessage.message"/>
+                <!-- end (mandatory) legend-->
+
+                <CmdHeadline 
+                    v-if="cmdHeadline?.headlineText"
+                    v-bind="cmdHeadline"
+                />
+  
+                <CmdSystemMessage 
+                    v-if="systemMessage.show && systemMessage.message" 
+                    :validationStatus="systemMessage.validationStatus" 
+                    :systemMessage="systemMessage.message"
+                />
+
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
 
+                <!-- begin loop for formElements -->
                 <template v-else v-for="(item, index) in formElements" :key="index">
-                    <!-- begin loop for formElements -->
                     <CmdFormElement
                         v-if="!item.component || item.component === 'CmdFormElement'"
                         :key="index"
-                        :element="item.element || 'input'"
-                        :type="item.type || 'text'"
-                        :name="item.name"
                         :class="item.htmlClass"
-                        :id="item.id || createHtmlId()"
+                        v-bind="item"
                         v-model="formValues[item.name]"
-                        :inputValue="item.inputValue"
-                        :fieldIconClass="item.innerIconClass"
-                        :selectOptions="item.selectOptions"
-                        :labelText="item.labelText"
-                        :placeholder="item.placeholder"
-                        :required="item.required"
-                        :disabled="item.disabled"
-                        :autocomplete="item.autocomplete"
-                        :minlength="item.minlength"
-                        :maxlength="item.maxlength"
-                        :nativeButton="item.nativeButton"
+                        @validation-status-change="formElementHasError($event, item.name)"
+                    />
+                    <CmdFakeSelect
+                        v-if="item.component === 'CmdFakeSelect'"
+                        :class="item.htmlClass"
+                        v-bind="item"
+                        v-model="formValues[item.name]"
                     />
                     <CmdInputGroup
                         v-else-if="item.component === 'CmdInputGroup'"
-                        v-model="formValues[item.name]"
-                        :labelText="item.labelText" 
-                        :inputElements="item.inputElements"
-                    />
+                        :class="item.htmlClass"
+                        v-bind="item"
+                        v-model="formValues[item.name]"                
+                    /> 
+                    <div 
+                        v-else-if="item.component === 'flexContainer' || item.component === 'inputWrapper'"
+                        :class="item.component === 'flexContainer' ? 'flex-container' : 'input-wrapper'"
+                    >
+                        <!-- begin inner loop for formElements inside flex-container/input-wrapper -->
+                        <template v-for="(item, index) in item.formElements" :key="index">
+                            <CmdFormElement
+                                v-if="!item.component || item.component === 'CmdFormElement'"
+                                :key="index"
+                                :class="item.htmlClass"
+                                v-bind="item"
+                                v-model="formValues[item.name]"
+                                @validation-status-change="formElementHasError($event, item.name)"
+                            />
+                            <CmdFakeSelect
+                                v-else-if="item.component === 'CmdFakeSelect'"
+                                :class="item.htmlClass"
+                                v-bind="item"
+                                v-model="formValues[item.name]"
+                            />
+                            <CmdInputGroup
+                                v-else-if="item.component === 'CmdInputGroup'"
+                                v-model="formValues[item.name]"
+                                v-bind="item"
+                            />
+                        </template>
+                        <!-- end inner loop for formElements inside flex-container/input-wrapper -->
+                    </div>
                 </template>
                 <!-- end loop for formElements -->
 
-                <div v-if="submitButtonOptions && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container no-wrap-on-small-devices">
+                <!-- begin submit- and cancel-button inside fieldset -->
+                <div v-if="submitButtonOptions.show && (submitButtonOptions.position === 'insideFieldset' || submitButtonOptions.position === null)" class="flex-container no-wrap-on-small-devices">
                     <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>
-                    <!-- begin cancel-button (below fieldset) -->
+                    <!-- begin cancel-button -->
                     <button 
-                        v-if="cancelButtonOptions !== undefined"
+                        v-if="cancelButtonOptions.show"
                         :class="['button', {'stretch-on-small-devices': cancelButtonOptions.stretchOnSmallDevices, disabled: cancelButtonOptions.disabled, cancel: cancelButtonOptions.useDefaultStyling}]" 
                         type="button"
                         @click="cancelFormSubmit"
@@ -57,23 +98,26 @@
                         <span v-if="cancelButtonOptions.iconClass" :class="cancelButtonOptions.iconClass"></span>
                         <span v-if="cancelButtonOptions.text">{{ cancelButtonOptions.text }}</span>
                     </button>
-                    <!-- end cancel-button (below fieldset) -->
+                    <!-- end cancel-button -->
                     
-                    <!-- begin submit-button (inside fieldset) -->
+                    <!-- begin submit-button -->
                     <button
                         :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type"
+                        @click.prevent="onSubmit"
                     >
                         <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                         <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
                     </button>
-                    <!-- end submit-button (inside fieldset) -->
+                    <!-- end submit-button -->
                 </div>
+                <!-- end submit- and cancel-button inside fieldset -->
             </fieldset>
 
-            <div v-if="submitButtonOptions && submitButtonOptions.position === 'belowFieldset'" class="flex-container no-wrap-on-small-devices">
+            <!-- begin submit- and cancel-button outside/below fieldset -->
+            <div v-if="submitButtonOptions.show && submitButtonOptions.position === 'belowFieldset'" class="flex-container no-wrap-on-small-devices">
                 <small v-if="mandatoryText" class="mandatory-text"><sup>*</sup>{{ mandatoryText }}</small>     
-                <!-- begin cancel-button (below fieldset) -->
+                <!-- begin cancel-button-->
                 <button 
                     v-if="cancelButtonOptions.show"
                     :class="['button', {'stretch-on-small-devices': cancelButtonOptions.stretchOnSmallDevices, disabled: cancelButtonOptions.disabled, cancel: cancelButtonOptions.useDefaultStyling}]" 
@@ -83,17 +127,18 @@
                     <span v-if="cancelButtonOptions.iconClass" :class="cancelButtonOptions.iconClass"></span>
                     <span v-if="cancelButtonOptions.text">{{ cancelButtonOptions.text }}</span>
                 </button>
-                <!-- end cancel-button (below fieldset) -->
+                <!-- end cancel-button -->
 
-                <!-- begin submit-button (below fieldset) -->
+                <!-- begin submit-button -->
                 <button v-if="submitButtonOptions.show"
                         :class="['button', {'stretch-on-small-devices': submitButtonOptions.stretchOnSmallDevices, primary: submitButtonOptions.primary, disabled: submitButtonOptions.disabled}]"
                         :type="submitButtonOptions.type || 'submit'">
                     <span v-if="submitButtonOptions.iconClass" :class="submitButtonOptions.iconClass"></span>
                     <span v-if="submitButtonOptions.text">{{ submitButtonOptions.text }}</span>
                 </button>
-                <!-- end submit-button (below fieldset) -->
+                <!-- end submit-button -->
             </div>
+            <!-- end submit- and cancel-button outside/below fieldset -->
 
             <!-- begin button-row-slot-content -->
             <slot name="button-row"></slot>
@@ -114,7 +159,7 @@ import CmdSystemMessage from "@/components/CmdSystemMessage.vue";
 export default {
     name: "CmdForm",
     components: {CmdSystemMessage},
-    emits: ["submit"],
+    emits: ["submit", "update:modelValue"],
     data() {
         return {
             errorOccurred: false,
@@ -124,10 +169,17 @@ export default {
                 show: false,
                 validationStatus: "",
                 message: ""
-            }
+            },
+            formElementsWithError: []
         }
     },
     props: {
+        /**
+         * model-value for entire form
+         */
+        modelValue: {
+            type: Object
+        },
         /**
          * set url for form-action
          */
@@ -209,18 +261,33 @@ export default {
             type: Object,
             required: false
         },
-                /**
+        /**
          * submit-button to submit all form-data
          */
          submitButton: {
             type: Object,
             required: false
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
         }
+    },
+    mounted() {
+        // get the names of all elements that match the phrase and push to data-property to initially collect all required field to set correct validationStatus for form
+        const requiredElementNames = this.formElements?.filter(element => element.required === true).map(element => element.name)
+        
+        requiredElementNames?.forEach((name) => {
+            this.formElementsWithError.push(name)
+        })
     },
     computed: {
         legendOptions() {
             return {
-                show: true,
+                show: false,
                 align: "left",
                 text: "Legend",
                 ...this.legend
@@ -251,6 +318,15 @@ export default {
         }
     },
     methods: {
+        formElementHasError(event, itemName) {
+            if (event === "error" && !this.formElementsWithError.some(entry => entry.name === itemName)) {
+                this.formElementsWithError.push(itemName)
+            } else if (event === "success" && this.formElementsWithError.includes(itemName)) {
+                this.formElementsWithError = this.formElementsWithError.filter((element) => element !== itemName)
+            }
+
+            this.$emit("validation-status-change", this.formElementsWithError.length ? "error" : "success")
+        },
         createHtmlId,
         showMessage(validationStatus, message) {
             this.systemMessage.show = true
@@ -283,16 +359,56 @@ export default {
                     event.preventDefault()
                     this.errorOccurred = true
                 }
-                } else {
-                    this.submitFormData(event)
-                }
+            } else {
+                this.submitFormData(event)
             }
+        }
     },
     watch: {
+        modelValue: {
+            handler() {
+               if(!this.modelValue) {
+                     return
+                }
+
+                // assign values in loop, because entire object cannot be assigned
+                for (const key in this.modelValue) {
+                    this.formValues[key] = this.modelValue[key]
+                }
+            },
+            immediate: true
+        },
+        formValues: {
+            handler() {
+                this.$emit("update:modelValue", this.formValues)
+            },
+            deep: true
+        },
+        /*
+        formValues: {
+            handler() {
+                if(!this.formElements) {
+                    return
+                }
+
+                const numberRequiredFormElements = this.formElements.filter((element) => {
+                    return element.required     
+                }).length
+
+                const numberEmptyRequiredFormElements = this.formElements.filter((element) => {
+                    return element.required && !this.formValues[element.name]    
+                }).length
+
+                const allRequiredFormElementsEmpty = numberRequiredFormElements > 0 && numberRequiredFormElements === numberEmptyRequiredFormElements
+                const emptyRequiredFormElementExists = numberRequiredFormElements > 0 && numberEmptyRequiredFormElements > 0
+
+                this.$emit("empty-required-form-elements", { allRequiredFormElementsEmpty, emptyRequiredFormElementExists })
+            },
+            immediate: true,
+            deep: true
+        },  */
         formElements: {
             handler() {
-                this.formValues = {}
-
                 this.formElements?.forEach(element => {
                     if (element.type === "checkbox") {
                         // create array if element is a checkbox (to contain several values)

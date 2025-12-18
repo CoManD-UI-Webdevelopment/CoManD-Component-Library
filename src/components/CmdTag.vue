@@ -95,7 +95,7 @@ export default {
         margin: 0 auto;
     }
 
-    .primary, .secondary, .tertiary {
+    &.primary, &.secondary, &.tertiary {
         span[class*="icon-"] {
             color: var(--color-white);
         }

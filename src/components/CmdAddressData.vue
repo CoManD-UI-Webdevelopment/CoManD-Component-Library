@@ -19,7 +19,7 @@
                 <!-- begin list with labels -->
                 <template v-if="showLabels && (showLabelTexts|| showLabelIcons) && !showIconsOnly">
                     <!-- begin default view -->
-                    <dl v-if="!editModeContext">
+                    <dl v-if="!editModeContext" :class="{'auto-columns': contentOrientation === 'horizontal'}">
                         <!-- begin cmd-address-data-item -->
                         <CmdAddressDataItem
                             v-for="(entry, index) in addressData"
@@ -192,6 +192,17 @@ export default {
             default: false
         },
         /**
+         * 
+         */
+         contentOrientation: {
+            type: String,
+            default: "vertical",
+            validator(value) {
+                return value === "vertical" ||
+                    value === "horizontal"
+            }
+         },
+        /**
          * show an icon (if exists) in front of label-text
          */
         showLabelIcons: {
@@ -313,6 +324,12 @@ export default {
 .cmd-address-data {
     dl {
         grid-row-gap: calc(var(--default-gap) / 2);
+
+        &.auto-columns {
+            dt:has([class*="icon-"]) {
+                align-items: baseline;
+            }
+        }
 
         dt {
             display: flex;

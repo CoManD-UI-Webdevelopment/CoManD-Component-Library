@@ -128,6 +128,7 @@ export default {
     img {
         display: block;
         max-height: 10rem;
+        border: 0; /* overwrite default settings from frontend-framework */
     }
 
     > a {

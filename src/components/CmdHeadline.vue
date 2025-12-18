@@ -2,15 +2,15 @@
     <!-- begin CmdHeadline ---------------------------------------------------------------------------------------- -->
     <!-- begin default-view -->
     <div v-if="!editModeContext || settingsContext || mainSidebarContext || headlineText"
-         :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
+         :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}]">
         <!-- begin headline with pre-headline-text -->
         <template v-if="preHeadlineText">
-            <component v-if="headlineText" :is="headlineTag" :class="highlightLevel">
+            <component v-if="headlineText" :is="headlineTag" :class="[highlightLevel, headlineTextAlign]">
                 <!-- begin CmdIcon -->
                 <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                 <!-- end CmdIcon -->
 
-                <span class="pre-headline-text-wrapper">
+                <span :class="['pre-headline-text-wrapper', 'text-align-' + textAlign]">
                     <!-- begin pre-headline-text -->
                     <span class="pre-headline-text" v-html="preHeadlineText"></span>
                     <!-- end pre-headline-text -->
@@ -32,7 +32,7 @@
         <!-- end headline with pre-headline-text -->
 
         <!-- begin headline without pre-headline-text -->
-        <component v-else :is="headlineTag">
+        <component v-else :is="headlineTag" :class="[highlightLevel, headlineTextAlign]">
             <!-- begin CmdIcon -->
             <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
             <!-- end CmdIcon -->
@@ -178,7 +178,7 @@ export default {
          */
         textAlign: {
             type: String,
-            default: null,
+            default: "left",
             validator(value) {
                 return value === "left" ||
                     value === "center" ||
@@ -208,7 +208,14 @@ export default {
         },
         headlineTextAlign() {
             if (this.textAlign) {
-                return "text-" + this.textAlign
+                switch (this.textAlign) {
+                    case "right":
+                        return "justify-content-flex-end"
+                    case "center":
+                        return "justify-content-center"
+                    default:
+                        return "justify-content-flex-start"
+                }
             }
             return ""
         }

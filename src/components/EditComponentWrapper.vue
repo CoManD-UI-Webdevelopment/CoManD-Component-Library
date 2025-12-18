@@ -9,7 +9,7 @@
         :data-identifier="componentIdentifier">
         <li v-if="componentTag === 'ul'" class="action-buttons-wrapper">
             <!-- begin action-buttons -->
-            <ul v-show="active" class="flex-container flex-none action-buttons" :data-component="componentName">
+            <ul v-show="active" class="flex-container flex-items-flex-none action-buttons" :data-component="componentName">
                 <!-- begin add -->
                 <li>
                     <a :class="['icon-hexagon button confirm', {disabled: !addHandlerProvider && !itemProvider && !allowAddComponent}]"
@@ -79,7 +79,7 @@
             <!-- begin action-buttons -->
             <p v-if="isOuterComponent" class="component-name">{{ componentName }}</p>
             <ul v-show="active"
-                class="flex-container flex-none action-buttons"
+                class="flex-container flex-items-flex-none action-buttons"
                 :data-component="componentName"
                 @mouseenter="addHighlightRelatedComponent"
                 @mouseleave="removeHighlightRelatedComponent">

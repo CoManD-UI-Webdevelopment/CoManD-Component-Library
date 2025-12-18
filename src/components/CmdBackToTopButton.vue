@@ -97,3 +97,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.cmd-back-to-top-button {
+    aspect-ratio: 1/1;
+}
+</style>

@@ -3,7 +3,7 @@
     <transition :name="transition">
         <div
             v-if="showSystemMessage"
-            :class="['cmd-system-message', 'system-message', 'flex-container', 'vertical', { 'full-width': fullWidth }, validationStatus]"
+            :class="['cmd-system-message', 'system-message', 'flex-container', 'flex-direction-column', { 'full-width': fullWidth }, systemMessageTextAlign, validationStatus]"
             :role="validationStatus === 'error' ? 'alert' : 'dialog'"
             :aria-labelledby="htmlId"
         >
@@ -15,6 +15,7 @@
                     :cmdIcon="headlineIcon"
                     :headlineText="systemMessage"
                     :headlineLevel="messageHeadlineLevel"
+                    :textAlign="textAlign"
                     :id="htmlId"
                 />
                 <!-- end CmdHeadline -->
@@ -48,10 +49,32 @@ export default {
     mixins: [Identifier],
     data() {
         return {
-            showSystemMessage: true
+            showSystemMessage: true,
+            id: this.ariaReferenceId || this.buildHtmlId("system-message") // mixin requires id to be defined
         }
     },
-    props: {
+    props:  {
+        /**
+         * define the text-align for the system message (will be inherited to CmdHeadline in slot)
+         * 
+         * @allowedValues: "left", "center", "right"
+         */
+        textAlign: {
+            type: String,
+            default: "center",
+            validator(value) {
+                return value === "left" ||
+                    value === "center" ||
+                    value === "right"
+            }
+        },
+        /** 
+         * define the aria-reference-id for the system message (will be used as aria-labelledby)
+         */
+        ariaReferenceId: {
+            type: String,
+            required: false
+        },
         /**
          * define the transition when system message disappears
          * 
@@ -78,7 +101,7 @@ export default {
             }
         },
         /**
-         * activate to stretch message-box as wide as parent container (else message-box is as wide as message (+padding))
+         * activate to stretch message-box as wide as parent container (else message-box is as wide as message (+ padding))
          */
         fullWidth: {
             type: Boolean,
@@ -138,6 +161,19 @@ export default {
                 }
             }
             return null
+        },
+        systemMessageTextAlign() {
+            if (this.textAlign) {
+                switch (this.textAlign) {
+                    case "right":
+                        return "align-items-flex-end"
+                    case "center":
+                        return "align-items-center"
+                    default:
+                        return "align-items-flex-start"
+                }
+            }
+            return ""
         }
     },
     methods: {
@@ -159,8 +195,11 @@ export default {
 .cmd-system-message {
     display: inline-flex;
     margin: var(--default-margin) 0;
-    align-items: center;
     align-self: flex-start; /* if used in flex-container component should not be stretched */
+
+    .message-headline {
+        margin: 0; /* overwrite default-settings from frontend-framework */
+    }
 
     > :last-child {
         margin-bottom: 0;

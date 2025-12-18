@@ -1,11 +1,12 @@
 <template>
     <!-- begin CmdMultistepFormProgressBar ---------------------------------------------------------------------------------------- -->
     <ol :class="['cmd-multistep-form-progress-bar', {'use-gap': useGap, 'full-width': fullWidth}]">
-        <li v-for="(step, index) in multisteps" :key="index" :class="errorLinkClass(index)">
+        <li v-for="(step, index) in multisteps" :key="index" :class="[errorLinkClass(index), successLinkClass(index)]">
             <!-- begin CmdLink -->
             <CmdLink
+                v-if="stepsCanBeClicked"
                 :linkType="step.linkType"
-                :class="['stretch-on-small-devices', activeLinkClass(index), errorLinkClass(index)]"
+                :class="['stretch-on-small-devices', activeLinkClass(index), errorLinkClass(index), successLinkClass(index)]"
                 :styleAsButton="styleAsButtons"
                 :highlightLevel="highlightLevel"
                 :path="step.path"
@@ -20,6 +21,14 @@
                 <span v-if="step.text">{{ step.text }}</span>
             </CmdLink>
             <!-- end CmdLink -->
+
+            <template v-else>
+                <span v-if="showStepNumber" class="number">{{ index + 1 }}</span>
+                <!-- begin CmdIcon -->
+                <CmdIcon v-if="step.iconClass" :iconClass="step.iconClass" :type="step.iconType" />
+                <!-- end CmdIcon -->
+                <span v-if="step.text">{{ step.text }}</span>
+            </template>
 
             <!-- begin separator -->
             <span v-if="index + 1 !== multisteps.length && useGap" :class="['separator', separatorIconClass]"></span>
@@ -42,6 +51,13 @@ export default {
         }
     },
     props: {
+        /**
+         * active if steps should be clickable
+         */
+        stepsCanBeClicked: {
+            type: Boolean,
+            default: true
+        },
          /**
          * set highlight-level for steps
          * 
@@ -104,6 +120,15 @@ export default {
             required: false
          },
         /**
+         * provide a list of steps, that should be highlighted as "success"
+         * 
+         * @affectStyling: true
+         */
+         successSteps: {
+            type: Array,
+            required: false
+         },
+        /**
          * icon-class for separator shown between multisteps
          */
         separatorIconClass: {
@@ -125,13 +150,19 @@ export default {
     methods: {
         activeLinkClass(index) {
             if(this.activeLink === index) {
-                    return "active"
+                 return "active"
             }
             return null
         },
         errorLinkClass(index) {
             if(this.errorSteps?.includes(index + 1)) {
-                    return "error"
+                return "error"
+            }
+            return null
+        },
+        successLinkClass(index) {
+            if(this.successSteps?.includes(index + 1)) {
+                return "success"
             }
             return null
         },
@@ -234,12 +265,6 @@ export default {
 
         &:has(:not(.button)) {
             flex: none;
-
-            &:is(:hover, :active, :focus) {
-                span, span[class*="icon-"] {
-                    color: var(--hyperlink-color);
-                }
-            }
         }
 
         a, button {
@@ -275,12 +300,6 @@ export default {
                             font-size: var(--font-size-small);
                         }
                     }
-                }
-            }
-
-            &:hover, &:active, &:focus {
-                .number {
-                    color: var(--hyperlink-color);
                 }
             }
 
@@ -322,6 +341,19 @@ export default {
             .active {
                 .number {
                     background: var(--error-color) !important;
+                }
+            }
+        }
+
+        &.success {
+            .number {
+                border-color: var(--success-color);
+                color: var(--success-color);
+            }
+
+            .active {
+                .number {
+                    background: var(--success-color) !important;
                 }
             }
         }

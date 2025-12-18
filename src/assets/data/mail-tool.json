@@ -3,7 +3,7 @@
     {
       "id": 1,
       "cmdImage": {
-        "src": "/public/media/images/user-images/fake-user-1.jpg",
+        "src": "/media/images/user-images/fake-user-1.jpg",
         "alt": "User image"
       },
       "contactFullName": "Name Sender #1",
@@ -14,7 +14,7 @@
     {
       "id": 2,
       "cmdImage": {
-        "src": "/public/media/images/user-images/fake-user-2.jpg",
+        "src": "/media/images/user-images/fake-user-2.jpg",
         "alt": "User image"
       },
       "contactFullName": "Name Sender #2",
@@ -27,7 +27,7 @@
     {
       "id": 3,
       "cmdImage": {
-        "src": "/public/media/images/user-images/fake-user-2.jpg",
+        "src": "/media/images/user-images/fake-user-2.jpg",
         "alt": "User image"
       },
       "contactFullName": "Name Receiver #1",
@@ -38,7 +38,7 @@
     {
       "id": 4,
       "cmdImage": {
-        "src": "/public/media/images/user-images/fake-user-3.jpg",
+        "src": "/media/images/user-images/fake-user-3.jpg",
         "alt": "User image"
       },
       "contactFullName": "Name Receiver #2",

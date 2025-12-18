@@ -92,7 +92,7 @@
                 <!-- end slot-content -->
             </div>
         </div>
-        <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container flex-none">
+        <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container flex-items-flex-none">
             <!-- begin cancel-button -->
             <button
                 v-if="fancyBoxOptionsProperties.submitButtons?.cancel"

@@ -4,38 +4,44 @@
     "type": "text",
     "name": "form-element-text-name",
     "htmlClass": "form-element-text-class",
-    "value": "default value",
-    "fieldIconClass": "icon-lock",
+    "id": "form-element-text-id",
+    "value": "",
+    "fieldIconClass": "icon-globe",
     "labelText": "Text input",
     "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false
   },
   {
-    "element": "input",
-    "type": "number",
-    "name": "form-element-number-name",
-    "htmlClass": "form-element-number-class",
-    "id": "form-element-number-id",
-    "value": "default value",
-    "fieldIconClass": "icon-cogs",
-    "labelText": "Number input (required)",
-    "placeholder": "Placeholdertext",
-    "required": true,
-    "disabled": false
-  },
-  {
-    "element": "input",
-    "type": "password",
-    "name": "form-element-password-name",
-    "htmlClass": "form-element-password-class",
-    "id": "form-element-password-id",
-    "value": "",
-    "fieldIconClass": "icon-cogs",
-    "labelText": "Password input",
-    "placeholder": "Placeholdertext",
-    "required": false,
-    "disabled": false
+    "component": "flexContainer",
+    "formElements": [
+      {
+        "element": "input",
+        "type": "text",
+        "name": "form-element-username",
+        "htmlClass": "form-element-text-class",
+        "id": "form-element-username",
+        "value": "default value",
+        "fieldIconClass": "icon-user-profile",
+        "labelText": "Username input",
+        "placeholder": "Placeholdertext",
+        "required": true,
+        "disabled": false
+      },
+      {
+        "element": "input",
+        "type": "password",
+        "name": "form-element-password-name",
+        "htmlClass": "form-element-password-class",
+        "id": "form-element-password-id",
+        "value": "",
+        "fieldIconClass": "icon-security-settings",
+        "labelText": "Password input",
+        "placeholder": "Placeholdertext",
+        "required": false,
+        "disabled": false
+      }
+    ]
   },
   {
     "element": "input",
@@ -44,7 +50,7 @@
     "htmlClass": "form-element-tel-class",
     "id": "form-element-tel-id",
     "value": "default value",
-    "fieldIconClass": "icon-tel",
+    "fieldIconClass": "icon-phone",
     "labelText": "Telephone input (disabled)",
     "placeholder": "Placeholdertext",
     "required": false,
@@ -57,7 +63,7 @@
     "htmlClass": "form-element-email-class",
     "id": "form-element-email-id",
     "value": "default value",
-    "fieldIconClass": "icon-email",
+    "fieldIconClass": "icon-mail",
     "labelText": "Email input (with icon)",
     "placeholder": "Placeholdertext",
     "required": false,
@@ -150,31 +156,66 @@
     "maxlength": 500
   },
   {
-    "component": "CmdInputGroup",
-    "labelText": "Input Group (Radio):",
-    "toggleSwitches": true,
-    "value": "website",
-    "inputElements": [
+    "component": "flexContainer",
+    "formElements": [
       {
-        "labelText": "Website",
-        "id": "radio-id-1",
-        "name": "input-group-radio",
-        "iconClass": "icon-globe",
-        "value": "website"
+        "component": "CmdInputGroup",
+        "labelText": "Input Group (Checkbox):",
+        "toggleSwitches": true,
+        "inputTypes": "checkbox",
+        "value": "checkbox-website",
+        "inputElements": [
+          {
+            "labelText": "Website",
+            "id": "checkbox-id-1",
+            "name": "input-group-checkbox",
+            "iconClass": "icon-globe",
+            "value": "checkbox-website"
+          },
+          {
+            "labelText": "E-Mail",
+            "id": "checkbox-id-2",
+            "name": "input-group-checkbox",
+            "iconClass": "icon-mail",
+            "value": "checkbox-email"
+          },
+          {
+            "labelText": "Phone",
+            "id": "checkbox-id-3",
+            "name": "input-group-checkbox",
+            "iconClass": "icon-phone",
+            "value": "checkbox-phone"
+          }
+        ]
       },
       {
-        "labelText": "E-Mail",
-        "id": "radio-id-2",
-        "name": "input-group-radio",
-        "iconClass": "icon-mail",
-        "value": "email"
-      },
-      {
-        "labelText": "Phone",
-        "id": "radio-id-3",
-        "name": "input-group-radio",
-        "iconClass": "icon-phone",
-        "value": "phone"
+        "component": "CmdInputGroup",
+        "labelText": "Input Group (Radio):",
+        "toggleSwitches": true,
+        "value": "radio-website",
+        "inputElements": [
+          {
+            "labelText": "Website",
+            "id": "radio-id-1",
+            "name": "input-group-radio",
+            "iconClass": "icon-globe",
+            "value": "radio-website"
+          },
+          {
+            "labelText": "E-Mail",
+            "id": "radio-id-2",
+            "name": "input-group-radio",
+            "iconClass": "icon-mail",
+            "value": "radio-email"
+          },
+          {
+            "labelText": "Phone",
+            "id": "radio-id-3",
+            "name": "input-group-radio",
+            "iconClass": "icon-phone",
+            "value": "radio-phone"
+          }
+        ]
       }
     ]
   }

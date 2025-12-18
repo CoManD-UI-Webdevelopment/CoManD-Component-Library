@@ -370,7 +370,7 @@
                         <h2>Slider [native]</h2>
                         <div class="label" :class="validationStatus">
                             <span class="label-text">Single-Slider (with in- and output):</span>
-                            <span class="flex-container flex-none">
+                            <span class="flex-container flex-items-flex-none">
                                 <label class="inline" for="range-value">
                                     <span class="label-text">
                                         <span>Range Value:</span>
@@ -396,58 +396,89 @@
                         <h3>Switches without switch-labels</h3>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox"
                             v-model="switchButtonCheckboxToggleSwitch"
-                            labelText="Labeltext for Toggle-Switch without Switch-Label" :toggleSwitch="true"
+                            labelText="Labeltext for Toggle-Switch (not required)" :toggleSwitch="true"
+                            :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{switchButtonCheckboxToggleSwitch}}</output>
+                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-required"
+                            v-model="switchButtonCheckboxToggleSwitchRequired"
+                            labelText="Labeltext for Toggle-Switch (required)" :toggleSwitch="true"
                             :status="validationStatus" :disabled="disabledStatus" :required="true" />
+                            <output>v-model: {{switchButtonCheckboxToggleSwitchRequired}}</output>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-colored"
                             v-model="switchButtonCheckboxToggleSwitchColored"
-                            labelText="Labeltext for colored Toggle-Switch without Switch-Label" :toggleSwitch="true"
+                            labelText="Labeltext for colored Toggle-Switch with set value" :toggleSwitch="true" inputValue="yes"
                             :colored="true" :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{switchButtonCheckboxToggleSwitchColored}}</output>
                         <h3>Switches with switch-labels</h3>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label"
                             v-model="switchButtonCheckbox" labelText="Labeltext for Toggle-Switch with Switch-Label"
                             inputValue="checkbox1" onLabel="Label on" offLabel="Label off" :toggleSwitch="true"
                             :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{switchButtonCheckbox}}</output>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label-colored"
-                            v-model="switchButtonCheckbox" inputValue="checkbox2"
+                            v-model="switchButtonCheckboxColored" inputValue="checkbox2"
                             labelText="Labeltext for Toggle-Switch (Checkbox, colored)" onLabel="Label on"
                             offLabel="Label off" :colored="true" :toggleSwitch="true" :status="validationStatus"
                             :disabled="disabledStatus" />
+                            <output>v-model: {{switchButtonCheckboxColored}}</output>
                         <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio1"
                             v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
                             :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
                             inputValue="radio1" labelText="Labeltext for Toggle-Switch (Radio, colored) #1" />
+                            <output>v-model: {{switchButtonRadio}}</output>
                         <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio2"
                             v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
                             :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
                             inputValue="radio2" labelText="Labeltext for Toggle-Switch (Radio, colored) #2" />
+                            <output>v-model: {{switchButtonRadio}}</output>
                         <!-- end toggle-switch-radio with switch-label (colored) -->
 
                         <!-- begin checkboxes and radiobuttons -->
-                        <CmdFormElement element="input" labelText="Label for (required) checkbox with boolean"
-                            type="checkbox" required="required" id="checkbox-required-with-boolean"
-                            v-model="checkboxRequiredValue" :status="validationStatus" :disabled="disabledStatus" />
-                        <p>
-                            checkbox (required) with boolean: {{ checkboxRequiredValue }}<br />
-                            checkbox with boolean: {{ checkboxValue }}<br />
-                            checkboxes with values: {{ checkboxValues }}
-                        </p>
-
                         <h2>Checkboxes and Radiobuttons</h2>
                         <h3>Checkboxes [native]</h3>
                         <div class="label inline">
                             <span class="label-text">Label for native checkboxes:</span>
-                            <div class="flex-container flex-none">
-                                <CmdFormElement element="input" labelText="Label for checkbox with boolean"
-                                    type="checkbox" id="checkbox-with-boolean" v-model="checkboxValue"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" labelText="Label for checkbox with value"
-                                    v-model="checkboxValues" inputValue="checkboxValue1" type="checkbox"
-                                    id="checkbox-with-value-1" :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" labelText="Label for checkbox with value"
-                                    v-model="checkboxValues" inputValue="checkboxValue2" type="checkbox"
-                                    id="checkbox-with-value-2" :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" v-model="checkboxValues" inputValue="checkboxValue3"
-                                    type="checkbox" id="checkbox-with-value-3" :status="validationStatus"
+                            <div class="flex-container flex-items-flex-none">
+                                <CmdFormElement 
+                                    element="input"
+                                    type="checkbox"
+                                    labelText="Label for checkbox with boolean"
+                                    v-model="nativeCheckboxValues"
+                                    id="checkbox-with-boolean" 
+                                    name="native-checkbox-group"
+                                    :status="validationStatus" 
+                                    :disabled="disabledStatus" 
+                                />
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="checkbox"
+                                    labelText="Label for checkbox with value"
+                                    v-model="nativeCheckboxValues" 
+                                    inputValue="checkboxValue1"
+                                    id="checkbox-with-value-1"
+                                    name="native-checkbox-group"
+                                    :status="validationStatus" 
+                                    :disabled="disabledStatus" 
+                                />
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="checkbox"
+                                    labelText="Label for checkbox with value"
+                                    v-model="nativeCheckboxValues" 
+                                    inputValue="checkboxValue2" 
+                                    id="checkbox-with-value-2" 
+                                    name="native-checkbox-group"
+                                    :status="validationStatus" 
+                                    :disabled="disabledStatus" 
+                                />
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="checkbox"
+                                    v-model="nativeCheckboxValues" 
+                                    inputValue="checkboxValue3"
+                                    id="checkbox-with-value-3"
+                                    name="native-checkbox-group" 
+                                    :status="validationStatus"
                                     :disabled="disabledStatus">
                                     <template v-slot:labeltext>
                                         Labeltext with <a href="#">link</a> given by slot
@@ -455,23 +486,46 @@
                                 </CmdFormElement>
                             </div>
                         </div>
+                        <output>
+                            v-model: {{ nativeCheckboxValues }}
+                        </output>
                         <h3>Checkboxes (replaced)</h3>
                         <div class="label inline">
                             <span class="label-text">Label for Replaced Input-Type-Checkbox:</span>
-                            <div class="flex-container flex-none">
-                                <CmdFormElement element="input" labelText="Label for replaced checkbox" type="checkbox"
-                                    :replaceInputType="true" id="inputfield9" v-model="replacedCheckboxValue"
-                                    inputValue="checkboxValue1" :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" labelText="Label for replaced checkbox"
-                                    v-model="replacedCheckboxValue" inputValue="checkboxValue2" type="checkbox"
-                                    :replaceInputType="true" id="inputfield10" :status="validationStatus"
-                                    :disabled="disabledStatus" />
+                            <div class="flex-container flex-items-flex-none">
+                                <CmdFormElement 
+                                    element="input"
+                                    type="checkbox"
+                                    labelText="Label for replaced checkbox" 
+                                    :replaceInputType="true" 
+                                    id="inputfield9" 
+                                    name="replaced-checkbox-group" 
+                                    v-model="replacedCheckboxValue"
+                                    inputValue="checkboxValue1" 
+                                    :status="validationStatus" 
+                                    :disabled="disabledStatus" 
+                                />
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="checkbox"
+                                    labelText="Label for replaced checkbox" 
+                                    name="replaced-checkbox-group" 
+                                    v-model="replacedCheckboxValue" 
+                                    inputValue="checkboxValue2"
+                                    :replaceInputType="true" 
+                                    id="inputfield10" 
+                                    :status="validationStatus"
+                                    :disabled="disabledStatus"
+                                />
                             </div>
                         </div>
+                        <output>
+                            v-model: {{ replacedCheckboxValue }}
+                        </output>
                         <h3>Radiobuttons [native]</h3>
                         <div class="label inline">
                             <span class="label-text">Label for native radiobuttons:</span>
-                            <div class="flex-container flex-none">
+                            <div class="flex-container flex-items-flex-none">
                                 <CmdFormElement element="input" labelText="Label for native radiobutton" type="radio"
                                     id="inputfield11" name="radiogroup" inputValue="radiobuttonValue1"
                                     v-model="radiobuttonValue" :status="validationStatus" :disabled="disabledStatus" />
@@ -480,13 +534,13 @@
                                     v-model="radiobuttonValue" :status="validationStatus" :disabled="disabledStatus" />
                             </div>
                         </div>
-                        <p>
-                            Radiobuttons with values: {{ radiobuttonValue }}
-                        </p>
+                        <output>
+                            v-model: {{ radiobuttonValue }}
+                        </output>
                         <h3>Radiobuttons (replaced)</h3>
                         <div class="label inline">
                             <span class="label-text">Label for Replaced Input-Type-Radio:</span>
-                            <div class="flex-container flex-none">
+                            <div class="flex-container flex-items-flex-none">
                                 <CmdFormElement element="input" labelText="Label for replaced radiobutton" type="radio"
                                     :replaceInputType="true" id="inputfield13" name="replaced-radiogroup"
                                     inputValue="radiobuttonValue1" v-model="replacedRadiobuttonValue"
@@ -497,6 +551,9 @@
                                     :status="validationStatus" :disabled="disabledStatus" />
                             </div>
                         </div>
+                                               <output>
+                            v-model: {{ radiobuttonValue }}
+                        </output>
                         <!-- end checkboxes and radiobuttons -->
 
                         <!-- begin input-groups -->
@@ -509,55 +566,30 @@
                             labelText="Grouplabel for radio-group given by property:"
                             :inputElements="idForReplacedInputsInInputGroup('radio-group')" v-model="inputGroup">
                         </CmdInputGroup>
-                        <dl>
-                            <dt>Selected value:</dt>
-                            <dd>
-                                <output>{{ inputGroup }}</output>
-                            </dd>
-                        </dl>
+                        <output>v-model: {{ inputGroup }}</output>
                         <h3>Input Groups with Checkboxes/Radiobuttons (toggle-switches)</h3>
                         <CmdInputGroup labelText="Grouplabel for checkbox-group styled as toggle-switches (colored):"
                             :inputElements="idForReplacedInputsInInputGroup('checkbox-group-toggle-switch')"
                             inputTypes="checkbox" v-model="inputGroupValueToggleSwitchCheckbox" :toggleSwitches="true"
                             :colored="true" required="required" :status="validationStatus" :disabled="disabledStatus" />
-                        <dl>
-                            <dt>Selected value(s):</dt>
-                            <dd>
-                                <output>{{ inputGroupValueToggleSwitchCheckbox }}</output>
-                            </dd>
-                        </dl>
+                        <output>v-model: {{ inputGroupValueToggleSwitchCheckbox }}</output>
                         <CmdInputGroup labelText="Grouplabel for radio-group styled as toggle-switches:"
                             :inputElements="idForReplacedInputsInInputGroup('radio-group-toggle-switch')"
                             inputTypes="radio" v-model="inputGroupValueToggleSwitchRadio" :toggleSwitches="true"
                             required="required" :status="validationStatus" :disabled="disabledStatus" />
-                        <dl>
-                            <dt>Selected value(s):</dt>
-                            <dd>
-                                <output>{{ inputGroupValueToggleSwitchRadio }}</output>
-                            </dd>
-                        </dl>
+                        <output>v-model: {{ inputGroupValueToggleSwitchRadio }}</output>
                         <CmdInputGroup
                             labelText="Grouplabel for radio-group given by property styled as multiple-switch:"
                             :inputElements="idForReplacedInputsInInputGroup('radio-group-multiple-switch')"
                             inputTypes="radio" :multipleSwitch="true" v-model="inputGroupValue3"
                             :status="validationStatus" :disabled="disabledStatus" />
-                        <dl>
-                            <dt>Selected value(s):</dt>
-                            <dd>
-                                <output>{{ inputGroupValue3 }}</output>
-                            </dd>
-                        </dl>
+                        <output>v-model: {{ inputGroupValue3 }}</output>
                         <CmdInputGroup
                             labelText="Grouplabel for checkbox-group styled as multiple-switch (stretched horizontally):"
                             :inputElements="inputGroupCheckboxes" inputTypes="checkbox" :multipleSwitch="true"
                             :required="true" v-model="inputGroupValue4" :stretchHorizontally="true"
                             :status="validationStatus" :disabled="disabledStatus" />
-                        <dl>
-                            <dt>Selected value(s):</dt>
-                            <dd>
-                                <output>{{ inputGroupValue4 }}</output>
-                            </dd>
-                        </dl>
+                        <output>v-model: {{ inputGroupValue4 }}</output>
                     </fieldset>
                     <!-- end fieldset -->
                     <div class="flex-container">
@@ -934,7 +966,7 @@
                 <h2 class="headline-demopage" id="section-forms">Forms</h2>
                 <h3>Form elements given by data</h3>
                 <CmdForm :useFieldset="true" :useSlot="false" id="form-component" novalidate="novalidate"
-                    :formElements="formElementsData" @submit="doConsoleLog" />
+                    :formElements="formElementsData" @submit="doConsoleLog" v-model="cmdFormData" />
                 <h3>Form elements given by slot</h3>
                 <CmdForm :use-fieldset="true" id="form-component" novalidate="novalidate"
                     :submitButton="{ position: 'belowFieldset' }" @submit="doConsoleLog">
@@ -975,7 +1007,6 @@
                     title="Open FancyBox with large image given by property" style="align-self: flex-start">
                     <img src="/media/images/demo-images/small/landscape-03.jpg" alt="Alternative text" />
                 </a>
-
             </CmdWidthLimitationWrapper>
             <!-- end fancybox --------------------------------------------------------------------------------------------------->
 
@@ -1039,7 +1070,6 @@
                         @click.prevent="openSettingsSidebar('CmdHeadline')"></a>
                 </h2>
                 <CmdHeadline ref="CmdHeadline" v-bind="cmdHeadlineSettingsData" />
-                <CmdHeadline v-bind="cmdHeadlineSettingsData" :cmdIcon="{ iconClass: 'icon-home' }" />
                 <CmdHeadline headlineLevel="3" headlineText="Headline text" :cmdIcon="{ iconClass: 'icon-home' }" />
                 <CmdHeadline ref="CmdHeadline" headlineLevel="3"
                     headlineText="Headline text<br /> with html-content given by property" />
@@ -1260,33 +1290,151 @@
             </CmdWidthLimitationWrapper>
             <!-- end main-navigation --------------------------------------------------------------------------------------------------->
 
+            <!-- begin multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
+                    <span>Multistepform-Progressbar</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
+                </h2>
+                <h3>Steps with icons</h3>
+                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.withIcon"
+                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
+                <h3>Router</h3>
+                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.router"
+                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
+                <div>
+                    <p>Page {{ showPageMultistep }}</p>
+                </div>
+            </CmdWidthLimitationWrapper>
+            <!-- end multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
+
             <!-- begin multistep-form-wrapper --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-multistep-form-wrapper">
                     <span>Multistepform-Wrapper</span>
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')">
+                        @click.prevent="openSettingsSidebar('CmdMultistepFormWrapper')">
                     </a>
                 </h2>
                 <h3>Data provided by property</h3>
-                <CmdMultistepFormWrapper>
+                <CmdMultistepFormWrapper :requiredPages="[1, 2]" :defaultInputValues="multistepFormDefaultInputValues">
+                   
                     <template v-slot:page-1="props">
-                        Content Page 1<br />
+                        multistepFormDefaultInputValues: {{ multistepFormDefaultInputValues }}
+                        <h3>Page 1 - all fields required</h3>
+                        <CmdForm 
+                            :formElements="multistepFormWrapperPage1Data" 
+                            :useSlot="false" 
+                            @validation-status-change="toggleSystemMessage($event, props)" 
+                            :submitButton="{show: false}"
+                            :modelValue="props.formDataForPage"
+                            @update:modelValue="props.updateFormDataForPage"
+                        />
+                        props.formDataForPage: {{ props.formDataForPage }}
                         <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a><br />
                         <a href="#" @click.prevent="props.removeErrorOnPage">Remove Error</a>
                     </template>
                     <template v-slot:page-2="props">
-                        Content Page 2<br />
+                        <h3>Page 2 - 2/2 fields required (in slot)</h3>
+                        <CmdForm 
+                            :submitButton="{show: false}"
+                            :cmdHeadline=" { headlineText: 'Form-Elements in Slot', headlineLevel: 3 }"
+                        >   
+                            <CmdFormElement 
+                                element="input" 
+                                type="tel" 
+                                labelText="Telephone:"
+                                name="page-2-telephone"
+                                id="page-2-telephone"
+                                placeholder="Enter phone number" 
+                                :required="true"
+                                :modelValue="props.formDataForPage['page-2-telephone']" 
+                                @update:modelValue="setValue($event, 'page-2-telephone', props)" 
+                                @validation-status-change="setValidationStatus($event, 'page-2-telephone', props)"
+                            />
+                            <CmdFormElement 
+                                element="input" 
+                                type="email" 
+                                labelText="E-Mail:"
+                                name="page-2-email"
+                                id="page-2-email"
+                                :required="true"
+                                placeholder="Enter email address" 
+                                :modelValue="props.formDataForPage['page-2-email']" 
+                                @update:modelValue="setValue($event, 'page-2-email', props)" 
+                                @validation-status-change="setValidationStatus($event, 'page-2-email', props)"
+                            />
+                        </CmdForm>
+                        props.formDataForPage: {{ props.formDataForPage }}
                         <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
                     </template>
-                    <template v-slot:page-3>
-                        Content Page 3
+                    <template v-slot:page-3="props">
+                        <h3>Page 3 - no fields required</h3>
+                        <CmdForm 
+                            @validation-status-change="toggleSystemMessage($event, props)" 
+                            :submitButton="{show: false}"
+                            :modelValue="props.formDataForPage"
+                            @update:modelValue="props.updateFormDataForPage"
+                            :cmdHeadline=" { headlineText: 'Form-Elements in Slot', headlineLevel: 3 }"
+                        >
+                            <CmdFormElement 
+                                element="input" 
+                                type="text" 
+                                labelText="Street/No:"
+                                name="street-no"
+                                id="street-no"
+                                placeholder="Enter street and number" 
+                                v-model="props.formDataForPage.streetNo" 
+                            />
+                            <div class="input-wrapper">
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="number" 
+                                    labelText="Zip:"
+                                    name="zip"
+                                    id="zip"
+                                    v-model="props.formDataForPage.zip" 
+                                />
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="text" 
+                                    labelText="City:"
+                                    name="city"
+                                    id="city"
+                                    v-model="props.formDataForPage.city" 
+                                />
+                            </div>
+                            props.formDataForPage: {{ props.formDataForPage }}
+                        </CmdForm>
                     </template>
-                    <template v-slot:page-4>
-                        Content Page 4
-                    </template>
-                    <template v-slot:page-5>
-                        Content Page 5
+                    <template v-slot:page-last="props">
+                        <template v-if="!confirmDataPrivacy">
+                            <h3>Page 4</h3>
+                            <CmdForm
+                                :cmdHeadline=" { headlineText: 'Confirmation', headlineLevel: 3 }"
+                                :submitButton="{ disabled : props.atleastOneStepWithError || !dataPrivacyChecked, type: 'button' }"
+                                :cancelButton="{ show: false }"
+                                @submit="validateForm"
+                            >
+                                <p>Please confirm that all data you provided is legit.</p>
+                                <CmdFormElement 
+                                    element="input" 
+                                    type="checkbox" 
+                                    labelText="Confirm data privacy:"
+                                    name="confirm-data-privacy"
+                                    id="confirm-data-privac"
+                                    :required="true"
+                                    v-model="dataPrivacyChecked"
+                                />
+                            </CmdForm>
+                        </template>
+                        <template v-else>
+                            <h3>Confirmation</h3>
+                            <CmdSystemMessage systemMessage="Your request was send successfully!" validationStatus="success" :iconClose="{ show: false }" />
+                            <p>A copy with all submitted data was send to you.</p>
+                            props.formDataForPage: {{ props.formDataForPage }}
+                        </template>
                     </template>
                 </CmdMultistepFormWrapper>
                 <h3>Data provided by slot</h3>
@@ -1360,25 +1508,6 @@
                 </CmdMultistepFormWrapper>
             </CmdWidthLimitationWrapper>
             <!-- end multistep-form-wrapper --------------------------------------------------------------------------------------------------->
-
-            <!-- begin multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
-                    <span>Multistepform-Progressbar</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
-                </h2>
-                <h3>Steps with icons</h3>
-                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.withIcon"
-                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
-                <h3>Router</h3>
-                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.router"
-                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
-                <div>
-                    <p>Page {{ showPageMultistep }}</p>
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
 
             <!-- begin newsletter-subscription --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1595,8 +1724,9 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                         @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
                 </h2>
-                <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData"
-                    :iconMessage="{ iconClass: 'icon-error-circle', show: true }">
+                <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData" :iconClose="{ iconClass: 'icon-error-circle', show: true }" />
+                <CmdSystemMessage validationStatus="warning" :iconClose="{ show: false }">
+                    <p>This is a system message with slot-content. (that cannot be closed)</p>
                 </CmdSystemMessage>
             </CmdWidthLimitationWrapper>
             <!-- end system-message --------------------------------------------------------------------------------------------------->
@@ -1854,6 +1984,7 @@ import listOfTagsData from '@/assets/data/list-of-tags.json'
 import switchLanguage from '@/assets/data/switch-language.json'
 import mailToolData from '@/assets/data/mail-tool.json'
 import multistepsData from '@/assets/data/multistep-form-progress-bar.json'
+import multistepFormWrapperPage1Data from '@/assets/data/multistep-form-wrapper-page-1.json'
 import navigationData from '@/assets/data/main-navigation.json'
 import openingHoursData from '@/assets/data/opening-hours.json'
 import selectOptionsData from '@/assets/data/select-options.json'
@@ -1897,6 +2028,7 @@ export default {
     },
     data() {
         return {
+            cmdFormData: {},
             smartSearchObject: {id: 3, displayValue: "smartSearchDisplayValue"},
             smartSearchString: "",
             selectedLanguage: "none",
@@ -1909,6 +2041,7 @@ export default {
             componentControls: {},
             componentView: true,
             colorScheme: "none",
+            confirmDataPrivacy: false,
             showLeftSidebar: true,
             selectedTemplate: "blank",
             acceptedCookies: ["google-maps"],
@@ -1916,6 +2049,7 @@ export default {
             showSettingsSidebar: false,
             disabledStatus: undefined,
             validationStatus: "",
+            dataPrivacyChecked: false,
             loginData: {
                 username: "",
                 password: ""
@@ -1927,6 +2061,7 @@ export default {
             inputFieldPattern: "",
             inputSearch: "",
             textarea: "",
+            formElementsWithErrorPageConfirm: ["confirm-data-privacy"],
             inputGroupRadio: "radiobuttonValue1",
             inputGroup: "website",
             inputGroupValueReplaceInputTypeRadio: "phone",
@@ -1983,6 +2118,8 @@ export default {
             filters: ["2"],
             switchButtonRadio: "radio1",
             switchButtonCheckboxToggleSwitch: false,
+            switchButtonCheckboxToggleSwitchRequired: false,
+            switchButtonCheckboxToggleRequired: false,
             switchButtonCheckboxToggleSwitchColored: false,
             switchButtonCheckbox: ["checkbox1"],
             switchButtonCheckboxColored: false,
@@ -1991,13 +2128,14 @@ export default {
             inputPassword: "",
             inputField1: "",
             inputFieldRequired: "",
+            formElementsWithError: ["page-2-telephone", "page-2-email"],
             componentName: "",
             componentProps: {},
             componentSettings: {},
             checkboxValue: true,
             checkboxRequiredValue: false,
-            checkboxValues: ["checkboxValue1"],
-            replacedCheckboxValue: "checkboxValue1",
+            nativeCheckboxValues: ["checkboxValue1"],
+            replacedCheckboxValue: ["checkboxValue1", "checkboxValue2"],
             radiobuttonValue: "radiobuttonValue1",
             replacedRadiobuttonValue: "radiobuttonValue1",
             fakeSelectDefault: "",
@@ -2027,6 +2165,14 @@ export default {
                     linkType: ""
                 }
             },
+            multistepFormDefaultInputValues: {
+                1: {
+                    "form-element-text-surname": "Biock"
+                },
+                2: {
+                    "page-2-telephone": "12345/67890"
+                }
+            },
 
             // assign data from json files to data-properties
             addressData,
@@ -2051,6 +2197,7 @@ export default {
             listOfTagsData,
             descriptionListData,
             multistepsData,
+            multistepFormWrapperPage1Data,
             mailToolData,
             navigationData,
             openingHoursData,
@@ -2095,13 +2242,52 @@ export default {
             return "template-" + this.selectedTemplate
         },
         thumbnailScrollerData() {
-            if (this.cmdThumbnailScrollerSettingsData.contentType === "image") {
+            if (!this.cmdThumbnailScrollerSettingsData?.contentType || this.cmdThumbnailScrollerSettingsData.contentType === "image" ) {
                 return this.thumbnailScrollerImagesData
             }
             return this.thumbnailScrollerTextData
         }
     },
     methods: {
+        setValue(event, itemName, props) {
+            const data = {
+                ...props.formDataForPage,
+                [itemName]: event
+            }
+           props.updateFormDataForPage(data)
+        },
+        setValidationStatus(event, itemName, props) {
+            if (event === "error" && !this.formElementsWithError.some(entry => entry.name === itemName)) {
+                this.formElementsWithError.push(itemName)
+            } else if (event === "success" && this.formElementsWithError.includes(itemName)) {
+                this.formElementsWithError = this.formElementsWithError.filter((element) => element !== itemName)
+            }
+            const status = this.formElementsWithError.length > 0 ? "error" : "success"
+            this.toggleSystemMessage(status, props)
+        },
+        setValidationStatusCheckbox(event, itemName, props) {
+            console.log("event", event)
+            if (event === "error" && !this.formElementsWithErrorPageConfirm.some(entry => entry.name === itemName)) {
+                this.formElementsWithErrorPageConfirm.push(itemName)
+            } else if (event === "success" && this.formElementsWithErrorPageConfirm.includes(itemName)) {
+                this.formElementsWithErrorPageConfirm = this.formElementsWithErrorPageConfirm.filter((element) => element !== itemName)
+            }
+            const status = this.formElementsWithErrorPageConfirm.length > 0 ? "error" : "success"
+            this.toggleSystemMessage(status, props)
+        },
+        outputFormData(event) {
+            console.log("outputFormData", event)  
+        },
+        myAlert(text) {
+            alert(text)
+        },
+        toggleSystemMessage(event, props) {
+            if(event === "error") {
+                props.setErrorOnPage("Please fill all required fields!") 
+            } else {
+                props.removeErrorOnPage() 
+            }
+        },
         cmdLinkOutput(event, linkType) {
             this.outputCmdLink.event.originalEvent = event
             this.outputCmdLink.event.linkType = linkType
@@ -2263,6 +2449,9 @@ export default {
         },
         doSomething() {
             alert("Language changed!")
+        },
+        validateForm() {
+            this.confirmDataPrivacy = true
         },
         executeSearch() {
             return Math.floor(Math.random() * 100)
@@ -2464,6 +2653,17 @@ export default {
         .open-slot-wrapper {
             display: block;
         }
+    }
+
+    output {
+        display: flex;
+        align-self: flex-start;
+        flex: none;
+        padding: var(--default-padding);
+        border: 1px dashed black;
+        background: rgb(202, 192, 17);
+        font-weight: bold;
+        color: black;
     }
 }
 </style>

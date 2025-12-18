@@ -1,32 +1,27 @@
 <template>
     <!-- begin CmdFormElement ---------------------------------------------------------------------------------------- -->
-    <label
-        v-if="(element === 'input' || element === 'select' || element === 'textarea')"
-        :class="[
+    <label v-if="(element === 'input' || element === 'select' || element === 'textarea')" :class="[
         'cmd-form-element',
-         validationStatus,
-         $attrs.class,
-           {
+        $attrs.class,
+        $attrs.required ? validationStatus : null,
+        {
             disabled: $attrs.disabled,
-            inline : displayLabelInline,
-            'stretch-field' : stretchField,
+            inline: displayLabelInline,
+            'stretch-field': stretchField,
             'toggle-switch': toggleSwitch,
             colored: colored,
             'has-state': validationStatus
-           }
-       ]"
-        :for="htmlId"
-        :title="$attrs.title"
-        ref="label">
+        }
+    ]" :for="htmlId" :title="$attrs.title" ref="label">
 
         <!-- begin label-text (+ required asterisk) -->
         <span v-if="(labelText || $slots.labeltext) && $attrs.type !== 'checkbox' && $attrs.type !== 'radio'"
-              :class="['label-text', { hidden: !showLabel }]">
+            :class="['label-text', { hidden: !showLabel }]">
             <span>
                 <span v-if="labelText" v-html="labelText"></span>
 
                 <!-- begin slot 'labeltext' -->
-                <slot v-else name="labeltext"/>
+                <slot v-else name="labeltext" />
                 <!-- end slot 'labeltext' -->
 
                 <!-- begin required asterisk -->
@@ -35,181 +30,121 @@
             </span>
 
             <!-- begin status-icon (linked with tooltip) -->
-            <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
-               href="#"
-               @click.prevent
-               :title="validationTooltip"
-               :aria-errormessage="tooltipId"
-               aria-live="assertive"
-               :id="tooltipId">
+            <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon" href="#" @click.prevent
+                :title="validationTooltip" :aria-errormessage="tooltipId" aria-live="assertive" :id="tooltipId">
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="getStatusIconClass"/>
+                <CmdIcon :iconClass="getStatusIconClass" />
                 <!-- end CmdIcon -->
             </a>
             <!-- end status-icon (linked with tooltip) -->
 
             <!-- begin CmdTooltipForFormElements -->
             <CmdTooltipForFormElements
-                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
-                ref="tooltip"
-                :validationStatus="validationStatus"
-                :relatedId="tooltipId"
-                :scrollContainerForTooltip="scrollContainerForTooltip"
-                :cmdListOfRequirements="listOfRequirements"
-                :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-            />
+                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')" ref="tooltip"
+                :validationStatus="validationStatus" :relatedId="tooltipId"
+                :scrollContainerForTooltip="scrollContainerForTooltip" :cmdListOfRequirements="listOfRequirements"
+                :role="validationStatus === 'error' ? 'alert' : 'dialog'" />
             <!-- end CmdTooltipForFormElements -->
         </span>
         <!-- end label-text (+ required asterisk) -->
 
-        <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio' && $attrs.type !== 'search'"
-              class="flex-container inner-input-wrapper"><!-- container required to place inner icons correctly -->
-            <!-- begin CmdIcon (for icon inside field) -->
-            <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass" />
-            <!-- end CmdIcon (for icon inside field) -->
+        <!-- begin element 'input' -->
+        <template v-if="element === 'input'">
+            <span v-if="$attrs.type !== 'checkbox' && $attrs.type !== 'radio' && $attrs.type !== 'search'"
+                class="flex-container inner-input-wrapper"><!-- container required to place inner icons correctly -->
+                <!-- begin CmdIcon (for icon inside field) -->
+                <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass" />
+                <!-- end CmdIcon (for icon inside field) -->
 
-            <!-- begin inputfield -->
-            <template v-if="element === 'input' && $attrs.type !== 'search'">
-                <input
-                    :id="htmlId"
-                    :class="inputClass"
-                    @focus="tooltip = true"
-                    @blur="onBlur"
-                    @input="onInput"
-                    @mouseover="datalistFocus"
-                    @keyup="checkForCapsLock"
-                    @change="$emit('change', $event)"
-                    :autocomplete="autocomplete"
-                    :list="datalist ? datalist.id : null"
-                    :value="modelValue"
-                    :minlength="$attrs.type === 'password' ? '8' : null"
-                    :maxlength="getMaxLength()"
-                    ref="input"
-                    v-bind="elementAttributes"
-                />
-                <!-- begin delete-icon -->
-                <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'phone')" 
-                    class="deleteicon" 
-                    href="#" 
-                    @click.prevent="deleteInput"
-                   :title="iconDelete?.tooltip">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType"/>
-                    <!-- end CmdIcon -->
+                <!-- begin inputfield -->
+                <template v-if="element === 'input' && $attrs.type !== 'search'">
+                    <input :id="htmlId" :class="inputClass" @focus="tooltip = true" @blur="onBlur" @input="onInput"
+                        @mouseover="datalistFocus" @keyup="checkForCapsLock" @change="$emit('change', $event)"
+                        :autocomplete="autocomplete" :list="datalist ? datalist.id : null" :value="modelValue"
+                        :minlength="$attrs.type === 'password' ? '8' : null" :maxlength="getMaxLength()" ref="input"
+                        v-bind="elementAttributes" />
+                    <!-- begin delete-icon -->
+                    <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'phone')"
+                        class="deleteicon" href="#" @click.prevent="deleteInput" :title="iconDelete?.tooltip">
+                        <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType" />
+                    </a>
+                    <!-- end delete-icon -->
+                </template>
+                <!-- end inputfield -->
+
+                <!-- begin show-password-icon -->
+                <a v-if="$attrs.type === 'password'" href="#" class="place-inside" @mousedown.prevent="showPassword"
+                    @mouseup.prevent="hidePassword" @mouseleave.prevent="hidePassword" @click.prevent
+                    :title="iconPasswordVisible.tooltip">
+                    <CmdIcon :iconClass="iconPasswordVisible.iconClass" />
                 </a>
-                <!-- end delete-icon -->
+                <!-- end show-password-icon -->
+            </span>
+
+            <!-- begin datalist -->
+            <template v-if="datalist && datalist.options.length">
+                <datalist :id="datalist.id">
+                    <option v-for="(option, index) in datalist.options" :key="index" :value="option"></option>
+                </datalist>
             </template>
-            <!-- end inputfield -->
+            <!-- end datalist -->
 
-            <!-- begin show-password-icon -->
-            <a v-if="$attrs.type === 'password'"
-               href="#"
-               class="place-inside"
-               @mousedown.prevent="showPassword"
-               @mouseup.prevent="hidePassword"
-               @mouseleave.prevent="hidePassword"
-               @click.prevent
-               :title="iconPasswordVisible.tooltip"
-            >
-               <!-- begin CmdIcon -->
-               <CmdIcon :iconClass="iconPasswordVisible.iconClass"/>
-                <!-- end CmdIcon -->
-            </a>
-            <!-- end show-password-icon -->
-        </span>
-
-        <!-- begin datalist -->
-        <template v-if="datalist && datalist.options.length">
-            <datalist :id="datalist.id">
-                <option v-for="(option, index) in datalist.options" :key="index" :value="option"></option>
-            </datalist>
-        </template>
-        <!-- end datalist -->
-
-        <!-- begin checkbox and radiobutton -->
-        <template v-else-if="element === 'input' && ($attrs.type === 'checkbox' || $attrs.type === 'radio')">
-            <!-- begin default checkbox/radiobutton -->
-            <template v-if="!(onLabel && offLabel)">
-                <input
-                    v-bind="elementAttributes"
-                    @change="onChange"
-                    @blur="onBlur"
-                    :checked="isChecked"
-                    :value="inputValue"
-                    :class="[inputClass, validationStatus, toggleSwitchIconClass, { 'replace-input-type': replaceInputType}]"
-                    :id="htmlId"
-                    :disabled="$attrs.disabled"
-                    :aria-invalid="validationStatus === 'error'"
-                />
-                <span v-if="labelText || $slots.labeltext" :class="['label-text', { hidden: !showLabel }]">
-                    <span>
-                        <!-- begin labelText for checkbox/radio/toggle-switch (without switch-label) -->
-                        <span v-if="labelText" v-html="labelText"></span>
-                        <!-- end labelText for checkbox/radio/toggle-switch (without switch-label) -->
-
-                        <!-- begin slot 'labeltext' -->
-                        <slot v-else name="labeltext"/>
-                        <!-- end slot 'labeltext' -->
-
-                        <sup v-if="$attrs.required">*</sup>
-                    </span>
-                </span>
-            </template>
-            <!-- end default checkbox/radiobutton -->
-            
-            <!-- begin labels for toggle-switch with switch-label -->
-            <template v-else-if="onLabel && offLabel">
-                <span class="switch-label-wrapper">
-                    <input
-                        v-bind="elementAttributes"
-                        @change="onChange"
-                        @blur="onBlur"
-                        :checked="isChecked"
+            <!-- begin checkbox and radiobutton -->
+            <template v-else-if="$attrs.type === 'checkbox' || $attrs.type === 'radio'">
+                <!-- begin default checkbox/radiobutton -->
+                <template v-if="!(onLabel && offLabel)">
+                    <input v-bind="elementAttributes" @change="onChange" @blur="onBlur" :checked="isChecked"
                         :value="inputValue"
-                        :class="{inputClass, validationStatus}"
-                        :id="htmlId"
-                        :disabled="$attrs.disabled"
-                        :aria-invalid="validationStatus === 'error'"
-                    />
-                    <span class="label-text">{{ onLabel }}</span>
-                    <span class="label-text">{{ offLabel }}</span>
-                </span>
-                <!-- begin labelText for checkbox/radio/toggle-switch (with switch-label) -->
-                <span v-if="labelText" :class="['label-text', {hidden: !showLabel}]">
-                     <span v-html="labelText"></span><sup v-if="$attrs.required">*</sup>
-                </span>
-                <!-- end labelText for checkbox/radio/toggle-switch (with switch-label) -->
+                        :class="[inputClass, validationStatus, toggleSwitchIconClass, { 'replace-input-type': replaceInputType }]"
+                        :id="htmlId" :disabled="$attrs.disabled" :aria-invalid="validationStatus === 'error'" />
+                    <span v-if="labelText || $slots.labeltext" :class="['label-text', { hidden: !showLabel }]">
+                        <span>
+                            <!-- begin labelText for checkbox/radio/toggle-switch (without switch-label) -->
+                            <span v-if="labelText" v-html="labelText"></span>
+                            <!-- end labelText for checkbox/radio/toggle-switch (without switch-label) -->
+
+                            <!-- begin slot 'labeltext' -->
+                            <slot v-else name="labeltext" />
+                            <!-- end slot 'labeltext' -->
+
+                            <sup v-if="$attrs.required">*</sup>
+                        </span>
+                    </span>
+                </template>
+                <!-- end default checkbox/radiobutton -->
+
+                <!-- begin labels for toggle-switch with switch-label -->
+                <template v-else-if="onLabel && offLabel">
+                    <span class="switch-label-wrapper">
+                        <input v-bind="elementAttributes" @change="onChange" @blur="onBlur" :checked="isChecked"
+                            :value="inputValue" :class="[inputClass, validationStatus]" :id="htmlId"
+                            :disabled="$attrs.disabled" :aria-invalid="validationStatus === 'error'" />
+                        <span class="label-text">{{ onLabel }}</span>
+                        <span class="label-text">{{ offLabel }}</span>
+                    </span>
+                    <!-- begin labelText for checkbox/radio/toggle-switch (with switch-label) -->
+                    <span v-if="labelText" :class="['label-text', { hidden: !showLabel }]">
+                        <span v-html="labelText"></span><sup v-if="$attrs.required">*</sup>
+                    </span>
+                    <!-- end labelText for checkbox/radio/toggle-switch (with switch-label) -->
+                </template>
+                <slot v-else></slot>
+                <!-- end labels for toggle-switch with switch-label -->
             </template>
-            <slot v-else></slot>
-            <!-- end labels for toggle-switch with switch-label -->
+            <!-- end checkbox and radiobutton -->
         </template>
-        <!-- end checkbox and radiobutton -->
+        <!-- end element 'input' -->
 
         <!-- begin selectbox -->
-        <select v-if="element === 'select'"
-                v-bind="elementAttributes"
-                :id="htmlId"
-                @blur="onBlur"
-                @change="$emit('update:modelValue', $event.target.value)">
+        <select v-if="element === 'select'" v-bind="elementAttributes" :id="htmlId" @blur="onBlur" @change="onChange">
 
-            <option v-if="!groupSelectOptionsByInitialLetters"
-                    v-for="(option, index) in selectOptions"
-                    :key="index"
-                    :value="option.value"
-                    :selected="option.value === modelValue"
-            >
+            <option v-if="!groupSelectOptionsByInitialLetters" v-for="(option, index) in selectOptions" :key="index"
+                :value="option.value" :selected="option.value === modelValue">
                 {{ option.text }}
             </option>
-            <optgroup v-else :label="key"
-                      v-for="(options, key) in initialLetters"
-                      :key="key"
-            >
-                <option
-                    v-for="(option, optionIndex) in options"
-                    :key="optionIndex"
-                    :value="option.value"
-                    :selected="option.value === modelValue"
-                >
+            <optgroup v-else :label="key" v-for="(options, key) in initialLetters" :key="key">
+                <option v-for="(option, optionIndex) in options" :key="optionIndex" :value="option.value"
+                    :selected="option.value === modelValue">
                     {{ option.text }}
                 </option>
             </optgroup>
@@ -217,18 +152,12 @@
         <!-- end selectbox -->
 
         <!-- begin textarea -->
-        <textarea
-            v-if="element === 'textarea'"
-            v-bind="elementAttributes"
-            :id="htmlId"
-            :value="modelValue"
-            :maxlength="getMaxLength()"
-            @input="onInput"
-            @focus="tooltip = true"
+        <textarea v-if="element === 'textarea'" v-bind="elementAttributes" :id="htmlId" :value="modelValue"
+            :maxlength="getMaxLength()" @input="onInput" @focus="tooltip = true"
             @blur="onBlur"></textarea><!-- no line-break to avoid empty spaces inside textarea -->
         <span v-if="element === 'textarea' && showCharactersTextarea" class="characters-left-wrapper">
             <span v-if="textCharactersLeft">{{ textCharactersLeft }}</span>
-            <span :class="['characters-left', {error: charactersLeft === 0}]">{{ charactersLeft }}</span>
+            <span :class="['characters-left', { error: charactersLeft === 0 }]">{{ charactersLeft }}</span>
         </span>
         <!-- end textarea -->
 
@@ -236,25 +165,20 @@
         <template v-else-if="element === 'input' && $attrs.type === 'search'">
             <span class="inner-input-wrapper flex-container no-gap">
                 <!-- begin CmdIcon (for icon inside field) -->
-                <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass"/>
+                <CmdIcon v-if="fieldIconClass" class="place-inside" :iconClass="fieldIconClass" />
                 <!-- end CmdIcon (for icon inside field) -->
-                <input
-                    v-bind="elementAttributes"
-                    :id="htmlId"
-                    @input="onInput"
-                    :maxlength="getMaxLength()"
-                    :value="modelValue"
-                />
-                <a v-if="showSearchButton" href="#" :class="['button flex-none', {disabled: $attrs.disabled}]"
-                   :title="iconSearch.tooltip" @click.prevent="executeSearch">
+                <input v-bind="elementAttributes" :id="htmlId" @input="onInput" :maxlength="getMaxLength()"
+                    :value="modelValue" />
+                <a v-if="showSearchButton" href="#" :class="['button flex-none', { disabled: $attrs.disabled }]"
+                    :title="iconSearch.tooltip" @click.prevent="executeSearch">
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconSearch.iconClass"/>
+                    <CmdIcon :iconClass="iconSearch.iconClass" />
                     <!-- end CmdIcon -->
                 </a>
                 <a v-if="iconDelete?.show && !$attrs.disabled" class="deleteicon" href="#" @click.prevent="deleteInput"
-                   :title="iconDelete?.tooltip">
+                    :title="iconDelete?.tooltip">
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType"/>
+                    <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType" />
                     <!-- end CmdIcon -->
                 </a>
             </span>
@@ -267,20 +191,15 @@
         <!-- begin CmdIcon -->
         <CmdIcon
             v-if="nativeButton?.icon?.show && (nativeButton?.icon?.position === 'before' || !nativeButton?.icon?.position)"
-            :iconClass="nativeButton?.icon?.iconClass"
-            :type="nativeButton?.icon?.iconType"
-        />
+            :iconClass="nativeButton?.icon?.iconClass" :type="nativeButton?.icon?.iconType" />
         <!-- end CmdIcon -->
         <span v-if="nativeButton?.icon && nativeButton?.text">{{ nativeButton.text }}</span>
         <template v-else>
             {{ nativeButton.text }}
         </template>
         <!-- begin CmdIcon -->
-        <CmdIcon
-            v-if="nativeButton?.icon?.show && nativeButton?.icon?.position === 'after'"
-            :iconClass="nativeButton?.icon?.iconClass"
-            :type="nativeButton?.icon?.iconType"
-        />
+        <CmdIcon v-if="nativeButton?.icon?.show && nativeButton?.icon?.position === 'after'"
+            :iconClass="nativeButton?.icon?.iconClass" :type="nativeButton?.icon?.iconType" />
         <!-- end CmdIcon -->
     </button>
     <!-- end button -->
@@ -731,7 +650,7 @@ export default {
         },
         buttonAttrs() {
             // copy all native attributes
-            const allAttrs = {...this.$attrs}
+            const allAttrs = { ...this.$attrs }
 
             // check if specific tooltip for icon is set (and add as title-attribute)
             if (this.nativeButton.icon?.tooltip) {
@@ -852,9 +771,9 @@ export default {
                 const value = event.target.value
 
                 // if input is filled, set status to success (expect for checkboxes and radiobuttons)
-                if (!["checkbox", "radio"].includes(this.$attrs.type) && value) {
-                    this.validationStatus = "success"
-                }
+                //if (!["checkbox", "radio"].includes(this.$attrs.type) && value) {
+                this.validationStatus = "success"
+                //}
 
                 if (typeof event.target.checkValidity === "function" && !event.target.checkValidity()) {
                     this.validationStatus = "error"
@@ -885,6 +804,8 @@ export default {
             this.$emit('update:modelValue', event.target.value)
         },
         onChange(event) {
+            this.validateInput(event)
+
             if (typeof this.modelValue === "boolean") {
                 this.$emit("update:modelValue", event.target.checked)
             } else if (typeof this.modelValue === "string") {
@@ -960,7 +881,7 @@ export default {
     }
 
     /* icon right aligned in input */
-    input + .place-inside {
+    input+.place-inside {
         left: auto;
         right: .5rem;
         color: var(--hyperlink-color);
@@ -976,37 +897,51 @@ export default {
         }
     }
 
-    &.has-state, & + .cmd-tooltip {
-        &.error {
-            * {
-                --status-color: var(--error-color);
+    &:has([required]) {
+        &.has-state,
+        &+.cmd-tooltip {
+            &.error {
+                * {
+                    --status-color: var(--error-color);
+                }
             }
-        }
 
-        ::placeholder {
-            color: var(--status-color);
-        }
-
-        span {
-            color: var(--status-color);
-
-            &.place-inside {
-                color: inherit;
+            ::placeholder {
+                color: var(--status-color);
             }
-        }
 
-        &.success * {
-            --status-color: var(--success-color);
+            span {
+                color: var(--status-color);
+
+                &.place-inside {
+                    color: inherit;
+                }
+            }
+
+            &.success {
+                * {
+                    --status-color: var(--success-color);
+                }
+
+                &:has(input[type="checkbox"], input[type="radio"]) {
+                    * {
+                        --status-color: var(--color-scheme-text-color);
+                        /* overwrite --status-color (success) for chekcboxes and radiobuttons */
+                    }
+                }
+            }
         }
     }
 
     :is(input[type="checkbox"], input[type="radio"]):checked {
-        ~ .label-text span {
+        ~.label-text span {
             color: var(--hyperlink-color);
         }
 
-        &:hover, &:active, &:focus {
-            ~ .label-text span {
+        &:hover,
+        &:active,
+        &:focus {
+            ~.label-text span {
                 color: var(--hyperlink-color-highlighted);
             }
         }
@@ -1014,7 +949,7 @@ export default {
 
     &.inline {
         .inner-input-wrapper {
-            & > a:not(.button) {
+            &>a:not(.button) {
                 margin-left: calc(var(--default-margin) / 2);
             }
         }
@@ -1026,9 +961,9 @@ export default {
         }
 
         .label-text {
-           [class*="icon-"] {
-               top: -.2rem;
-           }
+            [class*="icon-"] {
+                top: -.2rem;
+            }
         }
     }
 
@@ -1048,7 +983,8 @@ export default {
             right: 1rem;
             transform: translateY(-50%);
             z-index: 100;
-            width: auto; /* avoid to be stretched to keep correct position */
+            width: auto;
+            /* avoid to be stretched to keep correct position */
 
             /* set styles to avoid overwriting by has-state-colors */
             &.button {
@@ -1056,7 +992,9 @@ export default {
                     color: var(--color-scheme-background);
                 }
 
-                &:hover, &:active, &:focus {
+                &:hover,
+                &:active,
+                &:focus {
                     span {
                         color: var(--color-scheme-text-color);
                     }
@@ -1067,15 +1005,17 @@ export default {
         a.button {
             right: 0;
             align-self: stretch;
-            aspect-ratio: 1 / 1;  /* square */
-            & + a {
+            aspect-ratio: 1 / 1;
+
+            /* square */
+            &+a {
                 right: 5rem;
             }
         }
     }
 
     .place-inside {
-        & + input {
+        &+input {
             padding-left: calc(var(--default-padding) * 3);
         }
     }

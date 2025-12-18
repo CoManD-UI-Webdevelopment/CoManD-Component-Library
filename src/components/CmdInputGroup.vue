@@ -2,13 +2,13 @@
     <!-- begin CmdInputGroup ---------------------------------------------------------------------------------------- -->
     <div :class="[
         'cmd-input-group label',
-        validationStatus,
+        required ? validationStatus : null,
         {
+            'has-state': validationStatus,
             inline: labelInline,
             'multiple-switch': multipleSwitch,
             disabled: disableGroup,
-            'toggle-switches': toggleSwitches,
-            'has-state': validationStatus
+            'toggle-switches': toggleSwitches
         }
         ]"
          :aria-labelledby="htmlId">
@@ -37,7 +37,7 @@
                 ref="tooltip"
                 :showRequirements="showRequirements"
                 :cmdListOfRequirements="listOfRequirements"
-                :validationStatus="validationStatus"
+                :validationStatus="required ? validationStatus : null"
                 :validationMessage="getValidationMessage"
                 :inputAttributes="$attrs"
                 :inputModelValue="modelValue"
@@ -50,7 +50,7 @@
         <!-- end label -->
 
         <!-- begin view without slot -->
-        <span v-if="!useSlot" :class="['flex-container', {'vertical': orientation === 'vertical','flex-none': !stretchHorizontally, 'no-gap': multipleSwitch}]">
+        <span v-if="!useSlot" :class="['flex-container', {'vertical': orientation === 'vertical','flex-items-flex-none': !stretchHorizontally, 'no-gap': multipleSwitch}]">
             <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches, colored: colored}">
                 <input
                     :type="inputTypes"
@@ -59,7 +59,7 @@
                     :value="inputElement.value"
                     v-model="inputValue"
                     :disabled="inputElement.disabled"
-                    :class="{'replace-input-type': replaceInputType}"
+                    :class="[inputElements.htmlClass, {'replace-input-type': replaceInputType}]"
                 />
                 <!-- begin CmdIcon -->
                 <CmdIcon
@@ -109,7 +109,7 @@ export default {
         /**
          * set orientation
          *
-         * @allwoedValues = horizontal, vertical
+         * @allowedValues = horizontal, vertical
          */
         orientation: {
             type: String,
@@ -277,6 +277,8 @@ export default {
                 return
             }
             this.validationStatus = this.status
+
+            this.$emit('validation-status-change', this.validationStatus)
         }
     },
     computed: {
@@ -300,6 +302,7 @@ export default {
             },
             // set/write a value to update v-model for this component
             set(value) {
+                this.$emit('validation-status-change', this.validationStatus)
                 this.$emit("update:modelValue", value)
             }
         }
@@ -343,10 +346,6 @@ export default {
         }
 
         &:hover, &:active, &:focus {
-            > span {
-                color: var(--hyperlink-color-highlighted)
-            }
-
             & + .flex-container {
                 input {
                     border-color: var(--default-border-color);
@@ -360,13 +359,17 @@ export default {
             --status-color: var(--hyperlink-color);
         }
 
+        .label-text span {
+                color: var(--status-color);
+            }
+
         &.error {
             --status-color: var(--error-color);
+
+            /* labels for checkboxes and radiobuttons */
+   
         }
 
-        label, span, [class*="icon-"]  {
-            color: var(--status-color);
-        }
 
         &.multiple-switch {
             &.error {
@@ -380,7 +383,7 @@ export default {
                     }
 
                     &:is(:hover, :active, :focus) {
-                        span, [class*="icon-"] {
+                        > * {
                             color: var(--hyperlink-color-highlighted);
                         }
                     }

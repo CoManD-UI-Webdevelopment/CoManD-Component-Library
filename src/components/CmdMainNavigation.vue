@@ -394,6 +394,7 @@ export default {
 #toggle-offcanvas {
     margin-left: 0;
     display: none;
+    aspect-ratio: 1/1;
 }
 </style>
 
@@ -446,7 +447,7 @@ export default {
                         ul {
                             z-index: 1000; /* keep ul above overlay */
                             height: 100%;
-                            background: var(--default-background);
+                            background: var(--main-navigation-background);
                         }
                     }
                 }

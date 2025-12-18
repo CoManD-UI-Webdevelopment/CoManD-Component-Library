@@ -106,7 +106,7 @@ export default {
          */
         resizeHeaderOnScroll: {
             type: Boolean,
-            default: true
+            default: false
         },
         /**
          * set selector for element that scrolls content to resize header
@@ -177,6 +177,7 @@ export default {
 /* begin cmd-site-header ---------------------------------------------------------------------------------------- */
 .cmd-site-header {
     --logo-width-on-scroll: 50%;
+    --header-scroll-animation: var(--default-transition);
 
     grid-area: site-header;
     display: flex;
@@ -188,9 +189,6 @@ export default {
         z-index: 300;
 
         header {
-            --header-scroll-animation: var(--default-transition);
-            transition: var(--header-scroll-animation);
-
             .cmd-company-logo {
                 figure {
                     img {
