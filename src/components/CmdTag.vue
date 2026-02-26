@@ -43,7 +43,7 @@ export default {
          * @allowedValues: "none", "primary", "secondary", "tertiary"
          */
          highlightLevel: {
-            type: Boolean,
+            type: String,
             default: "none",
             validator(value) {
                 return value === "none" ||

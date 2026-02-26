@@ -158,7 +158,10 @@ export default {
     },
     methods: {
         onImageLoaded(event) {
-            this.defaultLogoHeight = (event.target.height / 10) + "rem"
+            if(!this.useGrid) {
+                // image should must have height to bi visible as flex-item (else size is 0x0)
+                this.defaultLogoHeight = (event.target.height / 10) + "rem"
+            }
         },
         emitOffcanvasStatus(event) {
             this.$emit("offcanvas", event)

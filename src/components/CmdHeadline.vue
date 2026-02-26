@@ -38,11 +38,11 @@
             <!-- end CmdIcon -->
 
             <!-- begin default headline-text without slot -->
-            <span v-if="headlineText" v-html="headlineText"></span>
+            <span v-if="headlineText" v-html="headlineText" :class="['text-align-' + textAlign]"></span>
             <!-- end default headline-text without slot -->
 
             <!-- begin headline-text with slot -->
-            <span v-else>
+            <span v-else :class="['text-align-' + textAlign]">
                 <!-- begin slot -->
                 <slot></slot>
                 <!-- end slot -->
@@ -91,13 +91,15 @@
                         <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
                         <!-- end CmdIcon -->
 
-                        <!-- begin pre-headline-text -->
-                        <span class="pre-headline-text">{{ preHeadlineText }}</span>
-                        <!-- end pre-headline-text -->
+                        <span :class="['pre-headline-text-wrapper', 'text-align-' + textAlign]">
+                            <!-- begin pre-headline-text -->
+                            <span class="pre-headline-text">{{ preHeadlineText }}</span>
+                            <!-- end pre-headline-text -->
 
-                        <!-- begin slot -->
-                        <slot>{{ headlineText }}</slot>
-                        <!-- end slot -->
+                            <!-- begin slot -->
+                            <slot>{{ headlineText }}</slot>
+                            <!-- end slot -->
+                         </span>
                     </component>
                 </template>
                 <component v-else-if="headlineText" :is="headlineTag">
@@ -150,13 +152,13 @@ export default {
         /**
          * set highlight-level for headline
          * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * @allowedValues: "", "primary", "secondary", "tertiary"
          */
          highlightLevel: {
-            type: Boolean,
-            default: "none",
+            type: String,
+            default: "",
             validator(value) {
-                return value === "none" ||
+                return value === "" ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -178,7 +180,7 @@ export default {
          */
         textAlign: {
             type: String,
-            default: "left",
+            required: false,
             validator(value) {
                 return value === "left" ||
                     value === "center" ||
@@ -261,14 +263,6 @@ export default {
 .cmd-headline {
     margin-bottom: var(--headline-margin-bottom);
     gap: calc(var(--default-gap) / 2);
-
-    &.text-center > * {
-        text-align: center;
-    }
-
-    &.text-right > * {
-        text-align: right;
-    }
 
     &.has-pre-headline-text {
         text-align: inherit;
@@ -361,8 +355,8 @@ export default {
         }
     }
 
-    p {
-        margin-bottom: 0;
+    span[class*="text-align"] {
+        display: block;
     }
 
     h1, h2, h3, h4, h5, h6 {

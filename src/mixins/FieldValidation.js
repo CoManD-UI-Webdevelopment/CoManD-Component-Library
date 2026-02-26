@@ -15,6 +15,13 @@ export default {
     ],
     props: {
         /**
+         * 
+         */
+        useCustomTooltip: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * validation message shown on clicking the status-icon of a form-element with state
          */
         validationMessage: {

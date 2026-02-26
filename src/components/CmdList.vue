@@ -11,7 +11,7 @@
             'list-content-type-' + listContentType
         ]">
             <!-- begin cmd-headline -->
-            <CmdHeadline v-if="cmdHeadline?.headlineText || editModeContext" v-bind="cmdHeadline" />
+            <CmdHeadline v-if="cmdHeadline?.headlineText || editModeContext" v-bind="cmdHeadlineProperties" />
             <!-- end cmd-headline -->
 
             <!-- begin list of links ordered/unordered -->
@@ -147,13 +147,13 @@ export default {
         /**
          * define the highlight-level
          * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * @allowedValues: "", "primary", "secondary", "tertiary"
          */
         highlightLevel: {
             type: String,
-            default: "none",
+            default: null,
             validator(value) {
-                return value === "none" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -176,6 +176,8 @@ export default {
         },
         /**
          * set list-type
+         * 
+         * listType-property must be set to "ordered" or "unordered"
          *
          * @allowedValues: links, images, tags
          */
@@ -231,6 +233,8 @@ export default {
         },
         /**
          * toggle list-style-items visibility
+         * 
+         * listType-property must be set to "ordered" or "unordered"
          *
          * @affectsStyling: true
          */
@@ -284,9 +288,9 @@ export default {
             }
         },
         /**
-         * allow tags to be remove by click 
+         * allow tags to be removed by click 
          * 
-         * (listContentType-property must be set to "tags")
+         * listContentType-property must be set to "tags"
          */
         removeTagByClick: {
             type: Boolean,
@@ -295,7 +299,7 @@ export default {
         /**
          * define remove-icon/link for tags
          * 
-         * (listContentType-property must be set to "tags" and removeTabByClick-property must be set to true)
+         * listContentType-property must be set to "tags" and removeTabByClick-property must be set to true
          */
         iconRemoveTag: {
             type: Object,
@@ -319,6 +323,12 @@ export default {
         this.updateActiveClass()
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                headlineLevel: 3,
+                ...this.cmdHeadline
+            }
+        },
         setStretchClass() {
             if (this.largeIcons && this.orientation === "horizontal") {
                 return "stretch"

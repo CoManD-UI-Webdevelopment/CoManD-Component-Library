@@ -30,21 +30,42 @@
             </span>
 
             <!-- begin status-icon (linked with tooltip) -->
-            <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon" href="#" @click.prevent
-                :title="validationTooltip" :aria-errormessage="tooltipId" aria-live="assertive" :id="tooltipId">
-                <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="getStatusIconClass" />
-                <!-- end CmdIcon -->
-            </a>
+            <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
+                type="button"
+                class="no-style"
+                :title="validationTooltip" 
+                :aria-errormessage="tooltipId" 
+                aria-live="assertive" 
+                :popovertarget="'tooltip-target-' + htmlId"
+                :style="'anchor-name: --tooltip-anchor-' + htmlId"
+            >
+                    <!-- begin CmdIcon -->
+                    <CmdIcon :iconClass="getStatusIconClass" />
+                    <!-- end CmdIcon -->
+            </button>
             <!-- end status-icon (linked with tooltip) -->
 
-            <!-- begin CmdTooltipForFormElements -->
-            <CmdTooltipForFormElements
-                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')" ref="tooltip"
-                :validationStatus="validationStatus" :relatedId="tooltipId"
-                :scrollContainerForTooltip="scrollContainerForTooltip" :cmdListOfRequirements="listOfRequirements"
-                :role="validationStatus === 'error' ? 'alert' : 'dialog'" />
-            <!-- end CmdTooltipForFormElements -->
+                 <!-- begin CmdTooltip -->
+                <CmdTooltip
+                    ref="tooltip"
+                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
+                    :id="'tooltip-target-' + htmlId"
+                    :scrollContainer="scrollContainerForTooltip"
+                    :popoverTargetName="'tooltip-target-' + htmlId"
+                    :validationStatus="validationStatus"
+                    :role="validationStatus === 'error' ? 'alert' : 'dialog'"
+                    :toggle-visibility-by-click="true"
+                    :style="'position-anchor: --tooltip-anchor-' + htmlId"
+                >
+
+                    <!-- begin CmdListOfRequirements -->
+                    <CmdListOfRequirements
+                        v-if="cmdListOfRequirementsProperties.showRequirements"
+                        v-bind="cmdListOfRequirementsProperties"
+                    />
+                    <!-- end CmdListOfRequirements -->
+                </CmdTooltip>
+                <!-- end CmdTooltip -->
         </span>
         <!-- end label-text (+ required asterisk) -->
 
@@ -60,8 +81,11 @@
                 <template v-if="element === 'input' && $attrs.type !== 'search'">
                     <input :id="htmlId" :class="inputClass" @focus="tooltip = true" @blur="onBlur" @input="onInput"
                         @mouseover="datalistFocus" @keyup="checkForCapsLock" @change="$emit('change', $event)"
-                        :autocomplete="autocomplete" :list="datalist ? datalist.id : null" :value="modelValue"
-                        :minlength="$attrs.type === 'password' ? '8' : null" :maxlength="getMaxLength()" ref="input"
+                        :autocomplete="autocomplete" :list="datalist ? datalist.id : null" 
+                        :value="modelValue"
+                        :minlength="$attrs.type === 'password' ? '8' : null" 
+                        :maxlength="getMaxLength()" 
+                        ref="input"
                         v-bind="elementAttributes" />
                     <!-- begin delete-icon -->
                     <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'phone')"
@@ -137,7 +161,6 @@
 
         <!-- begin selectbox -->
         <select v-if="element === 'select'" v-bind="elementAttributes" :id="htmlId" @blur="onBlur" @change="onChange">
-
             <option v-if="!groupSelectOptionsByInitialLetters" v-for="(option, index) in selectOptions" :key="index"
                 :value="option.value" :selected="option.value === modelValue">
                 {{ option.text }}
@@ -226,12 +249,23 @@ export default {
         Identifier,
         Tooltip
     ],
+    emits: ["blur", "change", "validation-status-change", "update:modelValue"],
     data() {
         return {
             errorOccurred: 0
         }
     },
     props: {
+         /**
+         * set value for v-model (must be named modelValue in vue3 if default v-model should be used)
+         */
+         modelValue: {
+            type: [String, Boolean, Array, Number],
+            default: ""
+        },
+        /**
+         * group entries of selectbox by first letter of its options
+         */
         groupSelectOptionsByInitialLetters: {
             type: Boolean,
             default: false
@@ -242,13 +276,6 @@ export default {
         scrollContainerForTooltip: {
             type: String,
             required: false
-        },
-        /**
-         * set value for v-model (must be named modelValue in vue3 if default v-model should be used)
-         */
-        modelValue: {
-            type: [String, Boolean, Array, Number],
-            default: ""
         },
         /**
          * set type of native form-element
@@ -629,9 +656,29 @@ export default {
                     iconClass: "icon-not-visible"
                 }
             }
-        }
+        },
+        /**
+         * properties for CmdListOfRequirements-component
+         */
+         cmdListOfRequirements: {
+            type: Object,
+            required: false   
+         }
     },
     computed: {
+        cmdListOfRequirementsProperties() {
+            return {
+                showRequirements: true,
+                validationTooltip: "",
+                inputRequirements: [],
+                inputAttributes: {},
+                showHeadline: true,
+                inputModelValue: "",
+                helplink: {},
+                labelText: "",
+                ...this.cmdListOfRequirements
+            }
+        },
         initialLetters() {
             return this.getInitialLetters(this.selectOptions)
         },
@@ -718,7 +765,7 @@ export default {
     methods: {
         deleteInput() {
             this.setFocus()
-            this.$emit('update:modelValue', '')
+            this.$emit("update:modelValue", '')
         },
         getInitialLetters(listOfOptions) {
             const groupedListOfOptions = {}
@@ -743,7 +790,7 @@ export default {
             if (this.$attrs.type === "email") {
                 requirements.push({
                     message: this.getMessage("form_element.validation_tooltip.is_valid_email"),
-                    valid: () => this.$refs.input.checkValidity()
+                    valid: () => this.$refs.input?.checkValidity()
                 })
             }
             return requirements
@@ -791,17 +838,17 @@ export default {
                     }
                 }
 
-                this.$emit('validation-status-change', this.validationStatus)
+                this.$emit("validation-status-change", this.validationStatus)
             }
         },
         onBlur(event) {
             this.validateInput(event)
             this.closeTooltipOnBlur()
-            this.$emit('blur', event)
+            this.$emit("blur", event)
         },
         onInput(event) {
             this.validateInput(event)
-            this.$emit('update:modelValue', event.target.value)
+            this.$emit("update:modelValue", event.target.value)
         },
         onChange(event) {
             this.validateInput(event)
@@ -921,6 +968,7 @@ export default {
             &.success {
                 * {
                     --status-color: var(--success-color);
+                    --form-input-text-color: var(--success-color);
                 }
 
                 &:has(input[type="checkbox"], input[type="radio"]) {

@@ -17,35 +17,43 @@
         <span v-show="showLabel" class="label-text">
             <span :id="htmlId">{{ labelText }}<sup v-if="required" aria-hidden="true">*</sup></span>
 
-            <!-- begin status-icon (linked with tooltip) -->
-            <a v-if="(required || inputRequirements.length > 0) && showStatusIcon"
-               href="#"
-               @click.prevent
-               :title="validationTooltip"
-               :aria-errormessage="tooltipId"
-               aria-live="assertive"
-               :id="tooltipId">
-               <!-- begin CmdIcon -->
-               <CmdIcon :iconClass="getStatusIconClass"/>
-                <!-- end CmdIcon -->
-            </a>
-            <!-- end status-icon (linked with tooltip) -->
+                <!-- begin status-icon (linked with tooltip) -->
+                <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
+                    type="button"
+                    class="no-style"
+                    :title="validationTooltip" 
+                    :aria-errormessage="tooltipId" 
+                    aria-live="assertive" 
+                    :popovertarget="'tooltip-target-' + htmlId"
+                    :style="'anchor-name: --tooltip-anchor-' + htmlId"
+                >
+                        <!-- begin CmdIcon -->
+                        <CmdIcon :iconClass="getStatusIconClass" />
+                        <!-- end CmdIcon -->
+                </button>
+                <!-- end status-icon (linked with tooltip) -->
 
-            <!-- begin CmdTooltipForFormElements -->
-            <CmdTooltipForFormElements
-                v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
-                ref="tooltip"
-                :showRequirements="showRequirements"
-                :cmdListOfRequirements="listOfRequirements"
-                :validationStatus="required ? validationStatus : null"
-                :validationMessage="getValidationMessage"
-                :inputAttributes="$attrs"
-                :inputModelValue="modelValue"
-                :helplink="helplink"
-                :relatedId="tooltipId"
-                :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-            />
-            <!-- end CmdTooltipForFormElements -->
+                 <!-- begin CmdTooltip -->
+                <CmdTooltip
+                    ref="tooltip"
+                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
+                    :id="'tooltip-target-' + htmlId"
+                    :scrollContainer="scrollContainerForTooltip"
+                    :popoverTargetName="'tooltip-target-' + htmlId"
+                    :validationStatus="validationStatus"
+                    :role="validationStatus === 'error' ? 'alert' : 'dialog'"
+                    :toggle-visibility-by-click="true"
+                    :style="'position-anchor: --tooltip-anchor-' + htmlId"
+                >
+
+                    <!-- begin CmdListOfRequirements -->
+                    <CmdListOfRequirements
+                        v-if="cmdListOfRequirementsProperties.showRequirements"
+                        v-bind="cmdListOfRequirementsProperties"
+                    />
+                    <!-- end CmdListOfRequirements -->
+                </CmdTooltip>
+                <!-- end CmdTooltip -->
         </span>
         <!-- end label -->
 
@@ -98,12 +106,20 @@ export default {
         Identifier,
         Tooltip
     ],
+    emits: ["validation-status-change", "update:modelValue"],
     props: {
         /**
          * set value for v-model (must be named modelValue in vue3 if default v-model should be used)
          */
         modelValue: {
             type: [Array, String],
+            required: false
+        },
+        /**
+        * specify a scroll-container which scrolling hides the tooltip
+        */
+         scrollContainerForTooltip: {
+            type: String,
             required: false
         },
         /**
@@ -131,7 +147,7 @@ export default {
          */
         showStatusIcon: {
             type: Boolean,
-            default: true
+            default: false
         },
         /**
          * on/off-, yes/no-color-styling
@@ -264,7 +280,14 @@ export default {
         disableGroup: {
             type: Boolean,
             default: false
-        }
+        },
+        /**
+        * properties for CmdListOfRequirements-component
+        */
+        cmdListOfRequirements: {
+            type: Object,
+            required: false   
+         }
     },
     methods: {
         updateStatus() {
@@ -278,10 +301,23 @@ export default {
             }
             this.validationStatus = this.status
 
-            this.$emit('validation-status-change', this.validationStatus)
+            this.$emit("validation-status-change", this.validationStatus)
         }
     },
     computed: {
+        cmdListOfRequirementsProperties() {
+            return {
+                showRequirements: true,
+                validationTooltip: "",
+                inputRequirements: [],
+                inputAttributes: {},
+                showHeadline: true,
+                inputModelValue: "",
+                helplink: {},
+                labelText: "",
+                ...this.cmdListOfRequirements
+            }
+        },
         validationTooltip() {
             if (!this.useCustomTooltip) {
                 return this.getValidationMessage
@@ -302,7 +338,7 @@ export default {
             },
             // set/write a value to update v-model for this component
             set(value) {
-                this.$emit('validation-status-change', this.validationStatus)
+                this.$emit("validation-status-change", this.validationStatus)
                 this.$emit("update:modelValue", value)
             }
         }
@@ -340,6 +376,10 @@ export default {
     /* overwrite default behavior from frontend-framework */
     > .label-text {
         display: inline-flex;
+
+        .flex-container {
+            gap: 1rem 1.5rem; /* vertical, horizontal */
+        }
 
         > span + a:has([class*="icon-"]) {
             margin-left: calc(var(--default-margin) / 2);

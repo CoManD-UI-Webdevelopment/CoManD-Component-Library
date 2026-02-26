@@ -10,7 +10,8 @@
     "labelText": "Text input",
     "placeholder": "Placeholdertext",
     "required": false,
-    "disabled": false
+    "disabled": false,
+    "scrollContainerForTooltip": ".page-wrapper"
   },
   {
     "component": "flexContainer",
@@ -163,7 +164,8 @@
         "labelText": "Input Group (Checkbox):",
         "toggleSwitches": true,
         "inputTypes": "checkbox",
-        "value": "checkbox-website",
+        "value": ["checkbox-website"],
+        "name": "input-group-checkboxes",
         "inputElements": [
           {
             "labelText": "Website",
@@ -193,6 +195,7 @@
         "labelText": "Input Group (Radio):",
         "toggleSwitches": true,
         "value": "radio-website",
+        "name": "input-group-radiobuttons",
         "inputElements": [
           {
             "labelText": "Website",

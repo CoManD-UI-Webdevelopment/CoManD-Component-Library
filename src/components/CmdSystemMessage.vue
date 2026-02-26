@@ -5,7 +5,7 @@
             v-if="showSystemMessage"
             :class="['cmd-system-message', 'system-message', 'flex-container', 'flex-direction-column', { 'full-width': fullWidth }, systemMessageTextAlign, validationStatus]"
             :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-            :aria-labelledby="htmlId"
+            :aria-labelledby="ariaId"
         >
             <!-- begin slot-content -->
             <slot>
@@ -16,7 +16,7 @@
                     :headlineText="systemMessage"
                     :headlineLevel="messageHeadlineLevel"
                     :textAlign="textAlign"
-                    :id="htmlId"
+                    :id="ariaId"
                 />
                 <!-- end CmdHeadline -->
             </slot>
@@ -50,7 +50,7 @@ export default {
     data() {
         return {
             showSystemMessage: true,
-            id: this.ariaReferenceId || this.buildHtmlId("system-message") // mixin requires id to be defined
+            ariaId: this.ariaReferenceId || this.buildHtmlId("system-message") // mixin requires id to be defined
         }
     },
     props:  {
@@ -221,7 +221,7 @@ export default {
         top: .5rem;
         right: .5rem;
         text-decoration: none;
-        z-index: 100;
+        z-index: 10;
         line-height: 1;
         background: var(--color-white);
         border-radius: var(--full-circle);

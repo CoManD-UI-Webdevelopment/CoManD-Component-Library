@@ -64,7 +64,7 @@ export default {
          * @allowedValues: "none", "primary", "secondary", "tertiary"
          */
          highlightLevel: {
-            type: Boolean,
+            type: String,
             default: "primary",
             validator(value) {
                 return value === "none" ||
@@ -341,19 +341,6 @@ export default {
             .active {
                 .number {
                     background: var(--error-color) !important;
-                }
-            }
-        }
-
-        &.success {
-            .number {
-                border-color: var(--success-color);
-                color: var(--success-color);
-            }
-
-            .active {
-                .number {
-                    background: var(--success-color) !important;
                 }
             }
         }

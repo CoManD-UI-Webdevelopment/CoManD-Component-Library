@@ -1,6 +1,6 @@
 <template>
     <!-- begin CmdLoginForm ---------------------------------------------------------------------------------------- -->
-    <fieldset v-show="!sendLogin" class="cmd-login-form flex-container">
+    <fieldset v-if="!sendLogin" class="cmd-login-form flex-container">
         <legend :class="{hidden : !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left'}">
             {{ legendLoginForm.text }}
         </legend>
@@ -50,9 +50,10 @@
 
         <!-- begin default-login-button -->
         <button v-if="!showLogin"
+                type="button"
                 class="button stretch-on-small-devices"
                 v-bind="buttonLoginWithYourDataDefaultOptions"
-                @click.prevent="showLogin = true">
+                @click="showLogin = true">
                 <!-- begin CmdIcon -->
                 <CmdIcon
                     v-if="buttonLoginWithYourDataDefaultOptions.icon?.iconClass"
@@ -66,7 +67,7 @@
         <!-- end default-login-button -->
 
         <!-- begin form elements -->
-        <div v-show="showLogin" :class="['login-fields flex-container', {'vertical': orientation === 'vertical'}]">
+        <div v-if="showLogin" :class="['login-fields flex-container', {'vertical': orientation === 'vertical'}]">
             <!-- begin CmdFormElement -->
             <CmdFormElement
                 element="input"
@@ -153,7 +154,7 @@
     <!-- end login-form -->
 
     <!-- begin send-login-form -->
-    <fieldset v-show="sendLogin" class="cmd-login-form flex-container">
+    <fieldset v-if="sendLogin" class="cmd-login-form flex-container">
         <legend :class="{hidden : !legendForgotLoginForm.show, 'align-left': legendForgotLoginForm.align === 'left'}">
             {{ legendForgotLoginForm.text }}
         </legend>

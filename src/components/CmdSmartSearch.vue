@@ -56,7 +56,7 @@ export default {
          */
         maxNumberOfRecommendations: {
             type: Number,
-            default: 3
+            default: 5
         },
         /**
          * set if list of recommendations will be filtered by first letter (else by any containing letter)
@@ -64,13 +64,6 @@ export default {
         filterByFirstLetter: {
             Boolean,
             default: false
-        },
-        /**
-         * set properties for CmdFormElement-component (search-field)
-         */
-        cmdFormElement: {
-            type: Object,
-            required: false
         },
         // todo: replace property by computed-property that handles position of dropdown-list automatically
         openListToTop: {
@@ -83,6 +76,13 @@ export default {
         allowUserToEnterNewTerm: {
             type: Boolean,
             default: true
+        },
+        /**
+        * set properties for CmdFormElement-component (search-field)
+        */
+        cmdFormElement: {
+            type: Object,
+            required: false
         }
     },
     computed: {
@@ -179,11 +179,15 @@ export default {
         input {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
+            anchor-name: --smart-search;
         }
     }
 
     .list-of-recommendations {
         position: absolute;
+        position-anchor: --smart-search;
+        top: anchor(bottom);
+        left: anchor(left);
         width: 100%;
         z-index: 100;
         max-height: 15rem;
@@ -195,7 +199,14 @@ export default {
         background: var(--default-background);
         border-bottom-left-radius: var(--default-border-radius);
         border-bottom-right-radius: var(--default-border-radius);
+        position-try-options: flip-block flip-inline; /* let brwoser handle flipping on overflow */
+        position-try: --flip-to-top;
 
+        /* Fallback rule */
+        @position-try --flip-to-top {
+            bottom: anchor(top);
+        }
+        
         li {
             &:not(:last-child) {
                 border-bottom: var(--default-border);
@@ -219,10 +230,14 @@ export default {
                 width: 100%;
                 background: var(--default-background);
 
+                span, span[class*="icon-"] {
+                    text-decoration: none !important;
+                }
+
                 &:hover, &:active, &:focus {
                     background: var(--hyperlink-color);
 
-                    span, span[class*="icon"] {
+                    span, span[class*="icon-"] {
                         color: var(--color-white);
                     }
                 }
@@ -241,6 +256,7 @@ export default {
         }
 
         .list-of-recommendations {
+            bottom: anchor(bottom);
             border-bottom: 0;
             top: auto;
             bottom: var(--form-input-height);

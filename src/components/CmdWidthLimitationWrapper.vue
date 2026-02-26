@@ -5,8 +5,8 @@
         <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
             <!-- begin cmd-headline -->
             <CmdHeadline
-                v-if="cmdHeadline"
-                v-bind="cmdHeadline"
+                v-if="cmdHeadline?.headlineText"
+                v-bind="cmdHeadlineProperties"
             />
             <!-- end cmd-headline -->
 
@@ -112,7 +112,7 @@ export default {
         /**
          * properties for CmdHeadline-component
          *
-         * @requiredForAccessibilty
+         * @requiredForAccessibilty: true
          */
         cmdHeadline: {
             type: Object,
@@ -120,6 +120,12 @@ export default {
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
         setInnerClass() {
             if (this.useFullDeviceWidth) {
                 return "full-width"

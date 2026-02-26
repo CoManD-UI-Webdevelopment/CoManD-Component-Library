@@ -1,0 +1,8 @@
+{
+    "name": "accordion-name",
+    "cmdHeadline": {
+        "headlineText": "Summary",
+        "headlineLevel": 4
+    },
+    "textAccordionBody": "This is text for accordion body!"
+}

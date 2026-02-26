@@ -149,7 +149,7 @@
             </template>
         </CmdSidebar>
         <!-- begin site-header ------------------------------------------------------------------------------------------->
-        <CmdSiteHeader :sticky="true">
+        <CmdSiteHeader :sticky="true" :resizeHeaderOnScroll="true" :cmdCompanyLogo="companyLogoData">
             <template v-slot:top-header>
                 <!-- begin list ------------------------------------------------------------------------------------------->
                 <CmdList :links="listData" orientation="horizontal" align="right" />
@@ -157,7 +157,7 @@
             </template>
             <template v-slot:logo>
                 <!-- begin company-logo ------------------------------------------------------------------------------------------->
-                <CmdCompanyLogo v-bind="companyLogoData" />
+                <!-- CmdCompanyLogo v-bind="companyLogoData" --/>
                 <!-- end company-logo ------------------------------------------------------------------------------------------->
             </template>
         </CmdSiteHeader>
@@ -167,6 +167,52 @@
             <CmdWidthLimitationWrapper>
                 <h1 class="headline-demopage">Components Overview</h1>
             </CmdWidthLimitationWrapper>
+
+            <!-- begin accordion --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-accordion">
+                    <span>Accordion</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdAccordion')"></a>
+                </h2>
+                    <CmdAccordion ref="CmdAccordion" open :name="accordionData.name"
+                        :cmdHeadline="{ headlineText: 'Summary (no highlighting)' }"
+                        :textAccordionBody="accordionData.textAccordionBody" v-bind="cmdAccordionSettingsData" />
+                <CmdAccordion highlightLevel="primary" :name="accordionData.name"
+                    :cmdHeadline="{ headlineText: 'Summary (primary highlighting)' }"
+                    :textAccordionBody="accordionData.textAccordionBody" />
+                <CmdAccordion highlightLevel="secondary" :name="accordionData.name"
+                    :cmdHeadline="{ headlineText: 'Summary (secondary highlighting)' }"
+                    :textAccordionBody="accordionData.textAccordionBody" />
+                <CmdAccordion highlightLevel="tertiary" :name="accordionData.name"
+                    :cmdHeadline="{ headlineText: 'Summary (tertiary highlighting)' }"
+                    :textAccordionBody="accordionData.textAccordionBody" />
+            </CmdWidthLimitationWrapper>
+            <!-- end accordion --------------------------------------------------------------------------------------------------->
+
+            <!-- begin accordions-wrapper --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-accordion">
+                    <span>Accordions-Wrapper</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdAccordionsWrapper')"></a>
+                </h2>
+                <CmdAccordionsWrapper :useGap="false" :useRowViewAsDefault="true">
+                    <template v-slot="slotProps">
+                     <CmdAccordion 
+                            v-for="(accordion, index) in 5" 
+                            :key="index" 
+                            open 
+                            :name="accordionData.name"
+                            :cmdHeadline="{ headlineText: 'Summary Accordion #' + (index + 1) }"
+                            :rowView="slotProps.rowView" 
+                            :textAccordionBody="accordionData.textAccordionBody" 
+                        />
+                    </template>
+                </CmdAccordionsWrapper>
+            </CmdWidthLimitationWrapper>
+            <!-- end accordions-wrapper --------------------------------------------------------------------------------------------------->
+
             <!-- begin address-data --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-address-data">
@@ -285,9 +331,10 @@
                                 placeholder="Type in username" tooltipText="This is a tooltip!" maxlength="100"
                                 v-model="inputUsername" :status="validationStatus" :disabled="disabledStatus" />
                             <CmdFormElement element="input" labelText="Label for password-field:" type="password"
-                                minlength="8" maxlength="255" id="inputfield-password"
+                                :required="true" minlength="8" maxlength="255" id="inputfield-password"
                                 fieldIconClass="icon-security-settings" placeholder="Type in password"
-                                tooltipText="This is a tooltip!" :customRequirements="customRequirements"
+                                tooltipText="This is a tooltip!"
+                                :customRequirements="customRequirements.filter((_, index) => index !== 2)"
                                 v-model="inputPassword" :status="validationStatus" :disabled="disabledStatus" />
                         </div>
                         <!-- end inputfield in two columns -->
@@ -398,39 +445,39 @@
                             v-model="switchButtonCheckboxToggleSwitch"
                             labelText="Labeltext for Toggle-Switch (not required)" :toggleSwitch="true"
                             :status="validationStatus" :disabled="disabledStatus" />
-                            <output>v-model: {{switchButtonCheckboxToggleSwitch}}</output>
+                        <output>v-model: {{ switchButtonCheckboxToggleSwitch }}</output>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-required"
                             v-model="switchButtonCheckboxToggleSwitchRequired"
                             labelText="Labeltext for Toggle-Switch (required)" :toggleSwitch="true"
                             :status="validationStatus" :disabled="disabledStatus" :required="true" />
-                            <output>v-model: {{switchButtonCheckboxToggleSwitchRequired}}</output>
+                        <output>v-model: {{ switchButtonCheckboxToggleSwitchRequired }}</output>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-colored"
                             v-model="switchButtonCheckboxToggleSwitchColored"
-                            labelText="Labeltext for colored Toggle-Switch with set value" :toggleSwitch="true" inputValue="yes"
-                            :colored="true" :status="validationStatus" :disabled="disabledStatus" />
-                            <output>v-model: {{switchButtonCheckboxToggleSwitchColored}}</output>
+                            labelText="Labeltext for colored Toggle-Switch with set value" :toggleSwitch="true"
+                            inputValue="yes" :colored="true" :status="validationStatus" :disabled="disabledStatus" />
+                        <output>v-model: {{ switchButtonCheckboxToggleSwitchColored }}</output>
                         <h3>Switches with switch-labels</h3>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label"
                             v-model="switchButtonCheckbox" labelText="Labeltext for Toggle-Switch with Switch-Label"
                             inputValue="checkbox1" onLabel="Label on" offLabel="Label off" :toggleSwitch="true"
                             :status="validationStatus" :disabled="disabledStatus" />
-                            <output>v-model: {{switchButtonCheckbox}}</output>
+                        <output>v-model: {{ switchButtonCheckbox }}</output>
                         <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label-colored"
                             v-model="switchButtonCheckboxColored" inputValue="checkbox2"
                             labelText="Labeltext for Toggle-Switch (Checkbox, colored)" onLabel="Label on"
                             offLabel="Label off" :colored="true" :toggleSwitch="true" :status="validationStatus"
                             :disabled="disabledStatus" />
-                            <output>v-model: {{switchButtonCheckboxColored}}</output>
+                        <output>v-model: {{ switchButtonCheckboxColored }}</output>
                         <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio1"
                             v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
                             :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
                             inputValue="radio1" labelText="Labeltext for Toggle-Switch (Radio, colored) #1" />
-                            <output>v-model: {{switchButtonRadio}}</output>
+                        <output>v-model: {{ switchButtonRadio }}</output>
                         <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio2"
                             v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
                             :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
                             inputValue="radio2" labelText="Labeltext for Toggle-Switch (Radio, colored) #2" />
-                            <output>v-model: {{switchButtonRadio}}</output>
+                        <output>v-model: {{ switchButtonRadio }}</output>
                         <!-- end toggle-switch-radio with switch-label (colored) -->
 
                         <!-- begin checkboxes and radiobuttons -->
@@ -439,47 +486,21 @@
                         <div class="label inline">
                             <span class="label-text">Label for native checkboxes:</span>
                             <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement 
-                                    element="input"
-                                    type="checkbox"
-                                    labelText="Label for checkbox with boolean"
-                                    v-model="nativeCheckboxValues"
-                                    id="checkbox-with-boolean" 
-                                    name="native-checkbox-group"
-                                    :status="validationStatus" 
-                                    :disabled="disabledStatus" 
-                                />
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="checkbox"
-                                    labelText="Label for checkbox with value"
-                                    v-model="nativeCheckboxValues" 
-                                    inputValue="checkboxValue1"
-                                    id="checkbox-with-value-1"
-                                    name="native-checkbox-group"
-                                    :status="validationStatus" 
-                                    :disabled="disabledStatus" 
-                                />
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="checkbox"
-                                    labelText="Label for checkbox with value"
-                                    v-model="nativeCheckboxValues" 
-                                    inputValue="checkboxValue2" 
-                                    id="checkbox-with-value-2" 
-                                    name="native-checkbox-group"
-                                    :status="validationStatus" 
-                                    :disabled="disabledStatus" 
-                                />
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="checkbox"
-                                    v-model="nativeCheckboxValues" 
-                                    inputValue="checkboxValue3"
-                                    id="checkbox-with-value-3"
-                                    name="native-checkbox-group" 
-                                    :status="validationStatus"
-                                    :disabled="disabledStatus">
+                                <CmdFormElement element="input" type="checkbox"
+                                    labelText="Label for checkbox with boolean" v-model="nativeCheckboxValues"
+                                    id="checkbox-with-boolean" name="native-checkbox-group" :status="validationStatus"
+                                    :disabled="disabledStatus" />
+                                <CmdFormElement element="input" type="checkbox"
+                                    labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
+                                    inputValue="checkboxValue1" id="checkbox-with-value-1" name="native-checkbox-group"
+                                    :status="validationStatus" :disabled="disabledStatus" />
+                                <CmdFormElement element="input" type="checkbox"
+                                    labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
+                                    inputValue="checkboxValue2" id="checkbox-with-value-2" name="native-checkbox-group"
+                                    :status="validationStatus" :disabled="disabledStatus" />
+                                <CmdFormElement element="input" type="checkbox" v-model="nativeCheckboxValues"
+                                    inputValue="checkboxValue3" id="checkbox-with-value-3" name="native-checkbox-group"
+                                    :status="validationStatus" :disabled="disabledStatus">
                                     <template v-slot:labeltext>
                                         Labeltext with <a href="#">link</a> given by slot
                                     </template>
@@ -493,30 +514,14 @@
                         <div class="label inline">
                             <span class="label-text">Label for Replaced Input-Type-Checkbox:</span>
                             <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement 
-                                    element="input"
-                                    type="checkbox"
-                                    labelText="Label for replaced checkbox" 
-                                    :replaceInputType="true" 
-                                    id="inputfield9" 
-                                    name="replaced-checkbox-group" 
-                                    v-model="replacedCheckboxValue"
-                                    inputValue="checkboxValue1" 
-                                    :status="validationStatus" 
-                                    :disabled="disabledStatus" 
-                                />
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="checkbox"
-                                    labelText="Label for replaced checkbox" 
-                                    name="replaced-checkbox-group" 
-                                    v-model="replacedCheckboxValue" 
-                                    inputValue="checkboxValue2"
-                                    :replaceInputType="true" 
-                                    id="inputfield10" 
-                                    :status="validationStatus"
-                                    :disabled="disabledStatus"
-                                />
+                                <CmdFormElement element="input" type="checkbox" labelText="Label for replaced checkbox"
+                                    :replaceInputType="true" id="inputfield9" name="replaced-checkbox-group"
+                                    v-model="replacedCheckboxValue" inputValue="checkboxValue1"
+                                    :status="validationStatus" :disabled="disabledStatus" />
+                                <CmdFormElement element="input" type="checkbox" labelText="Label for replaced checkbox"
+                                    name="replaced-checkbox-group" v-model="replacedCheckboxValue"
+                                    inputValue="checkboxValue2" :replaceInputType="true" id="inputfield10"
+                                    :status="validationStatus" :disabled="disabledStatus" />
                             </div>
                         </div>
                         <output>
@@ -551,7 +556,7 @@
                                     :status="validationStatus" :disabled="disabledStatus" />
                             </div>
                         </div>
-                                               <output>
+                        <output>
                             v-model: {{ radiobuttonValue }}
                         </output>
                         <!-- end checkboxes and radiobuttons -->
@@ -635,8 +640,8 @@
                     'element': 'textarea',
                     'maxLength': 500
                 }" :submitButton="{
-                        'text': 'Send request'
-                    }" />
+                    'text': 'Send request'
+                }" />
                 <dl>
                     <dt>originalEvent</dt>
                     <dd>{{ basicFormData.originalEvent }}</dd>
@@ -678,7 +683,8 @@
                     </template>
                 </CmdBox>
                 <CmdBoxWrapper :useFlexbox="true"
-                    :cmdHeadline="{ headlineText: 'Boxes in BoxWrapper with flexbox', headlineLevel: 3 }" :useGap="true">
+                    :cmdHeadline="{ headlineText: 'Boxes in BoxWrapper with flexbox', headlineLevel: 3 }"
+                    :useGap="true">
                     <CmdBox v-for="index in 14" :key="index" textBody="Content"
                         :cmd-headline="{ headlineText: 'Headline ' + index, headlineLevel: 4 }" />
                 </CmdBoxWrapper>
@@ -809,14 +815,8 @@
                 <h3>Product boxes</h3>
                 <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
                     <template v-slot="slotProps">
-                        <CmdBox 
-                            v-for="(product, index) in boxProductData" 
-                            :key="index" 
-                            boxType="product" 
-                            :product="product" 
-                            :cmdHeadline="{ headlineLevel: 4 }"
-                            :rowView="slotProps.rowView" 
-                        />
+                        <CmdBox v-for="(product, index) in boxProductData" :key="index" boxType="product"
+                            :product="product" :cmdHeadline="{ headlineLevel: 4 }" :rowView="slotProps.rowView" />
                     </template>
                 </CmdBoxWrapper>
                 <!-- end product boxes -->
@@ -825,14 +825,9 @@
                 <h3>User boxes</h3>
                 <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
                     <template v-slot="slotProps">
-                        <CmdBox 
-                            v-for="index in boxUserData.length" 
-                            :key="index" 
-                            boxType="user"
-                            :user="boxUserData[index - 1]" 
-                            :cmdHeadline="{ headlineLevel: 5 }"
-                            :rowView="slotProps.rowView" 
-                        />
+                        <CmdBox v-for="index in boxUserData.length" :key="index" boxType="user"
+                            :user="boxUserData[index - 1]" :cmdHeadline="{ headlineLevel: 5 }"
+                            :rowView="slotProps.rowView" />
                     </template>
                 </CmdBoxWrapper>
                 <!-- end user boxes -->
@@ -847,8 +842,8 @@
                     <template v-slot="slotProps">
                         <CmdBox v-for="index in boxProductData.length" :key="index" boxType="content"
                             :collapsible="true" :useSlots="['body']"
-                            :cmdHeadline="{ headlineText: 'Box ' + index, headlineLevel: 5 }" :rowView="slotProps.rowView"
-                            :openCollapsedBox="slotProps.boxIsOpen(index - 1)"
+                            :cmdHeadline="{ headlineText: 'Box ' + index, headlineLevel: 5 }"
+                            :rowView="slotProps.rowView" :openCollapsedBox="slotProps.boxIsOpen(index - 1)"
                             @toggleCollapse="slotProps.boxToggled(index - 1, $event)">
                             <template #body>{{ slotProps.currentOpenBox }}Content {{ index }}</template>
                         </CmdBox>
@@ -870,7 +865,6 @@
             <!-- end breadcrumbs --------------------------------------------------------------------------------------------------->
 
             <!-- begin code-output --------------------------------------------------------------------------------------------------->
-
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-code-output">
                     <span>Code Output</span>
@@ -902,46 +896,29 @@
                         @click.prevent="openSettingsSidebar('CmdContainer')"></a>
                 </h2>
                 <h3>Container (type "default")</h3>
-                <CmdContainer 
-                    style="border: 1px dashed var(--color-gray-30)" 
-                    ref="CmdContainer" 
-                    v-bind="cmdContainerSettingsData"
-                >
+                <CmdContainer style="border: 1px dashed var(--color-gray-30)" ref="CmdContainer"
+                    v-bind="cmdContainerSettingsData">
                     <p>Slot-content</p>
                     <p>Slot-content</p>
-                    <p>Slot-content</p>      
+                    <p>Slot-content</p>
                 </CmdContainer>
                 <h3>Container (type "flex", horizontal)</h3>
-                <CmdContainer 
-                    style="border: 1px  dashed var(--color-gray-30)" 
-                    ref="CmdContainer"
-                    v-bind="cmdContainerSettingsData"
-                    containerType="flex" 
-                    contentOrientation="horizontal"
-                >
+                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                    v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="horizontal">
                     <p>Slot-content</p>
                     <p>Slot-content</p>
-                    <p>Slot-content</p>    
+                    <p>Slot-content</p>
                 </CmdContainer>
                 <h3>Container (type "flex", vertical)</h3>
-                <CmdContainer 
-                    style="border: 1px  dashed var(--color-gray-30)" 
-                    ref="CmdContainer" 
-                    v-bind="cmdContainerSettingsData"
-                    containerType="flex"
-                    contentOrientation="vertical"
-                >
+                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                    v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="vertical">
                     <p>Slot-content</p>
                     <p>Slot-content</p>
                     <p>Slot-content</p>
                 </CmdContainer>
                 <h3>Container with horizontal slots</h3>
-                <CmdContainer 
-                    style="border: 1px  dashed var(--color-gray-30)" 
-                    ref="CmdContainer" 
-                    v-bind="cmdContainerSettingsData"
-                    containerType="grid"
-                >
+                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                    v-bind="cmdContainerSettingsData" containerType="grid">
                     <p>Slot-content</p>
                     <p>Slot-content</p>
                     <p>Slot-content</p>
@@ -960,25 +937,6 @@
                 </a>
             </CmdWidthLimitationWrapper>
             <!-- end cookie-disclaimer --------------------------------------------------------------------------------------------------->
-
-            <!-- begin forms --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-forms">Forms</h2>
-                <h3>Form elements given by data</h3>
-                <CmdForm :useFieldset="true" :useSlot="false" id="form-component" novalidate="novalidate"
-                    :formElements="formElementsData" @submit="doConsoleLog" v-model="cmdFormData" />
-                <h3>Form elements given by slot</h3>
-                <CmdForm :use-fieldset="true" id="form-component" novalidate="novalidate"
-                    :submitButton="{ position: 'belowFieldset' }" @submit="doConsoleLog">
-                    <CmdFormElement element="input" text="text" name="input-text" labelText="Text input"
-                        placeholder="Text input" />
-                    <CmdFormElement element="input" text="number" labelText="Number input" name="input-number"
-                        modelValue="1" />
-                    <CmdFormElement element="input" text="password" labelText="Password input" name="password-number"
-                        placeholder="Password input" />
-                </CmdForm>
-            </CmdWidthLimitationWrapper>
-            <!-- end forms --------------------------------------------------------------------------------------------------->
 
             <!-- begin fancybox --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1053,7 +1011,47 @@
             </CmdWidthLimitationWrapper>
             <!-- end flexible-scroll-container --------------------------------------------------------------------------------------------------->
 
-            <!-- end fancybox --------------------------------------------------------------------------------------------------->
+            <!-- begin footnote --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-footnote">
+                    <span>Footnotes</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdFootnote')"></a>
+                </h2>
+                <CmdFootnote 
+                    ref="CmdFootnote"
+                     v-bind="cmdFootnoteSettingsData"
+                    :cmdHeadline="{ headlineText: 'Footnote with asterisks', headlineLevel: 3}"
+                    descriptionTermType="asterisk"
+                    :descriptionData="footnoteData.descriptionData"
+                />
+                <CmdFootnote 
+                    :cmdHeadline="{ headlineText: 'Footnote with numbers', headlineLevel: 3}"
+                    descriptionTermType="number"
+                    :descriptionData="footnoteData.descriptionData"
+                />
+    
+            </CmdWidthLimitationWrapper>
+            <!-- end footnote --------------------------------------------------------------------------------------------------->
+
+            <!-- begin forms --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-forms">Forms</h2>
+                <h3>Form elements given by data</h3>
+                <CmdForm :useFieldset="true" :useSlot="false" id="form-component" novalidate="novalidate"
+                    :formElements="formElementsData" @submit="doConsoleLog" v-model="cmdFormData" />
+                <h3>Form elements given by slot</h3>
+                <CmdForm :use-fieldset="true" id="form-component" novalidate="novalidate"
+                    :submitButton="{ position: 'belowFieldset' }" @submit="doConsoleLog">
+                    <CmdFormElement element="input" text="text" name="input-text" labelText="Text input"
+                        placeholder="Text input" />
+                    <CmdFormElement element="input" text="number" labelText="Number input" name="input-number"
+                        modelValue="1" />
+                    <CmdFormElement element="input" text="password" labelText="Password input" name="password-number"
+                        placeholder="Password input" />
+                </CmdForm>
+            </CmdWidthLimitationWrapper>
+            <!-- end forms --------------------------------------------------------------------------------------------------->
 
             <!-- begin google-maps --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1071,9 +1069,8 @@
                 </h2>
                 <CmdHeadline ref="CmdHeadline" v-bind="cmdHeadlineSettingsData" />
                 <CmdHeadline headlineLevel="3" headlineText="Headline text" :cmdIcon="{ iconClass: 'icon-home' }" />
-                <CmdHeadline ref="CmdHeadline" headlineLevel="3"
-                    headlineText="Headline text<br /> with html-content given by property" />
-                <CmdHeadline ref="CmdHeadline" headlineLevel="3">
+                <CmdHeadline headlineLevel="3" headlineText="Headline text<br /> with html-content given by property" />
+                <CmdHeadline headlineLevel="3">
                     Headline text<br /> with html-content given by slot
                 </CmdHeadline>
 
@@ -1201,53 +1198,28 @@
                 </dl>
                 <CmdList :cmdHeadline="{ headlineText: 'List of images', headlineLevel: 3 }" :items="imageGalleryData"
                     orientation="horizontal" listContentType="images" />
-                <div class="flex-container">    
-                    <CmdList 
-                        :cmdHeadline="{ headlineText: 'List of tags (default)', headlineLevel: 3 }" 
-                        :items="listOfTagsData"
-                        orientation="horizontal" 
-                        listContentType="tags" 
-                    />
-                    <CmdList 
-                        :cmdHeadline="{ headlineText: 'List of tags (primary)', headlineLevel: 3 }" 
-                        :items="listOfTagsData"
-                        orientation="horizontal" 
-                        listContentType="tags" 
-                        highlightLevel="primary"
-                    />
-                    <CmdList 
-                        :cmdHeadline="{ headlineText: 'List of tags (secondary)', headlineLevel: 3 }" 
-                        :items="listOfTagsData"
-                        orientation="horizontal" 
-                        listContentType="tags" 
-                        highlightLevel="secondary"
-                    />
-                    <CmdList 
-                        :cmdHeadline="{ headlineText: 'List of tags (tertiary)', headlineLevel: 3 }" 
-                        :items="listOfTagsData"
-                        orientation="horizontal" 
-                        listContentType="tags" 
-                        highlightLevel="tertiary"
-                    />
+                <div class="flex-container">
+                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (default)', headlineLevel: 3 }"
+                        :items="listOfTagsData" orientation="horizontal" listContentType="tags" />
+                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (primary)', headlineLevel: 3 }"
+                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                        highlightLevel="primary" />
+                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (secondary)', headlineLevel: 3 }"
+                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                        highlightLevel="secondary" />
+                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (tertiary)', headlineLevel: 3 }"
+                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                        highlightLevel="tertiary" />
                 </div>
                 <h3>Description Lists</h3>
                 <div class="flex-container">
-                    <CmdList
-                        listType="description"
-                        :cmdHeadline="{ headlineText: 'List with text', headlineLevel: 4 }" 
-                        :items="descriptionListData.text" 
-                    />
-                    <CmdList
-                        listType="description"
-                        :cmdHeadline="{ headlineText: 'List with text (term right aligned)', headlineLevel: 4 }" 
-                        :alignDescriptionTermRight="true"
-                        :items="descriptionListData.text" 
-                    />
-                    <CmdList
-                        listType="description"
-                        :cmdHeadline="{ headlineText: 'List with icons', headlineLevel: 4 }" 
-                        :items="descriptionListData.icons" 
-                    />
+                    <CmdList listType="description" :cmdHeadline="{ headlineText: 'List with text', headlineLevel: 4 }"
+                        :items="descriptionListData.text" />
+                    <CmdList listType="description"
+                        :cmdHeadline="{ headlineText: 'List with text (term right aligned)', headlineLevel: 4 }"
+                        :alignDescriptionTermRight="true" :items="descriptionListData.text" />
+                    <CmdList listType="description" :cmdHeadline="{ headlineText: 'List with icons', headlineLevel: 4 }"
+                        :items="descriptionListData.icons" />
                 </div>
             </CmdWidthLimitationWrapper>
             <!-- end lists --------------------------------------------------------------------------------------------------->
@@ -1319,91 +1291,49 @@
                 </h2>
                 <h3>Data provided by property</h3>
                 <CmdMultistepFormWrapper :requiredPages="[1, 2]" :defaultInputValues="multistepFormDefaultInputValues">
-                   
+
                     <template v-slot:page-1="props">
                         multistepFormDefaultInputValues: {{ multistepFormDefaultInputValues }}
                         <h3>Page 1 - all fields required</h3>
-                        <CmdForm 
-                            :formElements="multistepFormWrapperPage1Data" 
-                            :useSlot="false" 
-                            @validation-status-change="toggleSystemMessage($event, props)" 
-                            :submitButton="{show: false}"
-                            :modelValue="props.formDataForPage"
-                            @update:modelValue="props.updateFormDataForPage"
-                        />
+                        <CmdForm :formElements="multistepFormWrapperPage1Data" :useSlot="false"
+                            @validation-status-change="toggleSystemMessage($event, props)" :submitButton="{ show: false }"
+                            :modelValue="props.formDataForPage" @update:modelValue="props.updateFormDataForPage" />
                         props.formDataForPage: {{ props.formDataForPage }}
                         <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a><br />
                         <a href="#" @click.prevent="props.removeErrorOnPage">Remove Error</a>
                     </template>
                     <template v-slot:page-2="props">
                         <h3>Page 2 - 2/2 fields required (in slot)</h3>
-                        <CmdForm 
-                            :submitButton="{show: false}"
-                            :cmdHeadline=" { headlineText: 'Form-Elements in Slot', headlineLevel: 3 }"
-                        >   
-                            <CmdFormElement 
-                                element="input" 
-                                type="tel" 
-                                labelText="Telephone:"
-                                name="page-2-telephone"
-                                id="page-2-telephone"
-                                placeholder="Enter phone number" 
-                                :required="true"
-                                :modelValue="props.formDataForPage['page-2-telephone']" 
-                                @update:modelValue="setValue($event, 'page-2-telephone', props)" 
-                                @validation-status-change="setValidationStatus($event, 'page-2-telephone', props)"
-                            />
-                            <CmdFormElement 
-                                element="input" 
-                                type="email" 
-                                labelText="E-Mail:"
-                                name="page-2-email"
-                                id="page-2-email"
-                                :required="true"
-                                placeholder="Enter email address" 
-                                :modelValue="props.formDataForPage['page-2-email']" 
-                                @update:modelValue="setValue($event, 'page-2-email', props)" 
-                                @validation-status-change="setValidationStatus($event, 'page-2-email', props)"
-                            />
+                        <CmdForm :submitButton="{ show: false }"
+                            :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
+                            <CmdFormElement element="input" type="tel" labelText="Telephone:" name="page-2-telephone"
+                                id="page-2-telephone" placeholder="Enter phone number" :required="true"
+                                :modelValue="props.formDataForPage['page-2-telephone']"
+                                @update:modelValue="setValue($event, 'page-2-telephone', props)"
+                                @validation-status-change="setValidationStatus($event, 'page-2-telephone', props)" />
+                            <CmdFormElement element="input" type="email" labelText="E-Mail:" name="page-2-email"
+                                id="page-2-email" :required="true" placeholder="Enter email address"
+                                :modelValue="props.formDataForPage['page-2-email']"
+                                @update:modelValue="setValue($event, 'page-2-email', props)"
+                                @validation-status-change="setValidationStatus($event, 'page-2-email', props)" />
                         </CmdForm>
                         props.formDataForPage: {{ props.formDataForPage }}
                         <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
                     </template>
                     <template v-slot:page-3="props">
                         <h3>Page 3 - no fields required</h3>
-                        <CmdForm 
-                            @validation-status-change="toggleSystemMessage($event, props)" 
-                            :submitButton="{show: false}"
-                            :modelValue="props.formDataForPage"
+                        <CmdForm @validation-status-change="toggleSystemMessage($event, props)"
+                            :submitButton="{ show: false }" :modelValue="props.formDataForPage"
                             @update:modelValue="props.updateFormDataForPage"
-                            :cmdHeadline=" { headlineText: 'Form-Elements in Slot', headlineLevel: 3 }"
-                        >
-                            <CmdFormElement 
-                                element="input" 
-                                type="text" 
-                                labelText="Street/No:"
-                                name="street-no"
-                                id="street-no"
-                                placeholder="Enter street and number" 
-                                v-model="props.formDataForPage.streetNo" 
-                            />
+                            :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
+                            <CmdFormElement element="input" type="text" labelText="Street/No:" name="street-no"
+                                id="street-no" placeholder="Enter street and number"
+                                v-model="props.formDataForPage.streetNo" />
                             <div class="input-wrapper">
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="number" 
-                                    labelText="Zip:"
-                                    name="zip"
-                                    id="zip"
-                                    v-model="props.formDataForPage.zip" 
-                                />
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="text" 
-                                    labelText="City:"
-                                    name="city"
-                                    id="city"
-                                    v-model="props.formDataForPage.city" 
-                                />
+                                <CmdFormElement element="input" type="number" labelText="Zip:" name="zip" id="zip"
+                                    v-model="props.formDataForPage.zip" />
+                                <CmdFormElement element="input" type="text" labelText="City:" name="city" id="city"
+                                    v-model="props.formDataForPage.city" />
                             </div>
                             props.formDataForPage: {{ props.formDataForPage }}
                         </CmdForm>
@@ -1411,27 +1341,19 @@
                     <template v-slot:page-last="props">
                         <template v-if="!confirmDataPrivacy">
                             <h3>Page 4</h3>
-                            <CmdForm
-                                :cmdHeadline=" { headlineText: 'Confirmation', headlineLevel: 3 }"
-                                :submitButton="{ disabled : props.atleastOneStepWithError || !dataPrivacyChecked, type: 'button' }"
-                                :cancelButton="{ show: false }"
-                                @submit="validateForm"
-                            >
+                            <CmdForm :cmdHeadline="{ headlineText: 'Confirmation', headlineLevel: 3 }"
+                                :submitButton="{ disabled: props.atleastOneStepWithError || !dataPrivacyChecked, type: 'button' }"
+                                :cancelButton="{ show: false }" @submit="validateForm">
                                 <p>Please confirm that all data you provided is legit.</p>
-                                <CmdFormElement 
-                                    element="input" 
-                                    type="checkbox" 
-                                    labelText="Confirm data privacy:"
-                                    name="confirm-data-privacy"
-                                    id="confirm-data-privac"
-                                    :required="true"
-                                    v-model="dataPrivacyChecked"
-                                />
+                                <CmdFormElement element="input" type="checkbox" labelText="Confirm data privacy:"
+                                    name="confirm-data-privacy" id="confirm-data-privac" :required="true"
+                                    v-model="dataPrivacyChecked" />
                             </CmdForm>
                         </template>
                         <template v-else>
                             <h3>Confirmation</h3>
-                            <CmdSystemMessage systemMessage="Your request was send successfully!" validationStatus="success" :iconClose="{ show: false }" />
+                            <CmdSystemMessage systemMessage="Your request was send successfully!"
+                                validationStatus="success" :iconClose="{ show: false }" />
                             <p>A copy with all submitted data was send to you.</p>
                             props.formDataForPage: {{ props.formDataForPage }}
                         </template>
@@ -1470,38 +1392,18 @@
                     </template>
                     <template v-slot:pagination="props">
                         <div class="button-wrapper reverse justify-content-space-between">
-                            <CmdLink
-                                linkType="button" 
-                                highlightLevel="none"    
-                                :icon='{
-                                    iconClass: "icon-chevron-one-stripe-right",
-                                    tooltip: "To next page",
-                                    position: "right"
-                                }'
-                                text="Next"
-                                :disabled="props.disabledNextLink"
-                                @click="props.setNextPage"
-                            />
-                            <CmdLink 
-                                linkType="button"
-                                class="cancel"
-                                highlightLevel="none"
-                                :icon='{
-                                    iconClass: "icon-cancel-circle",
-                                }'
-                                text="Cancel"
-                            />
-                            <CmdLink 
-                                linkType="button"
-                                highlightLevel="none"
-                                :icon='{
-                                    iconClass: "icon-chevron-one-stripe-left",
-                                    tooltip: "To previous page"
-                                }'
-                                text="Back"
-                                @click="props.setPrevPage"
-                                :disabled="props.disabledPrevLink"
-                            />
+                            <CmdLink linkType="button" highlightLevel="none" :icon='{
+                                iconClass: "icon-chevron-one-stripe-right",
+                                tooltip: "To next page",
+                                position: "right"
+                            }' text="Next" :disabled="props.disabledNextLink" @click="props.setNextPage" />
+                            <CmdLink linkType="button" class="cancel" highlightLevel="none" :icon='{
+                                iconClass: "icon-cancel-circle",
+                            }' text="Cancel" />
+                            <CmdLink linkType="button" highlightLevel="none" :icon='{
+                                iconClass: "icon-chevron-one-stripe-left",
+                                tooltip: "To previous page"
+                            }' text="Back" @click="props.setPrevPage" :disabled="props.disabledPrevLink" />
                             props.disabledPrevLink: {{ props.disabledPrevLink }}
                         </div>
                     </template>
@@ -1603,7 +1505,8 @@
                         @click.prevent="openSettingsSidebar('CmdSection')"></a>
                 </h2>
                 <h3>Section with content provided by properties</h3>
-                <CmdSection :cmdHeadline="{ headlineText: 'Headline for section provided by property', headlineLevel: 4 }"
+                <CmdSection
+                    :cmdHeadline="{ headlineText: 'Headline for section provided by property', headlineLevel: 4 }"
                     content="Content for section provided by property." />
                 <h3>Section with content provided by slot</h3>
                 <CmdSection :useSlot="true">
@@ -1671,7 +1574,7 @@
             </CmdWidthLimitationWrapper>
             <!-- end slideshow --------------------------------------------------------------------------------------------------->
 
-            
+
             <!-- begin smart-search --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
                 <h2 class="headline-demopage" id="section-smart-search">
@@ -1679,20 +1582,17 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                         @click.prevent="openSettingsSidebar('CmdSmartSearch')"></a>
                 </h2>
-                smartSearchString: {{ smartSearchString }}
-                <CmdSmartSearch 
-                    ref="CmdSmartSearch" 
-                    v-bind="smartSearchSettingsData" 
-                    :listOfRecommendations="smartSearchData.listOfRecommendations"
-                    v-model="smartSearchString" 
-                />
-                smartSearchObject: {{ smartSearchObject }}
-                <CmdSmartSearch 
-                    ref="CmdSmartSearch" 
-                    v-bind="smartSearchSettingsData" 
-                    :listOfRecommendations="smartSearchData.listOfRecommendations"
-                    v-model="smartSearchObject" 
-                />
+                <CmdSmartSearch ref="CmdSmartSearch" v-bind="smartSearchSettingsData"
+                    :listOfRecommendations="smartSearchData.listOfRecommendations" v-model="smartSearchString"
+                    :maxNumberOfRecommendations="5" />
+                <output>
+                    smartSearchString: {{ smartSearchString }}
+                </output>
+                <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
+                    v-model="smartSearchObject" :maxNumberOfRecommendations="5" :openListToTop="true" />
+                <output>
+                    smartSearchObject: {{ smartSearchObject }}
+                </output>
             </CmdWidthLimitationWrapper>
             <!-- end smart-search --------------------------------------------------------------------------------------------------->
 
@@ -1724,7 +1624,8 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                         @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
                 </h2>
-                <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData" :iconClose="{ iconClass: 'icon-error-circle', show: true }" />
+                <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData"
+                    :iconClose="{ iconClass: 'icon-error-circle', show: true }" />
                 <CmdSystemMessage validationStatus="warning" :iconClose="{ show: false }">
                     <p>This is a system message with slot-content. (that cannot be closed)</p>
                 </CmdSystemMessage>
@@ -1838,13 +1739,31 @@
                 <p> date (YMD/default): {{ formatDate('2025-01-28', "", "-") }}</p>
                 <p> date (DMY): {{ formatDate('2025-01-28', "dmy") }}</p>
                 <p> date (MDY): {{ formatDate('2025-01-28', "mdy", "/") }}</p>
-                <p> date (invalid)): {{ formatDate('invalid') }}</p>
+                <p> date (invalid): {{ formatDate('invalid') }}</p>
                 <div class="inline-size">
                     <CmdThumbnailScroller ref="CmdThumbnailScroller" v-bind="cmdThumbnailScrollerSettingsData"
                         :thumbnailScrollerItems="thumbnailScrollerData" />
                 </div>
             </CmdWidthLimitationWrapper>
             <!-- end thumbnail-scroller --------------------------------------------------------------------------------------------------->
+
+            <!-- begin toast --------------------------------------------------------------------------------------------------->
+            <CmdWidthLimitationWrapper>
+                <h2 class="headline-demopage" id="section-toast">
+                    <span>Toast</span>
+                    <a href="#" class="button small icon-cog" title="Open Component Settings"
+                        @click.prevent="openSettingsSidebar('CmdToast')">
+                    </a>
+                </h2>
+                <CmdToast message="This is a message!" ref="CmdToast" />
+                <div class="button-wrapper">
+                    <button type="button" class="button" @click="$refs.CmdToast.toggleToast()">
+                        <span>Toggle Toast</span>
+                    </button>
+                </div>
+
+            </CmdWidthLimitationWrapper>
+            <!-- end toast --------------------------------------------------------------------------------------------------->
 
             <!-- begin toggle-darkmode --------------------------------------------------------------------------------------------------->
             <CmdWidthLimitationWrapper>
@@ -1864,20 +1783,29 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                         @click.prevent="openSettingsSidebar('CmdTooltip')"></a>
                 </h2>
-                <p>
-                    <a href="#" @click.prevent id="show-on-hover">Show tooltip on hover!</a><br />
-                    <a href="#" @click.prevent id="show-with-delay">Show tooltip on hover with delay!</a><br />
-                    <a href="#" @click.prevent id="show-on-click" title="Native tooltip">Show tooltip on click!</a>
-                </p>
-                <CmdTooltip ref="CmdTooltip" related-id="show-on-hover" v-bind="cmdTooltipSettingsData">
-                    Tooltip on hover
-                </CmdTooltip>
-                <CmdTooltip :delay-to-show-tooltip="2000" related-id="show-with-delay">
+                <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover;" id="show-on-hover">Show
+                    tooltip on
+                    hover!</a><br />
+                <CmdTooltip id="tooltip-target-hover" positionAnchor="--tooltip-anchor-for-hover"
+                    relatedId="show-on-hover" tooltipText="This is text for a tooltip by hover!" />
+
+                <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover-on-delay"
+                    id="show-with-delay">Show
+                    tooltip on hover with delay!</a><br />
+                <CmdTooltip id="tooltip-target-hover-on-delay" positionAnchor="--tooltip-anchor-for-hover-on-delay"
+                    relatedId="show-with-delay" :delayToShowTooltip="2000">
                     Tooltip on hover with delay
                 </CmdTooltip>
-                <CmdTooltip related-id="show-on-click" :toggle-visibility-by-click="true" :allowEscapeKey="true">
-                    Tooltip on click
-                </CmdTooltip>
+
+                <button type="button" class="button" style="anchor-name: --tooltip-anchor-for-click;"
+                    positionAnchor="--tooltip-anchor-for-click" title="Click to open tooltip"
+                    popovertarget="tooltip-target-click" aria-describedby="tooltip-target-click">
+                    <span class="icon-questionmark"></span>
+                    <span>Toggle Tooltip</span>
+                </button>
+                <CmdTooltip ref="CmdTooltip" :popoverTargetName="'tooltip-target-click'" :showCloseIcon="true"
+                    positionAnchor="--tooltip-anchor-for-click" tooltipText="This is text for a tooltip by click!"
+                    v-bind="cmdTooltipSettingsData" />
             </CmdWidthLimitationWrapper>
             <!-- end tooltip --------------------------------------------------------------------------------------------------->
 
@@ -1899,8 +1827,9 @@
                     <a href="#" class="button small icon-cog" title="Open Component Settings"
                         @click.prevent="openSettingsSidebar('CmdWidthLimitationWrapper')"></a>
                 </h2>
-                <CmdWidthLimitationWrapper style="border: 1px  dashed var(--color-gray-30)" ref="CmdWidthLimitationWrapper"
-                    v-bind="cmdWidthLimitationWrapperSettingsData">
+                <CmdWidthLimitationWrapper style="border: 1px  dashed var(--color-gray-30)"
+                    ref="CmdWidthLimitationWrapper" v-bind="cmdWidthLimitationWrapperSettingsData">
+                    <h3>Slot-Content</h3>
                     <p>Slot-content</p>
                     <p>Slot-content</p>
                     <p>Slot-content</p>
@@ -1960,6 +1889,7 @@
 
 <script>
 // import example data
+import accordionData from '@/assets/data/accordion-data.json'
 import addressData from '@/assets/data/address-data.json'
 import bankAccountData from '@/assets/data/bank-account-data.json'
 import boxUserData from '@/assets/data/box-user.json'
@@ -1971,6 +1901,7 @@ import fakeSelectColorsData from '@/assets/data/fake-select-colors.json'
 import fakeSelectCountriesData from '@/assets/data/fake-select-countries.json'
 import fakeSelectFilterOptionsData from '@/assets/data/fake-select-filter-options.json'
 import fakeSelectOptionsData from '@/assets/data/fake-select-options.json'
+import footnoteData from '@/assets/data/footnote.json'
 import formElementsData from '@/assets/data/form-elements.json'
 import imageData from '@/assets/data/image.json'
 import imageZoomData from '@/assets/data/image-zoom.json'
@@ -2029,7 +1960,7 @@ export default {
     data() {
         return {
             cmdFormData: {},
-            smartSearchObject: {id: 3, displayValue: "smartSearchDisplayValue"},
+            smartSearchObject: { id: 3, displayValue: "smartSearchDisplayValue" },
             smartSearchString: "",
             selectedLanguage: "none",
             fancyBoxCookieDisclaimer: false,
@@ -2173,8 +2104,10 @@ export default {
                     "page-2-telephone": "12345/67890"
                 }
             },
+            showToast: false,
 
             // assign data from json files to data-properties
+            accordionData,
             addressData,
             bankAccountData,
             boxProductData,
@@ -2186,6 +2119,7 @@ export default {
             fakeSelectCountriesData,
             fakeSelectFilterOptionsData,
             fakeSelectOptionsData,
+            footnoteData,
             formElementsData,
             imageData,
             imageZoomData,
@@ -2242,7 +2176,7 @@ export default {
             return "template-" + this.selectedTemplate
         },
         thumbnailScrollerData() {
-            if (!this.cmdThumbnailScrollerSettingsData?.contentType || this.cmdThumbnailScrollerSettingsData.contentType === "image" ) {
+            if (!this.cmdThumbnailScrollerSettingsData?.contentType || this.cmdThumbnailScrollerSettingsData.contentType === "image") {
                 return this.thumbnailScrollerImagesData
             }
             return this.thumbnailScrollerTextData
@@ -2254,7 +2188,7 @@ export default {
                 ...props.formDataForPage,
                 [itemName]: event
             }
-           props.updateFormDataForPage(data)
+            props.updateFormDataForPage(data)
         },
         setValidationStatus(event, itemName, props) {
             if (event === "error" && !this.formElementsWithError.some(entry => entry.name === itemName)) {
@@ -2276,16 +2210,16 @@ export default {
             this.toggleSystemMessage(status, props)
         },
         outputFormData(event) {
-            console.log("outputFormData", event)  
+            console.log("outputFormData", event)
         },
         myAlert(text) {
             alert(text)
         },
         toggleSystemMessage(event, props) {
-            if(event === "error") {
-                props.setErrorOnPage("Please fill all required fields!") 
+            if (event === "error") {
+                props.setErrorOnPage("Please fill all required fields!")
             } else {
-                props.removeErrorOnPage() 
+                props.removeErrorOnPage()
             }
         },
         cmdLinkOutput(event, linkType) {
@@ -2625,6 +2559,7 @@ export default {
 
             .comand-versions {
                 margin: 0;
+                background: var(--color-scheme-background-color);
 
                 dd {
                     white-space: nowrap;
@@ -2637,6 +2572,7 @@ export default {
             flex-direction: column;
             gap: var(--default-gap);
             padding: var(--default-padding);
+            align-items: center;
 
             .button {
                 align-self: center;

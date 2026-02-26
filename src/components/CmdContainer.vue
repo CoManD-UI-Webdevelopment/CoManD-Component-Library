@@ -135,7 +135,7 @@ export default {
                     if (this.contentOrientation) {
                         htmlClasses.push(this.contentOrientation === "vertical" ? "flex-direction-column" : null)
                     }
-                    if (this.useGap) {
+                    if (this.noGap) {
                         htmlClasses.push("no-gap")
                     }
                     if (this.flexNone) {

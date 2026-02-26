@@ -269,7 +269,7 @@ export default {
         DefaultMessageProperties,
         GlobalCurrency
     ],
-    emits: ["click", "toggle-collapse"],
+    emits: ["click", "toggle-collapse", "toggle-cutofftext"],
     data() {
         return {
             open: this.collapsible ? this.openCollapsedBox : true,
@@ -554,16 +554,16 @@ export default {
             this.open = !this.open
             this.active = !this.active
 
-            this.$emit('toggle-collapse', this.open)
+            this.$emit("toggle-collapse", this.open)
         },
         // toggle cutofftext (between full and faded text)
         toggleCutOffText() {
             this.showCutOffText = !this.showCutOffText
-            this.$emit('toggle-cutofftext', this.showCutOffText)
+            this.$emit("toggle-cutofftext", this.showCutOffText)
         },
         // for boxType === product
         clickOnProduct(product) {
-            this.$emit('click', product)
+            this.$emit("click", product)
         },
         // set focus on first input if box contains form-elements
         setFocus() {

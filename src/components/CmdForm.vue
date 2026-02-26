@@ -31,9 +31,9 @@
                 <!-- begin default-slot-content -->
                 <slot v-if="useSlot"></slot>
                 <!-- end default-slot-content -->
-
                 <!-- begin loop for formElements -->
                 <template v-else v-for="(item, index) in formElements" :key="index">
+                 
                     <CmdFormElement
                         v-if="!item.component || item.component === 'CmdFormElement'"
                         :key="index"
@@ -54,6 +54,7 @@
                         v-bind="item"
                         v-model="formValues[item.name]"                
                     /> 
+              
                     <div 
                         v-else-if="item.component === 'flexContainer' || item.component === 'inputWrapper'"
                         :class="item.component === 'flexContainer' ? 'flex-container' : 'input-wrapper'"
@@ -159,7 +160,7 @@ import CmdSystemMessage from "@/components/CmdSystemMessage.vue";
 export default {
     name: "CmdForm",
     components: {CmdSystemMessage},
-    emits: ["submit", "update:modelValue"],
+    emits: ["validation-status-change", "submit", "update:modelValue"],
     data() {
         return {
             errorOccurred: false,
@@ -344,7 +345,15 @@ export default {
             // fill form-data with names and value
             let formdata = {}
             if (this.formElements) {
+                // iterate form-elements in flex-containers and input-wrappers to get their names and values
                 this.formElements.forEach((element) => {
+                    if(element.component === 'flexContainer' || element.component === 'inputWrapper') {
+                        element.formElements.forEach(innerElement => {
+                            formdata[innerElement.name] = this.formValues[innerElement.name]
+                        })
+                        return
+                    }
+
                     formdata[element.name] = this.formValues[element.name]
                 })
             }
@@ -410,6 +419,26 @@ export default {
         formElements: {
             handler() {
                 this.formElements?.forEach(element => {
+                    // iterate form-elements inside flex-containers and input-wrappers
+                    if(element.component === 'flexContainer' || element.component === 'inputWrapper') {
+                        element.formElements.forEach(innerElement => {
+                            if (innerElement.type === "checkbox") {
+                                // create array if element is a checkbox (to contain several values)
+                                if (!this.formValues[innerElement.name]) {
+                                    this.formValues[innerElement.name] = []
+                                }
+
+                                if (innerElement.value != null) {
+                                    this.formValues[innerElement.name].push(innerElement.value)
+                                }
+                            } else {
+                                this.formValues[innerElement.name] = innerElement.value ?? ""
+                            }
+                        })
+                        return
+                    }
+                
+                    // iterate form-elements on main-level
                     if (element.type === "checkbox") {
                         // create array if element is a checkbox (to contain several values)
                         if (!this.formValues[element.name]) {

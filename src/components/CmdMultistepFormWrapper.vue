@@ -212,7 +212,7 @@ export default {
             return !requiredPagesSet.isSubsetOf(inputMadeSet) // check if all requiredPages are included in inputMade
 
         },
-        // check if a page ha
+        // check if a page has error
         pageHasError() {
             return this.validationStatusForSteps.some((item) => {
                 return item.page === this.currentPage

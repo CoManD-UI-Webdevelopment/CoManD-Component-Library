@@ -236,14 +236,15 @@ a img.flag {
 
 /* begin tooltip for cmd-form-element and cmd-fake-select ---------------------------------------------------------------------------------------------------------------- */
 .cmd-form-element, .cmd-fake-select, .cmd-input-group {
+    /*
     .cmd-tooltip {
         position: absolute;
         right: 0;
         transform: translateY(calc(-100% - calc(var(--default-margin) / 2)));
-        left: auto !important; /* overwrite calculated inline-styles from javascript for cmd-tooltip-component */
-        top: 0 !important; /* overwrite calculated inline-styles from javascript for cmd-tooltip-component */
+        left: auto !important; /* overwrite calculated inline-styles from javascript for cmd-tooltip-component 
+        top: 0 !important; /* overwrite calculated inline-styles from javascript for cmd-tooltip-component 
     }
-
+*/
     &:has([required]) {
         &.has-state, & + .cmd-tooltip {
             .label-text {
@@ -287,7 +288,6 @@ a img.flag {
     }
 }
 /* end tooltip for cmd-form-element and cmd-fake-select -------------------------------------------------------------------------------------------------------------------- */
-
 /* ----------------------------------------------- END COMPONENTS AND GLOBAL STYLES --------------------------------------------------- */
 
 /* ---------------------------------------------- BEGIN MEDIA QUERIES AND BROWSER SPECIFIC STYLES -------------------------------------------------- */

@@ -19,5 +19,34 @@
         "placeholder": "First Name",
         "required": true,
         "disabled": false
-    }
+    },
+    {
+        "component": "CmdInputGroup",
+        "labelText": "Label for input-group (checkboxes):",
+        "inputTypes": "checkbox",
+        "toggleSwitches": true,
+        "required": true, 
+        "value": ["option1"],
+        "name": "input-group-checkboxes",
+        "inputElements": [
+          {
+            "labelText": "Option 1",
+            "id": "option1",
+            "name": "checkbox-options",
+            "value": "option1"
+          },
+          {
+            "labelText": "Option 2",
+            "id": "option2",
+            "name": "checkbox-options",
+            "value": "option2"
+          },
+          {
+            "labelText": "Option 3",
+            "id": "option3",
+            "name": "checkbox-options",
+            "value": "option3"
+          }
+        ]
+      }
 ]

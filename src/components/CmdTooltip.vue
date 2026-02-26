@@ -1,30 +1,28 @@
 <template>
     <!-- begin CmdTooltip ---------------------------------------------------------------------------------------- -->
-    <div v-if="tooltipVisibility" :class="['cmd-tooltip', validationStatus]" ref="tooltip">
-        <div v-if="cmdHeadline || iconClose.show" class="headline-wrapper">
-            <!-- begin CmdHeadline -->
-            <CmdHeadline
-                v-if="cmdHeadline"
-                v-bind="cmdHeadline"
-            />
-            <!-- end CmdHeadline -->
+    <div :class="['cmd-tooltip', validationStatus]" popover="manual" ref="tooltip" role="tooltip"
+        :id="popoverTargetName" @mouseenter="handleTooltipEnter" @mouseleave="handleTooltipLeave"
+        :style="'position-anchor:' + positionAnchor"
+    >
+        <!-- begin CmdHeadline -->
+        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <!-- end CmdHeadline -->
 
-            <!-- begin icon to close tooltip -->
-            <a v-if="iconClose.show && toggleVisibilityByClick" href="#" @click.prevent="hideTooltip"
-               :title="iconClose.tooltip">
-                <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType"/>
-                <!-- end CmdIcon -->
-            </a>
-            <!-- end icon to close tooltip -->
-        </div>
+        <!-- begin icon to close tooltip -->
+        <button v-if="showCloseIcon" type="button" class="close-tooltip no-style"
+            popovertargetaction="hide" :popovertarget="popoverTargetName" :title="iconClose.tooltip">
+            <!-- begin CmdIcon -->
+            <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
+            <!-- end CmdIcon -->
+        </button>
+        <!-- end icon to close tooltip -->
 
         <!-- begin slot-content -->
         <slot>
-            {{ tooltipText }}
+            <div v-html="tooltipText"></div>
         </slot>
         <!-- end slot-content -->
-         <!-- end CmdTooltip ---------------------------------------------------------------------------------------- -->
+        <!-- end CmdTooltip ---------------------------------------------------------------------------------------- -->
     </div>
 </template>
 
@@ -33,9 +31,8 @@ export default {
     name: "CmdTooltip",
     data() {
         return {
-            tooltipVisibility: false,
-            pointerX: 0,
-            pointerY: 0
+            triggerElement: null,
+            tooltipVisibility: false
         }
     },
     inject: {
@@ -45,13 +42,21 @@ export default {
     },
     props: {
         /**
-         * properties for CmdHeadline-component
+         * name for popover-target (will be set as id for popover and must correspond popovertarget-value of button that opens the popup)
+         * 
+         * @requiered-for-accessibility
          */
-        cmdHeadline: {
-            type: Object,
-            default() {
-            }
+         popoverTargetName: {
+            type: String,
+            required: false
         },
+        /**
+         * positionAnchor
+         */
+         positionAnchor: {
+            type: String,
+            required: false
+         },
         /**
          * text shown as tooltip
          */
@@ -62,11 +67,26 @@ export default {
         /**
          * delay (in milliseconds) until tooltip will be shown
          *
+         * only works on hover/leave
+         * 
          * toggleVisibilityByClick-property must be false
          */
         delayToShowTooltip: {
             type: Number,
             default: 0
+        },
+         /**
+         * delay (in milliseconds) until tooltip will be hidden
+         *
+         * only works on hover/leave
+         * 
+         * toggleVisibilityByClick-property must be false
+         * 
+         * minimum should be set to 100 to avoid flickering while user moves mouse over tooltip itself
+         */
+         delayToHideTooltip: {
+            type: Number,
+            default: 100
         },
         /**
          * id of related input-element
@@ -108,7 +128,7 @@ export default {
             default() {
                 return {
                     show: true,
-                    iconClass: "icon-cancel",
+                    iconClass: "icon-cancel-circle",
                     tooltip: "Close this tooltip!"
                 }
             }
@@ -116,103 +136,86 @@ export default {
         /**
          * enable toggling tooltip-visibility by click
          */
-        toggleVisibilityByClick: {
+         showCloseIcon: {
             type: Boolean,
             default: false
+        },
+         /**
+         * properties for CmdHeadline-component
+         */
+         cmdHeadline: {
+            type: Object,
+            requiured: false
         }
     },
     mounted() {
-        if (this.relatedId) {
-            const relatedElement = document.getElementById(this.relatedId)
+        // provide the container the tooltip scrolls in (and should react to)
+        const scrollContainerSelector = this.injectScrollContainer || this.scrollContainer
 
-            if (relatedElement) {
-                const scrollContainerSelector = this.injectScrollContainer || this.scrollContainer
+        if (scrollContainerSelector) {
+            const scrollContainerElement = document.querySelector(scrollContainerSelector)
 
-                if (scrollContainerSelector) {
-                    const scrollContainerElement = document.querySelector(scrollContainerSelector)
-
-                    if(scrollContainerElement) {
-                        scrollContainerElement.addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
-                    } else {
-                        console.warn( "'CmdTooltip-Component': Element accessed by " + scrollContainerSelector + " does not exist! Please provide selector for an existing element!")
-                    }
-
-                    document.addEventListener("keyup", this.hideTooltipOnEsc) // close tooltip by using "escape"-key
-                }
-
-                if (this.toggleVisibilityByClick) {
-                    relatedElement.addEventListener("click", this.toggleTooltipVisibility)
-                } else {
-                    relatedElement.addEventListener("mouseenter", this.showTooltip)
-                    relatedElement.addEventListener("mouseleave", this.hideTooltip)
-                }
+            if (scrollContainerElement) {
+                scrollContainerElement.addEventListener("scroll", this.hideTooltip) // avoid fixed tooltip on scroll
+            } else {
+                console.warn("'CmdTooltip-Component': Element accessed by " + scrollContainerSelector + " does not exist! Please provide selector for an existing element!")
             }
         }
+
+        if(this.relatedId) {
+            // get eleemnt that triggers the tooltip
+            this.triggerElement = document.getElementById(this.relatedId)
+            if (!this.triggerElement) return
+            
+            // add event listeners
+            this.triggerElement.addEventListener("mouseenter", this.handleTriggerEnter)
+            this.triggerElement.addEventListener("mouseleave", this.handleTriggerLeave)
+        }
+    },
+    beforeUnmount() {
+        if(this.relatedId) {
+            if (!this.triggerElement) return
+
+            this.triggerElement.removeEventListener("mouseenter", this.handleTriggerEnter)
+            this.triggerElement.removeEventListener("mouseleave", this.handleTriggerLeave)
+        }
+
     },
     methods: {
-        toggleTooltipVisibility(event) {
-            this.getPointerPosition(event)
-            this.tooltipVisibility = !this.tooltipVisibility
-        },
-        showTooltip(event) {
-            // if delay is set
-            if (this.delayToShowTooltip > 0) {
-                setTimeout(() => {
-                    this.toggleVisibility(event)
-                }, this.delayToShowTooltip)
-            } else {
-                this.toggleVisibility(event)
-            }
-        },
-        toggleVisibility(event) {
-            if (!this.toggleVisibilityByClick) {
-                this.tooltipVisibility = true
-            }
-            this.getPointerPosition(event)
-        },
-        hideTooltipOnEsc(event) {
-            if (this.allowEscapeKey) {
-                if (event.key === 'Escape' || event.key === 'Esc') {
-                    this.hideTooltip()
-                }
-            }
+        showTooltip() {
+            // use native method on element to show popover/tooltip
+            this.$refs.tooltip.showPopover()
         },
         hideTooltip() {
-            this.tooltipVisibility = false
+            // use native method on element to close popover/tooltip
+            this.$refs.tooltip.hidePopover()
         },
-        getPointerPosition(event) {
-            this.pointerX = event.clientX
-            this.pointerY = event.clientY
+        handleTriggerEnter() {
+                 // small delay prevents flicker when moving to tooltip
+                setTimeout(() => {
+                if (!this.tooltipVisibility) {
+                    this.showTooltip()
+                }
+            }, this.delayToShowTooltip)
+        },
+        handleTriggerLeave() {
+            // small delay prevents flicker when moving to tooltip
+            setTimeout(() => {
+                if (!this.tooltipVisibility) {
+                    this.hideTooltip()
+                }
+            }, this.delayToHideTooltip)
+        },
+        handleTooltipEnter() {
+            this.tooltipVisibility = true  
+        },
+        handleTooltipLeave() {
+            this.tooltipVisibility = false
+            this.$refs.tooltip.hidePopover()
         }
     },
     unmounted() {
-        if (this.relatedId) {
-            const relatedElement = document.getElementById(this.relatedId)
-
-            if (relatedElement) {
-                document.removeEventListener("scroll", this.hideTooltip)
-                document.removeEventListener("keyup", this.hideTooltipOnEsc)
-
-                if (this.toggleVisibilityByClick) {
-                    relatedElement.removeEventListener("click", this.toggleTooltipVisibility)
-                } else {
-                    relatedElement.removeEventListener("mouseenter", this.showTooltip)
-                    relatedElement.removeEventListener("mouseleave", this.showTooltip)
-                }
-            }
-        }
-    },
-    watch: {
-        tooltipVisibility() {
-            if (this.tooltipVisibility) {
-                this.$nextTick(() => {
-                    const verticalOffset = 25
-                    // this.$refs.tooltip.addEventListener("keyup", this.hideTooltip)
-                    this.$refs.tooltip.style.left = (this.pointerX / 10) + "rem"
-                    this.$refs.tooltip.style.top = ((this.pointerY + verticalOffset) / 10) + "rem"
-                })
-            }
-        }
+        document.removeEventListener("scroll", this.hideTooltip)
     }
 }
 </script>
@@ -230,10 +233,11 @@ export default {
     border-color: hsl(220, 2%, 25%);
     border-right-color: hsl(240, 1%, 81%);
     border-bottom-color: hsl(240, 1%, 81%);
-    display: flex;
-    flex-direction: column;
 
-    &.error, &.warning, &.success, &.info {
+    &.error,
+    &.warning,
+    &.success,
+    &.info {
         border-color: var(--status-color);
     }
 
@@ -256,7 +260,7 @@ export default {
     .headline-wrapper {
         display: flex;
 
-        > a {
+        >button {
             margin-left: auto !important;
 
             [class*="icon-"] {
@@ -264,7 +268,9 @@ export default {
                 font-size: var(--font-size-small);
                 color: var(--hyperlink-color);
 
-                &:hover, &:active, &:focus {
+                &:hover,
+                &:active,
+                &:focus {
                     color: var(--hyperlink-color-highlighted);
                 }
             }

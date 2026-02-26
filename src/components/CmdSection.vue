@@ -56,6 +56,8 @@ export default {
         /**
          * set properties for CmdHeadline-component
          * 
+         * section must include a headline (w3c). headline could also be provided by slot
+         * 
          * @requiredForAccessibility: true
          */
         cmdHeadline: {

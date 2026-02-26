@@ -21,31 +21,43 @@
             <span class="label-text">
                 <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup></span>
 
-                <!-- begin status-icon (linked with tooltip) -->
-                <a v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
-                   href="#"
-                   @click.prevent
-                   :title="validationTooltip"
-                   :aria-errormessage="tooltipId"
-                   aria-live="assertive"
-                   :id="tooltipId">
-                   <!-- begin CmdIcon -->
-                   <CmdIcon :iconClass="getStatusIconClass"/>
+            <!-- begin status-icon (linked with tooltip) -->
+            <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
+                type="button"
+                class="no-style"
+                :title="validationTooltip" 
+                :aria-errormessage="tooltipId" 
+                aria-live="assertive" 
+                :popovertarget="'tooltip-target-' + htmlId"
+                :style="'anchor-name: --tooltip-anchor-' + htmlId"
+            >
+                    <!-- begin CmdIcon -->
+                    <CmdIcon :iconClass="getStatusIconClass" />
                     <!-- end CmdIcon -->
-                </a>
-                <!-- end status-icon (linked with tooltip) -->
+            </button>
+            <!-- end status-icon (linked with tooltip) -->
 
-                <!-- begin CmdTooltipForFormElements -->
-                <CmdTooltipForFormElements
-                    v-if="useCustomTooltip && (validationStatus === '' || validationStatus === 'error')"
+                 <!-- begin CmdTooltip -->
+                <CmdTooltip
                     ref="tooltip"
+                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
+                    :id="'tooltip-target-' + htmlId"
+                    :scrollContainer="scrollContainerForTooltip"
+                    :popoverTargetName="'tooltip-target-' + htmlId"
                     :validationStatus="validationStatus"
-                    :validationMessage="getValidationMessage"
-                    :relatedId="tooltipId"
-                    :cmdListOfRequirements="listOfRequirements"
                     :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-                />
-                <!-- end CmdTooltipForFormElements -->
+                    :toggle-visibility-by-click="true"
+                    :style="'position-anchor: --tooltip-anchor-' + htmlId"
+                >
+
+                    <!-- begin CmdListOfRequirements -->
+                    <CmdListOfRequirements
+                        v-if="cmdListOfRequirementsProperties.showRequirements"
+                        v-bind="cmdListOfRequirementsProperties"
+                    />
+                    <!-- end CmdListOfRequirements -->
+                </CmdTooltip>
+                <!-- end CmdTooltip -->
             </span>
             <!-- end label -->
         </template>
@@ -185,6 +197,7 @@ import DefaultMessageProperties from "../mixins/CmdFakeSelect/DefaultMessageProp
 import FieldValidation from "../mixins/FieldValidation"
 import Identifier from "../mixins/Identifier"
 import Tooltip from "../mixins/Tooltip"
+import {createUuid} from "../utils/common.js"
 
 export default {
     name: 'CmdFakeSelect',
@@ -196,6 +209,7 @@ export default {
         Identifier,
         Tooltip
     ],
+    emits: ["validation-status-change", "update:modelValue"],
     data() {
         return {
             showOptions: false,
@@ -204,6 +218,20 @@ export default {
         }
     },
     props: {
+        /**
+        * name for popover-target (will be set as id for popover and must correspond popovertarget-value of button that opens the popup)
+        */
+        tooltipPopoverTargetName: {
+            type: String,
+            default: 'tooltip-target-' + createUuid()
+        },
+        /**
+        * specify a scroll-container which scrolling hides the tooltip
+        */
+        scrollContainerForTooltip: {
+            type: String,
+            required: false
+        },
         /**
          * set different default selectbox-types for
          *
@@ -312,7 +340,7 @@ export default {
          */
         showStatusIcon: {
             type: Boolean,
-            default: true
+            default: false
         },
         /**
          * path to flag-files (will be combined with flag isoCode to load svg)
@@ -320,6 +348,15 @@ export default {
         pathFlags: {
             type: String,
             default: "/media/images/flags"
+        },
+        /**
+         * limits drodpwon height of provided value (and lets contentscroll inside)
+         * 
+         * @allowedValues: "none", "an< height in pixels/rem"
+         */
+        dropdownMaxHeight: {
+            type: String,
+            default: "20rem"
         },
         /**
          * default text if no option is selected (and first option is not used)
@@ -351,9 +388,29 @@ export default {
                     iconType: "auto"
                 }
             }
-        }
+        },
+        /**
+        * properties for CmdListOfRequirements-component
+        */
+        cmdListOfRequirements: {
+            type: Object,
+            required: false   
+         }
     },
     computed: {
+        cmdListOfRequirementsProperties() {
+            return {
+                showRequirements: true,
+                validationTooltip: "",
+                inputRequirements: [],
+                inputAttributes: {},
+                showHeadline: true,
+                inputModelValue: "",
+                helplink: {},
+                labelText: "",
+                ...this.cmdListOfRequirements
+            }
+        },
         validationTooltip() {
             if (!this.useCustomTooltip) {
                 return this.getValidationMessage
@@ -445,7 +502,7 @@ export default {
             }
 
             this.$emit("update:modelValue", checkboxValues)
-            this.$emit('validation-status-change', this.validationStatus)
+            this.$emit("validation-status-change", this.validationStatus)
         },
         // toggle options/dropdown
         toggleOptions() {
@@ -471,8 +528,8 @@ export default {
             // hide options after selection
             this.showOptions = false
             
-            this.$emit('update:modelValue', optionValue)
-            this.$emit('validation-status-change', this.validationStatus)
+            this.$emit("update:modelValue", optionValue)
+            this.$emit("validation-status-change", this.validationStatus)
         },
         // check if a checkbox is changed for selectbox with checkboxes
         optionSelect(event) {
@@ -488,7 +545,7 @@ export default {
                 this.validationStatus = "error"
             }
 
-            this.$emit('update:modelValue', value)
+            this.$emit("update:modelValue", value)
         },
         // hide options (in dropdown)
         closeOptions() {
@@ -506,7 +563,7 @@ export default {
                 this.validationStatus = "error"
             }
             
-            this.$emit('validation-status-change', this.validationStatus)
+            this.$emit("validation-status-change", this.validationStatus)
         },
         // overwrite requirement-message form fieldValidation.js
         getRequirementMessage() {
@@ -605,6 +662,11 @@ export default {
                         }
                     }
                 }
+            }
+
+            ul {
+                max-height: v-bind(dropdownMaxHeight);
+                overflow-y: auto;
             }
         }
 

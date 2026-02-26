@@ -4,6 +4,32 @@ import navigationData from "@/assets/data/main-navigation.json"
 export default {
     data() {
         return {
+            cmdAccordionSettingsData: {
+                cmdHeadline: {
+                    headlineText: "Summary",
+                    headlineLevel: 4
+                }
+            },
+            cmdAccordionSettingsControls: {
+                highlightLevel: [
+                    {
+                        text: "none (default)",
+                        value: "none"
+                    },
+                    {
+                        text: "primary",
+                        value: "primary"
+                    },
+                    {
+                        text: "secondary",
+                        value: "secondary"
+                    },
+                    {
+                        text: "tertiary",
+                        value: "tertiary"
+                    }
+                ]
+            },
             cmdAddressDataSettingsData: {
                 cmdHeadline: {
                     headlineText: "Address Data",
@@ -324,11 +350,28 @@ export default {
                     }
                 ]
             },
+            cmdFootnoteSettingsData: {
+                cmdHeadline: {
+                    headlineText: "Headline text",
+                    headlineLevel: 3
+                }
+            },
+            cmdFootnoteSettingsControls: {
+                descriptionTermType: [
+                    {
+                        text: "Asterisk (default)",
+                        value: "asterisk"
+                    },
+                    {
+                        text: "Number",
+                        value: "number"
+                    }
+                ]
+            },
             cmdHeadlineSettingsData: {
                 preHeadlineText: "Pre-headline text",
                 headlineText: "Headline text",
-                headlineLevel: 2,
-                textAlign: "left"
+                headlineLevel: 2
             },
             cmdHeadlineSettingsControls: {
                 textAlign: [
@@ -725,6 +768,12 @@ export default {
                 showCounter: true,
                 showSlideButtons: true
             },
+            smartSearchSettingsData: {
+                maxNumberOfRecommendations: 3,
+                filterByFirstLetter: false,
+                openListToTop: false,
+                allowUserToEnterNewTerm: true
+            },
             cmdSocialNetworksSettingsData: {
                 align: "left",
                 useGap: true,
@@ -870,6 +919,9 @@ export default {
                     }
                 ]
             },
+            cmdToast: {
+                message: "This is a message!"
+            },
             cmdTextImageBlockSettingsData: {
                 htmlContent: "Text given as html-content",
                 paragraphTextAlign: "left",
@@ -969,8 +1021,9 @@ export default {
             cmdTooltipSettingsData: {
                 tooltipText: "This is a tooltip!",
                 delayToShowTooltip: 0,
-                status: "",
-                toggleVisibilityByClick: false
+                delayToHideTooltip: 100,
+                toggleVisibilityByClick: false,
+                showCloseIcon: true
             },
             cmdTooltipSettingsControls: {
                 status: [

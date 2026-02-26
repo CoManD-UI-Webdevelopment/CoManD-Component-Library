@@ -20,6 +20,20 @@
       "icon": {
         "iconClass": "icon-globe"
       }
+    },
+    {
+      "id": 4,
+      "displayValue": "Option #4",
+      "icon": {
+        "iconClass": "icon-user-profile"
+      }
+    },
+    {
+      "id": 5,
+      "displayValue": "Option #5",
+      "icon": {
+        "iconClass": "icon-questionmark-circle"
+      }
     }
   ],
   "cmdFormElement": {
