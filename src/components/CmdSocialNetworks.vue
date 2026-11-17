@@ -1,22 +1,16 @@
 <template>
     <!-- begin CmdSocialNetworks ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-social-networks', {'stretch': stretchButtons}, alignment]">
-        <!-- begin CmdHeadline -->
         <CmdHeadline
-            v-if="cmdHeadline?.headlineText || editModeContext?.editing"
-            v-bind="cmdHeadline || {}"
+            v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+            v-bind="cmdHeadlineProperties"
         />
-        <!-- end CmdHeadline -->
 
-        <!-- begin CmdFormElement -->
         <CmdFormElement
             v-if="userMustAcceptDataPrivacy"
-            element="input"
-            type="checkbox"
-            v-bind="cmdFormElement"
+            v-bind="cmdFormElementDataPrivacyProperties"
             v-model="dataPrivacyAccepted"
         />
-        <!-- end CmdFormElement -->
 
         <!-- begin list of networks -->
         <ul v-if="validNetworks.length > 0" :class="['button-wrapper', {'no-gap': !useGap}]">
@@ -78,6 +72,11 @@ import {buildComponentPath} from "../utils/editmode.js"
 export default {
     name: "CmdSocialNetworks",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             dataPrivacyAccepted: false
@@ -176,15 +175,9 @@ export default {
          *
          * userMustAcceptDataPrivacy-property must be activated
          */
-        cmdFormElement: {
+         cmdFormElementDataPrivacy: {
             type: Object,
-            default() {
-                return {
-                    toggleSwitch: true,
-                    labelText: "I accept that anonymous data will be send to the platform I share this page on!",
-                    required: true
-                }
-            }
+            required: false
         },
         /**
          * properties for CmdHeadline-component
@@ -195,6 +188,23 @@ export default {
         }
     },
     computed: {
+        cmdFormElementDataPrivacyProperties() {
+            return {
+                element: "input",
+                type: "checkbox",
+                toggleSwitch: true,
+                labelText: "I accept that anonymous data will be send to the platform I share this page on!",
+                required: true,
+                ...this.cmdFormElementDataPrivacy
+            }
+        },
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
         validNetworks() {
             return this.networks.filter(item => item.path)
         },

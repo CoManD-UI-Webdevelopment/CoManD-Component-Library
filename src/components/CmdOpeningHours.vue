@@ -3,8 +3,8 @@
     <div class="cmd-opening-hours">
         <!-- begin cmd-headline -->
         <CmdHeadline
-            v-if="cmdHeadline?.headlineText || editModeContext"
-            v-bind="cmdHeadline"
+            v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+            v-bind="cmdHeadlineProperties"
         />
         <!-- end cmd-headline -->
 
@@ -157,6 +157,11 @@ export function timeFormatting(separator, suffix1, suffix2, hoursLeadingZero = t
 export default {
     name: "CmdOpeningHours",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             currentTime: new Date(),
@@ -302,6 +307,13 @@ export default {
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
         openingHoursFormatted() {
             const weekdays = []
             for (let i = 0; i < this.openingHours.length; i++) {

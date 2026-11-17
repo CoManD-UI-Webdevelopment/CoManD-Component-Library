@@ -16,5 +16,7 @@
       "show": true
     }
   },
-  "htmlContent": "This text is given as plain text and show below an optional image."
+  "cmdParagraph": {
+    "content": "This text is given as plain text and show below an optional image."
+  }  
 }

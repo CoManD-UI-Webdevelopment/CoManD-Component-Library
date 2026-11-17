@@ -2,7 +2,6 @@
     <!-- begin CmdInputGroup ---------------------------------------------------------------------------------------- -->
     <div :class="[
         'cmd-input-group label',
-        required ? validationStatus : null,
         {
             'has-state': validationStatus,
             inline: labelInline,
@@ -10,74 +9,57 @@
             disabled: disableGroup,
             'toggle-switches': toggleSwitches
         }
-        ]"
-         :aria-labelledby="htmlId">
+    ]" :aria-labelledby="htmlId">
 
         <!-- begin label -->
         <span v-show="showLabel" class="label-text">
             <span :id="htmlId">{{ labelText }}<sup v-if="required" aria-hidden="true">*</sup></span>
 
-                <!-- begin status-icon (linked with tooltip) -->
-                <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
-                    type="button"
-                    class="no-style"
-                    :title="validationTooltip" 
-                    :aria-errormessage="tooltipId" 
-                    aria-live="assertive" 
-                    :popovertarget="'tooltip-target-' + htmlId"
-                    :style="'anchor-name: --tooltip-anchor-' + htmlId"
-                >
-                        <!-- begin CmdIcon -->
-                        <CmdIcon :iconClass="getStatusIconClass" />
-                        <!-- end CmdIcon -->
-                </button>
-                <!-- end status-icon (linked with tooltip) -->
+            <!-- begin status-icon (linked with tooltip) -->
+            <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon" type="button"
+                class="no-style" :title="validationTooltip" :aria-errormessage="tooltipId" aria-live="assertive"
+                :popovertarget="'tooltip-target-' + htmlId" :style="'anchor-name: --tooltip-anchor-' + htmlId">
+                <!-- begin CmdIcon -->
+                <CmdIcon :iconClass="getStatusIconClass" />
+                <!-- end CmdIcon -->
+            </button>
+            <!-- end status-icon (linked with tooltip) -->
 
-                 <!-- begin CmdTooltip -->
-                <CmdTooltip
-                    ref="tooltip"
-                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
-                    :id="'tooltip-target-' + htmlId"
-                    :scrollContainer="scrollContainerForTooltip"
-                    :popoverTargetName="'tooltip-target-' + htmlId"
-                    :validationStatus="validationStatus"
-                    :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-                    :toggle-visibility-by-click="true"
-                    :style="'position-anchor: --tooltip-anchor-' + htmlId"
-                >
+            <!-- begin CmdTooltip -->
+            <CmdTooltip ref="tooltip" class="cmd-tooltip-for-form-elements box"
+                :id="'tooltip-target-' + htmlId" :scrollContainer="scrollContainerForTooltip"
+                :popoverTargetName="'tooltip-target-' + htmlId" :validationStatus="validationStatus"
+                :role="validationStatus === 'error' ? 'alert' : 'dialog'" :toggle-visibility-by-click="true"
+                :style="'position-anchor: --tooltip-anchor-' + htmlId">
 
-                    <!-- begin CmdListOfRequirements -->
-                    <CmdListOfRequirements
-                        v-if="cmdListOfRequirementsProperties.showRequirements"
-                        v-bind="cmdListOfRequirementsProperties"
-                    />
-                    <!-- end CmdListOfRequirements -->
-                </CmdTooltip>
-                <!-- end CmdTooltip -->
+                <!-- begin CmdListOfRequirements -->
+                <CmdListOfRequirements v-if="cmdListOfRequirementsProperties.showRequirements"
+                    v-bind="cmdListOfRequirementsProperties" />
+                <!-- end CmdListOfRequirements -->
+            </CmdTooltip>
+            <!-- end CmdTooltip -->
         </span>
         <!-- end label -->
 
         <!-- begin view without slot -->
-        <span v-if="!useSlot" :class="['flex-container', {'vertical': orientation === 'vertical','flex-items-flex-none': !stretchHorizontally, 'no-gap': multipleSwitch}]">
-            <label v-for="(inputElement, index) in inputElements" :key="index" :for="inputElement.id" :class="{'toggle-switch': toggleSwitches, colored: colored}">
-                <input
-                    :type="inputTypes"
-                    :id="inputElement.id"
-                    :name="inputElement.name"
-                    :value="inputElement.value"
-                    v-model="inputValue"
-                    :disabled="inputElement.disabled"
-                    :class="[inputElements.htmlClass, {'replace-input-type': replaceInputType}]"
-                />
-                <!-- begin CmdIcon -->
-                <CmdIcon
-                    v-if="multipleSwitch && inputElement.iconClass"
-                    :iconClass="inputElement.iconClass"
-                    :type="inputElement.iconType"
-                />
-                <!-- end CmdIcon -->
-                <span v-if="inputElement.labelText" class="label-text">{{ inputElement.labelText }}</span>
-            </label>
+        <span v-if="!useSlot" :class="['flex-container',
+                {
+                    'vertical': orientation === 'vertical',
+                    'no-gap': multipleSwitch,
+                    'switch-wrapper': multipleSwitch
+                },
+                stretchHorizontally ? 'stretch-horizontally' : 'flex-items-flex-none'
+            ]">
+            <CmdFormElement v-for="(inputElement, index) in inputElements" :type="inputTypes" :id="inputElement.id"
+                :name="inputElement.name" :value="inputElement.value" :disabled="inputElement.disabled"
+                :labelText="inputElement.labelText" :toggleSwitch="true" :colored="true" v-model="inputValue"
+                :key="index">
+                <template #labeltext>
+                    <CmdIcon v-if="multipleSwitch && inputElement.iconClass" :iconClass="inputElement.iconClass"
+                        :type="inputElement.iconType" />
+                    <span v-if="inputElement.labelText" class="label-text">{{ inputElement.labelText }}</span>
+                </template>
+            </CmdFormElement>
         </span>
         <!-- end view without slot -->
 
@@ -118,7 +100,7 @@ export default {
         /**
         * specify a scroll-container which scrolling hides the tooltip
         */
-         scrollContainerForTooltip: {
+        scrollContainerForTooltip: {
             type: String,
             required: false
         },
@@ -286,8 +268,8 @@ export default {
         */
         cmdListOfRequirements: {
             type: Object,
-            required: false   
-         }
+            required: false
+        }
     },
     methods: {
         updateStatus() {
@@ -368,25 +350,44 @@ export default {
         gap: var(--default-gap);
     }
 
-    /* overwrite default behavior from frontend-framework */
-    &.toggle-switch {
-        display: block;
+    .stretch-horizontally {
+        align-self: normal;
     }
 
     /* overwrite default behavior from frontend-framework */
-    > .label-text {
+    .toggle-switch {
+        display: block;
+
+        .label-text {
+            text-align: center;
+            display: inline-block;
+
+            [class*="icon-"] {
+                background: none;
+            }
+        }
+    }
+
+    /* overwrite default behavior from frontend-framework */
+    >.label-text {
         display: inline-flex;
 
         .flex-container {
-            gap: 1rem 1.5rem; /* vertical, horizontal */
+            gap: 1rem 1.5rem;
+            /* vertical, horizontal */
         }
 
-        > span + a:has([class*="icon-"]) {
-            margin-left: calc(var(--default-margin) / 2);
+        >span {
+            &+a:has([class*="icon-"]) {
+                margin-left: calc(var(--default-margin) / 2);
+            }
+
         }
 
-        &:hover, &:active, &:focus {
-            & + .flex-container {
+        &:hover,
+        &:active,
+        &:focus {
+            &+.flex-container {
                 input {
                     border-color: var(--default-border-color);
                 }
@@ -395,35 +396,34 @@ export default {
     }
 
     &.has-state {
-        input:checked ~ span {
+        input:checked~span {
             --status-color: var(--hyperlink-color);
         }
 
         .label-text span {
-                color: var(--status-color);
-            }
-
-        &.error {
-            --status-color: var(--error-color);
-
-            /* labels for checkboxes and radiobuttons */
-   
+            color: var(--status-color);
         }
 
+        &.error {
+            --status-color: var(--error-color-text);
+
+            /* labels for checkboxes and radiobuttons */
+
+        }
 
         &.multiple-switch {
             &.error {
-                --status-color: var(--error-color);
+                --status-color: var(--error-color-text);
 
                 label {
-                    border-color: var(--error-color);
+                    border-color: var(--error-color-text);
 
-                    > * {
-                        color: var(--error-color);
+                    >* {
+                        color: var(--error-color-text);
                     }
 
                     &:is(:hover, :active, :focus) {
-                        > * {
+                        >* {
                             color: var(--hyperlink-color-highlighted);
                         }
                     }
@@ -432,5 +432,6 @@ export default {
         }
     }
 }
+
 /* end cmd-input-group ------------------------------------------------------------------------------------------ */
 </style>

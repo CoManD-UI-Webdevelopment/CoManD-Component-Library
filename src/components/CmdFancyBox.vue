@@ -9,8 +9,8 @@
         <header class="flex-container">
             <!-- begin CmdHeadline -->
             <CmdHeadline
-                v-if="cmdHeadline?.headlineText"
-                v-bind="cmdHeadline"
+                v-if="cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText"
+                v-bind="cmdHeadlineProperties"
             />
             <!-- end CmdHeadline -->
 
@@ -19,46 +19,29 @@
                 v-if="(fancyBoxOptionsProperties.printButtons?.color || fancyBoxOptionsProperties.printButtons?.grayscale) || fancyBoxOptionsProperties.closeIcon"
                 class="button-wrapper flex-none"
             >  <!-- begin print buttons -->
-                <a v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.color"
-                   href="#"
-                   class="button print-color"
-                   :title="fancyBoxOptionsProperties.printButtons.color?.tooltip"
-                   @click.prevent="printPage('color')">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon
-                        :iconClass="fancyBoxOptionsProperties.printButtons.color?.iconClass"
-                        :type="fancyBoxOptionsProperties.printButtons.color?.iconType"
-                    />
-                    <!-- end CmdIcon -->
-                </a>
-                <a v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.grayscale"
-                   href="#"
-                   class="button print-grayscale"
-                   :title="fancyBoxOptionsProperties.printButtons.grayscale?.tooltip"
-                   @click.prevent="printPage('grayscale')">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon
-                        :iconClass="fancyBoxOptionsProperties.printButtons.grayscale?.iconClass"
-                        :type="fancyBoxOptionsProperties.printButtons.grayscale?.iconType"
-                    />
-                    <!-- end CmdIcon -->
-                </a>
+                <CmdLink
+                    v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.color"
+                    class="print-color"
+                    v-bind="fancyBoxOptionsProperties.printButtons.color"
+                    @click="printPage('color')"
+                />
+
+                <CmdLink
+                    v-if="showPrintButtons && fancyBoxOptionsProperties.printButtons?.grayscale"
+                    class="print-grayscale"
+                    v-bind="fancyBoxOptionsProperties.printButtons.grayscale"
+                    @click="printPage('grayscale')"
+                />
                 <!-- end print buttons -->
 
                 <!-- begin close-icon -->
-                <a v-if="fancyBoxOptionsProperties.closeIcon?.show"
-                   href="#"
-                   id="close-dialog"
-                   :title="fancyBoxOptionsProperties.closeIcon?.tooltip"
-                   ref="close-dialog"
-                   @click.prevent="close">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon
-                        :iconClass="fancyBoxOptionsProperties.closeIcon?.iconClass"
-                        :type="fancyBoxOptionsProperties.closeIcon?.iconType"
-                    />
-                    <!-- end CmdIcon -->
-                </a>
+                <CmdLink
+                    v-if="fancyBoxOptionsProperties.closeIcon?.show"
+                    id="close-dialog"
+                    ref="close-dialog"
+                    v-bind="fancyBoxOptionsProperties.closeIcon"
+                    @click="close"
+                />
                 <!-- end close-icon -->
             </div>
             <!-- end button-wrapper -->
@@ -94,33 +77,19 @@
         </div>
         <footer v-if="showSubmitButtons && fancyBoxOptionsProperties.submitButtons" class="flex-container flex-items-flex-none">
             <!-- begin cancel-button -->
-            <button
-                v-if="fancyBoxOptionsProperties.submitButtons?.cancel"
-                @click="cancel"
-                :title="fancyBoxOptionsProperties.submitButtons.cancel?.tooltip">
-                <CmdIcon
-                    v-if="fancyBoxOptionsProperties.submitButtons.cancel?.iconClass"
-                    :iconClass="fancyBoxOptionsProperties.submitButtons.cancel?.iconClass"
-                    :type="fancyBoxOptionsProperties.submitButtons.cancel?.iconType"
-                />
-                <span
-                    v-if="fancyBoxOptionsProperties.submitButtons.cancel?.buttonText">{{ fancyBoxOptionsProperties.submitButtons.cancel?.buttonText }}</span>
-            </button>
+            <CmdLink
+                v-if="fancyBoxOptionsProperties.submitButtons?.cancel.show"
+                v-bind="fancyBoxOptionsProperties.submitButtons.cancel"
+                @click="cancel" 
+            />
             <!-- end cancel-button -->
 
             <!-- begin confirm-button -->
-            <button
-                v-if="fancyBoxOptionsProperties.submitButtons?.confirm"
-                @click="confirm"
-                :title="fancyBoxOptionsProperties.submitButtons.cancel?.tooltip">
-                <CmdIcon
-                    v-if="fancyBoxOptionsProperties.submitButtons.confirm?.iconClass"
-                    :iconClass="fancyBoxOptionsProperties.submitButtons.confirm?.iconClass"
-                    :type="fancyBoxOptionsProperties.submitButtons.confirm?.iconType"
-                />
-                <span
-                    v-if="fancyBoxOptionsProperties.submitButtons.confirm?.buttonText">{{ fancyBoxOptionsProperties.submitButtons.confirm?.buttonText }}</span>
-            </button>
+            <CmdLink
+                v-if="fancyBoxOptionsProperties.submitButtons?.confirm.show"
+                v-bind="fancyBoxOptionsProperties.submitButtons.confirm"
+                @click="confirm" 
+            />
             <!-- end confirm-button -->
         </footer>
 
@@ -152,7 +121,7 @@ const openFancyBox = (config) => {
 
 const FancyBox = defineComponent({
     name: "CmdFancyBox",
-    emits: ['cancel', 'confirm'],
+    emits: ["cancel", "confirm", "update:show"],
     data() {
         return {
             fancyBoxContent: null,
@@ -291,43 +260,62 @@ const FancyBox = defineComponent({
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadline
+            }
+        },
         fancyBoxOptionsProperties() {
             return {
                 closeIcon: {
                     show: true,
-                    iconClass: "icon-cancel",
-                    iconType: "auto",
-                    tooltip: "Close",
+                    styleAsButton: true,
+                    icon: {
+                        iconClass: "icon-cancel",
+                        tooltip: "Close dialog"
+                    },
                     ...this.fancyBoxOptions?.closeIcon
                 },
                 printButtons: {
                     color: {
-                        iconClass: "icon-print",
-                        iconType: "auto",
-                        tooltip: "print in color",
+                        styleAsButton: true,
+                        icon: {
+                            iconClass: "icon-print",
+                            tooltip: "Print in color",
+                        },
                         ...this.fancyBoxOptions?.printButtons?.color
                     },
                     grayscale: {
-                        iconClass: "icon-print",
-                        iconType: "auto",
-                        tooltip: "print in grayscale",
+                        styleAsButton: true,
+                        icon: {
+                            iconClass: "icon-print",
+                            tooltip: "Print in grayscale",
+                        },
                         ...this.fancyBoxOptions?.printButtons?.grayscale
                     }
                 },
                 submitButtons: {
                     cancel: {
-                        iconClass: "icon-cancel",
-                        iconType: "auto",
-                        tooltip: "Cancel",
-                        buttonText: "Cancel",
+                        show: true,
+                        linkType: "button",
+                        icon: {
+                            iconClass: "icon-cancel",
+                            tooltip: "Cancel",
+                        },
+                        text: "Confirm",
                         ...this.fancyBoxOptions?.submitButtons?.cancel
                     },
                     confirm: {
-                        iconClass: "icon-check",
-                        iconType: "auto",
-                        buttonText: "Confirm",
-                        tooltip: "Confirm",
-                        buttonType: "primary",
+                        show: true,
+                        linkType: "button",
+                        icon: {
+                            iconClass: "icon-check",
+                            tooltip: "Confirm",
+                        },
+                        text: "Confirm",
+                        highlightLevel: "primary",
                         ...this.fancyBoxOptions?.submitButtons?.confirm
                     }
                 }
@@ -409,7 +397,7 @@ const FancyBox = defineComponent({
         showDialog() {
             // avoid scrolling if fancybox is shown
             document.querySelector("body").classList.add("avoid-scrolling")
-            this.$refs.dialog.showModal()
+            this.$refs.dialog.showModal() // invoke native method for dialog-element
 
             // overwrite default behavior of dialog-element, which sets focus on first focusable element inside
             this.$refs["close-dialog"]?.focus()
@@ -463,7 +451,7 @@ const FancyBox = defineComponent({
                 this.index = 0;
             }
         },
-        // close fancybox (by button, escape-key)
+        // close fancybox (by button or escape-key)
         close() {
             this.showFancyBox = false
             this.$emit("update:show", false)
@@ -652,7 +640,7 @@ export default FancyBox
     .outer-content-wrapper {
         max-height: 85vh;
         overflow-x: hidden;
-        flex: none;
+        /*flex: none;*/
 
         .content {
             > img, > video {

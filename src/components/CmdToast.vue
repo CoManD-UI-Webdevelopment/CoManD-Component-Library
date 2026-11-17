@@ -1,14 +1,14 @@
 <template>
     <!-- begin CmdToast ---------------------------------------------------------------------------------------- -->
-    <div v-if="showToast" class="cmd-toast box" role="status" aria-live="assertive" aria-atomic="true">
+    <div v-if="showToast" class="cmd-toast box flex-container flex-direction-column" role="status" :aria-live="ariaLive" aria-atomic="true">
+        <header>
+            <CmdHeadline v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+                v-bind="cmdHeadlineProperties" />
+            <CmdLink @click="close" :aria-label="cmdLinkCloseIconProperties?.icon?.tooltip"
+                v-bind="cmdLinkCloseIconProperties" />
+        </header>
         <slot>
-            <header>
-                <CmdHeadline v-if="cmdHeadlineProps" v-bind="cmdHeadlineProps" />
-                <a href="#" @click.prevent="close" :aria-label="cmdIconProps.tooltip">
-                    <CmdIcon v-bind="cmdIconProps" />
-                </a>
-            </header>
-            <p>{{ message }}</p>
+            <CmdParagraph v-bind="cmdParagraphProperties" />
         </slot>
     </div>
     <!-- end CmdToast ---------------------------------------------------------------------------------------- -->
@@ -17,12 +17,31 @@
 <script>
 export default {
     name: 'CmdToast',
+    emits: ["status-changed"],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             showToast: false
         }
     },
     props: {
+        /**
+         * set aria-live-value for accessibility
+         * 
+         * @requiredForAccessibility
+         */
+        ariaLive: {
+            tpye: String,
+            default: "assertive",
+            validator(value) {
+                return value === "assertive" ||
+                value === "alert"
+            }
+        },
         /**
          * message shown inside the toast
          */
@@ -38,26 +57,44 @@ export default {
             required: false
         },
         /**
-         * properties for CmdIcon-component
+         * properties for CmdLink-component
          */
-        cmdIcon: {
+        cmdLinkCloseIcon: {
+            type: Object,
+            required: false
+        },
+                /**
+         * properties for CmdParagraph-component
+         * 
+         * content will be set by "message"-property
+         */
+         cmdParagraph: {
             type: Object,
             required: false
         }
     },
     computed: {
-        cmdHeadlineProps() {
+        cmdHeadlineProperties() {
             return {
+                show: true,
                 headlineLevel: 6,
                 headlineText: "Information",
-                ...this?.cmdHeadline
+                ...this.cmdHeadline
             }
         },
-        cmdIconProps() {
+        cmdLinkCloseIconProperties() {
             return {
-                iconClass: "icon-cancel",
-                tooltip: "Close Toast",
-                ...this?.cmdIcon
+                icon: {
+                    iconClass: "icon-cancel-circle",
+                    tooltip: "Close Toast",
+                },
+                ...this.cmdLinkCloseIcon
+            }
+        },
+        cmdParagraphProperties() {
+            return {
+                content: this.message,
+                ...this.cmdParagraph
             }
         }
     },
@@ -89,11 +126,17 @@ export default {
     top: auto;
     bottom: 7rem;
     z-index: 1000;
+    gap: var(--gap-small);
 
     header {
         display: flex;
+        align-items: center;
 
-        a {
+        .cmd-headline {
+            margin: 0;
+        }
+
+        .cmd-link {
             margin-left: auto;
         }
     }

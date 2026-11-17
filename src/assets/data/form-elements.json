@@ -11,7 +11,7 @@
     "placeholder": "Placeholdertext",
     "required": false,
     "disabled": false,
-    "scrollContainerForTooltip": ".page-wrapper"
+    "scrollContainerForTooltip": ".site-wrapper"
   },
   {
     "component": "flexContainer",
@@ -169,21 +169,21 @@
         "inputElements": [
           {
             "labelText": "Website",
-            "id": "checkbox-id-1",
+            "id": "form-elements-checkbox-id-1",
             "name": "input-group-checkbox",
             "iconClass": "icon-globe",
             "value": "checkbox-website"
           },
           {
             "labelText": "E-Mail",
-            "id": "checkbox-id-2",
+            "id": "form-elements-checkbox-id-2",
             "name": "input-group-checkbox",
             "iconClass": "icon-mail",
             "value": "checkbox-email"
           },
           {
             "labelText": "Phone",
-            "id": "checkbox-id-3",
+            "id": "form-elements-checkbox-id-3",
             "name": "input-group-checkbox",
             "iconClass": "icon-phone",
             "value": "checkbox-phone"

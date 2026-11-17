@@ -16,7 +16,7 @@
 
         <!-- begin label-text (+ required asterisk) -->
         <span v-if="(labelText || $slots.labeltext) && $attrs.type !== 'checkbox' && $attrs.type !== 'radio'"
-            :class="['label-text', { hidden: !showLabel }]">
+            :class="['label-text', { 'visually-hidden': !showLabel }]">
             <span>
                 <span v-if="labelText" v-html="labelText"></span>
 
@@ -30,25 +30,29 @@
             </span>
 
             <!-- begin status-icon (linked with tooltip) -->
-            <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
-                type="button"
-                class="no-style"
+            <!-- (span with role="button" instead of <button>: a <label> must not contain a second labelable control) -->
+            <span v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
+                role="button"
+                tabindex="0"
+                class="no-style status-icon-button"
+                :aria-label="validationTooltip"
                 :title="validationTooltip" 
-                :aria-errormessage="tooltipId" 
-                aria-live="assertive" 
-                :popovertarget="'tooltip-target-' + htmlId"
+                @click.prevent.stop="toggleStatusTooltip"
+                @keydown.enter.prevent.stop="toggleStatusTooltip"
+                @keydown.space.prevent.stop="toggleStatusTooltip"
+                aria-haspopup="true"
                 :style="'anchor-name: --tooltip-anchor-' + htmlId"
             >
                     <!-- begin CmdIcon -->
                     <CmdIcon :iconClass="getStatusIconClass" />
                     <!-- end CmdIcon -->
-            </button>
+            </span>
             <!-- end status-icon (linked with tooltip) -->
 
                  <!-- begin CmdTooltip -->
                 <CmdTooltip
                     ref="tooltip"
-                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
+                    class="cmd-tooltip-for-form-elements box"
                     :id="'tooltip-target-' + htmlId"
                     :scrollContainer="scrollContainerForTooltip"
                     :popoverTargetName="'tooltip-target-' + htmlId"
@@ -88,7 +92,7 @@
                         ref="input"
                         v-bind="elementAttributes" />
                     <!-- begin delete-icon -->
-                    <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'phone')"
+                    <a v-if="iconDelete?.show && !$attrs.disabled && ($attrs.type === 'text' || $attrs.type === 'email' || $attrs.type === 'tel' || $attrs.type === 'phone')"
                         class="deleteicon" href="#" @click.prevent="deleteInput" :title="iconDelete?.tooltip">
                         <CmdIcon :iconClass="iconDelete?.iconClass" :type="iconDelete?.iconType" />
                     </a>
@@ -121,17 +125,17 @@
                         :value="inputValue"
                         :class="[inputClass, validationStatus, toggleSwitchIconClass, { 'replace-input-type': replaceInputType }]"
                         :id="htmlId" :disabled="$attrs.disabled" :aria-invalid="validationStatus === 'error'" />
-                    <span v-if="labelText || $slots.labeltext" :class="['label-text', { hidden: !showLabel }]">
-                        <span>
-                            <!-- begin labelText for checkbox/radio/toggle-switch (without switch-label) -->
-                            <span v-if="labelText" v-html="labelText"></span>
-                            <!-- end labelText for checkbox/radio/toggle-switch (without switch-label) -->
-
+                    <span v-if="labelText || $slots.labeltext" :class="['label-text', { 'visually-hidden': !showLabel }]">
+                        <span> 
                             <!-- begin slot 'labeltext' -->
-                            <slot v-else name="labeltext" />
+                            <slot name="labeltext">
+                                <!-- begin labelText for checkbox/radio/toggle-switch (without switch-label) -->
+                                <span v-html="labelText"></span>
+                                <!-- end labelText for checkbox/radio/toggle-switch (without switch-label) -->
+                                
+                                <sup v-if="$attrs.required">*</sup>
+                            </slot>
                             <!-- end slot 'labeltext' -->
-
-                            <sup v-if="$attrs.required">*</sup>
                         </span>
                     </span>
                 </template>
@@ -147,12 +151,11 @@
                         <span class="label-text">{{ offLabel }}</span>
                     </span>
                     <!-- begin labelText for checkbox/radio/toggle-switch (with switch-label) -->
-                    <span v-if="labelText" :class="['label-text', { hidden: !showLabel }]">
+                    <span v-if="labelText" :class="['label-text', { 'visually-hidden': !showLabel }]">
                         <span v-html="labelText"></span><sup v-if="$attrs.required">*</sup>
                     </span>
                     <!-- end labelText for checkbox/radio/toggle-switch (with switch-label) -->
                 </template>
-                <slot v-else></slot>
                 <!-- end labels for toggle-switch with switch-label -->
             </template>
             <!-- end checkbox and radiobutton -->
@@ -693,6 +696,9 @@ export default {
             if (attributes[this.element]) {
                 Object.entries(this.$attrs).filter(([name]) => attributes[this.element].includes(name)).forEach(([name, value]) => attrs[name] = value)
             }
+            if (this.element === "input" && !attrs.type) {
+                attrs.type = "text" // explicit default
+            }
             return attrs
         },
         buttonAttrs() {
@@ -763,6 +769,10 @@ export default {
         }
     },
     methods: {
+        toggleStatusTooltip() {
+            // shows/hides the status-tooltip (popover) by the status-icon (span[role=button])
+            this.$refs.tooltip?.$refs.tooltip?.togglePopover()
+        },
         deleteInput() {
             this.setFocus()
             this.$emit("update:modelValue", '')
@@ -938,9 +948,24 @@ export default {
         }
     }
 
+    .label-text .status-icon-button {
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: .2rem solid currentColor;
+            outline-offset: .2rem;
+        }
+    }
+
     .label-text {
         :is(a, span)[class*="icon-"] {
             top: .09rem;
+        }
+    }
+
+    .toggle-switch {
+        .label-text {
+            justify-content: center;
         }
     }
 
@@ -949,7 +974,7 @@ export default {
         &+.cmd-tooltip {
             &.error {
                 * {
-                    --status-color: var(--error-color);
+                    --status-color: var(--error-color-text);
                 }
             }
 
@@ -967,8 +992,8 @@ export default {
 
             &.success {
                 * {
-                    --status-color: var(--success-color);
-                    --form-input-text-color: var(--success-color);
+                    --status-color: var(--success-color-text);
+                    --form-input-text-color: var(--success-color-text);
                 }
 
                 &:has(input[type="checkbox"], input[type="radio"]) {
@@ -1062,12 +1087,6 @@ export default {
         }
     }
 
-    .place-inside {
-        &+input {
-            padding-left: calc(var(--default-padding) * 3);
-        }
-    }
-
     .characters-left-wrapper {
         margin-top: calc(var(--default-margin) / 2);
         display: block;
@@ -1081,7 +1100,7 @@ export default {
             color: var(--color-scheme-text-color);
 
             &.error {
-                color: var(--error-color);
+                color: var(--error-color-text);
             }
         }
     }

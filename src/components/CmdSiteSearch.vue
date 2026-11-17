@@ -2,7 +2,7 @@
     <!-- begin CmdBoxSiteSearch ---------------------------------------------------------------------------------------- -->
     <fieldset class="cmd-box-site-search flex-container">
         <!-- begin legend -->
-        <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
+        <legend :class="{'visually-hidden' : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <!-- end legend -->
 
         <!-- begin CmdHeadline -->

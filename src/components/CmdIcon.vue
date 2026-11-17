@@ -1,11 +1,11 @@
 <template>
     <!-- begin CmdIcon ---------------------------------------------------------------------------------------- -->
     <!-- begin iconify-icon -->
-    <Icon v-if="isIconify" :icon="iconClass" :title="tooltip" :class="$attrs.class"></Icon>
+    <Icon v-if="isIconify" :icon="iconClass" :title="tooltip" v-bind="a11yAttributes"></Icon>
     <!-- end iconify-icon -->
 
     <!-- begin icon from local iconfont -->
-    <span v-else :class="[iconClass, $attrs.class]" :title="tooltip"></span>
+    <span v-else :class="iconClass" :title="tooltip" v-bind="a11yAttributes"></span>
     <!-- end icon from local iconfont -->
     <!-- end CmdIcon ---------------------------------------------------------------------------------------- -->
 </template>
@@ -56,6 +56,12 @@ export default {
         }
     },
     computed: {
+        /**
+         * icons with tooltip are images with an accessible name, icons without tooltip are decorative (hidden for screen readers)
+         */
+        a11yAttributes() {
+            return this.tooltip ? {role: "img", "aria-label": this.tooltip} : {"aria-hidden": "true"}
+        },
         isIconify() {
             if (this.type === "iconify") {
                 return true

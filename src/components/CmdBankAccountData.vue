@@ -1,38 +1,37 @@
 <template>
     <!-- begin CmdBankAccountData ---------------------------------------------------------------------------------------- -->
-    <div class="cmd-bank-account-data">
-        <!-- begin slot -->
-        <template v-if="useSlot">
-            <slot></slot>
-        </template>
-        <!-- end slot -->
-
-        <template v-else>
-            <!-- begin CmdHeadline -->
-            <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline"/>
-            <!-- end CmdHeadline -->
+    <div :class="['cmd-bank-account-data', {box: styleAsBox}]">
+        <slot>
+            <CmdHeadline v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+                v-bind="cmdHeadlineProperties" />
 
             <!-- begin account data -->
             <dl>
                 <template v-for="(entry, index) in accountData" :key="index">
                     <dt>{{ entry.text }}</dt>
+
+                    <!-- begin icon to copy data -->
                     <dd v-if="allowCopyByClick && entry.allowCopy">
                         <span>{{ entry.value }}</span>
-                        <a href="#" @click.prevent="copyToClipboard(entry.value)" :title="cmdIcon.tooltip">
-                            <!-- begin CmdIcon -->
-                            <CmdIcon :iconClass="cmdIcon.iconClass" :type="cmdIcon.iconType"/>
-                            <!-- end CmdIcon -->
-                        </a>
+                        <CmdLink 
+                            @click="copyToClipboard(entry.value)"
+                            v-bind="cmdLinkCopyDataProperties"
+                        />
                     </dd>
+                    <!-- end icon to copy data -->
+
                     <dd v-else :key="index">{{ entry.value }}</dd>
                 </template>
             </dl>
             <!-- end account data -->
 
             <!-- begin additional information -->
-            <p v-if="additionalInformation">{{ additionalInformation }}</p>
+            <CmdParagraph 
+                v-if="cmdParagraphAdditionalInformationProperties.show && cmdParagraphAdditionalInformationProperties.text" 
+                v-bind="cmdParagraphAdditionalInformationProperties" 
+            />
             <!-- end additional information -->
-        </template>
+        </slot>
     </div>
     <!-- end CmdBankAccountData ---------------------------------------------------------------------------------------- -->
 </template>
@@ -40,11 +39,16 @@
 <script>
 export default {
     name: "CmdBankAccountData",
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     props: {
         /**
-         * activate if you want to use slot instead for given structure
+         * style component as a box
          */
-        useSlot: {
+         styleAsBox: {
             type: Boolean,
             default: false
         },
@@ -72,26 +76,51 @@ export default {
             required: false
         },
         /**
-         * icon 'copy'
+         * properties for CmdLink to copy data to dashboard
          *
          * @requiredForAccessibility: partial
          */
-        cmdIcon: {
+         cmdLinkCopyData: {
             type: Object,
-            default() {
-                return {
-                    iconClass: "icon-file-copy",
-                    tooltip: "Copy data to clipboard!",
-                    iconType: "auto"
-                }
-            }
+            required: false
         },
+        /**
+         * properties for CmdParagraph for additional information shown at bottom
+         */
+         cmdParagraphAdditionalInformation: {
+            type: Object,
+            required: false
+         },
         /**
          * properties for CmdHeadline-component
          */
         cmdHeadline: {
             type: Object,
             required: false
+        }
+    },
+    computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
+        cmdParagraphAdditionalInformationProperties() {
+            return {
+                show: true,
+                ...this.cmdParagraphAdditionalInformation
+            }
+        },
+        cmdLinkCopyDataProperties() {
+            return {
+                icon: {
+                    iconClass: "icon-file-copy",
+                    tooltip: "Copy data to clipboard!"
+                },
+                ...this.cmdLinkCopyData
+            }
         }
     },
     methods: {

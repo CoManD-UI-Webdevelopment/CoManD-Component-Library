@@ -161,19 +161,19 @@ export default {
         }
 
         .error, .error span {
-            --status-color: var(--error-color) !important; /* assure status-color is not overwritten by form-element-status */
+            --status-color: var(--error-color-text) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .warning, .warning span {
-            --status-color: var(--warning-color) !important; /* assure status-color is not overwritten by form-element-status */
+            --status-color: var(--warning-color-text) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .success, .success span {
-            --status-color: var(--success-color) !important; /* assure status-color is not overwritten by form-element-status */
+            --status-color: var(--success-color-text) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         .info, .info span {
-            --status-color: var(--info-color) !important; /* assure status-color is not overwritten by form-element-status */
+            --status-color: var(--info-color-text) !important; /* assure status-color is not overwritten by form-element-status */
         }
 
         dt, dt span[class*="icon-"] {

@@ -4,26 +4,24 @@
         :class="['cmd-table-wrapper', {'collapsed': !showTableData, 'full-width': fullWidth, 'has-caption': hasCaption, 'has-overflow': hasOverflow}]">
         <div v-if="collapsible || userCanToggleWidth" class="button-wrapper">
             <!-- begin button to toggle table-width -->
-            <a v-if="userCanToggleWidth" class="button"
-               href="#" @click.prevent="fullWidth = !fullWidth"
-               :title="iconToggleWidth.tooltip"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconToggleWidth.iconClass" :type="iconToggleWidth.iconType"/>
-                <!-- end CmdIcon -->
-            </a>
+            <CmdLink 
+                v-if="userCanToggleWidth" 
+                v-bind="cmdLinkToggleWidthProperties"
+                @click="fullWidth = !fullWidth"
+            />
             <!-- end button to toggle table-width -->
 
             <!-- begin button to collapse table-content -->
-            <a v-if="collapsible" class="button"
-               href="#" @click.prevent="showTableData = !showTableData"
+            <CmdLink v-if="collapsible"
+                v-bind="cmdLinkToggleExpandProperties"
+               @click.prevent="showTableData = !showTableData"
                :title="showTableData ? iconCollapse.tooltip : iconExpand.tooltip"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon :iconClass="showTableData ? iconCollapse.iconClass : iconExpand.iconClass"
                          :type="showTableData ? iconCollapse.iconType : iconExpand.iconType"/>
                 <!-- end CmdIcon -->
-            </a>
+            </CmdLink>
             <!-- end button to collapse table-content -->
         </div>
         <div class="inner-wrapper" ref="innerWrapper" @scroll="updatePosition">
@@ -38,7 +36,7 @@
             <!-- begin table -->
             <table ref="table" :class="{'full-width': fullWidth}">
                 <slot name="table-caption">
-                    <caption v-if="tableData.caption?.text || caption?.text" :class="{ hidden: hideCaption }">
+                    <caption v-if="tableData.caption?.text || caption?.text" :class="{ 'visually-hidden': hideCaption }">
                         {{ caption?.text || tableData.caption?.text }}
                     </caption>
                 </slot>
@@ -51,7 +49,7 @@
                 </slot>
                 <transition :name="transition">
                     <slot name="table-body">
-                        <tbody v-show="showTableData" aria-expanded="true">
+                        <tbody v-show="showTableData">
                             <tr :class="{'active' : tableData.rowIndexHighlighted === indexRows}"
                                 v-for="(tablerows, indexRows) in tableData.tbody" :key="indexRows">
                                 <td :class="{'active' : tableData.columnIndexHighlighted === indexData}"
@@ -63,7 +61,7 @@
                 </transition>
                 <transition :name="transition">
                     <slot name="table-foot">
-                        <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData" aria-expanded="true">
+                        <tfoot v-if="tableData.tfoot && tableData.tfoot.length && showTableData">
                             <tr>
                                 <td :class="{'active' : tableData.columnIndexHighlighted === indexFoot}"
                                     v-for="(tablefoot, indexFoot) in tableData.tfoot" :key="indexFoot" v-html="tablefoot">
@@ -181,20 +179,6 @@ export default {
             }
         },
         /**
-         * icon to shrink table (horizontally)
-         *
-         * @requiredForAccessibility: partial
-         */
-        iconToggleWidth: {
-            type: Object,
-            default: function () {
-                return {
-                    iconClass: "icon-toggle-table-width",
-                    tooltip: "Toggle table width"
-                }
-            }
-        },
-        /**
          * icon to stretch table (horizontally)
          *
          * @requiredForAccessibility: partial
@@ -207,12 +191,46 @@ export default {
                     tooltip: "Stretch table"
                 }
             }
-        }
+        },
+        /**
+         * properties for CmdLink-component to expand/collapse table
+         * 
+         * icon is set separately by iconExpand-property and iconCollapse-property
+         */
+         cmdLinkToggleExpand: {
+            type: Object,
+            required: false
+         },
+        /**
+         * properties for CmdLink-component strtech/shrink table
+         *
+         * @requiredForAccessibility: partial
+         */
+        cmdLinkToggleWidth: {
+            type: Object,
+            required: false
+        },
     },
     mounted() {
         this.hasOverflow = this.$refs.table.clientWidth > this.$refs.innerWrapper.clientWidth
     },
     computed: {
+        cmdLinkToggleWidthProperties() {
+            return {
+                linkType: "button",
+                icon: {
+                    iconClass: "icon-toggle-table-width",
+                    tooltip: "Toggle table width"
+                },
+                ...this.cmdLinkToggleWidth
+            }
+        },
+        cmdLinkToggleExpandProperties() {
+            return {
+                linkType: "button",
+                ...this.cmdLinkToggleExpand
+            }
+        },
         hasCaption() {
             if (this.hideCaption) {
                 return false
@@ -354,7 +372,7 @@ export default {
                 a[class*='icon-'] {
                     &, &:hover, &:active, &:focus {
                         font-size: var(--icon-size-small);
-                        color: var(--color-white);
+                        color: var(--table-head-text-color);
                     }
                 }
             }

@@ -1,19 +1,17 @@
 <template>
     <!-- begin CmdUploadForm ---------------------------------------------------------------------------------------- -->
     <!-- begin advanced mode -->
-    <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container vertical', { 'upload-initiated': uploadInitiated }]">
-        <legend :class="{hidden : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
-        <!-- begin CmdHeadlineFieldset -->
+    <fieldset v-if="advancedMode" :class="['cmd-upload-form flex-container flex-direction-column', { 'upload-initiated': uploadInitiated }]">
+        <legend :class="{'visually-hidden' : !legend.show, 'align-left': legend.align === 'left'}">{{ legend.text }}</legend>
         <CmdHeadline
-            v-if="cmdHeadlineFieldset"
-            v-bind="cmdHeadlineFieldset"
+            v-if="(cmdHeadlineForFieldsetProperties?.show && cmdHeadlineForFieldsetProperties?.headlineText) || editModeContext"
+            v-bind="cmdHeadlineForFieldsetProperties"
         />
-        <!-- end CmdHeadlineFieldset -->
 
         <!-- begin CmdSystemMessage -->
         <CmdSystemMessage
             v-if="systemMessageStatus && allSystemMessages.length"
-            :iconClose="{ show: false }"
+            :allowUserToCloseMessage="false"
             :validationStatus="systemMessageStatus"
             :systemMessage="allSystemMessages.length === 1 ? allSystemMessages[0] : getMessage('upload_form.system_message.the_following_errors_occurred')"
         >
@@ -25,37 +23,22 @@
         </CmdSystemMessage>
         <!-- end CmdSystemMessage -->
 
-        <div :class="['box flex-container vertical', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]"
+        <div :class="['box flex-container flex-direction-column', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]"
              v-on="dragAndDropHandler">
-            <template v-if="!listOfFiles.length">
-                <!-- begin CmdHeadline -->
-                <CmdHeadline v-if="allowMultipleFileUploads" v-bind="cmdHeadlineNoFilesToUpload" headlineLevel="4">
-                    {{ headlineTextNoFilesToUpload }}
-                </CmdHeadline>
-                <!-- end CmdHeadline -->
-            </template>
+            <CmdHeadline v-if="!listOfFiles.length && allowMultipleFileUploads" v-bind="cmdHeadlineNoFilesToUploadProperties" />
 
             <!-- begin total-upload information -->
-            <div v-else class="flex-container vertical">
-                <div v-if="showTotalUpload && listOfFiles.length !== 1"
-                     class="flex-container vertical list-files-wrapper">
-                    <!-- begin CmdHeadline -->
-                    <CmdHeadline v-bind="cmdHeadlineSummaryOfAllFiles" headlineLevel="4">
-                        {{ getMessage("upload_form.headline.summary_of_all_files") }}
-                    </CmdHeadline>
-                    <!-- end CmdHeadline -->
+            <div v-else class="flex-container flex-direction-column">
+                <div v-if="showTotalUpload && listOfFiles.length > 1"
+                     class="flex-container flex-direction-column list-files-wrapper">
+                    <CmdHeadline v-bind="cmdHeadlineSummaryOfAllFilesProperties" />
 
-                    <ul v-if="showTotalUpload && listOfFiles.length !== 1" class="list-of-files total-files">
+                    <ul class="list-of-files total-files">
                         <li class="flex-container flex-items-flex-none">
-                            <a
-                                href="#"
-                                :title="getMessage('upload_form.labeltext.remove_all_files_from_list')"
-                                @click.prevent="cancelUpload"
-                            >
-                                <!-- begin CmdIcon -->
-                                <CmdIcon v-bind="iconDelete" />
-                                <!-- end CmdIcon -->
-                            </a>
+                            <CmdLink 
+                                v-bind="cmdLinkCancelUploadProperties"
+                                @click="cancelUpload"
+                            />
                             <span>
                               {{ listOfFiles.length }}
                               <template v-if="!allowMultipleFileUploads">
@@ -86,29 +69,21 @@
                 </div>
                 <!-- end total-upload information -->
 
-                <div class="flex-container vertical list-files-wrapper">
+                <div v-if="listOfFiles.length" class="flex-container flex-direction-column list-files-wrapper">
+                    <CmdHeadline v-bind="cmdHeadlineListOfSelectedFilesProperties" />
                     <!-- begin list of selected files -->
-                    <!-- begin CmdHeadline -->
-                    <CmdHeadline v-bind="cmdHeadlineListOfSelectedFiles" headlineLevel="4">
-                        {{ getMessage("upload_form.headline.list_of_selected_files") }}
-                    </CmdHeadline>
-                    <!-- end CmdHeadline -->
-
                     <ul class="list-of-files">
                         <li
                             v-for="(uploadFile, index) in listOfFiles"
                             :key="index"
                             class="flex-container flex-items-flex-none"
                         >
-                            <a
-                                href="#"
+                            <CmdLink 
+                                v-bind="cmdLinkRemoveFilesFromListProperties"
                                 :title="getMessage('upload_form.labeltext.remove_file_from_list', uploadFile.file.name)"
-                                @click.prevent="removeFile(index)"
-                            >
-                                <!-- begin CmdIcon -->
-                                <CmdIcon v-bind="iconDelete" />
-                                <!-- end CmdIcon -->
-                            </a>
+                                @click="removeFile(index)"
+                            />
+      
                             <span
                                 :class="[
                                 'text-align-right',
@@ -133,13 +108,11 @@
                             <!-- end progressbar -->
                         </li>
                     </ul>
-                    <a
+                    <CmdLink
                         v-if="failedUpload"
-                        href="#"
-                        @click.prevent="cancel"
-                        :title="getMessage('upload_form.all_files_will_be_removed')">
-                        {{ getMessage("upload_form.reset_upload") }}
-                    </a>
+                        v-bind="cmdLinkResetUploadProperties"
+                        @click="cancel"
+                    />
                     <hr/>
                 </div>
             </div>
@@ -147,19 +120,10 @@
 
             <!-- begin upload conditions -->
             <div class="upload-conditions">
-                <!-- begin CmdHeadline -->
-                <CmdHeadline v-if="allowMultipleFileUploads && listOfFiles.length"
-                             v-bind="cmdHeadlineSelectAdditionalFiles" headlineLevel="4">
-                    {{ getMessage("upload_form.headline.select_additional_files") }}
-                </CmdHeadline>
-                <!-- end CmdHeadline -->
-
-                <!-- begin CmdHeadline -->
-                <CmdHeadline v-if="!allowMultipleFileUploads && listOfFiles.length" v-bind="cmdHeadlineSelectNewFile"
-                             headlineLevel="4">
-                    {{ getMessage("upload_form.headline.select_new_file") }}
-                </CmdHeadline>
-                <!-- end CmdHeadline -->
+                <CmdHeadline 
+                    v-if="listOfFiles.length"
+                    v-bind="cmdHeadlineSelectFilesProperties" 
+                />
 
                 <dl class="small">
                     <template v-if="maxTotalUploadSize > 0">
@@ -180,17 +144,11 @@
                         {{ getMessage("upload_form.allowed_file_types") }}
                     </dt>
                     <dd>
-                        <a
-                            href="#"
-                            @click.prevent="showListOfFileExtensions = !showListOfFileExtensions"
-                            :title="getMessage('upload_form.tooltip.toggle_list_of_allowed_file_types')">
-                            <!-- begin CmdIcon -->
-                            <CmdIcon
-                                :iconClass="showListOfFileExtensions ? iconInvisible.iconClass : iconVisible.iconClass"
-                                :type="showListOfFileExtensions ? iconInvisible.iconType : iconVisible.iconType"
-                            />
-                            <!-- end CmdIcon -->
-                        </a>
+                        <CmdLink 
+                            @click="showListOfFileExtensions = !showListOfFileExtensions"
+                            v-bind="cmdLinkToggleListOfFileExtensionsProperties"
+                        />
+
                         <!-- begin list of file extensions -->
                         <transition :name="transitionListOfFileExtensions">
                             <ul v-if="showListOfFileExtensions" class="list-of-file-extensions">
@@ -210,21 +168,13 @@
             <!-- end upload conditions -->
 
             <!-- begin upload-button and drag-and-drop-text -->
-            <div class="flex-container vertical no-gap">
-                <button
-                    type="button"
-                    :class="['button upload primary', { disabled: uploadInitiated }]"
+            <div class="flex-container flex-direction-column no-gap">
+                <CmdLink 
+                    class="upload"
                     :disabled="uploadInitiated"
                     @click="selectFiles()"
-                >
-                    <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
-                    <!-- end CmdIcon -->
-                    <span v-if="allowMultipleFileUploads">{{
-                            getMessage("upload_form.labeltext.select_files")
-                        }}</span>
-                    <span v-else>{{ getMessage("upload_form.labeltext.select_file") }}</span>
-                </button>
+                    v-bind="cmdLinkSelectFilesProperties"
+                />
                 <p v-if="enableDragAndDrop" :class="['text-drag-and-drop', { disabled: uploadInitiated }]">
                     <span>{{ getMessage("upload_form.or") }}</span>
                     <strong>
@@ -257,37 +207,20 @@
 
         <!-- begin button-wrapper -->
         <div class="button-wrapper stretch-on-small-devices">
-            <button
-                :class="[
-                    'button primary',
-                    {
-                        disabled:
-                        listOfFiles.length === 0 ||
-                        (maxTotalUploadSize > 0 && totalSize > maxTotalUploadSize) ||
-                        uploadInitiated
-                    }
-                ]"
+            <CmdLink 
                 :disabled="
                     listOfFiles.length === 0 ||
                     (maxTotalUploadSize > 0 && totalSize > maxTotalUploadSize) ||
-                    uploadInitiated
-                "
+                    uploadInitiated"
+                v-bind="cmdLinkUploadFilesProperties"
                 @click="uploadFiles"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon v-bind="iconUpload" />
-                <!-- end CmdIcon -->
-                <span v-if="listOfFiles.length === 1 || !allowMultipleFileUploads">
-                    {{ getMessage("upload_form.buttontext.upload_file") }}
-                </span>
-                <span v-else>{{ getMessage("upload_form.buttontext.upload_files") }}</span>
-            </button>
-            <button :class="['button', { disabled: listOfFiles.length === 0 }]" @click="cancel">
-                <!-- begin CmdIcon -->
-                <CmdIcon v-bind="iconCancel" />
-                <!-- end CmdIcon -->
-                <span>{{ getMessage("upload_form.buttontext.cancel") }}</span>
-            </button>
+            />
+
+            <CmdLink 
+                @click="cancel"
+                v-bind="cmdLinkCancelIconProperties"
+                :class="{ disabled: listOfFiles.length === 0 }"
+            />
         </div>
         <!-- end button-wrapper -->
     </fieldset>
@@ -298,7 +231,7 @@
        :class="['cmd-upload-form box', { 'drop-area': enableDragAndDrop, 'allow-drop': allowDrop }]"
        v-on="dragAndDropHandler">
         <!-- begin progressbar -->
-        <span class="progressbar" v-if="uploadInitiated">
+        <span v-if="uploadInitiated" class="progressbar">
             <span>{{ getPercentage(totalUploadProgress) }}</span>
             <progress
                 max="100"
@@ -314,20 +247,20 @@
                 <template v-if="fileTypeImage">
                     <span>{{ getMessage("upload_form.select_image") }}</span>
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconImage.iconClass" :type="iconImage.iconType"/>
+                    <CmdIcon v-bind="cmdIconImage" />
                     <!-- end CmdIcon -->
                 </template>
                 <template v-else>
                     <span>{{ getMessage("upload_form.select_file") }}</span>
                     <!-- begin CmdIcon -->
-                    <CmdIcon :iconClass="iconFileUpload.iconClass" :type="iconFileUpload.iconType"/>
+                    <CmdIcon v-bind="cmdIconFileUpload" />
                     <!-- end CmdIcon -->
                 </template>
             </template>
             <template v-else>
                 <span>{{ getMessage("upload_form.drag_and_drop_file_here") }}</span>
                 <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconDragAndDrop.iconClass" :type="iconDragAndDrop.iconType"/>
+                <CmdIcon v-bind="cmdIconDragAndDrop" />
                 <!-- end CmdIcon -->
             </template>
             <small>{{ getMessage("upload_form.max_upload_size") }} {{ formatSize(maxFileUploadSize) }}</small>
@@ -363,6 +296,11 @@ export default {
     name: "CmdUploadForm",
     emits: ["click", "error", "upload-complete", "upload-file-success"],
     mixins: [I18n, DefaultMessageProperties],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             comment: "",
@@ -520,50 +458,13 @@ export default {
             }
         },
         /**
-         * set icon for delete-icons
-         */
-        iconDelete: {
-            type: Object,
-            default() {
-                return {
-                    iconClass: "icon-delete",
-                    iconType: "auto"
-                }
-            }
-        },
-        /**
-         * set icon for file-upload-icon
-         */
-        iconFileUpload: {
-            type: Object,
-            default() {
-                return {
-                    iconClass: "icon-file-upload",
-                    iconType: "auto"
-                }
-            }
-        },
-        /**
-         * set icon for file-icon
-         */
-        iconFile: {
-            type: Object,
-            default() {
-                return {
-                    iconClass: "icon-file",
-                    iconType: "auto"
-                }
-            }
-        },
-        /**
          * set icon for invisible-icon
          */
         iconInvisible: {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-not-visible",
-                    iconType: "auto"
+                    iconClass: "icon-not-visible"
                 }
             }
         },
@@ -574,63 +475,92 @@ export default {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-visible",
-                    iconType: "auto"
+                    iconClass: "icon-visible"
                 }
             }
         },
         /**
-         * set icon for image-icon
+         * properties for CmdIcon for "drag-and-drop"-icon
          */
-        iconImage: {
+         cmdIconDragAndDrop: {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-image",
-                    iconType: "auto"
+                    iconClass: "icon-not-visible"
                 }
             }
         },
-        /**
-         * set icon for upload-icon
+         /**
+         * properties for CmdIcon for "image"-icon
          */
-        iconUpload: {
+         cmdIconFileUpload: {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-upload",
-                    iconType: "auto"
+                    iconClass: "icon-file"
                 }
             }
         },
         /**
-         * set icon for drag-and-drop-icon
+         * properties for CmdIcon for "image"-icon
          */
-        iconDragAndDrop: {
+         cmdIconImage: {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-drag-and-drop",
-                    iconType: "auto"
+                    iconClass: "icon-image"
                 }
             }
         },
         /**
-         * set icon class for cancel-icon
+         * properties for CmdLink-component for removing (before added) files from list
+         * 
          */
-        iconCancel: {
+        cmdLinkRemoveFilesFromList: {
             type: Object,
-            default() {
-                return {
-                    iconClass: "icon-cancel",
-                    iconType: "auto"
-                }
-            }
+            required: false
         },
         /**
-         * properties for CmdHeadline-component at of the fieldset
+         * properties for CmdLink-component for selecting file(s)
          */
-        cmdHeadlineFieldset: {
+        cmdLinkSelectFiles: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component for uploading file(s)
+         */
+         cmdLinkUploadFiles: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component for cancel-icon
+         */
+         cmdLinkCancelIcon: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component to toggle the list of file extensions
+         * 
+         * icon is set by iconVisible- and iconInvisible-properties
+         */
+        cmdLinkToggleListOfFileExtensions: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component to reset upload (if upload failed before)
+         */
+         cmdLinkResetUpload: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdHeadline-component at top of the fieldset
+         */
+         cmdHeadlineForFieldset: {
             type: Object,
             required: false
         },
@@ -663,23 +593,116 @@ export default {
             required: false
         },
         /**
-         * properties for CmdHeadline-component for 'select additional files'
+         * properties for CmdHeadline-component for 'select additional/new file(s)'
          */
-        cmdHeadlineSelectAdditionalFiles: {
+        cmdHeadlineSelectFiles: {
             type: Object,
             required: false
         },
-        /**
-         * properties for CmdHeadline-component for 'select new file'
-         */
-        cmdHeadlineSelectNewFile: {
-            type: Object,
-            required: false
-        }
     },
     computed: {
-        headlineTextNoFilesToUpload() {
-            return this.allowMultipleFileUploads ? this.getMessage("upload_form.no_files_to_upload") : this.this.getMessage("upload_form.no_file_to_upload")
+        cmdHeadlineForFieldsetProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadlineForFieldset
+            }
+        },
+        cmdHeadlineNoFilesToUploadProperties() {
+            return {
+                headlineLevel: 4,
+                ...this.cmdHeadlineNoFilesToUpload,
+                headlineText: this.allowMultipleFileUploads ? this.getMessage("upload_form.no_files_to_upload") : this.getMessage("upload_form.no_file_to_upload")
+            }
+        },
+        cmdHeadlineListOfSelectedFilesProperties() {
+            return {
+                headlineLeveL: 4,
+                headlineText: this.getMessage("upload_form.headline.list_of_selected_files"),
+                ...this.cmdHeadlineListOfSelectedFiles
+            }
+        },
+        cmdHeadlineSummaryOfAllFilesProperties() {
+            return {
+                headlineLevel: 4,
+                headlineText: this.getMessage("upload_form.headline.summary_of_all_files"),
+                ...this.cmdHeadlineSummaryOfAllFiles
+            }
+        },
+        cmdHeadlineSelectFilesProperties() {
+            return {    
+                headlineLevel: 4,
+                headlineText: this.allowMultipleFileUploads ? this.getMessage("upload_form.headline.select_additional_files") : this.getMessage("upload_form.headline.select_new_file"),
+                ...this.cmdHeadlineSelectFiles
+            }
+        },
+        cmdLinkCancelIconProperties() {
+            return {
+                linkType: "button",
+                highlightLevel: null,
+                icon: {
+                    iconClass: "icon-cancel-circle"
+                },
+                text: this.getMessage("upload_form.buttontext.cancel"),
+                ...this.cmdLinkCancelIcon
+            }
+        },
+        cmdLinkSelectFilesProperties() {
+            return {
+                linkType: "button",
+                icon: {
+                    iconClass: "icon-file-upload"
+                },
+                text: this.allowMultipleFileUploads ? this.getMessage("upload_form.labeltext.select_files") : this.getMessage("upload_form.labeltext.select_file") ,
+                ...this.cmdLinkSelectFiles
+            }
+        },
+        cmdLinkToggleListOfFileExtensionsProperties() {
+            return {
+                icon: {
+                    iconClass: this.showListOfFileExtensions ? this.iconInvisible?.iconClass : this.iconVisible?.iconClass,
+                    type: this.showListOfFileExtensions ? this.iconInvisible?.iconType : this.iconVisible?.iconType,
+                    tooltip: this.getMessage('upload_form.tooltip.toggle_list_of_allowed_file_types')
+                },
+                ...this.cmdLinkToggleListOfFileExtensions 
+            }
+        },
+        cmdLinkUploadFilesProperties() {
+            return {
+                linkType: "button",
+                icon: {
+                    iconClass: "icon-upload"
+                },
+                text: this.listOfFiles.length === 1 || !this.allowMultipleFileUploads ? this.getMessage("upload_form.buttontext.upload_file") : this.getMessage("upload_form.buttontext.upload_files"),
+                ...this.cmdLinkUploadFiles
+            }
+        },
+        cmdLinkCancelUploadProperties() {
+            return {
+                icon: {
+                    iconClass: "icon-delete",
+                    tooltip: this.getMessage('upload_form.labeltext.remove_all_files_from_list')
+                },
+                ...this.cmdLinkCancelUpload
+            }
+        },
+        cmdLinkRemoveFilesFromListProperties() {
+            return {
+                icon: {
+                    iconClass: "icon-delete"
+                },
+                ...this.cmdLinkRemoveFilesFromList
+            }
+        },
+        cmdLinkResetUploadProperties() {
+            return {
+                icon: {
+                    iconClass: "icon-loop-left",
+                    tooltip: this.getMessage('upload_form.all_files_will_be_removed')
+                },
+                text: this.getMessage("upload_form.reset_upload"),
+                ...this.cmdLinkResetUpload
+            }
         },
         fileTypeImage() {
             return this.allowedFileExtensions.some(extension => extension.includes('jpg'));
@@ -1098,7 +1121,7 @@ export default {
     &.box {
         display: inline-flex;
         flex-direction: column;
-        background: var(--default-background);
+        background: var(--color-scheme-background-subtle);
 
         text-decoration: none;
         text-align: center;
@@ -1248,7 +1271,7 @@ export default {
     }
 
     .error {
-        color: var(--error-color);
+        color: var(--error-color-text);
     }
 
     & + .cmd-form-element {

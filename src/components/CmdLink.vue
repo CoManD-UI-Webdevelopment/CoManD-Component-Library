@@ -2,11 +2,13 @@
     <!-- begin CmdLink ---------------------------------------------------------------------------------------- -->
     <!-- begin href -->
     <a v-if="linkType === 'href'"
+       ref="cmd-link"
        :href="!disabled ? path : null"
-       :target="target"
+       :target="target || null"
        :class="['cmd-link', highlightLevel, {'button': styleAsButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]"
        @click.prevent="emitClick($event, 'href')"
        :title="icon?.tooltip"
+       :role="styleAsButton ? 'button' : null"
     >
         <!-- begin CmdInnterLink -->
         <CmdInnerLink :text="text" :icon="icon" :image="image">
@@ -23,7 +25,8 @@
         :to="!disabled ? path : {}" 
         exact-active-class="router-link-exact-active active"
         :class="['cmd-link', highlightLevel, {'button': styleAsButton, 'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
-        @click="emitClick($event, 'router')" 
+        @click="emitClick($event, 'router')"
+        :role="styleAsButton ? 'button' : null" 
         :title="icon?.tooltip">
         <!-- begin CmdInnterLink -->
         <CmdInnerLink :text="text" :icon="icon" :image="image">
@@ -37,6 +40,7 @@
 
     <!-- begin button -->
     <button v-else-if="linkType === 'button' || linkType === 'submit'" 
+        ref="cmd-link"
         :class="['cmd-link button', highlightLevel, {'disabled': disabled, 'box': styleAsBox, 'fancybox': fancybox}]" 
         type="submit"
         :disabled="disabled" 
@@ -125,14 +129,13 @@ export default {
         },
         /**
          * set highlight-level for link/button
-         * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * null, "primary", "secondary", "tertiary"
          */
          highlightLevel: {
             type: String,
             default: "primary",
             validator(value) {
-                return value === "none" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -161,6 +164,19 @@ export default {
         }
     },
     methods: {
+        /**
+         * public function to enable calling foucs() on main-component from outside
+         */
+        focus() {
+            const link = this.$refs["cmd-link"]
+            // check if link provides native function focus() (for a/button)
+            if(typeof link.focus === "function" ) {
+                link.focus()
+            } else {
+                // set focus for router-link
+                link.$el.focus()
+            }
+        }, 
         emitClick(event, linkType) {
             this.$emit("click", {originalEvent: event, linkType: linkType})
         }
@@ -183,8 +199,6 @@ export default {
 
     img {
         max-height: 4rem;
-        aspect-ratio: 1/1;
-        border-radius: var(--full-circle);
         margin: 0;
     }
 

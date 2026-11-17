@@ -1,6 +1,6 @@
 <template>
     <!-- begin CmdImageZoom ---------------------------------------------------------------------------------------- -->
-    <div class="cmd-image-zoom flex-container">
+    <div class="cmd-image-zoom flex-container" ref="image-zoom">
         <!-- begin small image -->
         <a href="#" class="flex-none thumbnail-imagezoom" :title="imageSmall.image.tooltip">
             <!-- begin CmdImage for small image -->
@@ -54,14 +54,15 @@ export default {
         onMouseOver(e) {
             this.showLargeImage = true
             this.$nextTick(() => {
-                const zoomContainerHeight = window.innerHeight - this.$el.getBoundingClientRect().y - 10
-                const zoomContainer = this.$el.querySelector('.zoom-container')
+                const element = this.$refs["image-zoom"]
+                const zoomContainerHeight = window.innerHeight - element.getBoundingClientRect().y - 10
+                const zoomContainer = element.querySelector('.zoom-container')
                 zoomContainer.style.height = `${zoomContainerHeight}px`
-                positionOverlay(this, e)
+                positionOverlay(element, e)
             })
         },
         onMouseMove(e) {
-            positionOverlay(this, e)
+            positionOverlay(this.$refs["image-zoom"], e)
         },
         onMouseOut() {
             this.showLargeImage = false
@@ -69,10 +70,10 @@ export default {
     }
 }
 
-function positionOverlay(vm, e) {
-    const largeImageContainer = vm.$el.querySelector('.zoom-container')
+function positionOverlay(imageZoomElement, e){
+    const largeImageContainer = imageZoomElement.querySelector('.zoom-container')
     const largeImage = largeImageContainer.querySelector('img')
-    const zoomOverlay = vm.$el.querySelector('.zoom-overlay')
+    const zoomOverlay = imageZoomElement.querySelector('.zoom-overlay')
 
     const smallImageWidth = e.target.getBoundingClientRect().width
     const smallImageHeight = e.target.getBoundingClientRect().height

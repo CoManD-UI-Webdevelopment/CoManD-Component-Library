@@ -1,8 +1,18 @@
-{
-    "descriptionTermType": "number",
-    "descriptionData": [
-        "Footnotetext #1",
-        "Footnotetext #2",
-        "Footnotetext #3"
-    ]
-}
+[
+    {
+        "descriptionTermType": "asterisk",
+        "descriptionData": [
+            "Footnotetext #1",
+            "Footnotetext #2",
+            "<a href='#'>Footnotelink</a>"
+        ]
+    },
+    {
+        "descriptionTermType": "number",
+        "descriptionData": [
+            "Footnotetext #1",
+            "Footnotetext #2",
+            "<a href='#'>Footnotelink</a>"
+        ]
+    }
+]

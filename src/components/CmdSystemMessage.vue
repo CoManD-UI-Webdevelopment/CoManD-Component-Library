@@ -1,39 +1,27 @@
 <template>
     <!-- begin CmdSystemMessage ---------------------------------------------------------------------------------------- -->
     <transition :name="transition">
-        <div
-            v-if="showSystemMessage"
+        <div v-if="showSystemMessage"
             :class="['cmd-system-message', 'system-message', 'flex-container', 'flex-direction-column', { 'full-width': fullWidth }, systemMessageTextAlign, validationStatus]"
-            :role="validationStatus === 'error' ? 'alert' : 'dialog'"
-            :aria-labelledby="ariaId"
-        >
+            :role="validationStatus === 'error' ? 'alert' : 'dialog'" :aria-labelledby="ariaId">
             <!-- begin slot-content -->
             <slot>
                 <!-- begin CmdHeadline -->
-                <CmdHeadline
-                    class="message-headline"
-                    :cmdIcon="headlineIcon"
-                    :headlineText="systemMessage"
-                    :headlineLevel="messageHeadlineLevel"
-                    :textAlign="textAlign"
-                    :id="ariaId"
-                />
+                <CmdHeadline 
+                    class="message-headline" 
+                    v-bind="cmdHeadlineProperties"
+                    :id="ariaId" />
                 <!-- end CmdHeadline -->
             </slot>
             <!-- end slot-content -->
 
             <!-- begin close-icon -->
-            <a
-                v-if="iconClose.show && iconClose.iconClass"
-                href="#"
+            <CmdLink 
+                v-if="cmdLinkCloseIconProperties.show" 
+                v-bind="cmdLinkCloseIconProperties" 
                 class="close-button"
-                @click.prevent="hideSystemMessage"
-                :title="iconClose.tooltip"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
-                <!-- end CmdIcon -->
-            </a>
+                @click="hideSystemMessage" 
+            />
             <!-- end close-icon -->
         </div>
     </transition>
@@ -47,13 +35,21 @@ import Identifier from "../mixins/Identifier"
 export default {
     name: "CmdSystemMessage",
     mixins: [Identifier],
+    emits: ["hide-system-message"],
     data() {
         return {
             showSystemMessage: true,
             ariaId: this.ariaReferenceId || this.buildHtmlId("system-message") // mixin requires id to be defined
         }
     },
-    props:  {
+    props: {
+        /**
+         * set if user should be allowed to close the message (by close-icon)
+         */
+        allowUserToCloseMessage: {
+            type: Boolean,
+            default: true
+        },
         /**
          * define the text-align for the system message (will be inherited to CmdHeadline in slot)
          * 
@@ -80,7 +76,7 @@ export default {
          * 
          * @allowedValues: "none", "fade", "scroll" 
          */
-         transition: {
+        transition: {
             type: String,
             default: "fade"
         },
@@ -108,19 +104,6 @@ export default {
             default: true
         },
         /**
-         * set icon-class for message (will be displayed left from message)
-         */
-        iconMessage: {
-            type: Object,
-            default: function() {
-                return {
-                    show: true,
-                    iconClass: "icon-warning",
-                    type: "auto"
-                }
-            }
-        },
-        /**
          * the system-message-text
          */
         systemMessage: {
@@ -128,12 +111,21 @@ export default {
             required: false
         },
         /**
-         * set headline-level for system-message (given to CmdHeadline-component)
+         * properties for CmdHeadline-component
          */
-        messageHeadlineLevel: {
-            type: [Number, String],
+        cmdHeadline: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdIcon-component shown before headline
+         */
+         cmdIconWarning: {
+            type: Object,
             default() {
-                return 6
+                return {
+                    iconClass: "icon-warning"
+                }
             }
         },
         /**
@@ -141,26 +133,32 @@ export default {
          *
          * @requiredForAccessibility: partial
          */
-        iconClose: {
+        cmdLinkCloseIcon: {
             type: Object,
-            default() {
-                return {
-                    show: true,
-                    iconClass: "icon-cancel-circle",
-                    tooltip: "Close this message"
-                }
-            }
+            required: false
         }
     },
     computed: {
-        headlineIcon() {
-            if(this.iconMessage.show) {
-                return {
-                    iconClass: this.iconMessage.iconClass,
-                    type: this.iconMessage.type
-                }
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineText: this.systemMessage,
+                headlineLevel: 4,
+                textAlign: this.textAlign,
+                cmdIcon: this.cmdIconWarning,
+                ...this.cmdHeadline
             }
-            return null
+        },
+        cmdLinkCloseIconProperties() {
+            return {
+                show: this.allowUserToCloseMessage,
+                highlightLevel: null,
+                icon: {
+                    iconClass: "icon-cancel-circle",
+                    tooltip: "Close this message"
+                },
+                ...this.cmdLinkCloseIcon
+            }
         },
         systemMessageTextAlign() {
             if (this.textAlign) {
@@ -173,13 +171,13 @@ export default {
                         return "align-items-flex-start"
                 }
             }
-            return ""
+            return null
         }
     },
     methods: {
         hideSystemMessage(event) {
             this.showSystemMessage = false
-            this.$emit("hideSystemMessage", event)
+            this.$emit("hide-system-message", event)
         }
     },
     watch: {
@@ -195,10 +193,12 @@ export default {
 .cmd-system-message {
     display: inline-flex;
     margin: var(--default-margin) 0;
-    align-self: flex-start; /* if used in flex-container component should not be stretched */
+    align-self: flex-start;
+    /* if used in flex-container component should not be stretched */
 
     .message-headline {
-        margin: 0; /* overwrite default-settings from frontend-framework */
+        margin: 0;
+        /* overwrite default-settings from frontend-framework */
     }
 
     > :last-child {
@@ -214,12 +214,13 @@ export default {
         }
     }
 
-    > a.close-button {
+    >a.close-button {
         display: flex;
         position: absolute;
-        width: auto; /* avoids stretching by flex-containers */
-        top: .5rem;
-        right: .5rem;
+        width: auto;
+        /* avoids stretching by flex-containers */
+        top: var(--system-message-padding-top-bottom);
+        right: calc(var(--system-message-padding-left-right) / 2);
         text-decoration: none;
         z-index: 10;
         line-height: 1;
@@ -228,9 +229,12 @@ export default {
 
         [class*="icon-"] {
             color: var(--default-text-color);
+            font-size: var(--icon-size-large);
         }
 
-        &:hover, &:active, &:focus {
+        &:hover,
+        &:active,
+        &:focus {
             background: none;
 
             [class*="icon-"] {
@@ -240,14 +244,16 @@ export default {
     }
 
     &.warning {
-        > a.close-button {
+        >a.close-button {
             border-color: var(--default-text-color);
 
             [class*="icon-"] {
                 color: var(--default-text-color);
             }
 
-            &:hover, &:active, &:focus {
+            &:hover,
+            &:active,
+            &:focus {
                 border-color: var(--hyperlink-color);
 
                 [class*="icon-"] {

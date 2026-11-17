@@ -61,13 +61,13 @@ export default {
          /**
          * set highlight-level for steps
          * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
          highlightLevel: {
             type: String,
             default: "primary",
             validator(value) {
-                return value === "none" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -150,7 +150,7 @@ export default {
     methods: {
         activeLinkClass(index) {
             if(this.activeLink === index) {
-                 return "active"
+                 return "step-active"
             }
             return null
         },
@@ -211,7 +211,7 @@ export default {
         gap: calc(var(--default-gap) / 2);
 
         li {
-            a:not(.button), a.active:not(.button) {
+            a:not(.button), a.step-active:not(.button) {
                 border: 0;
                 border-radius: inherit;
 
@@ -238,7 +238,7 @@ export default {
                 justify-content: center;
             }
 
-            &:has(.active, .router-link-exact-active) {
+            &:has(.step-active, .router-link-exact-active) {
                 .separator {
                     color: var(--color-scheme-text-color); /* overwrite icon-color inside active links */
                 }
@@ -334,18 +334,18 @@ export default {
 
         &.error {
             .number {
-                border-color: var(--error-color);
-                color: var(--error-color);
+                border-color: var(--error-color-text);
+                color: var(--error-color-text);
             }
 
-            .active {
+            .step-active {
                 .number {
                     background: var(--error-color) !important;
                 }
             }
         }
 
-        :is(.active, .router-link-exact-active):not(.disabled) {
+        :is(.step-active, .router-link-exact-active):not(.disabled) {
             a {
                 background: var(--button-primary-background-highlighted);
             }
@@ -353,7 +353,7 @@ export default {
             .number {
                 background: var(--primary-color);
                 border-color: var(--color-white);
-                color: var(--color-white) !important;
+                color: var(--primary-color-contrast-text) !important;
             }
 
             & ~ li {
@@ -367,7 +367,7 @@ export default {
 
                 .number {
                     background: none;
-                    border-color: var(--border-color);
+                    border-color: var(--default-border-color);
                 }
             }
         }

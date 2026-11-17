@@ -4,7 +4,7 @@
         <!-- begin slot for progress-bar -->
         <slot name="progress-bar" :setCurrentPage="setCurrentPage" :numberOfPages="numberOfPages">
             <CmdMultistepFormProgressBar 
-                v-if="cmdMultistepFormProgressBar.show" 
+                v-if="cmdMultistepFormProgressBarProperties.show" 
                 v-bind="cmdMultistepFormProgressBarProperties"
                 :multisteps="multisteps"
                 :activeStep="currentPage - 1"
@@ -105,11 +105,7 @@ export default {
          */
         cmdMultistepFormProgressBar: {
             type: Object,
-            default() {
-                return {
-                    show: true
-                }
-            }
+            required: false
         },
          /**
          * properties for CmdLink-component

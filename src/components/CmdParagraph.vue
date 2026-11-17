@@ -1,10 +1,10 @@
 <template>
     <!-- begin CmdParagraph ---------------------------------------------------------------------------------------- -->
-    <p 
-        :class="['cmd-paragraph', 'text-align-' + textAlign, 'column-count-' + numberOfColumns]" 
+    <component
+        :is="containsBlockElements ? 'div' : 'p'"
+        :class="['cmd-paragraph', 'text-align-' + textAlign, 'column-count-' + numberOfColumns]"
         v-html="content"
-    >
-    </p>
+    />
     <!-- end CmdParagraph ---------------------------------------------------------------------------------------- -->
 </template>
 
@@ -44,6 +44,12 @@ export default {
                     value === "right" ||
                     value === "justify"
             }
+        }
+    },
+    computed: {
+        containsBlockElements() {
+            // block elements (i.e. <p>) are not allowed inside <p> => render a <div> instead
+            return /<(p|div|ul|ol|dl|h[1-6]|table|blockquote|pre|figure|section)[\s>]/i.test(this.content || "")
         }
     }
 }

@@ -10,12 +10,11 @@
         fullWidthClass
         ]"
          ref="thumbnail-scroller">
-        <!-- begin cmd-headline -->
+
         <CmdHeadline
-            v-if="cmdHeadline?.headlineText || editModeContext"
-            v-bind="cmdHeadline"
+            v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+            v-bind="cmdHeadlineProperties"
         />
-        <!-- end cmd-headline -->
 
         <div :class="['inner-thumbnail-wrapper', {box: styleAsBox}]">
             <!-- begin CmdSlideButton -->
@@ -112,6 +111,11 @@ export default {
         DefaultMessageProperties,
         EditMode
     ],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             items: [],
@@ -272,6 +276,13 @@ export default {
         resizeObserver.observe(thumbnailScrollerWrapper)
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
         tooltip() {
             if (this.contentType === "image") {
                 return this.getMessage("thumbnail_scroller.tooltip.open_large_image")
@@ -440,6 +451,7 @@ export default {
                 img {
                     min-width: 5rem;
                     max-height: 10rem;
+                    margin: 0 auto;
                 }
 
                 a {
@@ -454,17 +466,10 @@ export default {
                             color: inherit
                         }
 
-                        &:has(figcaption) {
-                            img {
-                                border-bottom-left-radius: 0;
-                                border-bottom-right-radius: 0;
-                            }
-                        }
-
                         figcaption {
-                            background: var(--primary-color);
+                            background: none;
                             opacity: 1;
-                            color: var(--color-white);
+                            color: var(--hyperlink-color);
                         }
                     }
 

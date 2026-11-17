@@ -25,7 +25,7 @@
                     element="input"
                     type="checkbox"
                     name="search-filters"
-                    id="search-subject"
+                    :id="'search-subject-' + boxType"
                     labelText="Search subjects"
                     v-model="searchFilterOptions"
                     inputValue="subjects"
@@ -191,7 +191,7 @@ export default {
 .cmd-mail-tool-filter {
     display: flex;
     padding: var(--default-padding);
-    background: var(--color-light-gray);
+    background: light-dark(var(--color-gray-10), var(--color-gray-90));
     align-items: center;
     justify-content: space-between;
 

@@ -8,6 +8,7 @@
                 :class="['page-change', {'disabled': currentPage === 1, 'button': linkType === 'button'}]"
                 @click.stop.prevent="previousPage"
                 :title="!prevLink.showText ? prevLink.text : null"
+                :aria-label="getPreviousHref ? (prevLink.text || 'Previous page') : null"
             >
                 <!-- begin CmdIcon -->
                 <CmdIcon :iconClass="prevLink.iconClass" :type="prevLink.iconType"/>
@@ -36,6 +37,7 @@
                 :class="['page-change', {'disabled': currentPage === numberOfPages, 'button': linkType === 'button'}]"
                 @click.stop.prevent="nextPage"
                 :title="!nextLink.showText ? nextLink.text : null"
+                :aria-label="getNextHref ? (nextLink.text || 'Next page') : null"
             >
                 <span v-if="nextLink.showText">{{ nextLink.text }}</span>
                 <!-- begin CmdIcon -->

@@ -196,7 +196,7 @@ export default {
         flex-direction: column;
         border: var(--default-border);
         border-top: 0;
-        background: var(--default-background);
+        background: var(--color-scheme-background-subtle);
         border-bottom-left-radius: var(--default-border-radius);
         border-bottom-right-radius: var(--default-border-radius);
         position-try-options: flip-block flip-inline; /* let brwoser handle flipping on overflow */
@@ -228,7 +228,7 @@ export default {
                 padding: var(--default-padding);
                 text-decoration: none;
                 width: 100%;
-                background: var(--default-background);
+                background: var(--color-scheme-background-subtle);
 
                 span, span[class*="icon-"] {
                     text-decoration: none !important;
@@ -238,7 +238,7 @@ export default {
                     background: var(--hyperlink-color);
 
                     span, span[class*="icon-"] {
-                        color: var(--color-white);
+                        color: var(--hyperlink-color-contrast-text);
                     }
                 }
             }

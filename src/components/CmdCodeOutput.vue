@@ -8,7 +8,7 @@
             <!-- end CmdIcon -->
         </a>
         <!-- begin preformatted code (keep in one line) -->
-        <pre v-if="preformatted"><code ref="code">
+        <pre v-if="preformatted" tabindex="0"><code ref="code">
             <slot></slot>
         </code></pre>
         <!-- end preformatted code (keep in one line) -->

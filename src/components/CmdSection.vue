@@ -62,7 +62,7 @@ export default {
          */
         cmdHeadline: {
             type: Object,
-            default: false
+            required: false
         }
     },
     computed: {

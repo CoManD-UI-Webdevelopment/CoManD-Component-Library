@@ -1,39 +1,30 @@
 <template>
     <!-- begin CmdTextImageBlock ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-text-image-block flex-container', orientation]">
-        <!-- begin cmdHeadline -->
-        <CmdHeadline
-            v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'aboveImage' && orientation === 'vertical')"
-            v-bind="cmdHeadline"
-        />
-        <!-- end cmdHeadline -->
-
-        <!-- begin cmdImage -->
-        <CmdImage
-            v-if="cmdImage"
-            :image="cmdImage?.image"
-            :figcaption="cmdImage?.figcaption"
-            :editModeConfig="{allowAddItem: false}"
-        />
-        <!-- end cmdImage -->
-
-        <div v-if="!editModeContext" class="flex-container vertical" :class="setInnerClass">
-            <!-- begin cmdHeadline -->
+        <slot>
             <CmdHeadline
-                v-if="(cmdHeadline?.headlineText || editModeContext) && (headlinePosition === 'belowImage' || orientation === 'horizontal')"
-                v-bind="cmdHeadline"
+                v-if="((cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext) && (headlinePosition === 'aboveImage' && orientation === 'vertical')"
+                v-bind="cmdHeadlineProperties"
             />
-            <!-- end cmdHeadline -->
 
-            <!-- begin continuous text -->
-            <div v-if="htmlContent" v-html="htmlContent"></div>
-            <!-- end continuous text -->
+            <CmdImage
+                v-if="cmdImageProperties.show"
+                v-bind="cmdImageProperties"
+                :editModeConfig="{allowAddItem: false}"
+            />
 
-            <!-- begin slot-content -->
-            <slot></slot>
-            <!-- end slot-content -->
-        </div>
+            <div v-if="!editModeContext" class="flex-container vertical" :class="setInnerClass">
+                <CmdHeadline
+                    v-if="((cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext) && (headlinePosition === 'belowImage' && orientation === 'horizontal')"
+                    v-bind="cmdHeadlineProperties"
+                />
 
+                <!-- begin continuous text -->
+                <CmdParagraph v-if="cmdParagraphProperties.show" v-bind="cmdParagraphProperties" />
+                <!-- end continuous text -->
+            </div>
+        </slot>
+        
         <!-- begin edit-mode -->
         <EditComponentWrapper
             v-if="editModeContext"
@@ -71,6 +62,11 @@ import {updateHandlerProvider} from "../utils/editmode.js"
 export default {
     name: "CmdTextImageBlock",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             editableHtmlContent: null
@@ -91,27 +87,11 @@ export default {
             }
         },
         /**
-         * content for continuous text (can contain html-tags)
-         *
-         * @canContainHtml: true
-         */
-        htmlContent: {
-            type: String,
-            required: true
-        },
-        /**
-         * specify class for inner content
-         */
-        innerClass: {
-            type: String,
-            required: false
-        },
-        /**
-         * text-alignment for paragraph/continuous text
-         *
+         * set text-align for content
+         * 
          * @allowedValues: "left", "center", "right"
          */
-        paragraphTextAlign: {
+         textAlign: {
             type: String,
             default: "left",
             validator(value) {
@@ -119,6 +99,13 @@ export default {
                 value === "center" ||
                 value === "right"
             }
+         },
+        /**
+         * specify class for inner content
+         */
+        innerClass: {
+            type: String,
+            required: false
         },
         /**
          * position for headline
@@ -148,6 +135,15 @@ export default {
             required: false
         },
         /**
+         * properties for CmdParagraph-component
+         *
+         * @canContainHtml: true
+         */
+         cmdParagraph: {
+            type: Object,
+            required: false
+        },
+        /**
          * editMode only
          */
         editModeContextData: {
@@ -155,17 +151,36 @@ export default {
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
+        cmdImageProperties() {
+            return {
+                show: true,
+                ...this.cmdImage
+            }
+        },
+        cmdParagraphProperties() {
+            return {
+                show: true,
+                ...this.cmdParagraph
+            }
+        },
+        /**
+         * html-content of the paragraph (only used in edit-mode)
+         */
+        htmlContent() {
+            return this.cmdParagraph?.content
+        },
         paragraphComponentPath() {
             /*  because paragraph is no component on its own, besides the componentPath (for the property),
              an additional flag (here $isComponent-key) is used to let the store identify this edge case.
              the '$'-prefix is set to ensure that the flag is not a generic name, that potentially is used as a property-name in any component */
-            return  [{componentPath: ["props", "htmlContent"], $isComponent: false}]
-        },
-        textAlign() {
-            if (this.paragraphTextAlign) {
-                return "text-align-" + this.paragraphTextAlign
-            }
-            return ""
+            return  [{componentPath: ["props", "cmdParagraph", "content"], $isComponent: false}]
         },
         setInnerClass() {
             return "inner-text-wrapper " + this.textAlign + " " + (this.innerClass || "")
@@ -185,7 +200,7 @@ export default {
 
             return updateHandlerProvider(this, {
                 update(props) {
-                    props.htmlContent = htmlContent
+                    props.cmdParagraph = {...props.cmdParagraph, content: htmlContent}
                 }
             })
         }

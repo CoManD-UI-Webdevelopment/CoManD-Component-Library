@@ -1,8 +1,10 @@
 <template>
     <!-- begin CmdSiteFooter ---------------------------------------------------------------------------------------- -->
     <div class="cmd-site-footer site-footer">
-        <footer :class="['flex-container', {vertical: orientation === 'vertical'}]">
-            <slot></slot>
+        <footer :class="['flex-container', {vertical: contentOrientation === 'vertical'}]">
+            <slot>
+                <CmdList v-bind="cmdList" />
+            </slot>
         </footer>
     </div>
     <!-- end CmdSiteFooter ---------------------------------------------------------------------------------------- -->
@@ -17,13 +19,20 @@ export default {
          *
          * @allowedValues: horizontal, vertical
          */
-        orientation: {
+        contentOrientation: {
             type: String,
             default: "horizontal",
             validator(value) {
                 return value === "horizontal" ||
                     value === "vertical"
             }
+        },
+        /**
+         * properties for CmdList-component
+         */
+        cmdList: {
+            type: Object,
+            required: false
         }
     }
 }

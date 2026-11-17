@@ -3,26 +3,16 @@
     <div class="cmd-switch-language">
         <ul>
             <li v-for="(language, index) in languages" :key="index">
-                <!-- begin link-type 'href' -->
-                <a v-if="language.link.type === 'href'"
-                   :href="language.link.path"
-                   :class="['flag', language.iso2, {'active': activeLanguage(language.iso2)}]"
-                   :title="language.tooltip"
-                   @click.prevent="changeLanguage(language.iso2, $event)">
-                   <img :src="pathFlag(language.iso2)" :alt="language.name" />
-                </a>
-
-                <!-- end link-type 'href' -->
-
-                <!-- begin link-type 'router' -->
-                <router-link v-else
-                     :to="getRoute(language)"
-                     :class="['flag', language.iso2]"
-                     :title="language.tooltip"
-                     @click.prevent="changeLanguage(language.iso2, $event)">
+                <CmdLink 
+                    v-bind="cmdLink"
+                    :linkType="language?.link?.type"
+                    :path="language?.link?.type === 'router' ? getRoute(language) : language?.link?.path"
+                    :class="['flag', language.iso2, {'active': activeLanguage(language.iso2)}]"
+                    :title="language.tooltip"
+                    @click="changeLanguage(language.iso2, $event)"
+                >
                     <img :src="pathFlag(language.iso2)" :alt="language.name" />
-                </router-link>
-                <!-- end link-type 'router' -->
+                </CmdLink>
             </li>
         </ul>
     </div>
@@ -55,6 +45,13 @@ export default {
         pathFlags: {
             type: String,
             default: "/media/images/flags"
+        },
+        /**
+         * properties for CmdLink-component
+         */
+        cmdLink: {
+            type: Object,
+            required: false
         }
     },
     mounted() {

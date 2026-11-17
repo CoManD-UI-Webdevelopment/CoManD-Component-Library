@@ -2,11 +2,11 @@
     <!-- begin CmdGoogleMaps ---------------------------------------------------------------------------------------- -->
     <div class="cmd-google-maps responsive-wrapper">
         <!-- begin CmdHeadline -->
-         <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+         <CmdHeadline v-if="cmdHeadlineProperties.show && cmdHeadlineProperties.headlineText" v-bind="cmdHeadlineProperties" />
         <!-- end CmdHeadline-->
         
         <!-- begin CmdSystemMessage -->
-        <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning" textAlign="center" :iconClose="{show: false}">
+        <CmdSystemMessage v-if="!cookiesAccepted" validationStatus="warning" textAlign="center" :allowUserToCloseMessage="false">
             <p>
                 {{getMessage("google_maps.system_message.accept_terms")}}
             </p>
@@ -61,7 +61,7 @@ export default {
             required: true
         },
         /**
-         * properties for cmdHeadline-component
+         * properties for CmdHeadline-component
          */
         cmdHeadline: {
             type: Object,
@@ -74,6 +74,13 @@ export default {
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadline
+            }
+        },
         locateAddress() {
             if(this.address) {
                 const url = new URL("https://maps.google.de/maps?ie=UTF8&t=&z=17&iwloc=B&output=embed")

@@ -11,6 +11,16 @@ export default {
                 }
             },
             cmdAccordionSettingsControls: {
+                summaryWritingMode: [
+                    {
+                        text: "horizontal (default)",
+                        value: "horizontal"
+                    },
+                    {
+                        text: "vertical",
+                        value: "vertical"
+                    }
+                ],
                 highlightLevel: [
                     {
                         text: "none (default)",
@@ -30,6 +40,29 @@ export default {
                     }
                 ]
             },
+            cmdAccordionsWrapperSettingsData: {
+                cmdHeadline: {
+                    headlineText: "Accordions provided by Slot",
+                    headlineLevel: 4
+                },
+                useGap: true,
+                useRowViewAsDefault: false,
+                fullWidth: true,
+                allowUserToToggleOrientation: true,
+                allowMultipleExpandedBoxes: false
+            },
+            cmdAccordionsWrapperSettingsControls: {
+                summaryWritingMode: [
+                    {
+                        text: "horizontal (default)",
+                        value: "horizontal"
+                    },
+                    {
+                        text: "vertical",
+                        value: "vertical"
+                    }
+                ]
+            },
             cmdAddressDataSettingsData: {
                 cmdHeadline: {
                     headlineText: "Address Data",
@@ -40,7 +73,8 @@ export default {
                 showLabelTexts: false,
                 showIconsOnly: false,
                 showLabels: true,
-                showCityBeforeZip: false
+                showCityBeforeZip: false,
+                styleAsBox: false
             },
             cmdAddressDataSettingsControls: {
                 contentOrientation: [
@@ -60,7 +94,8 @@ export default {
                     headlineLevel: 3
                 },
                 allowCopyByClick: false,
-                additionalInformation: ""
+                additionalInformation: "",
+                styleAsBox: false
             },
             cmdBreadcrumbsSettingsData: {
                 breadcrumbLabel: "You are here:",
@@ -753,6 +788,14 @@ export default {
                     }
                 ],
             },
+            cmdSiteWrapperSettingsData: {
+                "cmdSiteHeader.show": {
+                    show: true
+                },
+                "cmdSiteFooter.show": {
+                    show: true
+                }
+            },
             cmdSiteSearchSettingsData: {
                 useFilters: true,
                 legend: {
@@ -813,8 +856,7 @@ export default {
                 transition: "fade",
                 textAlign: "center",
                 validationStatus: "error",
-                systemMessage: "This is an system message!",
-                messageHeadlineLevel: 4
+                systemMessage: "This is an system message!"
             },
             cmdSystemMessageSettingsControls: {
                 transition: [
@@ -923,26 +965,10 @@ export default {
                 message: "This is a message!"
             },
             cmdTextImageBlockSettingsData: {
-                htmlContent: "Text given as html-content",
-                paragraphTextAlign: "left",
                 headlinePosition: "aboveImage",
                 orientation: "vertical"
             },
             cmdTextImageBlockSettingsControls: {
-                paragraphTextAlign: [
-                    {
-                        text: "Left (default)",
-                        value: "left"
-                    },
-                    {
-                        text: "Center",
-                        value: "center"
-                    },
-                    {
-                        text: "Right",
-                        value: "right"
-                    }
-                ],
                 headlinePosition: [
                     {
                         text: "Above Image (default)",

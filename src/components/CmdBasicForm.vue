@@ -1,18 +1,18 @@
 <template>
     <!-- begin CmdBasicForm---------------------------------------------------------------------------------------- -->
     <div class="cmd-basic-form">
-        <!-- begin CmdHeadline -->
-        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
-        <!-- end CmdHeadline -->
+        <CmdHeadline
+            v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
+            v-bind="cmdHeadlineProperties"
+        />
 
-        <!-- begin CmdForm -->
         <CmdForm
             @submit="onSubmit"
             :class="{'send-success': sendSuccessfully}"
             novalidate="novalidate"
-            v-bind="cmdForm"
+            v-bind="cmdFormProperties"
             :legend="legend"
-            :submitButton="submitButtonProperties"
+            :cmdLinkSubmitButton="submitButtonProperties"
             :formAction="formAction"
             ref="form"
             class="flex-container flex-direction-column"
@@ -257,7 +257,6 @@
             <button class="button" type="button" @click="onSuccess">On Success</button>
             -->
         </CmdForm>
-        <!-- end CmdForm -->
     </div>
     <!-- end CmdBasicForm---------------------------------------------------------------------------------------- -->
 </template>
@@ -372,7 +371,7 @@ export default {
                     },
                     phone: {
                         required: false,
-                        type: "phone",
+                        type: "tel",
                         name: "phone"
                     },
                     country: {
@@ -470,6 +469,19 @@ export default {
         })
     },
     computed: {
+        cmdFormProperties() {
+            return {
+                method: "POST",
+                ...this.cmdForm
+            }
+        },
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadline
+            }
+        },
         submitButtonProperties() {
             return {
                 iconClass: "icon-message-send",
@@ -552,7 +564,7 @@ export default {
                 customSubmitFormData.set(this.configuration[configurationEntries[i]].name, this.formData[configurationEntries[i]].value)
             }
 
-            fetch(this.formAction, {method: this.cmdForm?.formMethod || "POST", body: customSubmitFormData}).then((response) => {
+            fetch(this.formAction, {method: this.cmdFormProperties?.formMethod || "POST", body: customSubmitFormData}).then((response) => {
                 if(response.ok) {
                     this.sendSuccessfully = true
                     this.$refs.form.showMessage("success", this.getMessage("basic_form.system_message.success.message_sent_successfully"))

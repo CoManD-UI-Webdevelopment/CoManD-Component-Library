@@ -1,5 +1,6 @@
 [
   "Accordion",
+  "AccordionsWrapper",
   "AddressData",
   "AdvancedFormElements",
   "BankAccountData",
@@ -37,6 +38,7 @@
   "SiteFooter",
   "SiteHeader",
   "SiteSearch",
+  "SiteWrapper",
   "Slideshow",
   "SmartSearch",
   "SocialNetworks",

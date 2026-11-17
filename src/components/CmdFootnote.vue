@@ -1,6 +1,6 @@
 <template>
     <div class="cmd-footnote">
-        <CmdHeadline v-if="cmdHeadline?.headlineText" v-bind="cmdHeadlineProperties" />
+        <CmdHeadline v-if="cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText" v-bind="cmdHeadlineProperties" />
         <CmdList listType="description" :items="items" :class="'type-' + descriptionTermType" />
     </div>
 </template>
@@ -40,6 +40,7 @@ export default {
     computed: {
         cmdHeadlineProperties() {
             return {
+                show: true,
                 headlineLevel: 6,
                 ...this.cmdHeadline
             }
@@ -71,6 +72,7 @@ export default {
 </script>
 
 <style>
+/* begin cmd-footnote ---------------------------------------------------------------------------------------- */
 .cmd-footnote {
     .cmd-list {
         dl {
@@ -89,4 +91,5 @@ export default {
         }
     }
 }
+/* end cmd-footnote ---------------------------------------------------------------------------------------- */
 </style>

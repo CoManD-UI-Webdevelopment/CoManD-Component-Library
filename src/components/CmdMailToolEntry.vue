@@ -220,11 +220,12 @@ export default {
     }
 
     .cmd-image {
-        width: 3rem;
+        max-width: 3rem;
         aspect-ratio: 1/1;
         border: var(--default-border);
         border-radius: var(--full-circle);
         margin: 0; /* overwrite "a img"-selector from frontend-framework */
+        box-shadow: none;
     }
 
     .options-wrapper {

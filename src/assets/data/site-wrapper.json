@@ -1,0 +1,176 @@
+{
+    "pageContent": "<div style='height: 100%;'>Main content provided by property</div>",
+    "cmdSiteHeader": {
+        "sticky": true,
+        "navigationInline": false,
+        "resizeHeaderOnScroll": false,
+        "scrollContainerToResizeHeader": ".site-wrapper",
+        "useGrid": true,
+        "cmdMainNavigation": {
+            "offcanvasPosition": "right",
+            "stretchMainItems": false,
+            "persistOnMobile": false,
+            "navigationEntries": [
+                {
+                    "type": "href",
+                    "text": "href 1",
+                    "path": "#",
+                    "iconClass": "icon-home"
+                },
+                {
+                    "type": "href",
+                    "text": "href 2",
+                    "path": "",
+                    "subentries": [
+                        {
+                            "type": "href",
+                            "text": "href 2.1",
+                            "path": "",
+                            "subentries": [
+                                {
+                                    "type": "href",
+                                    "text": "href 2.1.1",
+                                    "path": "#"
+                                },
+                                {
+                                    "type": "href",
+                                    "text": "href 2.1.2",
+                                    "path": "#"
+                                },
+                                {
+                                    "type": "href",
+                                    "text": "href 2.1.3",
+                                    "path": "#"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "href",
+                            "text": "href 2.2",
+                            "path": "#",
+                            "subentries": []
+                        }
+                    ]
+                },
+                {
+                    "type": "router",
+                    "text": "router 1",
+                    "path": "#"
+                },
+                {
+                    "type": "router",
+                    "text": "router 2",
+                    "path": "#",
+                    "subentries": [
+                        {
+                            "type": "router",
+                            "text": "router 2.1",
+                            "path": {
+                                "name": "home"
+                            }
+                        },
+                        {
+                            "type": "router",
+                            "text": "router 2.2",
+                            "path": {
+                                "name": "home"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "href",
+                    "text": "CoManD-UI",
+                    "path": "https://www.comand-ui.com",
+                    "target": "comand-website"
+                }
+            ]
+        },
+        "cmdCompanyLogo": {
+            "link": {
+                "type": "href",
+                "path": "./",
+                "tooltip": "Tooltip"
+            },
+            "pathDefaultLogo": "/media/images/logos/logo.svg",
+            "pathDarkmodeLogo": "/media/images/logos/logo-darkmode.svg",
+            "altText": "Company Logo"
+        }
+    },
+    "cmdSiteFooter": {
+        "contentOrientation": "vertical",
+        "cmdList": {
+            "items": [
+            {
+                "icon": {
+                    "iconClass": "icon-user-profile",
+                    "tooltip": "Href with anchor"
+                },
+                "linkType": "href",
+                "text": "",
+                "path": "#anchor-back-to-top"
+            },
+            {
+                "linkType": "router",
+                "text": "Router",
+                "path": {
+                    "path": "#"
+                }
+            },
+            {
+                "icon": {
+                    "iconClass": "icon-home",
+                    "tooltip": "Router with object for path"
+                },
+                "linkType": "router",
+                "text": "Router (+hash)",
+                "path": {
+                    "path": "/",
+                    "hash": "#anchor-back-to-top"
+                }
+            },
+            {
+                "icon": {
+                    "iconClass": "icon-user-profile",
+                    "tooltip": "Tooltip"
+                },
+                "linkType": "href",
+                "text": "Fancybox content",
+                "path": "/content/fancybox-content.html",
+                "fancybox": true,
+                "children": [
+                    {
+                        "icon": {
+                            "iconClass": "icon-home",
+                            "tooltip": "Tooltip"
+                        },
+                        "linkType": "href",
+                        "text": "Link for child #1",
+                        "path": "#"
+                    },
+                    {
+                        "icon": {
+                            "iconClass": "icon-globe",
+                            "tooltip": "Tooltip"
+                        },
+                        "linkType": "href",
+                        "text": "Link for child #2",
+                        "path": "#"
+                    }
+                ]
+            },
+            {
+                "icon": {
+                    "iconClass": "icon-export",
+                    "tooltip": "Tooltip"
+                },
+                "linkType": "href",
+                "text": "External link",
+                "path": "https://www.comand-ui.com",
+                "target": "_blank",
+                "tooltip": "Open CoManD-Website in new tab"
+            }
+        ]
+    }
+    }
+}

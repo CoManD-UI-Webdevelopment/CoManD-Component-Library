@@ -2,20 +2,18 @@
     <!-- begin CmdWidthLimitationWrapper ---------------------------------------------------------------------------------------- -->
     <div class="cmd-width-limitation-wrapper" :class="{'sticky': sticky}" ref="width-limitation-wrapper">
         <!-- begin slot-content in section -->
-        <section v-if="useInnerSection" :class="setInnerClass" :id="anchorId">
-            <!-- begin cmd-headline -->
+        <section v-if="useInnerSection" :class="sectionClasses" :id="anchorId || null">
             <CmdHeadline
-                v-if="cmdHeadline?.headlineText"
+                v-if="(cmdHeadlineProperties?.show && cmdHeadlineProperties?.headlineText) || editModeContext"
                 v-bind="cmdHeadlineProperties"
             />
-            <!-- end cmd-headline -->
 
             <!-- begin slot-content (one column/slot-item only) -->
             <slot v-if="oneSlotItem()"></slot>
             <!-- end slot-content (one column/slot-item only) -->
 
             <!-- begin grid-/flex-container to wrap multiple columns/items -->
-            <div v-else :class="setInnerClass">
+            <div v-else :class="sectionClasses">
                 <!-- begin slot-content (multiple columns only) -->
                 <slot></slot>
                 <!-- end slot-content (multiple columns only) -->
@@ -39,6 +37,11 @@
 <script>
 export default {
     name: "CmdWidthLimitationWrapper",
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     props: {
         /**
          * define container-type
@@ -122,35 +125,33 @@ export default {
     computed: {
         cmdHeadlineProperties() {
             return {
+                show: true,
                 headlineLevel: 2,
                 ...this.cmdHeadline
             }
         },
-        setInnerClass() {
+        sectionClasses() {
+            const classes = []
             if (this.useFullDeviceWidth) {
-                return "full-width"
+                classes.push("full-width")
             }
 
-            if (this.innerComponent === "header") {
-                return "grid-container-create-columns"
+            if (this.innerComponent === "header" || this.containerType === "grid") {
+                classes.push("grid-container-create-columns")
             }
 
             if (this.innerComponent === "footer") {
-                return "flex-container"
-            }
-
-            if(this.containerType === "grid") {
-                return "grid-container-create-columns"
+                classes.push("flex-container")
             }
 
             if(this.containerType === "flex") {
                 if(this.contentOrientation === "horizontal") {
-                    return "flex-container"
+                    classes.push("flex-container")
                 } else if(this.contentOrientation === "vertical") {
-                    return "flex-container vertical"
+                    classes.push("flex-container flex-direction-column")
                 }
             }
-            return ""
+            return classes
         }
     },
     methods: {
@@ -179,6 +180,18 @@ export default {
         left: 0;
         right: 0;
         top: 0;
+    }
+
+    > section {
+        /* handle nested wrappers */
+        .cmd-width-limitation-wrapper {
+            max-width: none;
+
+            > section {
+                padding-left: 0; /* will be overwritten if aside-columns in site-wrapper exist */
+                padding-right: 0; /* will be overwritten if aside-columns in site-wrapper exist */
+            }
+        }
     }
 }
 /* end cmd-width-limitation-wrapper ------------------------------------------------------------------------------------------ */

@@ -1,16 +1,13 @@
 <template>
     <!-- begin CmdSiteHeader ---------------------------------------------------------------------------------------- -->
-    <div
-        ref="site-header"
-        :class="[
-            'cmd-site-header site-header',
-            {
-                sticky: sticky,
-                'navigation-inline': navigationInline,
-                'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'
-            }
-        ]"
-        role="banner">
+    <div ref="site-header" :class="[
+        'cmd-site-header site-header',
+        {
+            sticky: sticky,
+            'navigation-inline': navigationInline,
+            'off-canvas-right': cmdMainNavigation?.offcanvasPosition === 'right'
+        }
+    ]">
         <!-- begin slot for elements above header -->
         <div v-if="$slots.topheader" class="top-header">
             <slot name="topheader"></slot>
@@ -18,11 +15,10 @@
         <!-- end slot for elements above header -->
 
         <!-- begin (inner) header -->
-        <header
-            :class="[
-                useGrid ? 'grid-container-create-columns': 'flex-container',
-                {'has-navigation': (cmdMainNavigation?.navigationEntries?.length && navigationInline) || $slots.navigation}
-            ]">
+        <header :class="[
+            useGrid ? 'grid-container-create-columns' : 'flex-container',
+            { 'has-navigation': (cmdMainNavigation?.navigationEntries?.length && navigationInline) || $slots.navigation }
+        ]">
             <!-- begin slots for logo and other header elements -->
             <template v-if="$slots.logo || $slots.header || $slots.navigation">
                 <slot name="logo"></slot>
@@ -34,20 +30,12 @@
             <!-- begin content given by data -->
             <template v-if="cmdCompanyLogo || cmdMainNavigation?.navigationEntries?.length">
                 <!-- begin CmdCompanyLogo -->
-                <CmdCompanyLogo
-                    v-if="cmdCompanyLogo"
-                    v-bind="cmdCompanyLogo"
-                    @image-loaded="onImageLoaded"
-                />
+                <CmdCompanyLogo v-if="cmdCompanyLogo" v-bind="cmdCompanyLogo" @image-loaded="onImageLoaded" />
                 <!-- end CmdCompanyLogo -->
 
                 <!-- begin CmdMainNavigation -->
-                <CmdMainNavigation
-                    v-if="cmdMainNavigation?.navigationEntries?.length && navigationInline"
-                    v-bind="cmdMainNavigation"
-                    :closeOffcanvas="closeOffcanvas"
-                    @offcanvas="emitOffcanvasStatus"
-                />
+                <CmdMainNavigation v-if="cmdMainNavigation?.navigationEntries?.length && navigationInline"
+                    v-bind="cmdMainNavigation" @offcanvas="emitOffcanvasStatus" />
                 <!-- end CmdMainNavigation -->
             </template>
             <!-- end content given by data -->
@@ -55,12 +43,8 @@
         <!-- end (inner) header -->
 
         <!-- begin CmdMainNavigation -->
-        <CmdMainNavigation
-            v-if="cmdMainNavigation?.navigationEntries?.length && !navigationInline"
-            v-bind="cmdMainNavigation"
-            :closeOffcanvas="closeOffcanvas"
-            @offcanvas="emitOffcanvasStatus"
-        />
+        <CmdMainNavigation v-if="cmdMainNavigation?.navigationEntries?.length && !navigationInline"
+            v-bind="cmdMainNavigation" @offcanvas="emitOffcanvasStatus" />
         <!-- end CmdMainNavigation -->
     </div>
     <!-- end CmdSiteHeader ---------------------------------------------------------------------------------------- -->
@@ -76,13 +60,6 @@ export default {
         }
     },
     props: {
-        /**
-         * use only if default-button of inner navigation-component should not be used
-         */
-        closeOffcanvas: {
-            type: Object,
-            required: false
-        },
         /**
          * activated sticky-header (stays on top if page is scrolled)
          */
@@ -115,7 +92,7 @@ export default {
          */
         scrollContainerToResizeHeader: {
             type: String,
-            default: ".page-wrapper"
+            default: ".site-wrapper"
         },
         /**
          * use a grid for positioning of inner-elements (else a flex-container will be used)
@@ -144,21 +121,22 @@ export default {
     mounted() {
         if (this.resizeHeaderOnScroll) {
             const scrollContainer = document.querySelector(this.scrollContainerToResizeHeader);
+            if (scrollContainer) {
+                scrollContainer.addEventListener("scroll", function () {
+                    const header = document.querySelector(".cmd-site-header > header");
 
-            scrollContainer.addEventListener("scroll", function () {
-                const header = document.querySelector(".cmd-site-header > header");
-
-                if (scrollContainer.scrollTop > 0) {
-                    header.classList.add("resize-on-scroll");
-                } else {
-                    header.classList.remove("resize-on-scroll");
-                }
-            });
+                    if (scrollContainer.scrollTop > 0) {
+                        header.classList.add("resize-on-scroll");
+                    } else {
+                        header.classList.remove("resize-on-scroll");
+                    }
+                });
+            }
         }
     },
     methods: {
         onImageLoaded(event) {
-            if(!this.useGrid) {
+            if (!this.useGrid) {
                 // image should must have height to bi visible as flex-item (else size is 0x0)
                 this.defaultLogoHeight = (event.target.height / 10) + "rem"
             }
@@ -224,15 +202,19 @@ export default {
         text-decoration: none;
     }
 
-    header, .cmd-main-navigation nav, .cmd-list-of-links {
+    header,
+    .cmd-main-navigation nav,
+    .cmd-list-of-links {
         max-width: var(--max-width);
-        width: 100%; /* stretch flex-item */
+        width: 100%;
+        /* stretch flex-item */
         padding: 0 var(--default-padding);
     }
 
     .cmd-main-navigation nav {
         width: auto;
-        margin: 0 0 0 auto; /* align nav to right */
+        margin: 0 0 0 auto;
+        /* align nav to right */
     }
 
     .top-header {
@@ -247,7 +229,7 @@ export default {
         border-bottom: 0;
     }
 
-    & + .main-navigation-wrapper {
+    &+.main-navigation-wrapper {
         nav {
             border-left: 0;
             border-right: 0;
@@ -255,7 +237,7 @@ export default {
     }
 
     /* use id to ensure high specificity */
-    > .cmd-main-navigation.main-navigation-wrapper:last-child {
+    >.cmd-main-navigation.main-navigation-wrapper:last-child {
         border-bottom: 0;
     }
 
@@ -335,7 +317,8 @@ export default {
 @media only screen and (max-width: $medium-max-width) {
     .cmd-site-header {
         header {
-            grid-auto-rows: auto; /* items should be as large as their content */
+            grid-auto-rows: auto;
+            /* items should be as large as their content */
 
             .cmd-main-navigation.main-navigation-wrapper {
                 &:not(.persist-on-mobile) {
@@ -344,7 +327,7 @@ export default {
             }
 
             /* main-navigation below logo */
-            & + .cmd-main-navigation.main-navigation-wrapper {
+            &+.cmd-main-navigation.main-navigation-wrapper {
                 padding-bottom: var(--default-padding);
             }
         }
@@ -380,7 +363,9 @@ export default {
 
         &.navigation-inline {
             header {
-                .cmd-company-logo, .main-navigation-wrapper {
+
+                .cmd-company-logo,
+                .main-navigation-wrapper {
                     grid-column: span calc(var(--grid-small-span) / 2);
                 }
             }

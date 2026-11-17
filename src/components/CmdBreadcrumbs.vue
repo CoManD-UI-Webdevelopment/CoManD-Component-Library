@@ -3,30 +3,22 @@
     <ul class="cmd-breadcrumbs">
         <li v-if="breadcrumbLabel" class="breadcrumb-label">{{ breadcrumbLabel }}</li>
         <li v-for="(link, index) in breadcrumbLinks || []" :key="index">
-            <!-- begin type 'href' -->
-            <a  v-if="link.type === 'href'" :href="link.path">
-                <!-- begin CmdIcon -->
-                <CmdIcon v-if="link.iconClass" :iconClass="link.iconClass" :type="link.iconType" />
-                <!-- end CmdIcon -->
-                <span v-if="link.text">{{ link.text }}</span>
-            </a>
-            <!-- end type 'href' -->
-
-            <!-- begin type 'router' -->
-            <router-link v-else-if="link.type === 'router'" :to="getRoute(link)">
-                <!-- begin CmdIcon -->
-                <CmdIcon v-if="link.iconClass" :iconClass="link.iconClass" :type="link.iconType" />
-                <!-- end CmdIcon -->
-                <span v-if="link.text">{{ link.text }}</span>
-            </router-link>
-            <!-- end type 'router' -->
-
+             <CmdLink 
+                v-if="!link.type || link.type === 'href' || link.type === 'router'"
+                :linkType="link.type"
+                :path="link.type === 'href' ? link.path : getRoute(link)"
+                :icon="{ iconClass: link.iconClass, type: link.iconType }"
+                :text="link.text" 
+            />
+            <!-- begin no link (recommended for active page)-->
             <span v-else>
                 <!-- begin CmdIcon -->
                 <CmdIcon v-if="link.iconClass" :iconClass="link.iconClass" :type="link.iconType" />
                 <!-- end CmdIcon -->
                 <span v-if="link.text">{{ link.text }}</span>
             </span>
+            <!-- end no link (recommended for active page)-->
+
             <span class="separator" v-if="index < breadcrumbLinks.length - 1">{{ breadcrumbSeparator }}</span>
         </li>
     </ul>
@@ -88,15 +80,6 @@ export default {
 
         &.breadcrumb-label {
             margin-right: calc(var(--default-margin) / 2);
-        }
-
-        a {
-            display: table; /* do not set to (inline-)flex to avoid icon to be underlined by hover/active/focus */
-            text-decoration: none;
-
-            &:hover, &:active, &:focus {
-                text-decoration: underline;
-            }
         }
     }
 }

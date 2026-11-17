@@ -3,8 +3,8 @@
     <div :class="['cmd-tabs', highlightLevel]">
         <!-- being tab-list -->
         <ul :class="{'stretch-tabs' : stretchTabs}" role="tablist">
-            <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="tab">
-                <a href="#" :class="highlightLevel" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined">
+            <li v-for="(tab, index) in tabs" :class="{active : showTab === index}" :key="index" role="presentation">
+                <a href="#" role="tab" :aria-selected="showTab === index ? 'true' : 'false'" :class="highlightLevel" @click.prevent="setActiveTab(index)" :title="!tab.text ? tab.tooltip : undefined" :aria-label="!tab.text ? tab.tooltip : undefined">
                     <!-- begin CmdIcon -->
                     <CmdIcon v-if="tab.iconClass" :iconClass="tab.iconClass" :type="tab.iconType" />
                     <!-- end CmdIcon -->
@@ -26,14 +26,11 @@
         <!-- end slot -->
 
         <div v-else aria-live="assertive">
-            <!-- begin CmdHeadline -->
             <CmdHeadline
-               v-if="cmdHeadline"
-               v-bind="cmdHeadline"
+               v-if="cmdHeadlineProperties.show"
+               v-bind="cmdHeadlineProperties"
                :headlineText="tabs[showTab].headlineText"
-               :headlineLevel="tabs[showTab].headlineLevel"
             />
-            <!-- end CmdHeadline -->
 
             <!-- begin html-content -->
             <div v-html="tabs[showTab].htmlContent" :class="{'no-padding': !useDefaultPadding}"></div>
@@ -93,13 +90,13 @@ export default {
         /**
          * set highlight-level for tabs
          * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
          highlightLevel: {
             type: String,
             default: "primary",
             validator(value) {
-                return value === "none" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -114,10 +111,21 @@ export default {
         },
         /**
          * properties for CmdHeadline-component
+         * 
+         * headlineText is provided by tabs-property for each tab
          */
         cmdHeadline: {
             type: Object,
             required: false
+        }
+    },
+    computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadline
+            }
         }
     },
     methods: {
@@ -177,13 +185,13 @@ export default {
 
             &.active {
                 span, [class*="icon-"] {
-                    color: var(--color-white);
+                    color: var(--hyperlink-color-contrast-text);
                 }
 
                 &:hover, &:active {
                     a, a:focus {
                         color: var(--hyperlink-color);
-                        background: var(--color-white);
+                        background: var(--color-scheme-background);
 
                         span, [class*="icon-"] {
                             color: var(--hyperlink-color-highlighted);
@@ -192,7 +200,7 @@ export default {
                 }
                 
                 a:focus {
-                    color: var(--color-white);
+                    color: var(--hyperlink-color-contrast-text);
 
                     span, span[class*="icon-"], .iconify {
                         color: inherit !important;

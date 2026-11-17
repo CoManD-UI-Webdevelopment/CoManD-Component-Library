@@ -3,11 +3,7 @@
     <small v-if="showTag" :class="['cmd-tag tag', highlightLevel]" ref="tag">
         <slot>
             <span>{{ tagText }}</span>
-            <a v-if="removeTagByClick" href="#" @click.prevent="removeTag">
-                <!-- begin CmdIcon -->
-                <CmdIcon v-bind="cmdIcon" />
-                <!-- end CmdIcon -->
-            </a>
+            <CmdLink v-if="userCanRemoveTagByClick" v-bind="cmdLinkRemoveTagProperties" @click="removeTag" />
         </slot>
     </small>
     <!-- end CmdTag ---------------------------------------------------------------------------------------- -->
@@ -26,43 +22,48 @@ export default {
         /**
          * the displayed text of the tag
          */
-         tagText: {
+        tagText: {
             type: String,
             required: true
         },
         /**
          * enable removing the tag by click
          */
-         removeTagByClick: {
+        userCanRemoveTagByClick: {
             type: Boolean,
             default: false
         },
         /**
          * set highlight-level for tag
          * 
-         * @allowedValues: "none", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
-         highlightLevel: {
+        highlightLevel: {
             type: String,
-            default: "none",
+            default: null,
             validator(value) {
-                return value === "none" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
             }
         },
         /**
-         * properties for CmdIcon-component
+         * properties for CmdLink-component
          */
-         cmdIcon: {
+        cmdLinkRemoveTag: {
             type: Object,
-            default: function () {
-                return {
+            required: false
+        }
+    },
+    computed: {
+        cmdLinkRemoveTagProperties() {
+            return {
+                icon: {
                     iconClass: "icon-cancel-circle",
-                    tooltip: "Back to top",
-                    iconType: "auto"
-                }
+                    tooltip: "Remove tag",
+                },
+                ...this.cmdLinkRemoveTag
             }
         }
     },
@@ -76,7 +77,7 @@ export default {
             }
 
             this.$emit("click", event)
-            
+
             if (!event.prevented) {
                 this.showTag = false
             }
@@ -88,18 +89,22 @@ export default {
 <style>
 /* begin cmd-tag ------------------------------------------------------------------------------------------ */
 .cmd-tag {
-    align-self: start; /* if used in vertical flex-container */
-    gap: var(--default-gap-half);
+    align-self: start;
+    /* if used in vertical flex-container */
+    gap: var(--gap-small);
 
-    > span:only-child {
+    >span:only-child {
         margin: 0 auto;
     }
 
-    &.primary, &.secondary, &.tertiary {
+    &.primary,
+    &.secondary,
+    &.tertiary {
         span[class*="icon-"] {
-            color: var(--color-white);
+            color: var(--tag-text-color);
         }
     }
 }
+
 /* end cmd-tag ------------------------------------------------------------------------------------------ */
 </style>

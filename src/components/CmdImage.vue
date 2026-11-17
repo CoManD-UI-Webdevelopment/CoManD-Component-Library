@@ -14,7 +14,7 @@
         :itemProvider="editModeConfig?.allowAddItem !== false ? itemProvider : null"
     >
         <template v-slot="slotProps">
-            <figure :class="['cmd-image flex-container no-gap vertical', textAlign]">
+            <figure :class="['cmd-image flex-container no-gap vertical', alignContent]">
                 <!-- begin figcaption above image -->
                 <template v-if="figcaption?.show && figcaption?.position === 'top'">
                     <!-- begin CmdFormElement -->
@@ -28,19 +28,19 @@
                         v-model="editableFigcaptionText"
                     />
                     <!-- end CmdFormElement -->
-                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text"/>
+                    <figcaption v-else-if="figcaptionProperties?.text" v-html="figcaptionProperties?.text"/>
                 </template>
                 <!-- end figcaption above image -->
 
                 <!-- begin image-wrapper -->
                 <template v-if="slotProps.editing">
                     <!-- begin image with drop-area -->
-                    <a href="#" :class="['box drop-area flex-container vertical', { 'allow-drop': allowDrop }]"
+                    <a href="#" :class="['box drop-area flex-container flex-direction-column', { 'allow-drop': allowDrop }]"
                        v-on="dragAndDropHandler"
                        @click.prevent="selectFiles"
                        title="Drag new image to this area to replace old one!">
                         <span class="icon-image"></span>
-                        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip"/>
+                        <img :src="imageSource" :alt="image?.alt ?? ''" :title="image?.tooltip"/>
                     </a>
                     <!-- end image with drop-area -->
 
@@ -58,13 +58,13 @@
                 </template>
                 <template v-else-if="imageSource">
                     <!-- begin image without drop-area -->
-                    <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip"/>
+                    <img :src="imageSource" :alt="image?.alt ?? ''" :title="image?.tooltip"/>
                     <!-- end image without drop-area -->
                 </template>
                 <!-- end image-wrapper -->
 
                 <!-- begin figcaption below image -->
-                <template v-if="figcaption?.show && figcaption?.position !== 'top'">
+                <template v-if="figcaptionProperties?.show && figcaptionProperties?.position !== 'top'">
                     <!-- begin CmdFormElement -->
                     <CmdFormElement
                         v-if="slotProps.editing"
@@ -78,7 +78,7 @@
                         placeholder="figcaption"
                     />
                     <!-- end CmdFormElement -->
-                    <figcaption v-else-if="figcaption?.text" v-html="figcaption?.text"/>
+                    <figcaption v-else-if="figcaptionProperties?.text" v-html="figcaptionProperties?.text"/>
                 </template>
                 <!-- end figcaption below image -->
 
@@ -98,15 +98,15 @@
 
     <!-- begin default-view -->
     <!-- begin image with figure/figcaption -->
-    <figure v-else-if="useFigureTag" :class="['cmd-image', textAlign]">
-        <figcaption v-if="figcaption?.position === 'top' && figcaption?.text && figcaption?.show" v-html="figcaption?.text"/>
-        <img :src="imageSource" :alt="image?.alt" :title="image?.tooltip" :loading="image?.lazyLoading !== false ? 'lazy' : null" @load="onImageLoaded"/>
-        <figcaption v-if="figcaption?.position !== 'top' && figcaption?.text && figcaption?.show" v-html="figcaption?.text"/>
+    <figure v-else-if="useFigureTag" :class="['cmd-image flex-container', {'flex-direction-column' : orientation === 'vertical'}, alignContent]">
+        <figcaption v-if="figcaptionProperties?.position === 'top' && figcaptionProperties?.text && figcaptionProperties?.show" v-html="figcaptionProperties?.text"/>
+        <img v-if="imageSource" :src="imageSource" :alt="image?.alt ?? ''" :title="image?.tooltip" :loading="image?.lazyLoading !== false ? 'lazy' : null" @load="onImageLoaded"/>
+        <figcaption v-if="figcaptionProperties?.position === 'bottom' && figcaptionProperties?.text && figcaptionProperties?.show" v-html="figcaptionProperties?.text"/>
     </figure>
     <!-- end image with figure/figcaption -->
 
     <!-- begin image without figure/figcaption -->
-    <img v-else class="cmd-image" :src="imageSource" :alt="image?.alt" :title="image?.tooltip" :loading="image?.lazyLoading ? 'lazy' : null" @load="onImageLoaded"/>
+    <img v-else-if="imageSource" class="cmd-image" :src="imageSource" :alt="image?.alt ?? ''" :title="image?.tooltip" :loading="image?.lazyLoading ? 'lazy' : null" @load="onImageLoaded"/>
     <!-- end image without figure/figcaption -->
     <!-- end default-view -->
      <!-- end CmdImage ---------------------------------------------------------------------------------------- -->
@@ -121,6 +121,11 @@ import {updateHandlerProvider} from "../utils/editmode.js"
 export default {
     name: "CmdImage",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             mediumMaxWidth: 1023,
@@ -184,7 +189,23 @@ export default {
             default: true
         },
         /**
+         * set orientation
+         * 
+         * @allowedValues: "vertical, "horizontal"
+         */
+        orientation: {
+            type: String,
+            default: "vertical"
+        },
+        /**
          * figcaption-object including visibility, position (top/bottom), text
+         * 
+         * {
+         *     position: "top"/"bottom",
+         *     show: true/false,
+         *     tooltip: "text",
+         *     textAlign: "left"/"center"/"right"
+         * }
          */
         figcaption: {
             type: Object,
@@ -218,6 +239,14 @@ export default {
         window.removeEventListener("resize", this.updateWindowWidth)
     },
     computed: {
+        figcaptionProperties() {
+            return {
+                "show": true,
+                "position": "bottom",
+                "textAlign": "center",
+                ...this.figcaption
+            }
+        },
         imageComponentPath() {
             return this.componentPath || ["props", "cmdImage"]
         },
@@ -250,9 +279,21 @@ export default {
             // else return large (will be used if images for small-and -medium-devices do not exist or if screen resolution is larger than mediumMaxWidth)
             return imgSrc.large
         },
+        alignContent() {
+            switch (this.figcaption?.textAlign) {
+                case "left":
+                    return "align-items-flex-start";
+                case "center":
+                    return "align-items-center";
+                case "right":
+                    return "align-item-flex-end";
+                default:
+                    return null;
+            }
+        },
         textAlign() {
             if (this.figcaption?.textAlign) {
-                return "text-" + this.figcaption.textAlign
+                return "text-align-" + this.figcaption.textAlign
             }
             return ''
         },
@@ -310,17 +351,6 @@ export default {
         },
         updateWindowWidth() {
             this.currentWindowWidth = window.innerWidth
-        },
-        getImage() {
-            return {
-                image: {...this.image},
-                figcaption: {
-                    show: this.showFigcaption,
-                    position: this.figcaptionPosition,
-                    textAlign: this.figcaptionTextAlign,
-                    text: this.figcaptionText
-                }
-            }
         },
         dragEnter(event) {
             this.dragOver(event)
@@ -402,25 +432,16 @@ export default {
 <style>
 /* begin cmd-image ------------------------------------------------------------------------------------------ */
 .cmd-image {
+    gap: var(--gap-small);
+
     img {
         display: block;
     }
 
     figcaption {
+        padding: 0;
         border-bottom-left-radius: var(--default-border-radius);
         border-bottom-right-radius: var(--default-border-radius);
-    }
-
-    &.text-center {
-        figcaption {
-            text-align: center;
-        }
-    }
-
-    &.text-right {
-        figcaption {
-            text-align: right;
-        }
     }
 
     .drop-area {

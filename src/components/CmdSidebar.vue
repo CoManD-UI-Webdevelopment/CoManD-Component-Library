@@ -1,6 +1,6 @@
 <template>
     <!-- begin CmdSidebar ---------------------------------------------------------------------------------------- -->
-    <aside :class="['cmd-sidebar', wrapperClass, {'box': styledAsBox, 'collapse-to-right': !collapseToLeft}]">
+    <div :class="['cmd-sidebar', wrapperClass, {'box': styledAsBox, 'collapse-to-right': !collapseToLeft}]">
         <!-- begin inner-sidebar-wrapper -->
         <div class="inner-sidebar-wrapper">
             <!-- begin CmdHeadline -->
@@ -34,7 +34,7 @@
             <span :class="iconClassOpenCollapse"></span>
         </a>
         <!-- end column to toggle sidebar open-closed-status -->
-    </aside>
+    </div>
     <!-- end CmdSidebar ---------------------------------------------------------------------------------------- -->
 </template>
 

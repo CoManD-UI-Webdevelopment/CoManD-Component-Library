@@ -11,15 +11,15 @@
             }
         ]"
         :title="$attrs.title"
-        role="listbox"
-        :aria-labelledby="htmlId"
-        :aria-required="$attrs.required !== undefined"
+        role="group"
+        :aria-labelledby="showLabel ? htmlId : null"
         ref="fakeselect"
     >
         <template v-if="showLabel">
             <!-- begin label -->
             <span class="label-text">
-                <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup></span>
+                <span :id="htmlId">{{ labelText }}<sup v-if="$attrs.required !== undefined" aria-hidden="true">*</sup>
+            </span>
 
             <!-- begin status-icon (linked with tooltip) -->
             <button v-if="($attrs.required || inputRequirements.length) && showStatusIcon"
@@ -40,7 +40,7 @@
                  <!-- begin CmdTooltip -->
                 <CmdTooltip
                     ref="tooltip"
-                    :class="['cmd-tooltip-for-form-elements box', validationStatus]"
+                    class="cmd-tooltip-for-form-elements box"
                     :id="'tooltip-target-' + htmlId"
                     :scrollContainer="scrollContainerForTooltip"
                     :popoverTargetName="'tooltip-target-' + htmlId"
@@ -61,7 +61,7 @@
             </span>
             <!-- end label -->
         </template>
-        <ul :class="{'open': showOptions}" @clickout="closeOptions" :aria-expanded="showOptions">
+        <ul :class="{'open': showOptions}" :aria-expanded="showOptions">
             <li>
                 <!-- begin default/selected-option -->
                 <a href="#" @click.prevent="toggleOptions" @blur="onBlur" :title="optionIcon?.tooltip">
@@ -101,7 +101,7 @@
                 <!-- end default/selected-option-->
 
                 <!-- begin default dropdown (incl. optional icon) -->
-                <ul v-if="type === 'default' && showOptions" role="listbox">
+                <ul v-if="type === 'default' && showOptions" role="listbox" :aria-labelledby="showLabel ? htmlId : null" :aria-required="$attrs.required !== undefined">
                     <li v-for="(option, index) in selectData" :key="index" role="option"
                         :aria-selected="option.value === modelValue">
                         <!-- begin type 'href' -->
@@ -149,7 +149,7 @@
                            @click.prevent="selectOption(option.value)"
                            :class="{'active' : option.value === modelValue}">
                             <img class="flag" :src="pathFlag(option.value)"
-                                 :alt="option.text"/>
+                                 alt=""/>
                             <span>{{ option.text }}</span>
                         </a>
                         <!-- end country-flags -->
@@ -210,6 +210,13 @@ export default {
         Tooltip
     ],
     emits: ["validation-status-change", "update:modelValue"],
+    mounted() {
+        // close options if user clicks outside of the component
+        document.addEventListener("click", this.onClickOutside)
+    },
+    beforeUnmount() {
+        document.removeEventListener("click", this.onClickOutside)
+    },
     data() {
         return {
             showOptions: false,
@@ -551,6 +558,14 @@ export default {
         closeOptions() {
             this.showOptions = false
         },
+        onClickOutside(event) {
+            // use the ref (and not $el, which is a comment/text-node if the template starts with a comment), composedPath() is
+            // evaluated at dispatch-time (event.target could already be replaced by vue's re-rendering)
+            const root = this.$refs.fakeselect
+            if (this.showOptions && root && !event.composedPath().includes(root)) {
+                this.closeOptions()
+            }
+        },
         // set path for flag-icons (type-property must be 'country')
         pathFlag(isoCode) {
             return this.pathFlags + "/flag-" + isoCode + ".svg"
@@ -604,8 +619,6 @@ export default {
     }
 
     a {
-        gap: calc(var(--icon-and-text-gap) / 2) !important;
-
         span {
             text-decoration: none !important;
 
@@ -634,6 +647,7 @@ export default {
                     background: var(--color-scheme-background);
                     color: var(--color-scheme-text-color);
                     border-radius: var(--default-border-radius);
+                    box-shadow: var(--form-input-box-shadow);
 
                     img {
                         flex-shrink: 0;
@@ -654,8 +668,8 @@ export default {
                     }
 
                     &:hover, &:active, &:focus {
-                        background: var(--color-white);
-                        border-color: var(--primary-color);
+                        background: var(--color-scheme-background);
+                        border-color: var(--hyperlink-color);
 
                         span, [class*="icon"] {
                             color: var(--hyperlink-color);
@@ -666,19 +680,30 @@ export default {
 
             ul {
                 max-height: v-bind(dropdownMaxHeight);
+                overflow-x: hidden;
                 overflow-y: auto;
             }
         }
 
         &.open {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+
+            > li:first-child {
+                a {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+            }
+
             ul {
-                border-bottom-left-radius: var(--default-border-radius);
-                border-bottom-right-radius: var(--default-border-radius);
+                border-bottom-left-radius: var(--border-radius-small);
+                border-bottom-right-radius: var(--border-radius-small);
 
                 > li {
                     &:first-child {
                         > a {
-                            border-color: var(--primary-color);
+                            border-color: var(--hyperlink-color);
                             border-bottom-left-radius: 0;
                             border-bottom-right-radius: 0;
                         }
@@ -705,20 +730,18 @@ export default {
         a, a:visited {
             display: flex;
             align-items: center;
+            gap: var(--gap-small);
             width: 100%;
-            padding: var(--form-input-padding);
-            padding-top: calc(var(--default-padding) - .06rem);
-            padding-right: calc(var(--default-padding) / 2);
-            padding-bottom: calc(var(--default-padding) - .06rem);
+            padding: 1rem;
             outline: none;
             border-bottom: var(--default-border);
             text-decoration: none;
 
             &:hover, &:active, &:focus {
-                background: var(--primary-color);
+                background: var(--hyperlink-color);
 
                 span, [class*="icon"] {
-                    color: var(--color-white);
+                    color: var(--hyperlink-color-contrast-text);
                 }
             }
 
@@ -729,9 +752,7 @@ export default {
             }
 
             img {
-                &.flag {
-                    margin: 0 calc(var(--default-margin) / 2) 0 0;
-                }
+                box-shadow: none; 
             }
 
             &.active {
@@ -742,10 +763,10 @@ export default {
                 }
 
                 &:hover, &:active, &:focus {
-                    background: var(--primary-color);
+                    background: var(--hyperlink-color);
 
                     span, [class*="icon"] {
-                        color: var(--color-white);
+                        color: var(--hyperlink-color-contrast-text);
                     }
                 }
             }
@@ -802,11 +823,11 @@ export default {
     /* use additional class in selector to gain high specificity */
     &.has-state.label {
         &.error * {
-            --status-color: var(--error-color);
+            --status-color: var(--error-color-text);
         }
 
         &.success * {
-            --status-color: var(--success-color);
+            --status-color: var(--success-color-text);
         }
 
         .label-text {
@@ -820,6 +841,9 @@ export default {
                 > a {
                     text-decoration: none !important;
                     border-color: var(--status-color);
+                    padding-top: calc(var(--default-padding) - .06rem);
+                    padding-right: calc(var(--default-padding) / 2);
+                    padding-bottom: calc(var(--default-padding) - .06rem);
 
                     > span, [class*="icon-"] {
                         text-decoration: none !important;
@@ -843,7 +867,7 @@ export default {
             &:hover, &:focus, &:active {
                 img {
                     &.flag {
-                        border-color: var(--border-color);
+                        border-color: var(--default-border-color);
                     }
                 }
             }
@@ -853,7 +877,7 @@ export default {
     &.color {
         li {
             a {
-                gap: calc(var(--default-gap) / 2);
+                gap: var(--gap-small);
 
                 > span:first-child {
                     width: 1.5rem;

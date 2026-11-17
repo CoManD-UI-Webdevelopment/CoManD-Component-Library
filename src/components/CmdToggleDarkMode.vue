@@ -2,40 +2,40 @@
     <!-- begin CmdToggleDarkMode ---------------------------------------------------------------------------------------- -->
     <div :class="['cmd-toggle-dark-mode', {'styled-layout': useStyledLayout, 'dark-mode': darkMode}]">
         <template v-if="!editing">
-        <!-- begin button-style -->
-        <a v-if="styledAsButton"
-           href="#"
-           :class="['button', {'dark-mode': darkMode}]"
-           @click.prevent="toggleColorScheme"
-        >
-            <span v-if="showLabel">{{ labelText }}</span>
-            <!-- begin CmdIcon -->
-            <CmdIcon
-                :iconClass="iconClass"
-                :type="iconType"
-                :tooltip="!showLabel ? labelText: ''"
-            />
-            <!-- end CmdIcon -->
-        </a>
-        <!-- end button-style -->
+            <!-- begin button-style -->
+            <a v-if="styledAsButton"
+            href="#"
+            :class="['button', {'dark-mode': darkMode}]"
+            @click.prevent="toggleColorScheme"
+            >
+                <span v-if="showLabel">{{ labelText }}</span>
+                <!-- begin CmdIcon -->
+                <CmdIcon
+                    :iconClass="iconClass"
+                    :type="iconType"
+                    :tooltip="!showLabel ? labelText: ''"
+                />
+                <!-- end CmdIcon -->
+            </a>
+            <!-- end button-style -->
 
-        <!-- begin CmdFormElement -->
-        <CmdFormElement
-            v-else
-            element="input"
-            type="checkbox"
-            :labelText="labelText"
-            :showLabel="showLabel"
-            v-model="darkMode"
-            :toggle-switch="true"
-            :title="!showLabel ? labelText: ''"
-            @update:modelValue="setColorScheme"
-        />
-        <!-- end CmdFormElement -->
+            <!-- begin CmdFormElement -->
+            <CmdFormElement
+                v-else
+                element="input"
+                type="checkbox"
+                :labelText="labelText"
+                :showLabel="showLabel"
+                v-model="darkMode"
+                :toggle-switch="true"
+                :title="!showLabel ? labelText: ''"
+                @update:modelValue="setColorScheme"
+            />
+            <!-- end CmdFormElement -->
         </template>
 
+        <!-- begin edit-mode -->
         <template v-else>
-            <!-- begin edit-mode -->
             <CmdFormElement
                 element="input"
                 type="text"
@@ -43,7 +43,6 @@
                 placeholder="Label for Light Mode"
                 v-model="labelTextLightModeModel"
             />
-
             <CmdFormElement
                 element="input"
                 type="text"
@@ -51,8 +50,8 @@
                 placeholder="Label for Dark Mode"
                 v-model="labelTextDarkModeModel"
             />
-            <!-- end edit-mode -->
         </template>
+        <!-- end edit-mode -->
     </div>
     <!-- end CmdToggleDarkMode ---------------------------------------------------------------------------------------- -->
 </template>
@@ -67,8 +66,19 @@ export default {
         EditMode
     ],
     data() {
+        // start with the real color-scheme (saved choice of the user or browser/os-setting) instead of 'false':
+        // otherwise every instance of this component first announces 'light-mode' (via 'toggle-color-scheme') and
+        // switches already initialized instances to light-mode (depending on the creation-order)
+        let darkMode = false
+        try {
+            const savedColorScheme = window.localStorage.getItem("cmd-color-scheme")
+            darkMode = savedColorScheme ? savedColorScheme === "dark-mode" : window.matchMedia("(prefers-color-scheme: dark)").matches
+        } catch {
+            darkMode = window.matchMedia?.("(prefers-color-scheme: dark)").matches || false
+        }
+
         return {
-            darkMode: false,
+            darkMode,
             editableLabelTextLightMode: null,
             editableLabelTextDarkMode: null
         }
@@ -147,18 +157,9 @@ export default {
         }
     },
     created() {
+        // react on changes of the browser/os-color-scheme (the initial value is already set in data())
         const mql = window.matchMedia("(prefers-color-scheme: dark)")
         mql.addEventListener("change", this.onColorSchemeChange)
-        this.onColorSchemeChange(mql)
-
-        this.$nextTick(() => {
-            // load color-scheme from local-storage
-            const savedColorScheme = window.localStorage.getItem("cmd-color-scheme")
-
-            if(savedColorScheme) {
-                this.darkMode = savedColorScheme === "dark-mode"
-            }
-        })
 
         // add eventListener on html-tag (= documentElement) to react on 'toggle-color-scheme'-event
         document.documentElement.addEventListener("toggle-color-scheme", this.onToggleColorScheme)

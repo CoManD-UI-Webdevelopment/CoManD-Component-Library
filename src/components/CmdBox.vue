@@ -58,11 +58,12 @@
         <!-- end default header with slot -->
 
         <!-- begin box-body -->
-        <div v-show="open" :class="['box-body', boxBodyClass]" aria-expanded="true" role="article">
+        <div :class="['box-body', boxBodyClass]" aria-expanded="true" role="article">
             <!-- begin content given slot -->
             <div v-if="useSlots?.includes('body')"
                  class="inner-box-body-wrapper"
                  :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}"
+                 :tabindex="allowContentToScroll ? 0 : null"
                  ref="boxBody"
                  :style="allowContentToScroll ? 'max-height: ' + calculatedBodyHeight : null"
             >
@@ -110,13 +111,15 @@
             <div v-else
                  class="inner-box-body-wrapper"
                  :class="{'allow-scroll': allowContentToScroll}"
+                 :tabindex="allowContentToScroll ? 0 : null"
             >
                 <!-- begin CmdImage -->
                 <CmdImage v-if="cmdImage" v-bind="cmdImage" />
                 <!-- end CmdImage -->
 
                 <div v-if="cmdHeadline?.headlineText && headlinePosition === 'body' || textBody"
-                     :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}">
+                     :class="{'box-body-padding': useBoxBodyPadding, 'allow-scroll': allowContentToScroll}"
+                     :tabindex="allowContentToScroll ? 0 : null">
                     <div v-if="cmdIcon !== undefined" class="body-icon-wrapper">
                         <!-- begin CmdIcon -->
                         <CmdIcon v-bind="cmdIcon" />
@@ -640,7 +643,7 @@ export default {
             border-bottom: 0;
 
             &:hover, &:active, &:focus {
-                background: var(--color-white);
+                background: var(--color-scheme-background);
 
                 * {
                     color: var(--hyperlink-color);
@@ -648,7 +651,12 @@ export default {
             }
         }
 
+        &.stretch-vertically {
+            align-self: flex-start;
+        }
+
         .box-body {
+            display: none;
             border-top: var(--box-border);
         }
     }
@@ -685,6 +693,10 @@ export default {
                 border: 0;
                 padding: var(--default-padding);
             }
+
+            .box-body {
+                display: flex;
+            }
         }
 
         > .box-header {
@@ -709,7 +721,6 @@ export default {
         }
 
         .box-body {
-            display: flex;
             flex-grow: 1;
 
             .box-body-padding {
@@ -743,7 +754,7 @@ export default {
                     left: 0;
                     bottom: 0;
                     height: calc(var(--line-of-text-height) * 3);
-                    background: linear-gradient(to bottom, transparent 0%, var(--default-background) 100%);
+                    background: linear-gradient(to bottom, transparent 0%, var(--color-scheme-background-subtle) 100%);
                 }
 
                 &.show-text {
@@ -794,7 +805,7 @@ export default {
 
                         &:hover, &:active, &:focus {
                             background: var(--primary-color);
-                            color: var(--color-white);
+                            color: var(--primary-color-contrast-text);
                         }
                     }
 
@@ -951,14 +962,16 @@ export default {
                 border-radius: var(--full-circle);
                 background: var(--box-header-background);
                 display: flex;
-                color: var(--color-white);
+                color: var(--box-header-text-color);
                 justify-content: center;
                 align-items: center;
                 font-size: var(--default-icon-size);
             }
 
             .no-user-image {
-                background: var(--default-background);
+                background: var(--color-scheme-background-subtle);
+                border: var(--image-border);
+                box-shadow: var(--image-box-shadow);
             }
         }
 
@@ -1028,10 +1041,10 @@ export default {
                         &:hover, &:active, &:focus {
                             a {
                                 background: var(--primary-color);
-                                color: var(--color-white);
+                                color: var(--primary-color-contrast-text);
 
                                 span, [class*="icon-"] {
-                                    color: var(--color-white);
+                                    color: var(--primary-color-contrast-text);
                                 }
                             }
                         }
@@ -1041,6 +1054,12 @@ export default {
                                 border: 0;
                             }
                         }
+                    }
+                }
+
+                ul.horizontal {
+                    li {
+                        border-radius: 0 !important;
                     }
                 }
             }

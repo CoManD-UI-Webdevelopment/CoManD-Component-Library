@@ -60,14 +60,12 @@ import {buildComponentPath, updateHandlerProvider} from "../utils/editmode.js"
 export default {
     name: "CmdImageGallery",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     props: {
-        /**
-         * properties for CmdHeadline-component
-         */
-        cmdHeadline: {
-            type: Object,
-            required: false
-        },
         /**
          * set if large version of images can be opened in a fancybox
          */
@@ -96,7 +94,14 @@ export default {
                 return value === "top" ||
                     value === "bottom"
             }
-        }
+        },
+        /**
+         * properties for CmdHeadline-component
+         */
+        cmdHeadline: {
+            type: Object,
+            required: false
+        },
     },
     methods: {
         itemProvider() {

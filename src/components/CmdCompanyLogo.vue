@@ -129,6 +129,9 @@ export default {
         display: block;
         max-height: 10rem;
         border: 0; /* overwrite default settings from frontend-framework */
+        border-radius: 0; /* overwrite default settings from frontend-framework */
+        box-shadow: none; /* overwrite default settings from frontend-framework */
+        
     }
 
     > a {

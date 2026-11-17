@@ -24,6 +24,7 @@
 <script>
 export default {
     name: "CmdFormFilters",
+    emits: ["update:modelValue"],
     data() {
         return {
             options: []
@@ -118,7 +119,7 @@ export default {
         margin-left: 0;
         margin-right: var(--default-margin);
         border: var(--default-border);
-        background: var(--color-white);
+        background: var(--color-scheme-background);
         font-size: var(--font-size-small);
 
         &:hover, &:active, &:focus {

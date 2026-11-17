@@ -24,7 +24,7 @@
     "figcaption": {
       "show": true,
       "position": "bottom",
-      "text": "Figcaption 2",
+      "text": "Figcaption 2 with long text",
       "textAlign": "center"
     }
   },

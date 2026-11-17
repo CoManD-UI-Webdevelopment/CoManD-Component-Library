@@ -1,32 +1,32 @@
 <template>
     <!-- begin CmdLoginForm ---------------------------------------------------------------------------------------- -->
     <fieldset v-if="!sendLogin" class="cmd-login-form flex-container">
-        <legend :class="{hidden : !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left'}">
+        <legend :class="{ 'visually-hidden': !legendLoginForm.show, 'align-left': legendLoginForm.align === 'left' }">
             {{ legendLoginForm.text }}
         </legend>
 
-        <!-- begin CmdHeadline -->
-        <CmdHeadline
-            v-if="cmdHeadlineLoginForm"
-            v-bind="cmdHeadlineLoginForm"
-        />
-        <!-- end CmdHeadline -->
-
+        <CmdHeadline v-if="cmdHeadlineLoginFormProperties.show && cmdHeadlineLoginFormProperties.headlineText" v-bind="cmdHeadlineLoginFormProperties" />
+         
         <!-- begin Google-Login-Button -->
-        <button v-if="enableLoginWithGoogle" class="gsi-material-button stretch-on-small-devices" @click="loginWithGoogle">
+        <button v-if="enableLoginWithGoogle" class="gsi-material-button stretch-on-small-devices"
+            @click="loginWithGoogle">
             <div class="gsi-material-button-state"></div>
             <div class="gsi-material-button-content-wrapper">
                 <div class="gsi-material-button-icon">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
-                         xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                        xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
                         <path fill="#EA4335"
-                              d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
+                        </path>
                         <path fill="#4285F4"
-                              d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
+                        </path>
                         <path fill="#FBBC05"
-                              d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
+                        </path>
                         <path fill="#34A853"
-                              d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
+                        </path>
                         <path fill="none" d="M0 0h48v48H0z"></path>
                     </svg>
                 </div>
@@ -37,57 +37,22 @@
         <!-- end Google-Login-Button -->
 
         <!-- begin Facebook-Login-Button -->
-        <div v-if="enableLoginWithFacebook"
-             class="fb-login-button stretch-on-small-devices"
-             data-width="200"
-             data-size=""
-             data-button-type=""
-             data-layout=""
-             data-auto-logout-link="false"
-             data-use-continue-as="false">
+        <div v-if="enableLoginWithFacebook" class="fb-login-button stretch-on-small-devices" data-width="200"
+            data-size="" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false">
         </div>
         <!-- end Facebook-Login-Button -->
 
-        <!-- begin default-login-button -->
-        <button v-if="!showLogin"
-                type="button"
-                class="button stretch-on-small-devices"
-                v-bind="buttonLoginWithYourDataDefaultOptions"
-                @click="showLogin = true">
-                <!-- begin CmdIcon -->
-                <CmdIcon
-                    v-if="buttonLoginWithYourDataDefaultOptions.icon?.iconClass"
-                    :iconClass="buttonLoginWithYourDataDefaultOptions.icon.iconClass"
-                    :type="buttonLoginWithYourDataDefaultOptions.icon.iconType"
-                    :title="buttonLoginWithYourDataDefaultOptions.icon.tooltip"
-                />
-                <!-- end CmdIcon -->
-                <span v-if="buttonLoginWithYourDataDefaultOptions.text">{{ buttonLoginWithYourDataDefaultOptions.text }}</span>
-        </button>
-        <!-- end default-login-button -->
+        <!-- send "login with your data"-button -->
+        <CmdLink v-if="!showLogin" v-bind="cmdLinkLoginWithYourDataProperties" @click="showLogin = true" />
+        <!-- end "login with your data"-button -->
 
         <!-- begin form elements -->
-        <div v-if="showLogin" :class="['login-fields flex-container', {'vertical': orientation === 'vertical'}]">
-            <!-- begin CmdFormElement -->
-            <CmdFormElement
-                element="input"
-                type="text"
-                ref="username"
-                v-model="username"
-                v-bind="cmdFormElementUsernameOptions"
-                @validationStatusChange="checkValidationStatus($event, 'username')"
-            />
-            <!-- end CmdFormElement -->
-
-            <!-- begin CmdFormElement -->
-            <CmdFormElement
-                element="input"
-                type="password"
-                v-model="password"
-                v-bind="cmdFormElementPasswordOptions"
-                @validationStatusChange="checkValidationStatus($event, 'password')"
-            />
-            <!-- end CmdFormElement -->
+        <div v-if="showLogin" :class="['login-fields flex-container', { 'vertical': orientation === 'vertical' }]">
+            <CmdFormElement element="input" type="text" ref="username" v-model="username"
+                v-bind="cmdFormElementUsernameProperties"
+                @validationStatusChange="checkValidationStatus($event, 'username')" />
+            <CmdFormElement element="input" type="password" v-model="password" v-bind="cmdFormElementPasswordProperties"
+                @validationStatusChange="checkValidationStatus($event, 'password')" />
         </div>
         <!-- end form elements -->
 
@@ -96,124 +61,57 @@
         <!-- end named slot for login-form -->
 
         <div class="option-wrapper flex-container">
-            <div class="flex-container reset-flex no-wrap-on-small-devices justify-content-space-around" v-if="linkForgotPassword || linkCreateAccount">
+            <div v-if="cmdLinkForgotPasswordProperties.show || cmdLinkCreateAccountProperties.show"
+            class="flex-container reset-flex no-wrap-on-small-devices justify-content-space-around">
                 <!-- begin link for 'forgot password' -->
-                <a v-if="linkForgotPassword" href="#" @click.prevent="toggleSendLoginView">
-                    <!-- begin CmdIcon -->
-                    <CmdIcon
-                        v-if="linkForgotPassword.icon?.show && linkForgotPassword.icon?.iconClass"
-                        :iconClass="linkForgotPassword.icon.iconClass"
-                        :type="linkForgotPassword.icon.iconType"
-                        :title="linkForgotPassword.icon.tooltip"
-                    />
-                    <!-- end CmdIcon -->
-                    <span v-if="linkForgotPassword.text">{{ linkForgotPassword.text }}</span>
-                </a>
+                <CmdLink @click="toggleSendLoginView"
+                    v-bind="cmdLinkForgotPasswordProperties"
+                />
                 <!-- end link for 'forgot password' -->
 
                 <!-- begin link for 'create account' -->
-                <template v-if="linkCreateAccount">
-                    <!-- begin CmdLink -->
-                    <CmdLink
-                        :linkType="linkCreateAccount.linkType"
-                        :path="linkCreateAccount.path"
-                        :text="linkCreateAccount.text"
-                        :icon="{
-                            iconClass: linkCreateAccount.icon?.iconClass,
-                            tooltip: linkCreateAccount.icon?.tooltip,
-                            position: linkCreateAccount.icon?.position
-                        }"
-                    />
-                    <!-- end CmdLink -->
+                <template v-if="cmdLinkCreateAccountProperties.show">
+                    <CmdLink v-bind="cmdLinkCreateAccountProperties" />
                 </template>
                 <!-- end link for 'create account' -->
             </div>
 
-            <!-- begin link-type 'button' -->
-            <button
-                v-if="buttonLoginDefaultOptions.linkType === 'button'"
-                :type="buttonLoginDefaultOptions.type === 'submit' ? 'submit' : 'button'"
-                v-bind="buttonLoginOptions"
-                :class="['button stretch-on-small-devices', { primary: buttonLoginDefaultOptions.primary }]"
-                @click="onClick"
-                :disabled="buttonLoginDisabled"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon
-                    v-if="buttonLoginDefaultOptions.icon.iconClass"
-                    :iconClass="buttonLoginDefaultOptions.icon.iconClass"
-                    :type="buttonLoginDefaultOptions.icon.iconType"
-                    :title="buttonLoginDefaultOptions.icon.tooltip"
-                />
-                <!-- end CmdIcon -->
-                <span v-if="buttonLoginDefaultOptions.text">{{ buttonLoginDefaultOptions.text }}</span>
-            </button>
-            <!-- begin link-type 'button' -->
+            <CmdLink 
+                v-bind="cmdLinkLoginProperties"
+                :disabled="buttonLoginDisabled" 
+            />
         </div>
     </fieldset>
     <!-- end login-form -->
 
     <!-- begin send-login-form -->
     <fieldset v-if="sendLogin" class="cmd-login-form flex-container">
-        <legend :class="{hidden : !legendForgotLoginForm.show, 'align-left': legendForgotLoginForm.align === 'left'}">
+        <legend :class="{ 'visually-hidden': !legendForgotLoginForm.show, 'align-left': legendForgotLoginForm.align === 'left' }">
             {{ legendForgotLoginForm.text }}
         </legend>
-        <!-- begin CmdHeadline -->
-        <CmdHeadline
-            v-if="cmdHeadlineSendLoginForm"
-            v-bind="cmdHeadlineSendLoginForm"
-        />
-        <!-- end CmdHeadline -->
 
-        <!-- begin CmdFormElement -->
-        <CmdFormElement
-            ref="sendPassword"
-            element="input"
+        <CmdHeadline v-if="cmdHeadlineSendLoginFormProperties.show && cmdHeadlineSendLoginFormProperties.headlineText" v-bind="cmdHeadlineSendLoginFormProperties" />
+
+        <CmdFormElement 
+            ref="sendPassword" 
+            element="input" 
             type="email"
-            @validationStatusChange="checkValidationStatus($event, 'email')"
+            @validationStatusChange="checkValidationStatus($event, 'email')" 
             v-model="sendLoginMail"
-            v-bind="cmdFormElementSendLoginOptions"
+            v-bind="cmdFormElementSendLoginProperties" 
         />
-        <!-- end CmdFormElement -->
 
         <!-- begin slot for send-login-form -->
         <slot name="send-login"></slot>
         <!-- end slot for send-login-form -->
 
         <div class="option-wrapper flex-container">
-            <a href="#" @click.prevent="toggleSendLoginView">
-                <!-- begin CmdIcon -->
-                <CmdIcon
-                    v-if="linkBackToLogin.icon && linkBackToLogin.icon.show && linkBackToLogin.icon.iconClass"
-                    :iconClass="linkBackToLogin.icon.iconClass"
-                    :type="linkBackToLogin.icon.iconType"
-                    :title="linkBackToLogin.icon.tooltip"
-                />
-                <!-- end CmdIcon -->
+            <CmdLink v-bind="cmdLinkBackToLoginProperties" @click="toggleSendLoginView" />
 
-                <span>
-                    {{ linkBackToLogin.text }}
-                </span>
-            </a>
-
-            <!-- begin link-type 'button' -->
-            <button
-                v-if="buttonSendLoginOptions.linkType === 'button'"
-                v-bind="buttonSendLoginOptions"
-                :type="buttonSendLoginOptions.type === 'submit' ? 'submit' : 'button'"
-                :class="['button stretch-on-small-devices', { primary: buttonSendLoginOptions.primary }]"
-                :disabled="buttonSendLoginDisabled"
-            >
-                <!-- begin CmdIcon -->
-                <CmdIcon
-                    v-if="buttonSendLoginOptions.icon?.iconClass"
-                    :iconClass="buttonSendLoginOptions.icon?.iconClass"
-                    :title="buttonSendLoginOptions.icon?.tooltip"
-                />
-                <!-- end CmdIcon -->
-                <span v-if="buttonSendLoginOptions.text">{{ buttonSendLoginOptions.text }}</span>
-            </button>
-            <!-- end link-type 'button' -->
+            <CmdLink 
+                v-bind="cmdLinkSendLoginProperties"
+                :disabled="buttonSendLoginDisabled"   
+            />
         </div>
     </fieldset>
     <!-- end CmdLoginForm ---------------------------------------------------------------------------------------- -->
@@ -221,7 +119,7 @@
 
 <script>
 // import utilities
-import {getRoute} from "../utilities.js"
+import { getRoute } from "../utilities.js"
 
 export default {
     name: "CmdLoginForm",
@@ -239,11 +137,10 @@ export default {
         /**
          * activate if login with google should be enabled
          */
-        enableLoginWithGoogle:
-            {
-                type: Boolean,
-                default: false
-            },
+        enableLoginWithGoogle: {
+            type: Boolean,
+            default: false
+        },
         /**
          * activate if login with facebook should be enabled
          */
@@ -286,8 +183,7 @@ export default {
          */
         legendLoginForm: {
             type: Object,
-            default
-                () {
+            default() {
                 return {
                     show: true,
                     align: "right",
@@ -303,20 +199,60 @@ export default {
          */
         legendForgotLoginForm: {
             type: Object,
-            default
-                () {
+            default() {
                 return {
                     show: true,
                     align: "right",
                     text: "Forgot login form"
                 }
             }
-        }
-        ,
+        },
+        /**
+         * properties for CmdLink-component for "forgot password"-link
+         */
+        cmdLinkForgotPassword: {
+            type: Object,
+            required: false
+        },
+        /**
+         * define link to create an account (that is linked to a register-form i.e.)
+         */
+        cmdLinkCreateAccount: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component that lead back to the "login"-view (from "send login"-view)
+         */
+         cmdLinkBackToLogin: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component for "login with your data"-button
+         */
+         cmdLinkLoginWithYourData: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component for "login"-button
+         */
+        cmdLinkLogin: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-component for "send login"-button
+         */
+         cmdLinkSendLogin: {
+            type: Object,
+            required: false
+        },
         /**
          * properties for CmdHeadline-component for login-form
          */
-        cmdHeadlineLoginForm: {
+         cmdHeadlineLoginForm: {
             type: Object,
             required: false
         },
@@ -353,92 +289,17 @@ export default {
         cmdFormElementSendLogin: {
             type: Object,
             required: false
-        },
-        /**
-         * options to display
-         *
-         * forgotPassword: toggles form to send password by email
-         * createAccount: creates a link (href/router) which could lead to a register-form
-         */
-        linkForgotPassword: {
-            type: Object,
-            default
-                () {
-                return {
-                    icon: {
-                        show: true,
-                        iconClass: "icon-questionmark-circle",
-                        tooltip: ""
-                    },
-                    text: "Forgot password"
-                }
-            }
-        },
-        /**
-         * define link to create an account (that is linked to a register-form i.e.)
-         */
-        linkCreateAccount: {
-            type: Object,
-            default() {
-                return {
-                    linkType: "href",
-                    path: "#",
-                    icon: {
-                        show: true,
-                        iconClass: "icon-register",
-                        tooltip: ""
-                    },
-                    text: "Create account"
-                }
-            }
-        },
-        /**
-         * define link from "forgot-login-form"-view back to the default login-form
-         */
-        linkBackToLogin: {
-            type: Object,
-            default
-                () {
-                return {
-                    icon: {
-                        show: true,
-                        iconClass: "icon-chevron-one-stripe-left",
-                        tooltip: ""
-                    },
-                    text: "Back to login"
-                }
-            }
-        },
-        /**
-         * button to show login if multiple login possibilities (i.e. google, facebook) are enabled
-         *
-         * @requiredForAccessibility: partial
-         */
-        buttonLoginWithYourData: {
-            type: Object,
-            required: false
-        },
-        /**
-         * button to login
-         *
-         * @requiredForAccessibility: partial
-         */
-        buttonLogin: {
-            type: Object,
-            required: false
-        },
-        /**
-         * button to send-login-data
-         *
-         * @requiredForAccessibility: partial
-         */
-        buttonSendLogin: {
-            type: Object,
-            required: false
         }
     },
     computed: {
-        cmdFormElementUsernameOptions() {
+        cmdHeadlineLoginFormProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadlineLoginForm 
+            }
+        },
+        cmdFormElementUsernameProperties() {
             return {
                 labelText: "Username:",
                 placeholder: "Type in username",
@@ -449,7 +310,7 @@ export default {
                 ...this.cmdFormElementUsername
             }
         },
-        cmdFormElementPasswordOptions() {
+        cmdFormElementPasswordProperties() {
             return {
                 labelText: "Password:",
                 placeholder: "Type in password",
@@ -460,7 +321,14 @@ export default {
                 ...this.cmdFormElementPassword
             }
         },
-        cmdFormElementSendLoginOptions() {
+        cmdHeadlineSendLoginFormProperties() {
+            return {
+                show: true,
+                headlineLevel: 3,
+                ...this.cmdHeadlineSendLoginForm 
+            }
+        },
+        cmdFormElementSendLoginProperties() {
             return {
                 labelText: "Email-address:",
                 placeholder: "Type in email-address you are registered with",
@@ -471,38 +339,43 @@ export default {
                 ...this.cmdFormElementSendLogin
             }
         },
-        buttonLoginWithYourDataDefaultOptions() {
+        cmdLinkForgotPasswordProperties() {
+            return {
+                show: true,
+                text: "Forgot password",
+                highlightLevel: "primary",
+                icon: {
+                    show: true,
+                    iconClass: "icon-questionmark-circle"
+                },
+                ...this.cmdLinkForgotPassword
+            }
+        },
+        cmdLinkLoginWithYourDataProperties() {
             return {
                 linkType: "button", /* href, router, button */
                 type: "button", /* submit, button */
                 path: "",
                 text: "Login with your data",
-                primary: false,
-                ...this.buttonLoginWithYourData
+                ...this.cmdLinkLoginWithYourData
             }
         },
-        buttonLoginDefaultOptions() {
+        cmdLinkLoginProperties() {
             return {
                 linkType: "button", /* href, router, button */
                 type: "submit", /* submit, button */
                 path: "",
                 text: "Login",
-                primary: true,
+                highlightLevel: "primary",
                 icon: {
                     show: true,
                     iconClass: "icon-logon",
                     tooltip: ""
                 },
-                ...this.buttonLogin
+                ...this.cmdLinkLogin
             }
         },
-        buttonLoginOptions() {
-            return {
-                type: "submit",
-                ...this.buttonLogin
-            }
-        },
-        buttonSendLoginOptions() {
+        cmdLinkSendLoginProperties() {
             return {
                 linkType: "button", /* href, router, button */
                 type: "submit", /* submit, button */
@@ -514,7 +387,33 @@ export default {
                     iconClass: "icon-mail",
                     tooltip: ""
                 },
-                ...this.buttonSendLogin
+                highlightLevel: "primary",
+                ...this.cmdLinkSendLogin
+            }
+        },
+        cmdLinkCreateAccountProperties() {
+            return {
+                show: true,
+                linkType: "href",
+                path: "#",
+                icon: {
+                    show: true,
+                    iconClass: "icon-register",
+                    tooltip: ""
+                },
+                text: "Create account",
+                ...this.cmdLinkCreateAccount
+            }
+        },
+        cmdLinkBackToLoginProperties() {
+            return {
+                icon: {
+                    show: true,
+                    iconClass: "icon-chevron-one-stripe-left",
+                    tooltip: ""
+                },
+                text: "Back to login",
+                ...this.cmdLinkBackToLogin
             }
         },
         buttonLoginDisabled() {
@@ -528,7 +427,7 @@ export default {
                 return this.modelValue.username
             },
             set(value) {
-                this.$emit("update:modelValue", {username: value, password: this.password})
+                this.$emit("update:modelValue", { username: value, password: this.password })
             }
         },
         password: {
@@ -536,7 +435,7 @@ export default {
                 return this.modelValue.password
             },
             set(value) {
-                this.$emit("update:modelValue", {username: this.username, password: value})
+                this.$emit("update:modelValue", { username: this.username, password: value })
             }
         }
     },
@@ -546,17 +445,17 @@ export default {
         },
         toggleSendLoginView() {
             this.sendLogin = !this.sendLogin
-
+/*
             this.$nextTick(() => {
                 if (this.sendLogin) {
                     this.$refs.sendPassword.setFocus()
                 } else {
                     this.$refs.username.setFocus()
                 }
-            })
+            })*/
         },
         modelChange() {
-            this.$emit("update:modelValue", {"username": this.username, "password": this.password})
+            this.$emit("update:modelValue", { "username": this.username, "password": this.password })
         },
         onClick(event) {
             this.$emit("click", event)
@@ -626,12 +525,12 @@ export default {
         flex: none;
         align-items: center;
 
-        > a:not(.button) {
+        >a:not(.button) {
             display: flex;
             text-decoration: none;
         }
 
-        > .button {
+        >.button {
             margin-left: auto;
         }
     }
@@ -646,7 +545,8 @@ export default {
         transition: background-color .218s, border-color .218s, box-shadow .218s;
         white-space: nowrap;
 
-        border-radius: var(--button-border-radius);;
+        border-radius: var(--button-border-radius);
+        ;
         background-color: var(--color-white);
         height: var(--input-height);
         padding: var(--button-padding);
@@ -690,7 +590,8 @@ export default {
             background-color: #ffffff61;
             border-color: #1f1f1f1f;
 
-            .gsi-material-button-contents, .gsi-material-button-icon {
+            .gsi-material-button-contents,
+            .gsi-material-button-icon {
                 opacity: 38%;
             }
 

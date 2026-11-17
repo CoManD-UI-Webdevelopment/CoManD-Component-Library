@@ -1,31 +1,28 @@
 <template>
     <!-- begin CmdPageFooter ---------------------------------------------------------------------------------------- -->
     <footer :class="['cmd-page-footer flex-container', {'small-buttons': useSmallButtons}]">
-        <!-- begin CmdSocialNetworks -->
-        <CmdSocialNetworks v-if="cmdSocialNetworks" v-bind="cmdSocialNetworks">
-            <!-- begin named slot for cmd-social-networks -->
-            <slot name="cmd-social-networks"></slot>
-            <!-- end named slot for cmd-social-networks -->
-        </CmdSocialNetworks>
-        <!-- end CmdSocialNetworks -->
-        <div class="button-wrapper">
-            <!-- begin slot-content -->
-            <slot></slot>
-            <!-- end slot-content -->
+        <slot>
+            <CmdSocialNetworks v-if="cmdSocialNetworks" v-bind="cmdSocialNetworks">
+                <!-- begin named slot for cmd-social-networks -->
+                <slot name="cmd-social-networks"></slot>
+                <!-- end named slot for cmd-social-networks -->
+            </CmdSocialNetworks>
 
-            <!-- begin button print-preview -->
-            <button
-                v-if="buttonPrintViewOptions?.show"
-                :class="['button', {'primary': buttonPrintViewOptions.primary}]"
-                id="print-view-button"
-                :title="buttonPrintViewOptions.text ? buttonPrintViewOptions.icon?.tooltip : null"
-                @click="showFancyBox"
-            >
-                <span v-if="buttonPrintViewOptions.icon?.show" :class="buttonPrintViewOptions.icon?.iconClass"></span>
-                <span v-if="buttonPrintViewOptions.text">{{buttonPrintViewOptions.text}}</span>
-            </button>
-            <!-- end button print-preview -->
-        </div>
+            <div class="button-wrapper">
+                <!-- begin slot-content -->
+                <slot name="button-wrapper"></slot>
+                <!-- end slot-content -->
+
+                <!-- begin button print-preview -->
+                <CmdLink
+                    v-if="cmdLinkPrintViewProperties?.show"
+                    v-bind="cmdLinkPrintViewProperties"
+                    id="print-view-button"
+                    @click="showFancyBox"
+                />
+                <!-- end button print-preview -->
+            </div>
+        </slot>
     </footer>
     <!-- end CmdPageFooter ---------------------------------------------------------------------------------------- -->
 </template>
@@ -36,24 +33,6 @@ import { openFancyBox } from "./CmdFancyBox.vue"
 export default {
     name: "CmdPageFooter",
     props: {
-        /**
-         * define button for print-preview
-         */
-        buttonPrintView: {
-            type: Object,
-            default() {
-                return {
-                    show: true,
-                    primary: false,
-                    icon: {
-                        show: true,
-                        iconClass: "icon-print-preview",
-                        tooltip: "Open print preview"
-                    },
-                    text: "Print preview"
-                }
-            }
-        },
         /**
          * activate to use small buttons
          */
@@ -68,6 +47,13 @@ export default {
             type: String,
             default: "main"
         },
+                /**
+         * properties for CmdLink-component for print-preview
+         */
+         cmdLinkPrintView: {
+            type: Object,
+            required: false
+        },
         /**
          * properties for CmdSocialNetworks-component
          */
@@ -80,49 +66,40 @@ export default {
          */
         cmdFancyBox: {
             type: Object,
-            default() {
-                return {
-                    showPrintButtons: true,
-                    defaultAriaLabelText: "print-preview"
-                }
-            }
+            required: false
         }
     },
     computed: {
-        buttonPrintViewOptions() {
-            const defaultOptions = {
-                show: true,
-                primary: false,
+        cmdLinkPrintViewProperties() {
+            return {
+                show: false,
+                linkType: "button",
+                highlightLevel: null,
                 icon: {
                     show: true,
                     iconClass: "icon-print-preview",
                     tooltip: "Open print preview"
                 },
                 text: "Print preview",
+                ...this.cmdLinkPrintView
             }
-
-            return { ...defaultOptions, ...this.buttonPrintView, icon: { ...defaultOptions.icon, ...this.buttonPrintView?.icon } }
         }
     },
     methods: {
         showFancyBox() {
             let elements = []
-            if(typeof this.cmdFancyBox.elements === "function") {
+            if(typeof this.cmdFancyBox?.elements === "function") {
                 elements = this.cmdFancyBox.elements()
             } else {
                 elements = [document.querySelector(this.containerToPrint)]
             }
 
             openFancyBox({
-                elements: elements,
-                fancyBoxOptions: this.cmdFancyBox.fancyBoxOptions,
-                showPrintButtons: this.cmdFancyBox.showPrintButtons,
-                defaultAriaLabelText: this.cmdFancyBox.defaultAriaLabelText,
-                cmdHeadline: this.cmdFancyBox.cmdHeadline,
-                showOverlay: this.cmdFancyBox.showOverlay,
-                showSubmitButtons: this.cmdFancyBox.showSubmitButtons,
-                allowEscapeKey: this.cmdFancyBox.allowEscapeKey,
-                id: this.cmdFancyBox.id || "print-preview"
+                showPrintButtons: true,
+                id: "print-preview",
+                defaultAriaLabelText: "print-preview",
+                ...this.cmdFancyBox,
+                elements: elements
             })
         }
     }

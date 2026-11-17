@@ -1,704 +1,687 @@
 <!--suppress HtmlUnknownTarget, NpmUsedModulesInstalled, JSUnresolvedVariable -->
 <template>
-    <!-- begin .page-wrapper -->
-    <div class="page-wrapper" :id="templateId" v-fancybox>
-        <a id="anchor-back-to-top"></a>
-        <CmdSidebar v-if="showLeftSidebar"
-            :cmdHeadline="{ headlineText: 'Site Settings', headlineLevel: 3, textAlign: 'center' }"
-            :openSidebar="openLeftSidebar" @toggle-sidebar="setOpenStatusLeftSidebar">
-            <template #open>
-                <CmdBoxWrapper :boxesPerRow="[1]" :allowMultipleExpandedBoxes="false"
-                    :allowUserToToggleOrientation="false" :openBoxesByDefault="openBoxes" :useGap="false">
-                    <template v-slot="slotProps">
-                        <!-- begin box template selection -->
-                        <CmdBox :use-slots="['body']" :collapsible="true"
-                            :cmdHeadline="{ headlineText: 'Template Settings', headlineLevel: 4, cmdIcon: { iconClass: 'icon-settings-template' } }"
-                            :openCollapsedBox="slotProps.boxIsOpen(0)"
-                            @toggleCollapse="slotProps.boxToggled(0, $event)">
-                            <template v-slot:body>
-                                <label for="select-template">
-                                    <span>Select template</span>
-                                    <select id="select-template" v-model="selectedTemplate">
-                                        <option value="blank">Blank/Unstyled</option>
-                                        <option value="material-web">Material-Web</option>
-                                        <option value="tailwind">Tailwind</option>
-                                    </select>
-                                </label>
-                                <div>
-                                    <span>Color Scheme</span>
-                                    <div class="input-wrapper">
-                                        <label for="default-color-scheme">
-                                            <input type="radio" id="default-color-scheme" name="color-scheme"
-                                                v-model="colorScheme" value="none" />
-                                            <span class="label-text">Color-Scheme by Browser/OS</span>
-                                        </label>
-                                        <label for="light-mode">
-                                            <input type="radio" id="light-mode" name="color-scheme"
-                                                v-model="colorScheme" value="light" />
-                                            <span class="label-text">Light Mode</span>
-                                        </label>
-                                        <label for="dark-mode">
-                                            <input type="radio" id="dark-mode" name="color-scheme" v-model="colorScheme"
-                                                value="dark" />
-                                            <span class="label-text">Dark Mode</span>
-                                        </label>
+    <!-- begin .site-wrapper -->
+    <CmdSiteWrapper :id="templateId" :cmdSiteFooter="{show: false}">
+        <template v-slot:site-header>
+            <!-- begin site-header ------------------------------------------------------------------------------------------->
+            <CmdSiteHeader :resizeHeaderOnScroll="true" :cmdCompanyLogo="companyLogoData">
+                <template v-slot:topheader>
+                    <!-- begin list ------------------------------------------------------------------------------------------->
+                    <CmdList :links="listData" orientation="horizontal" align="right" />
+                    <!-- end list ------------------------------------------------------------------------------------------->
+                </template>
+            </CmdSiteHeader>
+            <!-- end site-header ------------------------------------------------------------------------------------------->
+        </template>
+        <template v-slot:page-content>
+            <CmdSidebar v-if="showLeftSidebar"
+                :useFlexbox="true"
+                :cmdHeadline="{ headlineText: 'Site Settings', headlineLevel: 5, textAlign: 'center' }"
+                :openSidebar="openLeftSidebar" @toggle-sidebar="setOpenStatusLeftSidebar">
+                <template #open>
+                    <CmdBoxWrapper :boxesPerRow="[1]" :allowMultipleExpandedBoxes="false"
+                        :allowUserToToggleOrientation="false" :openBoxesByDefault="openBoxes" :useGap="false">
+                        <template v-slot="slotProps">
+                            <!-- begin box template selection -->
+                            <CmdBox :use-slots="['body']" :collapsible="true"
+                                :cmdHeadline="{ headlineText: 'Template Settings', headlineLevel: 4, cmdIcon: { iconClass: 'icon-settings-template' } }"
+                                :openCollapsedBox="slotProps.boxIsOpen(0)"
+                                class="flex-none"
+                                @toggleCollapse="slotProps.boxToggled(0, $event)">
+                                <template v-slot:body>
+                                    <label for="select-template">
+                                        <span>Select template</span>
+                                        <select id="select-template" v-model="selectedTemplate">
+                                            <option value="blank">Blank/Unstyled</option>
+                                            <option value="material-web">Material-Web</option>
+                                            <option value="neumorphic">Neumorphic</option>
+                                            <option value="tailwind">Tailwind</option>
+                                        </select>
+                                    </label>
+                                    <div>
+                                        <span>Color Scheme</span>
+                                        <div class="input-wrapper">
+                                            <label for="default-color-scheme">
+                                                <input type="radio" id="default-color-scheme" name="color-scheme"
+                                                    v-model="colorScheme" value="none" />
+                                                <span class="label-text">Color-Scheme by Browser/OS</span>
+                                            </label>
+                                            <label for="light-mode">
+                                                <input type="radio" id="light-mode" name="color-scheme"
+                                                    v-model="colorScheme" value="light" />
+                                                <span class="label-text">Light Mode</span>
+                                            </label>
+                                            <label for="dark-mode">
+                                                <input type="radio" id="dark-mode" name="color-scheme"
+                                                    v-model="colorScheme" value="dark" />
+                                                <span class="label-text">Dark Mode</span>
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                        </CmdBox>
-                        <!-- end box template selection -->
+                                </template>
+                            </CmdBox>
+                            <!-- end box template selection -->
 
-                        <!-- begin box list of components-->
-                        <CmdBox :use-slots="['body']" :collapsible="true"
-                            :cmdHeadline="{ headlineText: 'Components', headlineLevel: 4, cmdIcon: { iconClass: 'icon-settings-component' } }"
-                            :openCollapsedBox="slotProps.boxIsOpen(1)" @toggleCollapse="slotProps.boxToggled(1, $event)"
-                            id="list-of-components">
-                            <template v-slot:body>
-                                <ul>
-                                    <li v-for="(componentName, index) in listOfComponents" :key="index"
-                                        :class="{ 'active': activeEntry === 'Cmd' + componentName }">
-                                        <a :href="sectionName(componentName)"
-                                            @click="updateSettingsSidebar(componentNameWithPrefix(componentName))"
-                                            title="Go to component">
-                                            {{ readableComponentName(componentName) }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </template>
-                        </CmdBox>
-                        <!-- end box list of components-->
+                            <!-- begin box list of components-->
+                            <CmdBox :use-slots="['body']" :collapsible="true"
+                                :cmdHeadline="{ headlineText: 'Components', headlineLevel: 4, cmdIcon: { iconClass: 'icon-settings-component' } }"
+                                :openCollapsedBox="slotProps.boxIsOpen(1)"
+                                @toggleCollapse="slotProps.boxToggled(1, $event)" id="list-of-components"
+                            >
+                                <template v-slot:body>
+                                    <ul>
+                                        <li v-for="(componentName, index) in listOfComponents" :key="index"
+                                            :class="{ 'active': activeEntry === 'Cmd' + componentName }">
+                                            <a :href="sectionName(componentName)"
+                                                @click="updateSettingsSidebar(componentNameWithPrefix(componentName))"
+                                                title="Go to component">
+                                                {{ readableComponentName(componentName) }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </template>
+                            </CmdBox>
+                            <!-- end box list of components-->
 
-                        <!-- begin box page-templates -->
-                        <CmdBox :use-slots="['body']" :collapsible="true"
-                            :cmdHeadline="{ headlineText: 'Page-Templates', headlineLevel: 4, cmdIcon: { iconClass: 'icon-file-settings' } }"
-                            :openCollapsedBox="slotProps.boxIsOpen(2)"
-                            @toggleCollapse="slotProps.boxToggled(2, $event)">
-                            <template v-slot:body>
-                                <ul>
-                                    <li>
-                                        <a href="#section-contact-information"
-                                            @click="updateSettingsSidebar('ContactInformation', 'page')">
-                                            Contact Information
-                                        </a>
-                                    </li>
-                                    <li>
-                                        Multiple Lists Of Links
-                                        <ul>
-                                            <li>
-                                                <a href="#section-multiple-lists-of-links-downloads"
-                                                    @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
-                                                    Downloads
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#section-multiple-lists-of-links-sitemap"
-                                                    @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
-                                                    SiteMap
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        Multiple Box Wrapper
-                                        <ul>
-                                            <li>
-                                                <a href="#section-multiple-box-wrapper-faqs"
-                                                    @click="updateSettingsSidebar('MultipleBoxWrapperFAQs', 'page')">
-                                                    FAQs
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#section-multiple-box-wrapper-team-overview"
-                                                    @click="updateSettingsSidebar('MultipleBoxWrapperTeamOverview', 'page')">
-                                                    Team Overview
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </template>
-                        </CmdBox>
-                        <!-- end box page-templates -->
-                    </template>
-                </CmdBoxWrapper>
+                            <!-- begin box page-templates -->
+                            <CmdBox :use-slots="['body']" :collapsible="true"
+                                class="flex-none"
+                                :cmdHeadline="{ headlineText: 'Page-Templates', headlineLevel: 4, cmdIcon: { iconClass: 'icon-file-settings' } }"
+                                :openCollapsedBox="slotProps.boxIsOpen(2)"
+                                @toggleCollapse="slotProps.boxToggled(2, $event)">
+                                <template v-slot:body>
+                                    <ul>
+                                        <li>
+                                            <a href="#section-contact-information"
+                                                @click="updateSettingsSidebar('ContactInformation', 'page')">
+                                                Contact Information
+                                            </a>
+                                        </li>
+                                        <li>
+                                            Multiple Lists Of Links
+                                            <ul>
+                                                <li>
+                                                    <a href="#section-multiple-lists-of-links-downloads"
+                                                        @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
+                                                        Downloads
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#section-multiple-lists-of-links-sitemap"
+                                                        @click="updateSettingsSidebar('MultipleListsOfLinks', 'page')">
+                                                        SiteMap
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Multiple Box Wrapper
+                                            <ul>
+                                                <li>
+                                                    <a href="#section-multiple-box-wrapper-faqs"
+                                                        @click="updateSettingsSidebar('MultipleBoxWrapperFAQs', 'page')">
+                                                        FAQs
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#section-multiple-box-wrapper-team-overview"
+                                                        @click="updateSettingsSidebar('MultipleBoxWrapperTeamOverview', 'page')">
+                                                        Team Overview
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </template>
+                            </CmdBox>
+                            <!-- end box page-templates -->
+                        </template>
+                    </CmdBoxWrapper>
 
-                <!-- begin list comand-versions -->
-                <dl class="box-footer comand-versions">
-                    <dt>Frontend-Framework Version:</dt>
-                    <dd>{{ packageJson.dependencies['comand-frontend-framework'].replace("^", "") }}</dd>
-                    <dt>Component-Library Version:</dt>
-                    <dd>{{ packageJson.version }}</dd>
-                </dl>
-                <!-- end list comand-versions -->
-            </template>
-            <template #closed>
-                <div class="closed-sidebar">
-                    <a href="#" class="button primary" title="Open Template Selection" @click.prevent="openBox(0)">
-                        <span class="icon-settings-template"></span>
-                    </a>
-                    <a href="#" class="button primary" title="Open Components Overview" @click.prevent="openBox(1)">
-                        <span class="icon-settings-component"></span>
-                    </a>
-                    <a href="#" class="button primary" title="Open Page-Templates" @click.prevent="openBox(2)">
-                        <span class="icon-file-settings"></span>
-                    </a>
-                    <a href="#" @click.prevent="showLeftSidebar = false">
-                        <span>Hide sidebar</span>
-                    </a>
-                </div>
-            </template>
-        </CmdSidebar>
-        <!-- begin site-header ------------------------------------------------------------------------------------------->
-        <CmdSiteHeader :sticky="true" :resizeHeaderOnScroll="true" :cmdCompanyLogo="companyLogoData">
-            <template v-slot:top-header>
-                <!-- begin list ------------------------------------------------------------------------------------------->
-                <CmdList :links="listData" orientation="horizontal" align="right" />
-                <!-- end list ------------------------------------------------------------------------------------------->
-            </template>
-            <template v-slot:logo>
-                <!-- begin company-logo ------------------------------------------------------------------------------------------->
-                <!-- CmdCompanyLogo v-bind="companyLogoData" --/>
-                <!-- end company-logo ------------------------------------------------------------------------------------------->
-            </template>
-        </CmdSiteHeader>
-        <!-- end site-header ------------------------------------------------------------------------------------------->
-        <main v-if="componentView" id="content">
+                    <!-- begin list comand-versions -->
+                     <div class="flex-container justify-content-center">
+                        <dl class="box-footer comand-versions">
+                            <dt>Frontend-Framework Version:</dt>
+                            <dd>{{ packageJson.dependencies['comand-frontend-framework'].replace("^", "") }}</dd>
+                            <dt>Component-Library Version:</dt>
+                            <dd>{{ packageJson.version }}</dd>
+                        </dl>
+                    </div>
+                    <!-- end list comand-versions -->
+                </template>
+                <template #closed>
+                    <div class="closed-sidebar">
+                        <a href="#" class="button primary" title="Open Template Selection" @click.prevent="openBox(0)">
+                            <span class="icon-settings-template"></span>
+                        </a>
+                        <a href="#" class="button primary" title="Open Components Overview" @click.prevent="openBox(1)">
+                            <span class="icon-settings-component"></span>
+                        </a>
+                        <a href="#" class="button primary" title="Open Page-Templates" @click.prevent="openBox(2)">
+                            <span class="icon-file-settings"></span>
+                        </a>
+                        <a href="#" @click.prevent="showLeftSidebar = false">
+                            <span>Hide sidebar</span>
+                        </a>
+                    </div>
+                </template>
+            </CmdSidebar>
+            <div v-if="componentView" id="content">
+                <CmdWidthLimitationWrapper>
+                    <h1 class="headline-demopage">Components Overview</h1>
+                </CmdWidthLimitationWrapper>
 
-            <CmdWidthLimitationWrapper>
-                <h1 class="headline-demopage">Components Overview</h1>
-            </CmdWidthLimitationWrapper>
-
-            <!-- begin accordion --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-accordion">
-                    <span>Accordion</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdAccordion')"></a>
-                </h2>
+                <!-- begin accordion --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-accordion">
+                        <span>Accordion</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdAccordion')"></a>
+                    </h2>
                     <CmdAccordion ref="CmdAccordion" open :name="accordionData.name"
                         :cmdHeadline="{ headlineText: 'Summary (no highlighting)' }"
-                        :textAccordionBody="accordionData.textAccordionBody" v-bind="cmdAccordionSettingsData" />
-                <CmdAccordion highlightLevel="primary" :name="accordionData.name"
-                    :cmdHeadline="{ headlineText: 'Summary (primary highlighting)' }"
-                    :textAccordionBody="accordionData.textAccordionBody" />
-                <CmdAccordion highlightLevel="secondary" :name="accordionData.name"
-                    :cmdHeadline="{ headlineText: 'Summary (secondary highlighting)' }"
-                    :textAccordionBody="accordionData.textAccordionBody" />
-                <CmdAccordion highlightLevel="tertiary" :name="accordionData.name"
-                    :cmdHeadline="{ headlineText: 'Summary (tertiary highlighting)' }"
-                    :textAccordionBody="accordionData.textAccordionBody" />
-            </CmdWidthLimitationWrapper>
-            <!-- end accordion --------------------------------------------------------------------------------------------------->
+                        :textAccordionBody="accordionData[0].textAccordionBody" v-bind="cmdAccordionSettingsData" />
+                    <CmdAccordion highlightLevel="primary" :name="accordionData.name"
+                        :cmdHeadline="{ headlineText: 'Summary (primary highlighting)' }"
+                        :textAccordionBody="accordionData[1].textAccordionBody" />
+                    <CmdAccordion highlightLevel="secondary" :name="accordionData.name"
+                        :cmdHeadline="{ headlineText: 'Summary (secondary highlighting)' }"
+                        :textAccordionBody="accordionData[2].textAccordionBody" />
+                    <CmdAccordion highlightLevel="tertiary" :name="accordionData.name"
+                        :cmdHeadline="{ headlineText: 'Summary (tertiary highlighting)' }"
+                        :textAccordionBody="accordionData[3].textAccordionBody" />
+                </CmdWidthLimitationWrapper>
+                <!-- end accordion --------------------------------------------------------------------------------------------------->
 
-            <!-- begin accordions-wrapper --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-accordion">
-                    <span>Accordions-Wrapper</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdAccordionsWrapper')"></a>
-                </h2>
-                <CmdAccordionsWrapper :useGap="false" :useRowViewAsDefault="true">
-                    <template v-slot="slotProps">
-                     <CmdAccordion 
-                            v-for="(accordion, index) in 5" 
-                            :key="index" 
-                            open 
-                            :name="accordionData.name"
-                            :cmdHeadline="{ headlineText: 'Summary Accordion #' + (index + 1) }"
-                            :rowView="slotProps.rowView" 
-                            :textAccordionBody="accordionData.textAccordionBody" 
-                        />
-                    </template>
-                </CmdAccordionsWrapper>
-            </CmdWidthLimitationWrapper>
-            <!-- end accordions-wrapper --------------------------------------------------------------------------------------------------->
+                <!-- begin accordions-wrapper --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-accordions-wrapper">
+                        <span>Accordions-Wrapper</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdAccordionsWrapper')"></a>
+                    </h2>
+                    <CmdAccordionsWrapper ref="CmdAccordionsWrapper" v-bind="cmdAccordionsWrapperSettingsData">
+                        <template v-slot="slotProps">
+                            <CmdAccordion v-for="(accordion, index) in accordionData" :key="index" open
+                                :accordionName="accordion.name"
+                                :cmdHeadline="{ headlineText: accordion.cmdHeadline.headlineText }"
+                                :rowView="slotProps.rowView" :openAccordionHasFullWidth="slotProps.fullWidth"
+                                :textAccordionBody="accordion.textAccordionBody"
+                                :allowMultipleExpandedBoxes="slotProps.allowMultipleExpandedBoxes"
+                                :summaryWritingMode="slotProps.summaryWritingMode" />
+                        </template>
+                    </CmdAccordionsWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end accordions-wrapper --------------------------------------------------------------------------------------------------->
 
-            <!-- begin address-data --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-address-data">
-                    <span>Address Data</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdAddressData')"></a>
-                </h2>
-                <div class="flex-container">
-                    <CmdAddressData ref="CmdAddressData" :addressData="addressData"
-                        v-bind="cmdAddressDataSettingsData" />
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end address-data --------------------------------------------------------------------------------------------------->
+                <!-- begin address-data --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-address-data">
+                        <span>Address Data</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdAddressData')"></a>
+                    </h2>
+                    <div class="flex-container">
+                        <CmdAddressData ref="CmdAddressData" :addressData="addressData"
+                            v-bind="cmdAddressDataSettingsData" />
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end address-data --------------------------------------------------------------------------------------------------->
 
-            <!-- begin advanced form elements ------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-advanced-form-elements">Advanced Form Elements</h2>
-                <h3><span>Form elements status:</span></h3>
-                <div class="flex-container">
-                    <ul class="list-status">
-                        <li>
-                            <a href="#" @click.prevent="setStatus('', false)"
-                                :class="{ 'active': validationStatus === '' && disabledStatus === false }"
-                                id="status-default">
-                                Default
-                            </a>
-                        </li>
-                        <li class="error">
-                            <a href="#" @click.prevent="setStatus('error', false)"
-                                :class="{ 'active': validationStatus === 'error' }" id="status-error">
-                                Error
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" @click.prevent="setStatus('warning', false)"
-                                :class="{ 'active': validationStatus === 'warning' }" id="status-warning">
-                                Warning
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" @click.prevent="setStatus('success', false)"
-                                :class="{ 'active': validationStatus === 'success' }" id="status-success">
-                                Success
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" @click.prevent="setStatus('info', false)"
-                                :class="{ 'active': validationStatus === 'info' }" id="status-info">
-                                Info
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" @click.prevent="setStatus('', true)"
-                                :class="{ 'active': disabledStatus === true }" id="status-disabled">
-                                Disabled
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- begin advanced form elements ------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-advanced-form-elements">Advanced Form Elements</h2>
+                    <h3><span>Form elements status:</span></h3>
+                    <div class="flex-container">
+                        <ul class="list-status">
+                            <li>
+                                <a href="#" @click.prevent="setStatus('', false)"
+                                    :class="{ 'active': validationStatus === '' && disabledStatus === false }"
+                                    id="status-default">
+                                    Default
+                                </a>
+                            </li>
+                            <li class="error">
+                                <a href="#" @click.prevent="setStatus('error', false)"
+                                    :class="{ 'active': validationStatus === 'error' }" id="status-error">
+                                    Error
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="setStatus('warning', false)"
+                                    :class="{ 'active': validationStatus === 'warning' }" id="status-warning">
+                                    Warning
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="setStatus('success', false)"
+                                    :class="{ 'active': validationStatus === 'success' }" id="status-success">
+                                    Success
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="setStatus('info', false)"
+                                    :class="{ 'active': validationStatus === 'info' }" id="status-info">
+                                    Info
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="setStatus('', true)"
+                                    :class="{ 'active': disabledStatus === true }" id="status-disabled">
+                                    Disabled
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-                <!-- begin form-filters -->
-                <CmdFormFilters v-model="fakeSelectFilters" :selectedOptionsName="getOptionName" />
-                <!-- end form-filters -->
+                    <!-- begin form-filters -->
+                    <CmdFormFilters v-model="fakeSelectFilters" :selectedOptionsName="getOptionName" />
+                    <!-- end form-filters -->
 
-                <CmdForm :use-fieldset="false" id="advanced-form-elements" novalidate="novalidate">
-                    <fieldset class="flex-container">
-                        <legend>Legend</legend>
-                        <h2 class="headline-demopage">
-                            <span>Form Element-Component</span>
-                            <a href="#" class="button small icon-cog" title="Open Component Settings"
-                                @click.prevent="openSettingsSidebar('CmdFormElement')"></a>
-                        </h2>
-                        <CmdFormElement ref="CmdFormElement" v-bind="cmdFormElementSettingsData"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <div class="flex-container">
-                            <CmdFormElement labelText="Input for datalist:" element="input" type="text"
-                                :status="validationStatus" :disabled="disabledStatus" placeholder="Type in option"
-                                :datalist="datalist" tooltipText="This is a tooltip" />
-                        </div>
-                        <div class="flex-container">
-                            <CmdFormElement labelText="Input (type search (without search-button)):" element="input"
-                                type="search" :status="validationStatus" :disabled="disabledStatus"
-                                :showSearchButton="false" placeholder="Search" fieldIconClass="icon-search"
-                                tooltipText="This is a tooltip" v-bind="{ useCustomTooltip: false }" />
-                            <CmdFormElement labelText="Input (type search (with search-button)):" element="input"
-                                type="search" :status="validationStatus" :disabled="disabledStatus" placeholder="Search"
-                                tooltipText="This is a tooltip" v-bind="{ useCustomTooltip: false }" />
-                        </div>
-                        <h3>Inputfields in Columns</h3>
-                        <div class="flex-container">
-                            <CmdFormElement element="input" type="text" minlength="5" id="inputfield1"
-                                placeholder="This is placeholder text" v-model="inputField1"
-                                tooltipText="This is a tooltip!" :status="validationStatus" :disabled="disabledStatus">
-                                <template v-slot:labeltext>
-                                    <span v-html="'Label with <a href=\'#\'>Link</a> given by slot'"></span>
-                                </template>
-                            </CmdFormElement>
-                            <CmdFormElement element="input" labelText="Label for inputfield (required, with tooltip):"
-                                type="text" required="required" minlength="5" id="inputfield-required"
-                                placeholder="This is placeholder text" v-model="inputFieldRequired"
-                                tooltipText="This is a tooltip!" :status="validationStatus"
-                                :disabled="disabledStatus" />
-                            <CmdFormElement element="input" labelText="Label for inputfield (with pattern):" type="text"
-                                id="inputfield-pattern" placeholder="This is placeholder text" pattern="/\d/"
-                                v-model="inputFieldPattern" tooltipText="This is a tooltip!" :status="validationStatus"
-                                :disabled="disabledStatus" />
-                        </div>
-                        <!-- begin inputfield in two columns -->
-                        <div class="flex-container">
-                            <CmdFormElement labelText="Label for emailfield (with icon):" element="input" type="email"
-                                id="inputfield-email" fieldIconClass="icon-mail" placeholder="Type in email-address"
-                                tooltipText="This is a tooltip!" maxlength="100" v-model="inputMail"
-                                :status="validationStatus" :disabled="disabledStatus" :required="true" />
-                            <CmdFormElement labelText="Label for inputfield (with icon):" element="input" type="text"
-                                id="inputfield-username" fieldIconClass="icon-user-profile"
-                                placeholder="Type in username" tooltipText="This is a tooltip!" maxlength="100"
-                                v-model="inputUsername" :status="validationStatus" :disabled="disabledStatus" />
-                            <CmdFormElement element="input" labelText="Label for password-field:" type="password"
-                                :required="true" minlength="8" maxlength="255" id="inputfield-password"
-                                fieldIconClass="icon-security-settings" placeholder="Type in password"
-                                tooltipText="This is a tooltip!"
-                                :customRequirements="customRequirements.filter((_, index) => index !== 2)"
-                                v-model="inputPassword" :status="validationStatus" :disabled="disabledStatus" />
-                        </div>
-                        <!-- end inputfield in two columns -->
-                        <CmdFormElement element="input" labelText="Label:" type="number" class="flex-none"
-                            id="inputfield-number" required="required" min="0" max="9" style="width: 4rem;"
-                            v-model="inputNumber" :customRequirements="[customRequirements[2]]"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <CmdFormElement element="input" labelText="Label for inputfield (number):"
-                            :displayLabelInline="true" type="number" id="inputfield-number" required="required" min="0"
-                            max="9" v-model="inputNumber" :customRequirements="[customRequirements[2]]"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <CmdFormElement element="input" labelText="Label (inline) for inputfield (date):"
-                            :displayLabelInline="true" type="date" id="inputfield-date" v-model="inputDate"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <h3>Searchfields</h3>
-                        <div class="flex-container">
-                            <CmdFormElement element="input"
-                                labelText="Label for inputfield (search) without search-button:" type="search"
-                                id="inputfield-search-without-searchbutton" placeholder="Keyword(s)"
-                                v-model="inputSearch" :showSearchButton="false" :status="validationStatus"
-                                :disabled="disabledStatus" />
-                            <CmdFormElement element="input" labelText="Label for inputfield (search):" type="search"
-                                id="inputfield-search-with-searchbutton" placeholder="Keyword(s)" v-model="inputSearch"
+                    <CmdForm :use-fieldset="false" id="advanced-form-elements" novalidate="novalidate">
+                        <fieldset class="flex-container">
+                            <legend>Legend</legend>
+                            <h2 class="headline-demopage">
+                                <span>Form Element-Component</span>
+                                <a href="#" class="button small icon-cog" title="Open Component Settings"
+                                    @click.prevent="openSettingsSidebar('CmdFormElement')"></a>
+                            </h2>
+                            <CmdFormElement ref="CmdFormElement" v-bind="cmdFormElementSettingsData"
                                 :status="validationStatus" :disabled="disabledStatus" />
-                            <!-- begin CmdSmartSearch -->
-                            <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
-                                :cmdFormElement="smartSearchData.cmdFormElement" :openListToTop="true"
-                                v-model="smartSearchObject" :disabled="disabledStatus" />
-                            <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
-                                :cmdFormElement="smartSearchData.cmdFormElement" :openListToTop="true"
-                                v-model="smartSearchString" :disabled="disabledStatus" />
-                            <!-- end CmdSmartSearch -->
-                        </div>
-                        <h3>Textarea</h3>
-                        <CmdFormElement element="textarea" labelText="Label for textarea:" id="textarea" minlength="1"
-                            maxlength="100" placeholder="Type in your message" :required="true" v-model="textarea"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <hr />
-                        <!-- begin FakeSelect -->
-                        <h3 class="headline-demopage">
-                            <span>Fake Selects</span>
-                            <a href="#" class="button small icon-cog" title="Open Component Settings"
-                                @click.prevent="openSettingsSidebar('CmdFakeSelect')"></a>
-                        </h3>
-                        <div class="flex-container">
-                            <!-- type === default: normal selectbox (with optional icons) -->
-                            <CmdFakeSelect ref="CmdFakeSelect" v-bind="cmdFakeSelectSettingsData"
-                                :selectData="fakeSelectOptionsData" v-model="fakeSelectDefault">
-                            </CmdFakeSelect>
-                            <!-- type === checkboxOptions: selectbox with checkboxes for each option -->
-                            <CmdFakeSelect labelText="Selectbox with checkboxes:" :status="validationStatus"
-                                :disabled="disabledStatus" :selectData="fakeSelectOptionsData"
-                                v-model="fakeSelectCheckbox" defaultOptionName="Options:" :required="true"
-                                id="selectbox-with-checkboxes" type="checkboxOptions" :useCustomTooltip="true" />
-                            <CmdFakeSelect labelText="Selectbox with filters:" :status="validationStatus"
-                                :disabled="disabledStatus" :selectData="fakeSelectFilterOptionsData"
-                                v-model="fakeSelectFilters" defaultOptionName="Filters:" id="selectbox-with-filters"
-                                type="checkboxOptions" :useCustomTooltip="true" />
-                            <CmdFakeSelect labelText="Selectbox with country flags:" :status="validationStatus"
-                                :disabled="disabledStatus" pathFlags="https://comand-ui.com/samples/images/flags"
-                                :selectData="fakeSelectCountriesData" v-model="selectedCountryWithFlag"
-                                defaultOptionName="Select country:" type="country" />
-                            <CmdFormElement labelText="Selectbox with all countries:" element="select"
-                                :status="validationStatus" :disabled="disabledStatus" :selectOptions="allCountriesData"
-                                v-model="selectedCountry" :groupSelectOptionsByInitialLetters="true" max-height="10rem"
-                                defaultOptionName="Select country:" />
-                            <CmdFakeSelect labelText="Selectbox with colors:" :status="validationStatus"
-                                :disabled="disabledStatus" :selectData="fakeSelectColorsData" v-model="selectedColor"
-                                required="required" type="color" />
-                        </div>
-                        <!-- end FakeSelect -->
-                        <hr />
-
-                        <!-- begin progress bar -->
-                        <h2>Progress Bar [native]</h2>
-                        <CmdProgressBar labelText="Progress Bar (with optional output):" id="progress-bar2" max="100" />
-                        <!-- end progress bar -->
-
-                        <!-- begin slider -->
-                        <h2>Slider [native]</h2>
-                        <div class="label" :class="validationStatus">
-                            <span class="label-text">Single-Slider (with in- and output):</span>
-                            <span class="flex-container flex-items-flex-none">
-                                <label class="inline" for="range-value">
-                                    <span class="label-text">
-                                        <span>Range Value:</span>
-                                    </span>
-                                    <input type="number" :class="validationStatus" v-model="rangeValue"
-                                        :disabled="disabledStatus" min="0" max="100" id="range-value" />
-                                </label>
-                                <label for="range-slider">
-                                    <span class="label-text hidden">
-                                        <span>Range Value</span>
-                                    </span>
-                                    <input type="range" class="range-slider" id="range-slider" v-model="rangeValue"
-                                        :disabled="disabledStatus" min="0" max="100" />
-                                </label>
-                            </span>
-                        </div>
-                        <!-- end slider -->
-
-                        <hr />
-
-                        <!-- begin toggle-switch-radio with switch-label (colored) -->
-                        <h2>Toggle-Switches</h2>
-                        <h3>Switches without switch-labels</h3>
-                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox"
-                            v-model="switchButtonCheckboxToggleSwitch"
-                            labelText="Labeltext for Toggle-Switch (not required)" :toggleSwitch="true"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ switchButtonCheckboxToggleSwitch }}</output>
-                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-required"
-                            v-model="switchButtonCheckboxToggleSwitchRequired"
-                            labelText="Labeltext for Toggle-Switch (required)" :toggleSwitch="true"
-                            :status="validationStatus" :disabled="disabledStatus" :required="true" />
-                        <output>v-model: {{ switchButtonCheckboxToggleSwitchRequired }}</output>
-                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-colored"
-                            v-model="switchButtonCheckboxToggleSwitchColored"
-                            labelText="Labeltext for colored Toggle-Switch with set value" :toggleSwitch="true"
-                            inputValue="yes" :colored="true" :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ switchButtonCheckboxToggleSwitchColored }}</output>
-                        <h3>Switches with switch-labels</h3>
-                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label"
-                            v-model="switchButtonCheckbox" labelText="Labeltext for Toggle-Switch with Switch-Label"
-                            inputValue="checkbox1" onLabel="Label on" offLabel="Label off" :toggleSwitch="true"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ switchButtonCheckbox }}</output>
-                        <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label-colored"
-                            v-model="switchButtonCheckboxColored" inputValue="checkbox2"
-                            labelText="Labeltext for Toggle-Switch (Checkbox, colored)" onLabel="Label on"
-                            offLabel="Label off" :colored="true" :toggleSwitch="true" :status="validationStatus"
-                            :disabled="disabledStatus" />
-                        <output>v-model: {{ switchButtonCheckboxColored }}</output>
-                        <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio1"
-                            v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
-                            :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
-                            inputValue="radio1" labelText="Labeltext for Toggle-Switch (Radio, colored) #1" />
-                        <output>v-model: {{ switchButtonRadio }}</output>
-                        <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio2"
-                            v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
-                            :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
-                            inputValue="radio2" labelText="Labeltext for Toggle-Switch (Radio, colored) #2" />
-                        <output>v-model: {{ switchButtonRadio }}</output>
-                        <!-- end toggle-switch-radio with switch-label (colored) -->
-
-                        <!-- begin checkboxes and radiobuttons -->
-                        <h2>Checkboxes and Radiobuttons</h2>
-                        <h3>Checkboxes [native]</h3>
-                        <div class="label inline">
-                            <span class="label-text">Label for native checkboxes:</span>
-                            <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement element="input" type="checkbox"
-                                    labelText="Label for checkbox with boolean" v-model="nativeCheckboxValues"
-                                    id="checkbox-with-boolean" name="native-checkbox-group" :status="validationStatus"
-                                    :disabled="disabledStatus" />
-                                <CmdFormElement element="input" type="checkbox"
-                                    labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
-                                    inputValue="checkboxValue1" id="checkbox-with-value-1" name="native-checkbox-group"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" type="checkbox"
-                                    labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
-                                    inputValue="checkboxValue2" id="checkbox-with-value-2" name="native-checkbox-group"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" type="checkbox" v-model="nativeCheckboxValues"
-                                    inputValue="checkboxValue3" id="checkbox-with-value-3" name="native-checkbox-group"
-                                    :status="validationStatus" :disabled="disabledStatus">
+                            <div class="flex-container">
+                                <CmdFormElement labelText="Input for datalist:" element="input" type="text"
+                                    :status="validationStatus" :disabled="disabledStatus" placeholder="Type in option"
+                                    :datalist="datalist" tooltipText="This is a tooltip" />
+                            </div>
+                            <div class="flex-container">
+                                <CmdFormElement labelText="Input (type search (without search-button)):" element="input"
+                                    type="search" :status="validationStatus" :disabled="disabledStatus"
+                                    :showSearchButton="false" placeholder="Search" fieldIconClass="icon-search"
+                                    tooltipText="This is a tooltip" v-bind="{ useCustomTooltip: false }" />
+                                <CmdFormElement labelText="Input (type search (with search-button)):" element="input"
+                                    type="search" :status="validationStatus" :disabled="disabledStatus"
+                                    placeholder="Search" tooltipText="This is a tooltip"
+                                    v-bind="{ useCustomTooltip: false }" />
+                            </div>
+                            <h3>Inputfields in Columns</h3>
+                            <div class="flex-container">
+                                <CmdFormElement element="input" type="text" minlength="5" id="inputfield1"
+                                    placeholder="This is placeholder text" v-model="inputField1"
+                                    tooltipText="This is a tooltip!" :status="validationStatus"
+                                    :disabled="disabledStatus">
                                     <template v-slot:labeltext>
-                                        Labeltext with <a href="#">link</a> given by slot
+                                        <span v-html="'Label with <a href=\'#\'>Link</a> given by slot'"></span>
                                     </template>
                                 </CmdFormElement>
-                            </div>
-                        </div>
-                        <output>
-                            v-model: {{ nativeCheckboxValues }}
-                        </output>
-                        <h3>Checkboxes (replaced)</h3>
-                        <div class="label inline">
-                            <span class="label-text">Label for Replaced Input-Type-Checkbox:</span>
-                            <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement element="input" type="checkbox" labelText="Label for replaced checkbox"
-                                    :replaceInputType="true" id="inputfield9" name="replaced-checkbox-group"
-                                    v-model="replacedCheckboxValue" inputValue="checkboxValue1"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" type="checkbox" labelText="Label for replaced checkbox"
-                                    name="replaced-checkbox-group" v-model="replacedCheckboxValue"
-                                    inputValue="checkboxValue2" :replaceInputType="true" id="inputfield10"
+                                <CmdFormElement element="input"
+                                    labelText="Label for inputfield (required, with tooltip):" type="text"
+                                    required="required" minlength="5" id="inputfield-required"
+                                    placeholder="This is placeholder text" v-model="inputFieldRequired"
+                                    tooltipText="This is a tooltip!" :status="validationStatus"
+                                    :disabled="disabledStatus" />
+                                <CmdFormElement element="input" labelText="Label for inputfield (with pattern):"
+                                    type="text" id="inputfield-pattern" placeholder="This is placeholder text"
+                                    pattern="/\d/" v-model="inputFieldPattern" tooltipText="This is a tooltip!"
                                     :status="validationStatus" :disabled="disabledStatus" />
                             </div>
-                        </div>
-                        <output>
-                            v-model: {{ replacedCheckboxValue }}
-                        </output>
-                        <h3>Radiobuttons [native]</h3>
-                        <div class="label inline">
-                            <span class="label-text">Label for native radiobuttons:</span>
-                            <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement element="input" labelText="Label for native radiobutton" type="radio"
-                                    id="inputfield11" name="radiogroup" inputValue="radiobuttonValue1"
-                                    v-model="radiobuttonValue" :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" labelText="Label for native radiobutton" type="radio"
-                                    id="inputfield12" name="radiogroup" inputValue="radiobuttonValue2"
-                                    v-model="radiobuttonValue" :status="validationStatus" :disabled="disabledStatus" />
+                            <!-- begin inputfield in two columns -->
+                            <div class="flex-container">
+                                <CmdFormElement labelText="Label for emailfield (with icon):" element="input"
+                                    type="email" id="inputfield-email" fieldIconClass="icon-mail"
+                                    placeholder="Type in email-address" tooltipText="This is a tooltip!" maxlength="100"
+                                    v-model="inputMail" :status="validationStatus" :disabled="disabledStatus"
+                                    :required="true" />
+                                <CmdFormElement labelText="Label for inputfield (with icon):" element="input"
+                                    type="text" id="inputfield-username" fieldIconClass="icon-user-profile"
+                                    placeholder="Type in username" tooltipText="This is a tooltip!" maxlength="100"
+                                    v-model="inputUsername" :status="validationStatus" :disabled="disabledStatus" />
+                                <CmdFormElement element="input" labelText="Label for password-field:" type="password"
+                                    :required="true" minlength="8" maxlength="255" id="inputfield-password"
+                                    fieldIconClass="icon-security-settings" placeholder="Type in password"
+                                    tooltipText="This is a tooltip!"
+                                    :customRequirements="customRequirements.filter((_, index) => index !== 2)"
+                                    v-model="inputPassword" :status="validationStatus" :disabled="disabledStatus" />
+                            </div>
+                            <!-- end inputfield in two columns -->
+                            <CmdFormElement element="input" labelText="Label:" type="number" class="flex-none"
+                                id="inputfield-number" required="required" min="0" max="9" style="width: 4rem;"
+                                v-model="inputNumber" :customRequirements="[customRequirements[2]]"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <CmdFormElement element="input" labelText="Label for inputfield (number):"
+                                :displayLabelInline="true" type="number" id="inputfield-number-inline" required="required"
+                                min="0" max="9" v-model="inputNumber" :customRequirements="[customRequirements[2]]"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <CmdFormElement element="input" labelText="Label (inline) for inputfield (date):"
+                                :displayLabelInline="true" type="date" id="inputfield-date" v-model="inputDate"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <h3>Searchfields</h3>
+                            <div class="flex-container">
+                                <CmdFormElement element="input"
+                                    labelText="Label for inputfield (search) without search-button:" type="search"
+                                    id="inputfield-search-without-searchbutton" placeholder="Keyword(s)"
+                                    v-model="inputSearch" :showSearchButton="false" :status="validationStatus"
+                                    :disabled="disabledStatus" />
+                                <CmdFormElement element="input" labelText="Label for inputfield (search):" type="search"
+                                    id="inputfield-search-with-searchbutton" placeholder="Keyword(s)"
+                                    v-model="inputSearch" :status="validationStatus" :disabled="disabledStatus" />
+                                <!-- begin CmdSmartSearch -->
+                                <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
+                                    :cmdFormElement="smartSearchData.cmdFormElement" :openListToTop="true"
+                                    v-model="smartSearchObject" :disabled="disabledStatus" />
+                                <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
+                                    :cmdFormElement="smartSearchData.cmdFormElement" :openListToTop="true"
+                                    v-model="smartSearchString" :disabled="disabledStatus" />
+                                <!-- end CmdSmartSearch -->
+                            </div>
+                            <h3>Textarea</h3>
+                            <CmdFormElement element="textarea" labelText="Label for textarea:" id="textarea"
+                                minlength="1" maxlength="100" placeholder="Type in your message" :required="true"
+                                v-model="textarea" :status="validationStatus" :disabled="disabledStatus" />
+                            <hr />
+                            <!-- begin FakeSelect -->
+                            <h3 class="headline-demopage">
+                                <span>Fake Selects</span>
+                                <a href="#" class="button small icon-cog" title="Open Component Settings"
+                                    @click.prevent="openSettingsSidebar('CmdFakeSelect')"></a>
+                            </h3>
+                            <div class="flex-container">
+                                <!-- type === default: normal selectbox (with optional icons) -->
+                                <CmdFakeSelect ref="CmdFakeSelect" v-bind="cmdFakeSelectSettingsData"
+                                    :selectData="fakeSelectOptionsData" v-model="fakeSelectDefault">
+                                </CmdFakeSelect>
+                                <!-- type === checkboxOptions: selectbox with checkboxes for each option -->
+                                <CmdFakeSelect labelText="Selectbox with checkboxes:" :status="validationStatus"
+                                    :disabled="disabledStatus" :selectData="fakeSelectOptionsData"
+                                    v-model="fakeSelectCheckbox" defaultOptionName="Options:" :required="true"
+                                    id="selectbox-with-checkboxes" type="checkboxOptions" :useCustomTooltip="true" />
+                                <CmdFakeSelect labelText="Selectbox with filters:" :status="validationStatus"
+                                    :disabled="disabledStatus" :selectData="fakeSelectFilterOptionsData"
+                                    v-model="fakeSelectFilters" defaultOptionName="Filters:" id="selectbox-with-filters"
+                                    type="checkboxOptions" :useCustomTooltip="true" />
+                                <CmdFakeSelect labelText="Selectbox with country flags:" :status="validationStatus"
+                                    :disabled="disabledStatus" pathFlags="https://comand-ui.com/samples/images/flags"
+                                    :selectData="fakeSelectCountriesData" v-model="selectedCountryWithFlag"
+                                    defaultOptionName="Select country:" type="country" />
+                                <CmdFormElement labelText="Selectbox with all countries:" element="select"
+                                    :status="validationStatus" :disabled="disabledStatus"
+                                    :selectOptions="allCountriesData" v-model="selectedCountry"
+                                    :groupSelectOptionsByInitialLetters="true" max-height="10rem"
+                                    defaultOptionName="Select country:" />
+                                <CmdFakeSelect labelText="Selectbox with colors:" :status="validationStatus"
+                                    :disabled="disabledStatus" :selectData="fakeSelectColorsData"
+                                    v-model="selectedColor" required="required" type="color" />
+                            </div>
+                            <!-- end FakeSelect -->
+                            <hr />
+
+                            <!-- begin progress bar -->
+                            <h2>Progress Bar [native]</h2>
+                            <CmdProgressBar labelText="Progress Bar (with optional output):" id="progress-bar2"
+                                max="100" />
+                            <!-- end progress bar -->
+
+                            <!-- begin slider -->
+                            <h2>Slider [native]</h2>
+                            <div class="label" :class="validationStatus">
+                                <span class="label-text">Single-Slider (with in- and output):</span>
+                                <span class="flex-container flex-items-flex-none">
+                                    <label class="inline" for="range-value">
+                                        <span class="label-text">
+                                            <span>Range Value:</span>
+                                        </span>
+                                        <input type="number" :class="validationStatus" v-model="rangeValue"
+                                            :disabled="disabledStatus" min="0" max="100" id="range-value" />
+                                    </label>
+                                    <label for="range-slider">
+                                        <span class="label-text visually-hidden">
+                                            <span>Range Value</span>
+                                        </span>
+                                        <input type="range" class="range-slider" id="range-slider" v-model="rangeValue"
+                                            :disabled="disabledStatus" min="0" max="100" />
+                                    </label>
+                                </span>
+                            </div>
+                            <!-- end slider -->
+
+                            <hr />
+
+                            <!-- begin toggle-switch-radio with switch-label (colored) -->
+                            <h2>Toggle-Switches</h2>
+                            <h3>Switches without switch-labels</h3>
+                            <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox"
+                                v-model="switchButtonCheckboxToggleSwitch"
+                                labelText="Labeltext for Toggle-Switch (not required)" :toggleSwitch="true"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ switchButtonCheckboxToggleSwitch }}</output>
+                            <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-required"
+                                v-model="switchButtonCheckboxToggleSwitchRequired"
+                                labelText="Labeltext for Toggle-Switch (required)" :toggleSwitch="true"
+                                :status="validationStatus" :disabled="disabledStatus" :required="true" />
+                            <output>v-model: {{ switchButtonCheckboxToggleSwitchRequired }}</output>
+                            <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-colored"
+                                v-model="switchButtonCheckboxToggleSwitchColored"
+                                labelText="Labeltext for colored Toggle-Switch with set value" :toggleSwitch="true"
+                                inputValue="yes" :colored="true" :status="validationStatus"
+                                :disabled="disabledStatus" />
+                            <output>v-model: {{ switchButtonCheckboxToggleSwitchColored }}</output>
+                            <h3>Switches with switch-labels</h3>
+                            <CmdFormElement element="input" type="checkbox" id="toggle-switch-checkbox-switch-label"
+                                v-model="switchButtonCheckbox" labelText="Labeltext for Toggle-Switch with Switch-Label"
+                                inputValue="checkbox1" onLabel="Label on" offLabel="Label off" :toggleSwitch="true"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ switchButtonCheckbox }}</output>
+                            <CmdFormElement element="input" type="checkbox"
+                                id="toggle-switch-checkbox-switch-label-colored" v-model="switchButtonCheckboxColored"
+                                inputValue="checkbox2" labelText="Labeltext for Toggle-Switch (Checkbox, colored)"
+                                onLabel="Label on" offLabel="Label off" :colored="true" :toggleSwitch="true"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ switchButtonCheckboxColored }}</output>
+                            <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio1"
+                                v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
+                                :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
+                                inputValue="radio1" labelText="Labeltext for Toggle-Switch (Radio, colored) #1" />
+                            <output>v-model: {{ switchButtonRadio }}</output>
+                            <CmdFormElement element="input" type="radio" name="radiogroup" id="toggle-switch-radio2"
+                                v-model="switchButtonRadio" onLabel="Label on" offLabel="Label off" :colored="true"
+                                :toggleSwitch="true" :status="validationStatus" :disabled="disabledStatus"
+                                inputValue="radio2" labelText="Labeltext for Toggle-Switch (Radio, colored) #2" />
+                            <output>v-model: {{ switchButtonRadio }}</output>
+                            <!-- end toggle-switch-radio with switch-label (colored) -->
+
+                            <!-- begin checkboxes and radiobuttons -->
+                            <h2>Checkboxes and Radiobuttons</h2>
+                            <h3>Checkboxes [native]</h3>
+                            <div class="label inline">
+                                <span class="label-text">Label for native checkboxes:</span>
+                                <div class="flex-container flex-items-flex-none">
+                                    <CmdFormElement element="input" type="checkbox"
+                                        labelText="Label for checkbox with boolean" v-model="nativeCheckboxValues"
+                                        id="checkbox-with-boolean" name="native-checkbox-group"
+                                        :status="validationStatus" :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" type="checkbox"
+                                        labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
+                                        inputValue="checkboxValue1" id="checkbox-with-value-1"
+                                        name="native-checkbox-group" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" type="checkbox"
+                                        labelText="Label for checkbox with value" v-model="nativeCheckboxValues"
+                                        inputValue="checkboxValue2" id="checkbox-with-value-2"
+                                        name="native-checkbox-group" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" type="checkbox" v-model="nativeCheckboxValues"
+                                        inputValue="checkboxValue3" id="checkbox-with-value-3"
+                                        name="native-checkbox-group" :status="validationStatus"
+                                        :disabled="disabledStatus">
+                                        <template v-slot:labeltext>
+                                            Labeltext with <a href="#">link</a> given by slot
+                                        </template>
+                                    </CmdFormElement>
+                                </div>
+                            </div>
+                            <output>
+                                v-model: {{ nativeCheckboxValues }}
+                            </output>
+                            <h3>Checkboxes (replaced)</h3>
+                            <div class="label inline">
+                                <span class="label-text">Label for Replaced Input-Type-Checkbox:</span>
+                                <div class="flex-container flex-items-flex-none">
+                                    <CmdFormElement element="input" type="checkbox"
+                                        labelText="Label for replaced checkbox" :replaceInputType="true"
+                                        id="inputfield9" name="replaced-checkbox-group" v-model="replacedCheckboxValue"
+                                        inputValue="checkboxValue1" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" type="checkbox"
+                                        labelText="Label for replaced checkbox" name="replaced-checkbox-group"
+                                        v-model="replacedCheckboxValue" inputValue="checkboxValue2"
+                                        :replaceInputType="true" id="inputfield10" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                </div>
+                            </div>
+                            <output>
+                                v-model: {{ replacedCheckboxValue }}
+                            </output>
+                            <h3>Radiobuttons [native]</h3>
+                            <div class="label inline">
+                                <span class="label-text">Label for native radiobuttons:</span>
+                                <div class="flex-container flex-items-flex-none">
+                                    <CmdFormElement element="input" labelText="Label for native radiobutton"
+                                        type="radio" id="inputfield11" name="radiogroup" inputValue="radiobuttonValue1"
+                                        v-model="radiobuttonValue" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" labelText="Label for native radiobutton"
+                                        type="radio" id="inputfield12" name="radiogroup" inputValue="radiobuttonValue2"
+                                        v-model="radiobuttonValue" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                </div>
+                            </div>
+                            <output>
+                                v-model: {{ radiobuttonValue }}
+                            </output>
+                            <h3>Radiobuttons (replaced)</h3>
+                            <div class="label inline">
+                                <span class="label-text">Label for Replaced Input-Type-Radio:</span>
+                                <div class="flex-container flex-items-flex-none">
+                                    <CmdFormElement element="input" labelText="Label for replaced radiobutton"
+                                        type="radio" :replaceInputType="true" id="inputfield13"
+                                        name="replaced-radiogroup" inputValue="radiobuttonValue1"
+                                        v-model="replacedRadiobuttonValue" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                    <CmdFormElement element="input" labelText="Label for replaced radiobutton"
+                                        type="radio" :replaceInputType="true" id="inputfield14"
+                                        name="replaced-radiogroup" inputValue="radiobuttonValue2"
+                                        v-model="replacedRadiobuttonValue" :status="validationStatus"
+                                        :disabled="disabledStatus" />
+                                </div>
+                            </div>
+                            <output>
+                                v-model: {{ radiobuttonValue }}
+                            </output>
+                            <!-- end checkboxes and radiobuttons -->
+
+                            <!-- begin input-groups -->
+                            <h3 class="headline-demopage" id="section-input-group">
+                                Input-Group
+                                <a href="#" class="button small icon-cog" title="Open Component Settings"
+                                    @click.prevent="openSettingsSidebar('CmdInputGroup')"></a>
+                            </h3>
+                            <CmdInputGroup ref="CmdInputGroup" v-bind="cmdInputGroupSettingsData"
+                                labelText="Grouplabel for radio-group given by property:"
+                                :inputElements="idForReplacedInputsInInputGroup('radio-group')" v-model="inputGroup">
+                            </CmdInputGroup>
+                            <output>v-model: {{ inputGroup }}</output>
+                            <h3>Input Groups with Checkboxes/Radiobuttons (toggle-switches)</h3>
+                            <CmdInputGroup
+                                labelText="Grouplabel for checkbox-group styled as toggle-switches (colored):"
+                                :inputElements="idForReplacedInputsInInputGroup('checkbox-group-toggle-switch')"
+                                inputTypes="checkbox" v-model="inputGroupValueToggleSwitchCheckbox"
+                                :toggleSwitches="true" :colored="true" required="required" :status="validationStatus"
+                                :disabled="disabledStatus" />
+                            <output>v-model: {{ inputGroupValueToggleSwitchCheckbox }}</output>
+                            <CmdInputGroup labelText="Grouplabel for radio-group styled as toggle-switches:"
+                                :inputElements="idForReplacedInputsInInputGroup('radio-group-toggle-switch')"
+                                inputTypes="radio" v-model="inputGroupValueToggleSwitchRadio" :toggleSwitches="true"
+                                required="required" :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ inputGroupValueToggleSwitchRadio }}</output>
+                            <CmdInputGroup
+                                labelText="Grouplabel for radio-group given by property styled as multiple-switch:"
+                                :inputElements="idForReplacedInputsInInputGroup('radio-group-multiple-switch')"
+                                inputTypes="radio" :multipleSwitch="true" v-model="inputGroupValue3"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ inputGroupValue3 }}</output>
+                            <CmdInputGroup
+                                labelText="Grouplabel for checkbox-group styled as multiple-switch (stretched horizontally):"
+                                :inputElements="inputGroupCheckboxes" inputTypes="checkbox" :multipleSwitch="true"
+                                :required="true" v-model="inputGroupValue4" :stretchHorizontally="true"
+                                :status="validationStatus" :disabled="disabledStatus" />
+                            <output>v-model: {{ inputGroupValue4 }}</output>
+                        </fieldset>
+                        <!-- end fieldset -->
+                        <div class="flex-container">
+                            <small>(values will not be submitted with the form!)</small>
+                            <div class="button-wrapper flex-none">
+                                <CmdFormElement element="button"
+                                    :nativeButton="{ text: 'Submit-button from component' }" type="submit"
+                                    id="submitbutton" name="submitbutton" :disabled="disabledStatus" />
+                                <button class="button" type="submit" :disabled="disabledStatus">
+                                    <span class="icon-check"></span>
+                                    <span>Native submit-button</span>
+                                </button>
                             </div>
                         </div>
-                        <output>
-                            v-model: {{ radiobuttonValue }}
-                        </output>
-                        <h3>Radiobuttons (replaced)</h3>
-                        <div class="label inline">
-                            <span class="label-text">Label for Replaced Input-Type-Radio:</span>
-                            <div class="flex-container flex-items-flex-none">
-                                <CmdFormElement element="input" labelText="Label for replaced radiobutton" type="radio"
-                                    :replaceInputType="true" id="inputfield13" name="replaced-radiogroup"
-                                    inputValue="radiobuttonValue1" v-model="replacedRadiobuttonValue"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                                <CmdFormElement element="input" labelText="Label for replaced radiobutton" type="radio"
-                                    :replaceInputType="true" id="inputfield14" name="replaced-radiogroup"
-                                    inputValue="radiobuttonValue2" v-model="replacedRadiobuttonValue"
-                                    :status="validationStatus" :disabled="disabledStatus" />
-                            </div>
-                        </div>
-                        <output>
-                            v-model: {{ radiobuttonValue }}
-                        </output>
-                        <!-- end checkboxes and radiobuttons -->
+                    </CmdForm>
+                </CmdWidthLimitationWrapper>
+                <!-- end advanced form elements --------------------------------------------------------------------------------------------->
 
-                        <!-- begin input-groups -->
-                        <h3 class="headline-demopage" id="section-input-group">
-                            Input-Group
-                            <a href="#" class="button small icon-cog" title="Open Component Settings"
-                                @click.prevent="openSettingsSidebar('CmdInputGroup')"></a>
-                        </h3>
-                        <CmdInputGroup ref="CmdInputGroup" v-bind="cmdInputGroupSettingsData"
-                            labelText="Grouplabel for radio-group given by property:"
-                            :inputElements="idForReplacedInputsInInputGroup('radio-group')" v-model="inputGroup">
-                        </CmdInputGroup>
-                        <output>v-model: {{ inputGroup }}</output>
-                        <h3>Input Groups with Checkboxes/Radiobuttons (toggle-switches)</h3>
-                        <CmdInputGroup labelText="Grouplabel for checkbox-group styled as toggle-switches (colored):"
-                            :inputElements="idForReplacedInputsInInputGroup('checkbox-group-toggle-switch')"
-                            inputTypes="checkbox" v-model="inputGroupValueToggleSwitchCheckbox" :toggleSwitches="true"
-                            :colored="true" required="required" :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ inputGroupValueToggleSwitchCheckbox }}</output>
-                        <CmdInputGroup labelText="Grouplabel for radio-group styled as toggle-switches:"
-                            :inputElements="idForReplacedInputsInInputGroup('radio-group-toggle-switch')"
-                            inputTypes="radio" v-model="inputGroupValueToggleSwitchRadio" :toggleSwitches="true"
-                            required="required" :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ inputGroupValueToggleSwitchRadio }}</output>
-                        <CmdInputGroup
-                            labelText="Grouplabel for radio-group given by property styled as multiple-switch:"
-                            :inputElements="idForReplacedInputsInInputGroup('radio-group-multiple-switch')"
-                            inputTypes="radio" :multipleSwitch="true" v-model="inputGroupValue3"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ inputGroupValue3 }}</output>
-                        <CmdInputGroup
-                            labelText="Grouplabel for checkbox-group styled as multiple-switch (stretched horizontally):"
-                            :inputElements="inputGroupCheckboxes" inputTypes="checkbox" :multipleSwitch="true"
-                            :required="true" v-model="inputGroupValue4" :stretchHorizontally="true"
-                            :status="validationStatus" :disabled="disabledStatus" />
-                        <output>v-model: {{ inputGroupValue4 }}</output>
-                    </fieldset>
-                    <!-- end fieldset -->
-                    <div class="flex-container">
-                        <small>(values will not be submitted with the form!)</small>
-                        <div class="button-wrapper flex-none">
-                            <CmdFormElement element="button" :nativeButton="{ text: 'Submit-button from component' }"
-                                type="submit" id="submitbutton" name="submitbutton" :disabled="disabledStatus" />
-                            <button class="button" type="submit" :disabled="disabledStatus">
-                                <span class="icon-check"></span>
-                                <span>Native submit-button</span>
-                            </button>
-                        </div>
-                    </div>
-                </CmdForm>
-            </CmdWidthLimitationWrapper>
-            <!-- end advanced form elements --------------------------------------------------------------------------------------------->
+                <!-- begin back to top button --------------------------------------------------------------------------------------------->
+                <CmdBackToTopButton href="#anchor-back-to-top" scroll-container=".site-wrapper" />
+                <!-- end back to top button --------------------------------------------------------------------------------------------->
 
-            <!-- begin back to top button --------------------------------------------------------------------------------------------->
-            <CmdBackToTopButton href="#anchor-back-to-top" scroll-container=".page-wrapper" />
-            <!-- end back to top button --------------------------------------------------------------------------------------------->
+                <!-- begin bank account data --------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-bank-account-data">
+                        <span>Bank Account Data</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdBankAccountData')"></a>
+                    </h2>
+                    <CmdBankAccountData :account-data="bankAccountData" v-bind="cmdBankAccountDataSettingsData"
+                        ref="CmdBankAccountData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end bank account data --------------------------------------------------------------------------------------------------->
 
-            <!-- begin bank account data --------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-bank-account-data">
-                    <span>Bank Account Data</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdBankAccountData')"></a>
-                </h2>
-                <CmdBankAccountData :account-data="bankAccountData" v-bind="cmdBankAccountDataSettingsData"
-                    ref="CmdBankAccountData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end bank account data --------------------------------------------------------------------------------------------------->
+                <!-- begin basic form --------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-basic-form">
+                        <span>Basic Form</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdBasicForm')"></a>
+                    </h2>
+                    <CmdBasicForm ref="CmdBasicForm" :cmdForm="{ useValidation: true }" :userMessage="{
+                        'required': false,
+                        'element': 'textarea',
+                        'maxLength': 500
+                    }" :submitButton="{
+                            'text': 'Send request'
+                        }" />
+                    <dl>
+                        <dt>originalEvent</dt>
+                        <dd>{{ basicFormData.originalEvent }}</dd>
+                        <dt>formdata</dt>
+                        <dd>{{ basicFormData.formData }}</dd>
+                    </dl>
+                </CmdWidthLimitationWrapper>
+                <!-- end basic form --------------------------------------------------------------------------------------------------->
 
-            <!-- begin basic form --------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-basic-form">
-                    <span>Basic Form</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdBasicForm')"></a>
-                </h2>
-                <CmdBasicForm ref="CmdBasicForm" :cmdForm="{ useValidation: true }" :userMessage="{
-                    'required': false,
-                    'element': 'textarea',
-                    'maxLength': 500
-                }" :submitButton="{
-                    'text': 'Send request'
-                }" />
-                <dl>
-                    <dt>originalEvent</dt>
-                    <dd>{{ basicFormData.originalEvent }}</dd>
-                    <dt>formdata</dt>
-                    <dd>{{ basicFormData.formData }}</dd>
-                </dl>
-            </CmdWidthLimitationWrapper>
-            <!-- end basic form --------------------------------------------------------------------------------------------------->
-
-            <!-- begin boxes --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper anchorId="section-boxes">
-                <h2 class="headline-demopage">Boxes</h2>
-                <h3 class="headline-demopage">
-                    <span>Default Box</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdBox')"></a>
-                </h3>
-                <CmdBox ref="CmdBox" v-bind="cmdBoxSettingsData" textBody="Content" :useSlots="['body', 'footer']"
-                    :cmd-headline="{ headlineText: 'Headline for box', headlineLevel: 4 }" :stretchVertically="true">
-                    <template v-slot:header>
-                        <h4>
-                            Texts given by slots
-                        </h4>
-                    </template>
-                    <template v-slot:body>
-                        <p>
-                            This content with paragraphs inside is placed inside the box-body.
-                        </p>
-                        <p>
-                            <strong>Header, Content/Body and Footer of this box are given by slots.</strong>
-                        </p>
-                        <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height is
-                            defined) the content of this box to scroll</p>
-                    </template>
-                    <template v-slot:footer>
-                        <p>
-                            Footer content
-                        </p>
-                    </template>
-                </CmdBox>
-                <CmdBoxWrapper :useFlexbox="true"
-                    :cmdHeadline="{ headlineText: 'Boxes in BoxWrapper with flexbox', headlineLevel: 3 }"
-                    :useGap="true">
-                    <CmdBox v-for="index in 14" :key="index" textBody="Content"
-                        :cmd-headline="{ headlineText: 'Headline ' + index, headlineLevel: 4 }" />
-                </CmdBoxWrapper>
-                <CmdBoxWrapper :use-gap="true"
-                    :cmdHeadline="{ headlineText: 'Different examples of content-boxes (in BoxWrapper)', headlineLevel: 3 }">
-                    <CmdBox :stretchVertically="false"
-                        :cmdHeadline="{ headlineText: 'Box with cutoff text', headlineLevel: 4 }" :useSlots="['body']"
-                        :cutoff-text-lines="4">
-                        <template v-slot:body>
-                            This is a long text that is cutoff after a specific number of lines that can be defined
-                            by the property 'cutoffTextLines' and be toggled by a link below.
-                        </template>
-                    </CmdBox>
-                    <CmdBox :useSlots="['header', 'body', 'footer']" :allowContentToScroll="true">
+                <!-- begin boxes --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper anchorId="section-boxes">
+                    <h2 class="headline-demopage">Boxes</h2>
+                    <h3 class="headline-demopage">
+                        <span>Default Box</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdBox')"></a>
+                    </h3>
+                    <CmdBox ref="CmdBox" v-bind="cmdBoxSettingsData" textBody="Content" :useSlots="['body', 'footer']"
+                        :cmd-headline="{ headlineText: 'Headline for box', headlineLevel: 4 }"
+                        :stretchVertically="true">
                         <template v-slot:header>
                             <h4>
                                 Texts given by slots
@@ -712,7 +695,8 @@
                                 <strong>Header, Content/Body and Footer of this box are given by slots.</strong>
                             </p>
                             <p>Additionally 'allowContentToScroll' is active, which enables (as far as a max-height
-                                is defined) the content of this box to scroll</p>
+                                is
+                                defined) the content of this box to scroll</p>
                         </template>
                         <template v-slot:footer>
                             <p>
@@ -720,1175 +704,1273 @@
                             </p>
                         </template>
                     </CmdBox>
-                    <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false" :collapsible="true">
-                        <template v-slot:header>
-                            <h4>
-                                Box with inputs
-                            </h4>
-                        </template>
-                        <template v-slot:body>
-                            <CmdForm :legend="{ show: false }">
-                                <CmdFormElement element="input" type="text" :required="true" labelText="Username:"
-                                    placeholder="Username" />
-                                <CmdFormElement element="input" type="password" :required="true" labelText="Password:"
-                                    placeholder="Password" />
-                            </CmdForm>
-                        </template>
-                        <!-- will not be displayed, because useSlots-property does not contain 'footer' in array -->
-                        <template v-slot:footer>
-                            <p>
-                                footer content
-                            </p>
-                        </template>
-                    </CmdBox>
-                    <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false">
-                        <template v-slot:header>
-                            <h4>
-                                Box with links
-                            </h4>
-                        </template>
-                        <template v-slot:body>
-                            <ul class="navigation">
-                                <li><a href="#" @click.prevent="">Link name 1</a></li>
-                                <li><a href="#" @click.prevent="">Link name 2</a></li>
-                                <li><a href="#" @click.prevent="">Link name 3</a></li>
-                                <li><a href="#" @click.prevent="">Link name 4</a></li>
-                            </ul>
-                        </template>
-                        <!-- will not be displayed, because useSlots-property does not contain 'footer' in array -->
-                        <template v-slot:footer>
-                            <p>
-                                footer content
-                            </p>
-                        </template>
-                    </CmdBox>
-                    <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false"
-                        :cmdHeadline="{ headlineText: 'Collapsible box', headlineLevel: 4 }" :collapsible="true">
-                        <template v-slot:header>
-                            <h4>
-                                Collapsible box with image
-                            </h4>
-                        </template>
-                        <template v-slot:body>
-                            <img src="/media/images/content-images/landscape-medium.jpg" alt="Alternative text" />
-                        </template>
-                    </CmdBox>
-                    <CmdBox :useSlots="['header', 'body', 'footer']" :useBoxBodyPadding="false">
-                        <template v-slot:header>
-                            <h4>
-                                Box with image, content and link
-                            </h4>
-                        </template>
-                        <template v-slot:body>
-                            <img src="/media/images/content-images/landscape-medium.jpg" alt="Alternative text" />
-                            <div class="default-padding">
-                                <h4>Custom headline</h4>
-                                <p>Image, custom-headline and this text for the component are given by slot</p>
-                            </div>
-                        </template>
-                        <template v-slot:footer>
-                            <p>
-                                <a href="#">Read more&hellip;</a>
-                            </p>
-                        </template>
-                    </CmdBox>
-                    <CmdBox :repeatHeadlineInBoxBody="true" :useBoxBodyPadding="true"
-                        :cmdHeadline="{ headlineText: 'Box with image, content and link', headlineLevel: 4 }"
-                        textBody="Image, headline and this text for the component are given by property"
-                        :cmdImage="{ image: { src: '/media/images/content-images/landscape-medium.jpg', alt: 'Alternative text' } }"
-                        :cmdLink="{
-                            linkType: 'href',
-                            path: '#',
-                            icon: {
-                                iconClass: 'icon-chevron-two-stripes-right',
-                                position: 'right'
-                            },
-                            text: 'Read more'
-                        }" />
-                    <CmdBox :useBoxBodyPadding="true"
-                        :cmdHeadline="{ headlineText: 'Box with large icon and some content', headlineLevel: 4 }"
-                        headlinePosition="body" :cmdIcon="{ iconClass: 'icon-home', type: 'auto' }"
-                        textBody="Box with large icon, headline in body and content all given by properties." />
-                </CmdBoxWrapper>
-
-                <!-- begin product boxes -->
-                <h3>Product boxes</h3>
-                <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
-                    <template v-slot="slotProps">
-                        <CmdBox v-for="(product, index) in boxProductData" :key="index" boxType="product"
-                            :product="product" :cmdHeadline="{ headlineLevel: 4 }" :rowView="slotProps.rowView" />
-                    </template>
-                </CmdBoxWrapper>
-                <!-- end product boxes -->
-
-                <!-- begin user boxes -->
-                <h3>User boxes</h3>
-                <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
-                    <template v-slot="slotProps">
-                        <CmdBox v-for="index in boxUserData.length" :key="index" boxType="user"
-                            :user="boxUserData[index - 1]" :cmdHeadline="{ headlineLevel: 5 }"
-                            :rowView="slotProps.rowView" />
-                    </template>
-                </CmdBoxWrapper>
-                <!-- end user boxes -->
-
-                <h3><span>Boxes in BoxWrapper (collapsible)</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a>
-                </h3>
-                <CmdBoxWrapper ref="CmdBoxWrapper" :boxesPerRow="[4, 1]" :openBoxesByDefault="[2]"
-                    :useRowViewAsDefault="true" :allowMultipleExpandedBoxes="false" :stretch-boxes-vertically="true"
-                    :useGap="true">
-                    <template v-slot="slotProps">
-                        <CmdBox v-for="index in boxProductData.length" :key="index" boxType="content"
-                            :collapsible="true" :useSlots="['body']"
-                            :cmdHeadline="{ headlineText: 'Box ' + index, headlineLevel: 5 }"
-                            :rowView="slotProps.rowView" :openCollapsedBox="slotProps.boxIsOpen(index - 1)"
-                            @toggleCollapse="slotProps.boxToggled(index - 1, $event)">
-                            <template #body>{{ slotProps.currentOpenBox }}Content {{ index }}</template>
+                    <CmdBoxWrapper :useFlexbox="true"
+                        :cmdHeadline="{ headlineText: 'Boxes in BoxWrapper with flexbox', headlineLevel: 3 }"
+                        :useGap="true">
+                        <CmdBox v-for="index in 14" :key="index" textBody="Content"
+                            :cmd-headline="{ headlineText: 'Headline ' + index, headlineLevel: 4 }" />
+                    </CmdBoxWrapper>
+                    <CmdBoxWrapper :use-gap="true"
+                        :cmdHeadline="{ headlineText: 'Different examples of content-boxes (in BoxWrapper)', headlineLevel: 3 }">
+                        <CmdBox :stretchVertically="false"
+                            :cmdHeadline="{ headlineText: 'Box with cutoff text', headlineLevel: 4 }"
+                            :useSlots="['body']" :cutoff-text-lines="4">
+                            <template v-slot:body>
+                                This is a long text that is cutoff after a specific number of lines that can be
+                                defined
+                                by the property 'cutoffTextLines' and be toggled by a link below.
+                            </template>
                         </CmdBox>
-                    </template>
-                </CmdBoxWrapper>
-            </CmdWidthLimitationWrapper>
-            <!-- end boxes --------------------------------------------------------------------------------------------------->
+                        <CmdBox :useSlots="['header', 'body', 'footer']" :allowContentToScroll="true">
+                            <template v-slot:header>
+                                <h4>
+                                    Texts given by slots
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <p>
+                                    This content with paragraphs inside is placed inside the box-body.
+                                </p>
+                                <p>
+                                    <strong>Header, Content/Body and Footer of this box are given by slots.</strong>
+                                </p>
+                                <p>Additionally 'allowContentToScroll' is active, which enables (as far as a
+                                    max-height
+                                    is defined) the content of this box to scroll</p>
+                            </template>
+                            <template v-slot:footer>
+                                <p>
+                                    Footer content
+                                </p>
+                            </template>
+                        </CmdBox>
+                        <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false" :collapsible="true">
+                            <template v-slot:header>
+                                <h4>
+                                    Box with inputs
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <CmdForm :legend="{ show: false }">
+                                    <CmdFormElement element="input" type="text" :required="true" labelText="Username:"
+                                        placeholder="Username" />
+                                    <CmdFormElement element="input" type="password" :required="true"
+                                        labelText="Password:" placeholder="Password" />
+                                </CmdForm>
+                            </template>
+                            <!-- will not be displayed, because useSlots-property does not contain 'footer' in array -->
+                            <template v-slot:footer>
+                                <p>
+                                    footer content
+                                </p>
+                            </template>
+                        </CmdBox>
+                        <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false">
+                            <template v-slot:header>
+                                <h4>
+                                    Box with links
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <ul class="navigation">
+                                    <li><a href="#" @click.prevent="">Link name 1</a></li>
+                                    <li><a href="#" @click.prevent="">Link name 2</a></li>
+                                    <li><a href="#" @click.prevent="">Link name 3</a></li>
+                                    <li><a href="#" @click.prevent="">Link name 4</a></li>
+                                </ul>
+                            </template>
+                            <!-- will not be displayed, because useSlots-property does not contain 'footer' in array -->
+                            <template v-slot:footer>
+                                <p>
+                                    footer content
+                                </p>
+                            </template>
+                        </CmdBox>
+                        <CmdBox :useSlots="['header', 'body']" :useBoxBodyPadding="false"
+                            :cmdHeadline="{ headlineText: 'Collapsible box', headlineLevel: 4 }" :collapsible="true">
+                            <template v-slot:header>
+                                <h4>
+                                    Collapsible box with image
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <img src="/media/images/content-images/landscape-medium.jpg" alt="Alternative text" />
+                            </template>
+                        </CmdBox>
+                        <CmdBox :useSlots="['header', 'body', 'footer']" :useBoxBodyPadding="false">
+                            <template v-slot:header>
+                                <h4>
+                                    Box with image, content and link
+                                </h4>
+                            </template>
+                            <template v-slot:body>
+                                <img src="/media/images/content-images/landscape-medium.jpg" alt="Alternative text" />
+                                <div class="default-padding">
+                                    <h4>Custom headline</h4>
+                                    <p>Image, custom-headline and this text for the component are given by slot</p>
+                                </div>
+                            </template>
+                            <template v-slot:footer>
+                                <p>
+                                    <a href="#">Read more&hellip;</a>
+                                </p>
+                            </template>
+                        </CmdBox>
+                        <CmdBox :repeatHeadlineInBoxBody="true" :useBoxBodyPadding="true"
+                            :cmdHeadline="{ headlineText: 'Box with image, content and link', headlineLevel: 4 }"
+                            textBody="Image, headline and this text for the component are given by property"
+                            :cmdImage="{ image: { src: '/media/images/content-images/landscape-medium.jpg', alt: 'Alternative text' } }"
+                            :cmdLink="{
+                                linkType: 'href',
+                                path: '#',
+                                icon: {
+                                    iconClass: 'icon-chevron-two-stripes-right',
+                                    position: 'right'
+                                },
+                                text: 'Read more'
+                            }" />
+                        <CmdBox :useBoxBodyPadding="true"
+                            :cmdHeadline="{ headlineText: 'Box with large icon and some content', headlineLevel: 4 }"
+                            headlinePosition="body" :cmdIcon="{ iconClass: 'icon-home', type: 'auto' }"
+                            textBody="Box with large icon, headline in body and content all given by properties." />
+                    </CmdBoxWrapper>
 
-            <!-- begin breadcrumbs --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper inner-component="div">
-                <h2 class="headline-demopage" id="section-breadcrumbs">
-                    <span>Breadcrumbs</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
-                </h2>
-                <CmdBreadcrumbs ref="CmdBreadcrumbs" :breadcrumbLabel="breadcrumbsData.breadcrumbLabel"
-                    :breadcrumbLinks="breadcrumbsData.breadcrumbLinks" v-bind="cmdBreadcrumbsSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end breadcrumbs --------------------------------------------------------------------------------------------------->
+                    <!-- begin product boxes -->
+                    <h3>Product boxes</h3>
+                    <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
+                        <template v-slot="slotProps">
+                            <CmdBox v-for="(product, index) in boxProductData" :key="index" boxType="product"
+                                :product="product" :cmdHeadline="{ headlineLevel: 4 }" :rowView="slotProps.rowView" />
+                        </template>
+                    </CmdBoxWrapper>
+                    <!-- end product boxes -->
 
-            <!-- begin code-output --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-code-output">
-                    <span>Code Output</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdCodeOutput')"></a>
-                </h2>
-                <CmdCodeOutput ref="CmdCodeOutput" v-bind="cmdCodeOutputSettingsData">
-                    {{ cmdCodeOutputSlotContent }}
-                </CmdCodeOutput>
-            </CmdWidthLimitationWrapper>
-            <!-- end code-output --------------------------------------------------------------------------------------------------->
+                    <!-- begin user boxes -->
+                    <h3>User boxes</h3>
+                    <CmdBoxWrapper :boxesPerRow="[5, 2, 1]" :useRowViewAsDefault="true" :useGap="true">
+                        <template v-slot="slotProps">
+                            <CmdBox v-for="index in boxUserData.length" :key="index" boxType="user"
+                                :user="boxUserData[index - 1]" :cmdHeadline="{ headlineLevel: 5 }"
+                                :rowView="slotProps.rowView" />
+                        </template>
+                    </CmdBoxWrapper>
+                    <!-- end user boxes -->
 
-            <!-- begin company-logo --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-company-logo">
-                    <span>Company Logo</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdCompanyLogo')"></a>
-                </h2>
-                <CmdCompanyLogo ref="CmdCompanyLogo" :link="companyLogoData.link" v-bind="cmdCompanyLogoSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end company-logo --------------------------------------------------------------------------------------------------->
+                    <h3><span>Boxes in BoxWrapper (collapsible)</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdBoxWrapper')"></a>
+                    </h3>
+                    <CmdBoxWrapper ref="CmdBoxWrapper" :boxesPerRow="[4, 1]" :openBoxesByDefault="[2]"
+                        :useRowViewAsDefault="true" :allowMultipleExpandedBoxes="false" :stretch-boxes-vertically="true"
+                        :useGap="true">
+                        <template v-slot="slotProps">
+                            <CmdBox v-for="index in boxProductData.length" :key="index" boxType="content"
+                                :collapsible="true" :useSlots="['body']"
+                                :cmdHeadline="{ headlineText: 'Box ' + index, headlineLevel: 5 }"
+                                :rowView="slotProps.rowView" :openCollapsedBox="slotProps.boxIsOpen(index - 1)"
+                                @toggleCollapse="slotProps.boxToggled(index - 1, $event)">
+                                <template #body>{{ slotProps.currentOpenBox }}Content {{ index }}</template>
+                            </CmdBox>
+                        </template>
+                    </CmdBoxWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end boxes --------------------------------------------------------------------------------------------------->
 
-            <!-- begin container --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-container">
-                    <span>Containers</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdContainer')"></a>
-                </h2>
-                <h3>Container (type "default")</h3>
-                <CmdContainer style="border: 1px dashed var(--color-gray-30)" ref="CmdContainer"
-                    v-bind="cmdContainerSettingsData">
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                </CmdContainer>
-                <h3>Container (type "flex", horizontal)</h3>
-                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
-                    v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="horizontal">
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                </CmdContainer>
-                <h3>Container (type "flex", vertical)</h3>
-                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
-                    v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="vertical">
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                </CmdContainer>
-                <h3>Container with horizontal slots</h3>
-                <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
-                    v-bind="cmdContainerSettingsData" containerType="grid">
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                </CmdContainer>
-            </CmdWidthLimitationWrapper>
-            <!-- end container --------------------------------------------------------------------------------------------------->
+                <!-- begin breadcrumbs --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper inner-component="div">
+                    <h2 class="headline-demopage" id="section-breadcrumbs">
+                        <span>Breadcrumbs</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdBreadcrumbs')"></a>
+                    </h2>
+                    <CmdBreadcrumbs ref="CmdBreadcrumbs" :breadcrumbLabel="breadcrumbsData.breadcrumbLabel"
+                        :breadcrumbLinks="breadcrumbsData.breadcrumbLinks" v-bind="cmdBreadcrumbsSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end breadcrumbs --------------------------------------------------------------------------------------------------->
 
-            <!-- begin cookie-disclaimer --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-cookie-disclaimer">Cookie Disclaimer</h2>
-                <a class="button" href="#" @click.prevent="fancyBoxCookieDisclaimer = true">
-                    <span>Open Cookie Disclaimer</span>
-                </a>
-            </CmdWidthLimitationWrapper>
-            <!-- end cookie-disclaimer --------------------------------------------------------------------------------------------------->
+                <!-- begin code-output --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-code-output">
+                        <span>Code Output</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdCodeOutput')"></a>
+                    </h2>
+                    <CmdCodeOutput ref="CmdCodeOutput" v-bind="cmdCodeOutputSettingsData">
+                        {{ cmdCodeOutputSlotContent }}
+                    </CmdCodeOutput>
+                </CmdWidthLimitationWrapper>
+                <!-- end code-output --------------------------------------------------------------------------------------------------->
 
-            <!-- begin fancybox --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-fancybox">Fancybox</h2>
-                <h3>FancyBox with text</h3>
-                <a href="#" @click.prevent="showFancyBox('text', 'Some text', 'FancyBox with text')">Open FancyBox
-                    with text</a>
-                <h3>FancyBox with large image given by url</h3>
-                <a href="#"
-                    @click.prevent="showFancyBox('url', '/media/images/demo-images/large/landscape-01.jpg', 'FancyBox with large image given by url')"
-                    title="Open FancyBox with large image given by url" style="align-self: flex-start">
-                    <img src="/media/images/demo-images/small/landscape-01.jpg" alt="Alternative text" />
-                </a>
-                <h3>FancyBox with large image given by property</h3>
-                <a href="#"
-                    @click.prevent="showFancyBox('image', { large: '/media/images/demo-images/large/landscape-02.jpg' }, 'FancyBox with large image given by property')"
-                    title="Open FancyBox with large image given by property" style="align-self: flex-start">
-                    <img src="/media/images/demo-images/small/landscape-02.jpg" alt="Alternative text" />
-                </a>
-                <h3>FancyBox with image as object give by property</h3>
-                <a href="#" @click.prevent="showFancyBox('image', {
-                    small: '/media/images/demo-images/medium/landscape-03.jpg',
-                    medium: '/media/images/demo-images/medium/landscape-03.jpg',
-                    large: '/media/images/demo-images/large/landscape-03.jpg'
-                }, 'FancyBox with large image given by property')"
-                    title="Open FancyBox with large image given by property" style="align-self: flex-start">
-                    <img src="/media/images/demo-images/small/landscape-03.jpg" alt="Alternative text" />
-                </a>
-            </CmdWidthLimitationWrapper>
-            <!-- end fancybox --------------------------------------------------------------------------------------------------->
+                <!-- begin company-logo --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-company-logo">
+                        <span>Company Logo</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdCompanyLogo')"></a>
+                    </h2>
+                    <CmdCompanyLogo ref="CmdCompanyLogo" :link="companyLogoData.link"
+                        v-bind="cmdCompanyLogoSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end company-logo --------------------------------------------------------------------------------------------------->
 
-            <!-- begin flexible-scroll-container --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-flexible-scroll-container">Flexible Scroll-Container</h2>
-                <CmdFlexibleScrollContainer style="border: 1px  dashed var(--color-gray-30)">
-                    <template v-slot:fixed-wrapper>
-                        <div class="default-padding" style="border: 1px  dashed var(--color-gray-30)">
-                            Fixed content
-                        </div>
-                    </template>
-                    <template v-slot:scroll-wrapper>
-                        <div class="default-padding" style="border: 1px  dashed var(--color-gray-30)">
-                            <ul>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                                <li>Dynamic Content</li>
-                            </ul>
-                        </div>
-                    </template>
-                </CmdFlexibleScrollContainer>
-            </CmdWidthLimitationWrapper>
-            <!-- end flexible-scroll-container --------------------------------------------------------------------------------------------------->
+                <!-- begin container --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-container">
+                        <span>Containers</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdContainer')"></a>
+                    </h2>
+                    <h3>Container (type "default")</h3>
+                    <CmdContainer style="border: 1px dashed var(--color-gray-30)" ref="CmdContainer" innerClasses="inner-class"
+                        v-bind="cmdContainerSettingsData">
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                    </CmdContainer>
+                    <h3>Container (type "flex", horizontal)</h3>
+                    <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="horizontal">
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                    </CmdContainer>
+                    <h3>Container (type "flex", vertical)</h3>
+                    <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData" containerType="flex" contentOrientation="vertical">
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                    </CmdContainer>
+                    <h3>Container with horizontal slots</h3>
+                    <CmdContainer style="border: 1px  dashed var(--color-gray-30)" ref="CmdContainer"
+                        v-bind="cmdContainerSettingsData" containerType="grid">
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                    </CmdContainer>
+                </CmdWidthLimitationWrapper>
+                <!-- end container --------------------------------------------------------------------------------------------------->
 
-            <!-- begin footnote --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-footnote">
-                    <span>Footnotes</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdFootnote')"></a>
-                </h2>
-                <CmdFootnote 
-                    ref="CmdFootnote"
-                     v-bind="cmdFootnoteSettingsData"
-                    :cmdHeadline="{ headlineText: 'Footnote with asterisks', headlineLevel: 3}"
-                    descriptionTermType="asterisk"
-                    :descriptionData="footnoteData.descriptionData"
-                />
-                <CmdFootnote 
-                    :cmdHeadline="{ headlineText: 'Footnote with numbers', headlineLevel: 3}"
-                    descriptionTermType="number"
-                    :descriptionData="footnoteData.descriptionData"
-                />
-    
-            </CmdWidthLimitationWrapper>
-            <!-- end footnote --------------------------------------------------------------------------------------------------->
-
-            <!-- begin forms --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-forms">Forms</h2>
-                <h3>Form elements given by data</h3>
-                <CmdForm :useFieldset="true" :useSlot="false" id="form-component" novalidate="novalidate"
-                    :formElements="formElementsData" @submit="doConsoleLog" v-model="cmdFormData" />
-                <h3>Form elements given by slot</h3>
-                <CmdForm :use-fieldset="true" id="form-component" novalidate="novalidate"
-                    :submitButton="{ position: 'belowFieldset' }" @submit="doConsoleLog">
-                    <CmdFormElement element="input" text="text" name="input-text" labelText="Text input"
-                        placeholder="Text input" />
-                    <CmdFormElement element="input" text="number" labelText="Number input" name="input-number"
-                        modelValue="1" />
-                    <CmdFormElement element="input" text="password" labelText="Password input" name="password-number"
-                        placeholder="Password input" />
-                </CmdForm>
-            </CmdWidthLimitationWrapper>
-            <!-- end forms --------------------------------------------------------------------------------------------------->
-
-            <!-- begin google-maps --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-google-maps">Google Maps&trade;</h2>
-                <CmdGoogleMaps :address="addressData[1]" />
-            </CmdWidthLimitationWrapper>
-            <!-- end google-maps --------------------------------------------------------------------------------------------------->
-
-            <!-- begin headlines --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-headlines">
-                    <span>Headlines</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdHeadline')"></a>
-                </h2>
-                <CmdHeadline ref="CmdHeadline" v-bind="cmdHeadlineSettingsData" />
-                <CmdHeadline headlineLevel="3" headlineText="Headline text" :cmdIcon="{ iconClass: 'icon-home' }" />
-                <CmdHeadline headlineLevel="3" headlineText="Headline text<br /> with html-content given by property" />
-                <CmdHeadline headlineLevel="3">
-                    Headline text<br /> with html-content given by slot
-                </CmdHeadline>
-
-            </CmdWidthLimitationWrapper>
-            <!-- end headlines --------------------------------------------------------------------------------------------------->
-
-            <!-- begin icons --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-icons">Icons</h2>
-                <ul>
-                    <li>
-                        <span>Icon from local iconfont</span>
-                        <CmdIcon iconClass="icon-home" />
-                    </li>
-                    <li>
-                        <span>Icon from iconify-api (icomoon-font)</span>
-                        <CmdIcon iconClass="icomoon-free:home" />
-                    </li>
-                    <li>
-                        <span>Icon from iconify-api (bootstrap-font)</span>
-                        <CmdIcon iconClass="bi:house-fill" />
-                    </li>
-                    <li>
-                        <span>Icon from iconify-api (material-design-font)</span>
-                        <CmdIcon iconClass="mdi:home" />
-                    </li>
-                    <li>
-                        <span>Icon from iconify-api (font-awesome-solid-font)</span>
-                        <CmdIcon iconClass="fa6-solid:house-chimney" />
-                    </li>
-                </ul>
-            </CmdWidthLimitationWrapper>
-            <!-- end icons --------------------------------------------------------------------------------------------------->
-
-            <!-- begin images --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-image">
-                    <span>Image</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdImage')"></a>
-                </h2>
-                <div class="flex-container">
-                    <CmdImage ref="CmdImage" :image="imageData[0].image" :figcaption="imageData[0].figcaption"
-                        v-bind="cmdImageSettingsData" />
-                    <CmdImage :image="imageData[1].image" :figcaption="imageData[1].figcaption" />
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end images --------------------------------------------------------------------------------------------------->
-
-            <!-- begin image-gallery--------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-image-gallery">
-                    <span>Image-Gallery</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdImageGallery')"></a>
-                </h2>
-                <CmdImageGallery ref="CmdImageGallery" :images="imageGalleryData"
-                    v-bind="cmdImageGallerySettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end image-gallery --------------------------------------------------------------------------------------------------->
-
-            <!-- begin image-zoom --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-image-zoom">
-                    Image-Zoom
-                </h2>
-                <CmdImageZoom :imageSmall="imageZoomData.imageSmall" :imageLarge="imageZoomData.imageLarge" />
-            </CmdWidthLimitationWrapper>
-            <!-- end image-zoom --------------------------------------------------------------------------------------------------->
-
-            <!-- begin link --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-link">
-                    <span>Link</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdLink')"></a>
-                </h2>
-                <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData"
-                    :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }"
-                    @click="cmdLinkOutput" />
-                <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData"
-                    :icon="{ iconClass: 'icon-chevron-one-stripe-left', position: 'left', tooltip: 'Tooltip for hyperlink' }"
-                    @click="cmdLinkOutput" />
-                <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData" text="Link with fancybox"
-                    :fancybox="true"
-                    :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }" />
-                <CmdLink linkType="href" ref="CmdLink" style="align-self: flex-start" v-bind="cmdLinkSettingsData"
-                    text="Link styled as box" :styleAsBox="true"
-                    :icon="{ iconClass: 'icon-home', position: 'top', tooltip: 'Tooltip for hyperlink' }" />
-                <CmdLink linkType="href" :styleAsButton="true" text="Link styled as button"
-                    :icon="{ iconClass: 'icon-home', position: 'left' }" @click="cmdLinkOutput" />
-                <CmdLink linkType="submit" text="Submit button" :icon="{ iconClass: 'icon-home', position: 'left' }"
-                    @click="cmdLinkOutput" />
-                <CmdLink linkType="button" text="Add link" :primaryButton="true"
-                    :icon="{ iconClass: 'icon-link', position: 'right' }" @click="showCmdLink = true" />
-                <CmdLink v-if="showCmdLink" path="#" linkType="href" text="Link added on click" :fancybox="true"
-                    :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }" />
-                <dl class="output">
-                    <dt>Event:</dt>
-                    <dd>{{ outputCmdLink?.event?.originalEvent.originalEvent }}</dd>
-                    <dt>Target:</dt>
-                    <dd>{{ outputCmdLink?.event?.originalEvent.target }}</dd>
-                    <dt>LinkType:</dt>
-                    <dd>{{ outputCmdLink?.event?.originalEvent.linkType }}</dd>
-                </dl>
-            </CmdWidthLimitationWrapper>
-            <!-- end link --------------------------------------------------------------------------------------------------->
-
-            <!-- begin lists --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-list">
-                    <span>List</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdList')"></a>
-                </h2>
-                <CmdList :cmdHeadline="{ headlineText: 'List of links', headlineLevel: 3 }" ref="CmdList"
-                    v-bind="cmdListSettingsData" :items="listData" listContentType="links" @click="cmdLinkOutput" />
-                <dl class="output">
-                    <dt>Event:</dt>
-                    <dd>{{ outputCmdLink?.event?.originalEvent }}</dd>
-                    <dt>Target:</dt>
-                    <dd>{{ outputCmdLink?.event?.originalEvent.target }}</dd>
-                    <dt>LinkType:</dt>
-                    <dd>{{ outputCmdLink?.event?.linkType }}</dd>
-                </dl>
-                <CmdList :cmdHeadline="{ headlineText: 'List of images', headlineLevel: 3 }" :items="imageGalleryData"
-                    orientation="horizontal" listContentType="images" />
-                <div class="flex-container">
-                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (default)', headlineLevel: 3 }"
-                        :items="listOfTagsData" orientation="horizontal" listContentType="tags" />
-                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (primary)', headlineLevel: 3 }"
-                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
-                        highlightLevel="primary" />
-                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (secondary)', headlineLevel: 3 }"
-                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
-                        highlightLevel="secondary" />
-                    <CmdList :cmdHeadline="{ headlineText: 'List of tags (tertiary)', headlineLevel: 3 }"
-                        :items="listOfTagsData" orientation="horizontal" listContentType="tags"
-                        highlightLevel="tertiary" />
-                </div>
-                <h3>Description Lists</h3>
-                <div class="flex-container">
-                    <CmdList listType="description" :cmdHeadline="{ headlineText: 'List with text', headlineLevel: 4 }"
-                        :items="descriptionListData.text" />
-                    <CmdList listType="description"
-                        :cmdHeadline="{ headlineText: 'List with text (term right aligned)', headlineLevel: 4 }"
-                        :alignDescriptionTermRight="true" :items="descriptionListData.text" />
-                    <CmdList listType="description" :cmdHeadline="{ headlineText: 'List with icons', headlineLevel: 4 }"
-                        :items="descriptionListData.icons" />
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end lists --------------------------------------------------------------------------------------------------->
-
-            <!-- begin login-form --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-login-form">
-                    <span>Login Form</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
-                </h2>
-                <CmdForm :use-fieldset="false">
-                    <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData" />
-                </CmdForm>
-                <p>LoginData: {{ loginData }}</p>
-            </CmdWidthLimitationWrapper>
-            <!-- end login-form --------------------------------------------------------------------------------------------------->
-
-            <!-- begin mail-tool --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-mail-tool">
-                    <span>Mail Tool</span>
-                </h2>
-                <CmdMailTool ref="CmdMailTool" :mailsInbox="mailToolData.inbox" :mailsOutbox="mailToolData.outbox" />
-            </CmdWidthLimitationWrapper>
-            <!-- end mail-tool --------------------------------------------------------------------------------------------------->
-
-            <!-- begin main-navigation --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-main-navigation">
-                    <span>Main Navigation</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdMainNavigation')"></a>
-                </h2>
-                <CmdMainNavigation ref="CmdMainNavigation" v-bind="cmdMainNavigationSettingsData"
-                    :navigationEntries="navigationDataModified" />
-                <!-- begin router-view -->
-                <router-view v-if="useRouterLinks"></router-view>
-                <!-- end router-view -->
-            </CmdWidthLimitationWrapper>
-            <!-- end main-navigation --------------------------------------------------------------------------------------------------->
-
-            <!-- begin multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
-                    <span>Multistepform-Progressbar</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
-                </h2>
-                <h3>Steps with icons</h3>
-                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.withIcon"
-                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
-                <h3>Router</h3>
-                <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.router"
-                    v-bind="cmdMultistepFormProgressBarSettingsData" @click="showPageMultistep = $event.index + 1" />
-                <div>
-                    <p>Page {{ showPageMultistep }}</p>
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
-
-            <!-- begin multistep-form-wrapper --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-multistep-form-wrapper">
-                    <span>Multistepform-Wrapper</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdMultistepFormWrapper')">
+                <!-- begin cookie-disclaimer --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-cookie-disclaimer">Cookie Disclaimer</h2>
+                    <a class="button" href="#" @click.prevent="fancyBoxCookieDisclaimer = true">
+                        <span>Open Cookie Disclaimer</span>
                     </a>
-                </h2>
-                <h3>Data provided by property</h3>
-                <CmdMultistepFormWrapper :requiredPages="[1, 2]" :defaultInputValues="multistepFormDefaultInputValues">
+                </CmdWidthLimitationWrapper>
+                <!-- end cookie-disclaimer --------------------------------------------------------------------------------------------------->
 
-                    <template v-slot:page-1="props">
-                        multistepFormDefaultInputValues: {{ multistepFormDefaultInputValues }}
-                        <h3>Page 1 - all fields required</h3>
-                        <CmdForm :formElements="multistepFormWrapperPage1Data" :useSlot="false"
-                            @validation-status-change="toggleSystemMessage($event, props)" :submitButton="{ show: false }"
-                            :modelValue="props.formDataForPage" @update:modelValue="props.updateFormDataForPage" />
-                        props.formDataForPage: {{ props.formDataForPage }}
-                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a><br />
-                        <a href="#" @click.prevent="props.removeErrorOnPage">Remove Error</a>
-                    </template>
-                    <template v-slot:page-2="props">
-                        <h3>Page 2 - 2/2 fields required (in slot)</h3>
-                        <CmdForm :submitButton="{ show: false }"
-                            :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
-                            <CmdFormElement element="input" type="tel" labelText="Telephone:" name="page-2-telephone"
-                                id="page-2-telephone" placeholder="Enter phone number" :required="true"
-                                :modelValue="props.formDataForPage['page-2-telephone']"
-                                @update:modelValue="setValue($event, 'page-2-telephone', props)"
-                                @validation-status-change="setValidationStatus($event, 'page-2-telephone', props)" />
-                            <CmdFormElement element="input" type="email" labelText="E-Mail:" name="page-2-email"
-                                id="page-2-email" :required="true" placeholder="Enter email address"
-                                :modelValue="props.formDataForPage['page-2-email']"
-                                @update:modelValue="setValue($event, 'page-2-email', props)"
-                                @validation-status-change="setValidationStatus($event, 'page-2-email', props)" />
-                        </CmdForm>
-                        props.formDataForPage: {{ props.formDataForPage }}
-                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
-                    </template>
-                    <template v-slot:page-3="props">
-                        <h3>Page 3 - no fields required</h3>
-                        <CmdForm @validation-status-change="toggleSystemMessage($event, props)"
-                            :submitButton="{ show: false }" :modelValue="props.formDataForPage"
-                            @update:modelValue="props.updateFormDataForPage"
-                            :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
-                            <CmdFormElement element="input" type="text" labelText="Street/No:" name="street-no"
-                                id="street-no" placeholder="Enter street and number"
-                                v-model="props.formDataForPage.streetNo" />
-                            <div class="input-wrapper">
-                                <CmdFormElement element="input" type="number" labelText="Zip:" name="zip" id="zip"
-                                    v-model="props.formDataForPage.zip" />
-                                <CmdFormElement element="input" type="text" labelText="City:" name="city" id="city"
-                                    v-model="props.formDataForPage.city" />
+                <!-- begin fancybox --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-fancybox">Fancybox</h2>
+                    <h3>FancyBox with text</h3>
+                    <a href="#" @click.prevent="showFancyBox('text', 'Some text', 'FancyBox with text')">Open
+                        FancyBox
+                        with text</a>
+                    <h3>FancyBox with large image given by url</h3>
+                    <a href="#"
+                        @click.prevent="showFancyBox('url', '/media/images/demo-images/large/landscape-01.jpg', 'FancyBox with large image given by url')"
+                        title="Open FancyBox with large image given by url" style="align-self: flex-start">
+                        <img src="/media/images/demo-images/small/landscape-01.jpg" alt="Alternative text" />
+                    </a>
+                    <h3>FancyBox with large image given by property</h3>
+                    <a href="#"
+                        @click.prevent="showFancyBox('image', { large: '/media/images/demo-images/large/landscape-02.jpg' }, 'FancyBox with large image given by property')"
+                        title="Open FancyBox with large image given by property" style="align-self: flex-start">
+                        <img src="/media/images/demo-images/small/landscape-02.jpg" alt="Alternative text" />
+                    </a>
+                    <h3>FancyBox with image as object give by property</h3>
+                    <a href="#" @click.prevent="showFancyBox('image', {
+                        small: '/media/images/demo-images/medium/landscape-03.jpg',
+                        medium: '/media/images/demo-images/medium/landscape-03.jpg',
+                        large: '/media/images/demo-images/large/landscape-03.jpg'
+                    }, 'FancyBox with large image given by property')"
+                        title="Open FancyBox with large image given by property" style="align-self: flex-start">
+                        <img src="/media/images/demo-images/small/landscape-03.jpg" alt="Alternative text" />
+                    </a>
+                </CmdWidthLimitationWrapper>
+                <!-- end fancybox --------------------------------------------------------------------------------------------------->
+
+                <!-- begin flexible-scroll-container --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-flexible-scroll-container">Flexible Scroll-Container
+                    </h2>
+                    <CmdFlexibleScrollContainer style="border: 1px  dashed var(--color-gray-30)">
+                        <template v-slot:fixed-wrapper>
+                            <div class="default-padding" style="border: 1px  dashed var(--color-gray-30)">
+                                Fixed content
                             </div>
-                            props.formDataForPage: {{ props.formDataForPage }}
-                        </CmdForm>
-                    </template>
-                    <template v-slot:page-last="props">
-                        <template v-if="!confirmDataPrivacy">
-                            <h3>Page 4</h3>
-                            <CmdForm :cmdHeadline="{ headlineText: 'Confirmation', headlineLevel: 3 }"
-                                :submitButton="{ disabled: props.atleastOneStepWithError || !dataPrivacyChecked, type: 'button' }"
-                                :cancelButton="{ show: false }" @submit="validateForm">
-                                <p>Please confirm that all data you provided is legit.</p>
-                                <CmdFormElement element="input" type="checkbox" labelText="Confirm data privacy:"
-                                    name="confirm-data-privacy" id="confirm-data-privac" :required="true"
-                                    v-model="dataPrivacyChecked" />
-                            </CmdForm>
                         </template>
-                        <template v-else>
-                            <h3>Confirmation</h3>
-                            <CmdSystemMessage systemMessage="Your request was send successfully!"
-                                validationStatus="success" :iconClose="{ show: false }" />
-                            <p>A copy with all submitted data was send to you.</p>
-                            props.formDataForPage: {{ props.formDataForPage }}
+                        <template v-slot:scroll-wrapper>
+                            <div class="default-padding" style="border: 1px  dashed var(--color-gray-30)">
+                                <ul>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                    <li>Dynamic Content</li>
+                                </ul>
+                            </div>
                         </template>
-                    </template>
-                </CmdMultistepFormWrapper>
-                <h3>Data provided by slot</h3>
-                <CmdMultistepFormWrapper>
-                    <template v-slot:progress-bar="props">
-                        <ul class="flex-container">
-                            <li v-for="index of props.numberOfPages" :key="index">
-                                <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">{{ index }}</a>
-                            </li>
-                        </ul>
-                    </template>
-                    <template v-slot:page-1="props">
-                        Content Page 1
-                        <span v-if="props.hasError">Error</span>
-                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
-                    </template>
-                    <template v-slot:page-2="props">
-                        Content Page 2
-                        <span v-if="props.hasError">Error</span>
-                        <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
-                    </template>
-                    <template v-slot:page-3="props">
-                        Content Page 3
-                        <span v-if="props.hasError">Error</span>
-                    </template>
-                    <template v-slot:page-4="props">
-                        Content Page 4
-                        <span v-if="props.hasError">Error</span>
-                    </template>
-                    <template v-slot:page-5="props">
-                        Content Page 5
-                        <span v-if="props.hasError">Error</span>
-                    </template>
-                    <template v-slot:pagination="props">
-                        <div class="button-wrapper reverse justify-content-space-between">
-                            <CmdLink linkType="button" highlightLevel="none" :icon='{
-                                iconClass: "icon-chevron-one-stripe-right",
-                                tooltip: "To next page",
-                                position: "right"
-                            }' text="Next" :disabled="props.disabledNextLink" @click="props.setNextPage" />
-                            <CmdLink linkType="button" class="cancel" highlightLevel="none" :icon='{
-                                iconClass: "icon-cancel-circle",
-                            }' text="Cancel" />
-                            <CmdLink linkType="button" highlightLevel="none" :icon='{
-                                iconClass: "icon-chevron-one-stripe-left",
-                                tooltip: "To previous page"
-                            }' text="Back" @click="props.setPrevPage" :disabled="props.disabledPrevLink" />
-                            props.disabledPrevLink: {{ props.disabledPrevLink }}
-                        </div>
-                    </template>
-                </CmdMultistepFormWrapper>
-            </CmdWidthLimitationWrapper>
-            <!-- end multistep-form-wrapper --------------------------------------------------------------------------------------------------->
+                    </CmdFlexibleScrollContainer>
+                </CmdWidthLimitationWrapper>
+                <!-- end flexible-scroll-container --------------------------------------------------------------------------------------------------->
 
-            <!-- begin newsletter-subscription --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-newsletter-subscription">
-                    <span>Newsletter Subscription</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdNewsletterSubscription')"></a>
-                </h2>
-                <CmdForm :use-fieldset="false">
-                    <CmdNewsletterSubscription ref="CmdNewsletterSubscription"
-                        v-bind="cmdNewsletterSubscriptionSettingsData" v-model="newsletter"
-                        @buttonClick="submitNewsletterRegistration" />
-                </CmdForm>
-            </CmdWidthLimitationWrapper>
-            <!-- end newsletter-subscription --------------------------------------------------------------------------------------------------->
+                <!-- begin footnotes --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-footnote">
+                        <span>Footnotes</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdFootnote')"></a>
+                    </h2>
+                    <CmdFootnote ref="CmdFootnote" v-bind="cmdFootnoteSettingsData"
+                        :descriptionData="footnoteData[0].descriptionData" />
+                    <CmdFootnote :descriptionData="footnoteData[1].descriptionData"
+                        :descriptionTermType="footnoteData[1].descriptionTermType" />
 
-            <!-- begin opening-hours --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-opening-hours">
-                    <span>Opening Hours</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdOpeningHours')"></a>
-                </h2>
-                <CmdOpeningHours ref="CmdOpeningHours" v-bind="cmdOpeningHoursSettingsData"
-                    :openingHours="openingHoursData" :checkInterval="0" :use24HoursFormat="false" />
-            </CmdWidthLimitationWrapper>
-            <!-- end opening-hours --------------------------------------------------------------------------------------------------->
+                </CmdWidthLimitationWrapper>
+                <!-- end footnotes --------------------------------------------------------------------------------------------------->
 
-            <!-- begin page-footer --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-page-footer">
-                    <span>Page Footer</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdPageFooter')"></a>
-                </h2>
-                <CmdPageFooter ref="CmdPageFooter" v-bind="cmdPageFooterSettingsData"
-                    :button-print-view="{ text: 'Print this page' }" :cmdSocialNetworks="socialNetworksData">
-                    <button class="button primary" title="Button given by slot">
-                        <span class="icon-mail"></span>
-                        <span>Contact</span>
-                    </button>
-                </CmdPageFooter>
-            </CmdWidthLimitationWrapper>
-            <!-- end page-footer --------------------------------------------------------------------------------------------------->
+                <!-- begin forms --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-forms">Forms</h2>
+                    <h3>Form elements given by data</h3>
+                    <CmdForm :useFieldset="true" :useSlot="false" id="form-component" novalidate="novalidate"
+                        :formElements="formElementsData" @submit="doConsoleLog" v-model="cmdFormData" />
+                    <h3>Form elements given by slot</h3>
+                    <CmdForm :use-fieldset="true" id="form-component-slot" novalidate="novalidate"
+                        :cmdLinkSubmitButton="{ position: 'belowFieldset' }" @submit="doConsoleLog">
+                        <CmdFormElement element="input" text="text" name="input-text" labelText="Text input"
+                            placeholder="Text input" />
+                        <CmdFormElement element="input" text="number" labelText="Number input" name="input-number"
+                            modelValue="1" />
+                        <CmdFormElement element="input" text="password" labelText="Password input"
+                            name="password-number" placeholder="Password input" />
+                    </CmdForm>
+                </CmdWidthLimitationWrapper>
+                <!-- end forms --------------------------------------------------------------------------------------------------->
 
-            <!-- begin page-header --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-page-header">
-                    <span>Page Header</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdPageHeader')"></a>
-                </h2>
-                <CmdPageHeader ref="CmdPageHeader" :cmdBreadcrumbs="breadcrumbsData"
-                    :cmdHeadline="{ headlineText: 'Main headline for page', headlineLevel: 1 }">
-                    <a href="#" title="Link given by slot">
-                        <span class="icon-user-profile"></span>
-                        <span>You are logged in</span>
-                    </a>
-                </CmdPageHeader>
-            </CmdWidthLimitationWrapper>
-            <!-- end page-header --------------------------------------------------------------------------------------------------->
+                <!-- begin google-maps --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-google-maps">Google Maps&trade;</h2>
+                    <CmdGoogleMaps :address="addressData[1]" />
+                </CmdWidthLimitationWrapper>
+                <!-- end google-maps --------------------------------------------------------------------------------------------------->
 
-            <!-- begin pagination --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-pagination">
-                    <span>Pagination</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdPagination')"></a>
-                </h2>
-                <div>
-                    <p>Page {{ showPagePager }}</p>
-                </div>
-                <CmdPagination ref="CmdPagination" v-bind="cmdPaginationSettingsData" @click="showPagePager = $event" />
-            </CmdWidthLimitationWrapper>
-            <!-- end pagination --------------------------------------------------------------------------------------------------->
+                <!-- begin headlines --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-headlines">
+                        <span>Headlines</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdHeadline')"></a>
+                    </h2>
+                    <CmdHeadline ref="CmdHeadline" v-bind="cmdHeadlineSettingsData" />
+                    <CmdHeadline headlineLevel="3" headlineText="Headline text" :cmdIcon="{ iconClass: 'icon-home' }" />
+                    <CmdHeadline headlineLevel="3"
+                        headlineText="Headline text<br /> with html-content given by property" />
+                    <CmdHeadline headlineLevel="3">
+                        Headline text<br /> with html-content given by slot
+                    </CmdHeadline>
 
-            <!-- begin paragraph --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-paragraph">
-                    <span>Paragraph</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdParagraph')"></a>
-                </h2>
-                <CmdParagraph ref="CmdParagraph" v-bind="cmdParagraphSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end paragraph --------------------------------------------------------------------------------------------------->
+                </CmdWidthLimitationWrapper>
+                <!-- end headlines --------------------------------------------------------------------------------------------------->
 
-            <!-- begin section --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-section">
-                    <span>Section</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSection')"></a>
-                </h2>
-                <h3>Section with content provided by properties</h3>
-                <CmdSection
-                    :cmdHeadline="{ headlineText: 'Headline for section provided by property', headlineLevel: 4 }"
-                    content="Content for section provided by property." />
-                <h3>Section with content provided by slot</h3>
-                <CmdSection :useSlot="true">
-                    <h4>Headline for section provided by slot</h4>
-                    <p>Content for section provided by slot.</p>
-                </CmdSection>
-                <h3>Section styled as box</h3>
-                <CmdSection :useSlot="true" :styleAsBox="true">
-                    <h4>Headline for section styled as box</h4>
-                    <p>Content for section styled as box.</p>
-                </CmdSection>
-            </CmdWidthLimitationWrapper>
-            <!-- end section --------------------------------------------------------------------------------------------------->
+                <!-- begin icons --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-icons">Icons</h2>
+                    <ul>
+                        <li>
+                            <span>Icon from local iconfont</span>
+                            <CmdIcon iconClass="icon-home" />
+                        </li>
+                        <li>
+                            <span>Icon from iconify-api (icomoon-font)</span>
+                            <CmdIcon iconClass="icomoon-free:home" />
+                        </li>
+                        <li>
+                            <span>Icon from iconify-api (bootstrap-font)</span>
+                            <CmdIcon iconClass="bi:house-fill" />
+                        </li>
+                        <li>
+                            <span>Icon from iconify-api (material-design-font)</span>
+                            <CmdIcon iconClass="mdi:home" />
+                        </li>
+                        <li>
+                            <span>Icon from iconify-api (font-awesome-solid-font)</span>
+                            <CmdIcon iconClass="fa6-solid:house-chimney" />
+                        </li>
+                    </ul>
+                </CmdWidthLimitationWrapper>
+                <!-- end icons --------------------------------------------------------------------------------------------------->
 
-            <!-- begin site-footer --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-site-footer">Site Footer</h2>
-                <CmdSiteFooter>
+                <!-- begin images --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-image">
+                        <span>Image</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdImage')"></a>
+                    </h2>
+                    <div class="flex-container">
+                        <CmdImage ref="CmdImage" :image="imageData[0].image" :figcaption="imageData[0].figcaption"
+                            v-bind="cmdImageSettingsData" />
+                        <CmdImage :image="imageData[1].image" :figcaption="imageData[1].figcaption" />
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end images --------------------------------------------------------------------------------------------------->
+
+                <!-- begin image-gallery--------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-image-gallery">
+                        <span>Image-Gallery</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdImageGallery')"></a>
+                    </h2>
+                    <CmdImageGallery ref="CmdImageGallery" :images="imageGalleryData"
+                        v-bind="cmdImageGallerySettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end image-gallery --------------------------------------------------------------------------------------------------->
+
+                <!-- begin image-zoom --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-image-zoom">
+                        Image-Zoom
+                    </h2>
+                    <CmdImageZoom :imageSmall="imageZoomData.imageSmall" :imageLarge="imageZoomData.imageLarge" />
+                </CmdWidthLimitationWrapper>
+                <!-- end image-zoom --------------------------------------------------------------------------------------------------->
+
+                <!-- begin link --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-link">
+                        <span>Link</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdLink')"></a>
+                    </h2>
+                    <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData"
+                        :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }"
+                        @click="cmdLinkOutput" />
                     <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData"
                         :icon="{ iconClass: 'icon-chevron-one-stripe-left', position: 'left', tooltip: 'Tooltip for hyperlink' }"
                         @click="cmdLinkOutput" />
-                </CmdSiteFooter>
-            </CmdWidthLimitationWrapper>
-            <!-- end site-footer --------------------------------------------------------------------------------------------------->
-
-            <!-- begin site-header --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-site-header">
-                    <span>Site Header</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSiteHeader')"></a>
-                </h2>
-                <CmdSiteHeader ref="CmdSiteHeader" v-bind="cmdSiteHeaderSettingsData" :cmdCompanyLogo="companyLogoData">
-                    <template v-slot:topheader>
-                        <CmdList :items="listData" orientation="horizontal" align="right" />
-                    </template>
-                </CmdSiteHeader>
-            </CmdWidthLimitationWrapper>
-            <!-- end site-header --------------------------------------------------------------------------------------------------->
-
-            <!-- begin site-search --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-site-search">
-                    <span>Site Search</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSiteSearch')"></a>
-                </h2>
-                <CmdSiteSearch ref="CmdSiteSearch" v-bind="cmdSiteSearchSettingsData"
-                    v-model:modelValueInput1="siteSearchInput1" v-model:modelValueInput2="siteSearchInput2"
-                    v-model:modelValueRadius="radius" v-model:modelValueSearchFilters="filters"
-                    @search="siteSearchOutput" :cmdFakeSelect="siteSearchFilters" />
-            </CmdWidthLimitationWrapper>
-            <!-- end site-search --------------------------------------------------------------------------------------------------->
-
-            <!-- begin slideshow --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-slideshow">
-                    <span>Slideshow</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSlideshow')"></a>
-                </h2>
-                <CmdSlideshow ref="CmdSlideshow" v-bind="cmdSlideshowSettingsData" :slideshow-items="slideshowData">
-                    Slot-Content
-                </CmdSlideshow>
-            </CmdWidthLimitationWrapper>
-            <!-- end slideshow --------------------------------------------------------------------------------------------------->
-
-
-            <!-- begin smart-search --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-smart-search">
-                    <span>Smart Search</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSmartSearch')"></a>
-                </h2>
-                <CmdSmartSearch ref="CmdSmartSearch" v-bind="smartSearchSettingsData"
-                    :listOfRecommendations="smartSearchData.listOfRecommendations" v-model="smartSearchString"
-                    :maxNumberOfRecommendations="5" />
-                <output>
-                    smartSearchString: {{ smartSearchString }}
-                </output>
-                <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
-                    v-model="smartSearchObject" :maxNumberOfRecommendations="5" :openListToTop="true" />
-                <output>
-                    smartSearchObject: {{ smartSearchObject }}
-                </output>
-            </CmdWidthLimitationWrapper>
-            <!-- end smart-search --------------------------------------------------------------------------------------------------->
-
-            <!-- begin social-networks --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-social-networks">
-                    <span>Social Networks</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSocialNetworks')"></a>
-                </h2>
-                <CmdSocialNetworks ref="CmdSocialNetworks"
-                    v-bind="{ ...cmdSocialNetworksSettingsData, ...socialNetworksData }" />
-            </CmdWidthLimitationWrapper>
-            <!-- end social-networks --------------------------------------------------------------------------------------------------->
-
-            <!-- begin switch-language --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-switch-language">Switch Language</h2>
-                <CmdSwitchLanguage :pathFlags="switchLanguage.pathFlags" :languages="switchLanguage.languages"
-                    @click="updateLanguage" />
-                <p>Selected language: {{ selectedLanguage }} </p>
-            </CmdWidthLimitationWrapper>
-            <!-- end switch-language --------------------------------------------------------------------------------------------------->
-
-            <!-- begin system-message --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-system-message">
-                    <span>System Message</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
-                </h2>
-                <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData"
-                    :iconClose="{ iconClass: 'icon-error-circle', show: true }" />
-                <CmdSystemMessage validationStatus="warning" :iconClose="{ show: false }">
-                    <p>This is a system message with slot-content. (that cannot be closed)</p>
-                </CmdSystemMessage>
-            </CmdWidthLimitationWrapper>
-            <!-- end system-message --------------------------------------------------------------------------------------------------->
-
-            <!-- begin tables --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-tables">
-                    <span>Tables</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdTable')"></a>
-                </h2>
-                <h3>Table as wide as its content (with caption)</h3>
-                <CmdTable ref="CmdTable" v-bind="cmdTableSettingsData" :table-data="tableDataLarge" />
-                <h3>Table as wide as possible</h3>
-                <CmdTable :collapsible="true" :fullWidthOnDefault="false" :userCanToggleWidth="true"
-                    :table-data="tableDataLarge" />
-            </CmdWidthLimitationWrapper>
-            <!-- end tables --------------------------------------------------------------------------------------------------->
-
-            <!-- begin tabs --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-tabs">
-                    <span>Tabs</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdTabs')"></a>
-                </h2>
-                <CmdTabs ref="CmdTabs" v-bind="cmdTabsSettingsData" :tabs="tabsData">
-                    <template v-slot:tab-content-0>
-                        <h4>Tab 1 headline</h4>
-                        <p>Slot-Content Tab 1</p>
-                    </template>
-                    <template v-slot:tab-content-1>
-                        <h4>Tab 2 headline</h4>
-                        <p>Slot-Content Tab 2</p>
-                    </template>
-                    <template v-slot:tab-content-2>
-                        <h4>Tab 3 headline</h4>
-                        <p>Slot-Content Tab 3</p>
-                    </template>
-                </CmdTabs>
-            </CmdWidthLimitationWrapper>
-            <!-- end tabs --------------------------------------------------------------------------------------------------->
-
-            <!-- begin tags --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-tag">
-                    <span>Tag</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdTag')">
-                    </a>
-                </h2>
-                <CmdTag ref="CmdTag" v-bind="cmdTagSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end tags --------------------------------------------------------------------------------------------------->
-
-            <!-- begin text-image-block --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-text-image-block">
-                    <span>Text-Image-Block</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdTextImageBlock')"></a>
-                </h2>
-                <div class="flex-container">
-                    <CmdTextImageBlock
-                        :cmdHeadline="{ headlineText: 'Text-Image-Block (with html-text)', headlineLevel: 3 }"
-                        htmlContent="<p>This text is given as html-text and show below an optional image.</p>" />
-                    <CmdTextImageBlock ref="CmdTextImageBlock" v-bind="cmdTextImageBlockSettingsData"
-                        :cmdHeadline="{ headlineText: 'Text-Image-Block (with image and plain text)', headlineLevel: 3 }"
-                        :cmdImage='{
-                            "image": {
-                                "src": "/media/images/demo-images/large/landscape-01.jpg",
-                                "alt": "alternative text",
-                                "tooltip": "tooltip"
-                            },
-                            "figcaption": {
-                                "text": "figcaption",
-                                "position": "bottom",
-                                "textAlign": "center",
-                                "show": true
-                            }
-                        }' htmlContent="This text is given as plain text and show below an optional image." />
-                    <CmdTextImageBlock
-                        :cmdHeadline="{ headlineText: 'Text-Image-Block (with image and html-text)', headlineLevel: 3 }"
-                        htmlContent="<p>This text is given as html-text and show below an optional image.</p>"
-                        :cmdImage='{
-                            "image": {
-                                "src": "/media/images/demo-images/large/landscape-02.jpg",
-                                "alt": "alternative text",
-                                "tooltip": "tooltip"
-                            },
-                            "figcaption": {
-                                "text": "figcaption",
-                                "position": "bottom",
-                                "textAlign": "center",
-                                "show": true
-                            }
-                        }' />
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end text-image-block --------------------------------------------------------------------------------------------------->
-
-            <!-- begin thumbnail-scroller --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-thumbnail-scroller">
-                    <span>Thumbnail-Scroller</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
-                </h2>
-                <p> date (YMD/default): {{ formatDate('2025-01-28', "", "-") }}</p>
-                <p> date (DMY): {{ formatDate('2025-01-28', "dmy") }}</p>
-                <p> date (MDY): {{ formatDate('2025-01-28', "mdy", "/") }}</p>
-                <p> date (invalid): {{ formatDate('invalid') }}</p>
-                <div class="inline-size">
-                    <CmdThumbnailScroller ref="CmdThumbnailScroller" v-bind="cmdThumbnailScrollerSettingsData"
-                        :thumbnailScrollerItems="thumbnailScrollerData" />
-                </div>
-            </CmdWidthLimitationWrapper>
-            <!-- end thumbnail-scroller --------------------------------------------------------------------------------------------------->
-
-            <!-- begin toast --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-toast">
-                    <span>Toast</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdToast')">
-                    </a>
-                </h2>
-                <CmdToast message="This is a message!" ref="CmdToast" />
-                <div class="button-wrapper">
-                    <button type="button" class="button" @click="$refs.CmdToast.toggleToast()">
-                        <span>Toggle Toast</span>
-                    </button>
-                </div>
-
-            </CmdWidthLimitationWrapper>
-            <!-- end toast --------------------------------------------------------------------------------------------------->
-
-            <!-- begin toggle-darkmode --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-toggle-dark-mode">
-                    <span>Toggle Dark-Mode</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
-                </h2>
-                <CmdToggleDarkMode ref="CmdToggleDarkMode" v-bind="cmdToggleDarkModeSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end toggle-darkmode --------------------------------------------------------------------------------------------------->
-
-            <!-- begin tooltip --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-tooltip">
-                    <span>Tooltip</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdTooltip')"></a>
-                </h2>
-                <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover;" id="show-on-hover">Show
-                    tooltip on
-                    hover!</a><br />
-                <CmdTooltip id="tooltip-target-hover" positionAnchor="--tooltip-anchor-for-hover"
-                    relatedId="show-on-hover" tooltipText="This is text for a tooltip by hover!" />
-
-                <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover-on-delay"
-                    id="show-with-delay">Show
-                    tooltip on hover with delay!</a><br />
-                <CmdTooltip id="tooltip-target-hover-on-delay" positionAnchor="--tooltip-anchor-for-hover-on-delay"
-                    relatedId="show-with-delay" :delayToShowTooltip="2000">
-                    Tooltip on hover with delay
-                </CmdTooltip>
-
-                <button type="button" class="button" style="anchor-name: --tooltip-anchor-for-click;"
-                    positionAnchor="--tooltip-anchor-for-click" title="Click to open tooltip"
-                    popovertarget="tooltip-target-click" aria-describedby="tooltip-target-click">
-                    <span class="icon-questionmark"></span>
-                    <span>Toggle Tooltip</span>
-                </button>
-                <CmdTooltip ref="CmdTooltip" :popoverTargetName="'tooltip-target-click'" :showCloseIcon="true"
-                    positionAnchor="--tooltip-anchor-for-click" tooltipText="This is text for a tooltip by click!"
-                    v-bind="cmdTooltipSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end tooltip --------------------------------------------------------------------------------------------------->
-
-            <!-- begin upload-form --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-upload-form">
-                    <span>Upload-Form</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdUploadForm')"></a>
-                </h2>
-                <CmdUploadForm ref="CmdUploadForm" v-bind="cmdUploadFormSettingsData" />
-            </CmdWidthLimitationWrapper>
-            <!-- end upload-form --------------------------------------------------------------------------------------------------->
-
-            <!-- begin upload-form --------------------------------------------------------------------------------------------------->
-            <CmdWidthLimitationWrapper>
-                <h2 class="headline-demopage" id="section-width-limitation-wrapper">
-                    <span>Width Limitation Wrapper</span>
-                    <a href="#" class="button small icon-cog" title="Open Component Settings"
-                        @click.prevent="openSettingsSidebar('CmdWidthLimitationWrapper')"></a>
-                </h2>
-                <CmdWidthLimitationWrapper style="border: 1px  dashed var(--color-gray-30)"
-                    ref="CmdWidthLimitationWrapper" v-bind="cmdWidthLimitationWrapperSettingsData">
-                    <h3>Slot-Content</h3>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
-                    <p>Slot-content</p>
+                    <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData" text="Link with fancybox"
+                        :fancybox="true"
+                        :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }" />
+                    <CmdLink linkType="href" ref="CmdLink" style="align-self: flex-start" v-bind="cmdLinkSettingsData"
+                        text="Link styled as box" :styleAsBox="true"
+                        :icon="{ iconClass: 'icon-home', position: 'top', tooltip: 'Tooltip for hyperlink' }" />
+                    <CmdLink linkType="href" :styleAsButton="true" text="Link styled as button"
+                        :icon="{ iconClass: 'icon-home', position: 'left' }" @click="cmdLinkOutput" />
+                    <CmdLink linkType="submit" text="Submit button" :icon="{ iconClass: 'icon-home', position: 'left' }"
+                        @click="cmdLinkOutput" />
+                    <CmdLink linkType="button" text="Add link" :primaryButton="true"
+                        :icon="{ iconClass: 'icon-link', position: 'right' }" @click="showCmdLink = true" />
+                    <CmdLink v-if="showCmdLink" path="#" linkType="href" text="Link added on click" :fancybox="true"
+                        :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'right', tooltip: 'Tooltip for hyperlink' }" />
+                    <dl class="output">
+                        <dt>Event:</dt>
+                        <dd>{{ outputCmdLink?.event?.originalEvent.originalEvent }}</dd>
+                        <dt>Target:</dt>
+                        <dd>{{ outputCmdLink?.event?.originalEvent.target }}</dd>
+                        <dt>LinkType:</dt>
+                        <dd>{{ outputCmdLink?.event?.originalEvent.linkType }}</dd>
+                    </dl>
                 </CmdWidthLimitationWrapper>
-            </CmdWidthLimitationWrapper>
-            <!-- end upload-form --------------------------------------------------------------------------------------------------->
-        </main>
+                <!-- end link --------------------------------------------------------------------------------------------------->
 
-        <!-- begin page view -->
-        <main v-else id="content">
-            <CmdWidthLimitationWrapper>
-                <h1 class="headline-demopage">Page Overview</h1>
-            </CmdWidthLimitationWrapper>
-            <!-- begin page-overview -->
-            <PageOverview />
-            <!-- end page-overview -->
-        </main>
-        <!-- end page view -->
+                <!-- begin lists --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-list">
+                        <span>List</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdList')"></a>
+                    </h2>
+                    <CmdList :cmdHeadline="{ headlineText: 'List of links', headlineLevel: 3 }" ref="CmdList"
+                        v-bind="cmdListSettingsData" :items="listData" listContentType="links" @click="cmdLinkOutput" />
+                    <dl class="output">
+                        <dt>Event:</dt>
+                        <dd>{{ outputCmdLink?.event?.originalEvent }}</dd>
+                        <dt>Target:</dt>
+                        <dd>{{ outputCmdLink?.event?.originalEvent.target }}</dd>
+                        <dt>LinkType:</dt>
+                        <dd>{{ outputCmdLink?.event?.linkType }}</dd>
+                    </dl>
+                    <CmdList :cmdHeadline="{ headlineText: 'List of images', headlineLevel: 3 }"
+                        :items="imageGalleryData" orientation="horizontal" listContentType="images" />
+                    <div class="flex-container">
+                        <CmdList :cmdHeadline="{ headlineText: 'List of tags (default)', headlineLevel: 3 }"
+                            :items="listOfTagsData" orientation="horizontal" listContentType="tags" />
+                        <CmdList :cmdHeadline="{ headlineText: 'List of tags (primary)', headlineLevel: 3 }"
+                            :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                            highlightLevel="primary" />
+                        <CmdList :cmdHeadline="{ headlineText: 'List of tags (secondary)', headlineLevel: 3 }"
+                            :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                            highlightLevel="secondary" />
+                        <CmdList :cmdHeadline="{ headlineText: 'List of tags (tertiary)', headlineLevel: 3 }"
+                            :items="listOfTagsData" orientation="horizontal" listContentType="tags"
+                            highlightLevel="tertiary" />
+                    </div>
+                    <h3>Description Lists</h3>
+                    <div class="flex-container">
+                        <CmdList listType="description"
+                            :cmdHeadline="{ headlineText: 'List with text', headlineLevel: 4 }"
+                            :items="descriptionListData.text" />
+                        <CmdList listType="description"
+                            :cmdHeadline="{ headlineText: 'List with text (term right aligned)', headlineLevel: 4 }"
+                            :alignDescriptionTermRight="true" :items="descriptionListData.text" />
+                        <CmdList listType="description"
+                            :cmdHeadline="{ headlineText: 'List with icons', headlineLevel: 4 }"
+                            :items="descriptionListData.icons" />
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end lists --------------------------------------------------------------------------------------------------->
 
-        <!-- begin cmd-site-footer -->
-        <CmdSiteFooter>
-            <!-- begin slot-content -->
-            Slot-Content for Site-Footer
-            <!-- end slot-content -->
-        </CmdSiteFooter>
-        <!-- end cmd-site-footer -->
+                <!-- begin login-form --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-login-form">
+                        <span>Login Form</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdLoginForm')"></a>
+                    </h2>
+                    <CmdForm :use-fieldset="false">
+                        <CmdLoginForm ref="CmdLoginForm" v-bind="cmdLoginFormSettingsData" v-model="loginData" />
+                    </CmdForm>
+                    <p>LoginData: {{ loginData }}</p>
+                </CmdWidthLimitationWrapper>
+                <!-- end login-form --------------------------------------------------------------------------------------------------->
 
-        <!-- begin copyright-information --------------------------------------------------------------------------------------------------->
-        <CmdCopyrightInformation />
-        <!-- end copyright-information --------------------------------------------------------------------------------------------------->
+                <!-- begin mail-tool --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-mail-tool">
+                        <span>Mail Tool</span>
+                    </h2>
+                    <CmdMailTool ref="CmdMailTool" :mailsInbox="mailToolData.inbox"
+                        :mailsOutbox="mailToolData.outbox" />
+                </CmdWidthLimitationWrapper>
+                <!-- end mail-tool --------------------------------------------------------------------------------------------------->
 
-        <!-- begin fancy-box --------------------------------------------------------------------------------------------------->
-        <CmdFancyBox :show="fancyBoxCookieDisclaimer" :fancyBoxOptions="{ 'closeIcon': { show: false } }"
-            :allowEscapeKey="false" :cmdHeadline="{ show: true, headlineText: 'Cookie Disclaimer', headlineLevel: 2 }"
-            defaultAriaLabelText="Cookie Disclaimer">
-            <!-- begin cookie-disclaimer --------------------------------------------------------------------------------------------------->
-            <CmdCookieDisclaimer :cookieOptions="cookieDisclaimerData" @closeCookieDisclaimer="closeCookieDisclaimer"
-                v-model="acceptedCookies" :cmdHeadlineCookieDisclaimer="{ show: false }"
-                privacyText="By browsing this website you accept the usage and saving of anonymous data!">
-            </CmdCookieDisclaimer>
-            <!-- end cookie-disclaimer --------------------------------------------------------------------------------------------------->
-        </CmdFancyBox>
-        <!-- end fancy-box --------------------------------------------------------------------------------------------------->
+                <!-- begin main-navigation --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-main-navigation">
+                        <span>Main Navigation</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdMainNavigation')"></a>
+                    </h2>
+                    <CmdMainNavigation ref="CmdMainNavigation" ariaLabel="Main navigation (component demo)" v-bind="cmdMainNavigationSettingsData"
+                        :navigationEntries="navigationDataModified" />
+                    <!-- begin router-view -->
+                    <router-view v-if="useRouterLinks"></router-view>
+                    <!-- end router-view -->
+                </CmdWidthLimitationWrapper>
+                <!-- end main-navigation --------------------------------------------------------------------------------------------------->
 
-        <!-- begin component-settings-sidebar --------------------------------------------------------------------------------------------------->
-        <CmdSidebar v-if="showSettingsSidebar" id="component-settings"
-            :cmdHeadline="{ headlineText: 'Component Settings', headlineLevel: 3, textAlign: 'center' }"
-            :openSidebar="openRightSidebar" @toggle-sidebar="setOpenStatusRightSidebar" :collapseToLeft="false">
-            <template #open>
-                <ComponentSettings :componentName="componentName" :componentProps="componentProps"
-                    :componentSettings="componentSettings" :componentControls="componentControls" />
-            </template>
-        </CmdSidebar>
-        <!-- end component-settings-sidebar --------------------------------------------------------------------------------------------------->
-    </div><!-- end .page-wrapper -->
+                <!-- begin multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-multistep-form-progress-bar">
+                        <span>Multistepform-Progressbar</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdMultistepFormProgressBar')"></a>
+                    </h2>
+                    <h3>Steps with icons</h3>
+                    <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.withIcon"
+                        v-bind="cmdMultistepFormProgressBarSettingsData"
+                        @click="showPageMultistep = $event.index + 1" />
+                    <h3>Router</h3>
+                    <CmdMultistepFormProgressBar ref="CmdMultistepFormProgressBar" :multisteps="multistepsData.router"
+                        v-bind="cmdMultistepFormProgressBarSettingsData"
+                        @click="showPageMultistep = $event.index + 1" />
+                    <div>
+                        <p>Page {{ showPageMultistep }}</p>
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end multistep-form-progress-bar --------------------------------------------------------------------------------------------------->
+
+                <!-- begin multistep-form-wrapper --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-multistep-form-wrapper">
+                        <span>Multistepform-Wrapper</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdMultistepFormWrapper')">
+                        </a>
+                    </h2>
+                    <h3>Data provided by property</h3>
+                    <CmdMultistepFormWrapper :requiredPages="[1, 2]"
+                        :defaultInputValues="multistepFormDefaultInputValues">
+
+                        <template v-slot:page-1="props">
+                            <h3>Page 1 - all fields required</h3>
+                            <CmdForm :formElements="multistepFormWrapperPage1Data" :useSlot="false"
+                                @validation-status-change="toggleSystemMessage($event, props)"
+                                :cmdLinkSubmitButton="{ show: false }" :modelValue="props.formDataForPage"
+                                @update:modelValue="props.updateFormDataForPage" />
+                            <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set
+                                Error</a><br />
+                            <a href="#" @click.prevent="props.removeErrorOnPage">Remove Error</a>
+                        </template>
+                        <template v-slot:page-2="props">
+                            <h3>Page 2 - 2/2 fields required (in slot)</h3>
+                            <CmdForm :cmdLinkSubmitButton="{ show: false }"
+                                :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
+                                <CmdFormElement element="input" type="tel" labelText="Telephone:"
+                                    name="page-2-telephone" id="page-2-telephone" placeholder="Enter phone number"
+                                    :required="true" :modelValue="props.formDataForPage['page-2-telephone']"
+                                    @update:modelValue="setValue($event, 'page-2-telephone', props)"
+                                    @validation-status-change="setValidationStatus($event, 'page-2-telephone', props)" />
+                                <CmdFormElement element="input" type="email" labelText="E-Mail:" name="page-2-email"
+                                    id="page-2-email" :required="true" placeholder="Enter email address"
+                                    :modelValue="props.formDataForPage['page-2-email']"
+                                    @update:modelValue="setValue($event, 'page-2-email', props)"
+                                    @validation-status-change="setValidationStatus($event, 'page-2-email', props)" />
+                            </CmdForm>
+                            <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                        </template>
+                        <template v-slot:page-3="props">
+                            <h3>Page 3 - no fields required</h3>
+                            <CmdForm @validation-status-change="toggleSystemMessage($event, props)"
+                                :cmdLinkSubmitButton="{ show: false }" :modelValue="props.formDataForPage"
+                                @update:modelValue="props.updateFormDataForPage"
+                                :cmdHeadline="{ headlineText: 'Form-Elements in Slot', headlineLevel: 3 }">
+                                <CmdFormElement element="input" type="text" labelText="Street/No:" name="street-no"
+                                    id="street-no" placeholder="Enter street and number"
+                                    v-model="props.formDataForPage.streetNo" />
+                                <div class="input-wrapper">
+                                    <CmdFormElement element="input" type="number" labelText="Zip:" name="zip" id="zip"
+                                        v-model="props.formDataForPage.zip" />
+                                    <CmdFormElement element="input" type="text" labelText="City:" name="city" id="city"
+                                        v-model="props.formDataForPage.city" />
+                                </div>
+                            </CmdForm>
+                        </template>
+                        <template v-slot:page-last="props">
+                            <template v-if="!confirmDataPrivacy">
+                                <h3>Page 4</h3>
+                                <CmdForm :cmdHeadline="{ headlineText: 'Confirmation', headlineLevel: 3 }"
+                                    :cmdLinkSubmitButton="{ disabled: props.atleastOneStepWithError || !dataPrivacyChecked, type: 'button' }"
+                                    :cmdLinkCancelButton="{ show: false }" @submit="validateForm">
+                                    <p>Please confirm that all data you provided is legit.</p>
+                                    <CmdFormElement element="input" type="checkbox" labelText="Confirm data privacy:"
+                                        name="confirm-data-privacy" id="confirm-data-privac" :required="true"
+                                        v-model="dataPrivacyChecked" />
+                                </CmdForm>
+                            </template>
+                            <template v-else>
+                                <h3>Confirmation</h3>
+                                <CmdSystemMessage systemMessage="Your request was send successfully!"
+                                    validationStatus="success" :allowUserToCloseMessage="false" />
+                                <p>A copy with all submitted data was send to you.</p>
+                            </template>
+                        </template>
+                    </CmdMultistepFormWrapper>
+                    <h3>Data provided by slot</h3>
+                    <CmdMultistepFormWrapper>
+                        <template v-slot:progress-bar="props">
+                            <ul class="flex-container">
+                                <li v-for="index of props.numberOfPages" :key="index">
+                                    <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">{{ index
+                                    }}</a>
+                                </li>
+                            </ul>
+                        </template>
+                        <template v-slot:page-1="props">
+                            Content Page 1
+                            <span v-if="props.hasError">Error</span>
+                            <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                        </template>
+                        <template v-slot:page-2="props">
+                            Content Page 2
+                            <span v-if="props.hasError">Error</span>
+                            <a href="#" @click.prevent="props.setErrorOnPage('This is an error!')">Set Error</a>
+                        </template>
+                        <template v-slot:page-3="props">
+                            Content Page 3
+                            <span v-if="props.hasError">Error</span>
+                        </template>
+                        <template v-slot:page-4="props">
+                            Content Page 4
+                            <span v-if="props.hasError">Error</span>
+                        </template>
+                        <template v-slot:page-5="props">
+                            Content Page 5
+                            <span v-if="props.hasError">Error</span>
+                        </template>
+                        <template v-slot:pagination="props">
+                            <div class="button-wrapper reverse justify-content-space-between">
+                                <CmdLink linkType="button" :highlightLevel="null" :icon='{
+                                    iconClass: "icon-chevron-one-stripe-right",
+                                    tooltip: "To next page",
+                                    position: "right"
+                                }' text="Next" :disabled="props.disabledNextLink" @click="props.setNextPage" />
+                                <CmdLink linkType="button" class="cancel" :highlightLevel="null" :icon='{
+                                    iconClass: "icon-cancel-circle",
+                                }' text="Cancel" />
+                                <CmdLink linkType="button" :highlightLevel="null" :icon='{
+                                    iconClass: "icon-chevron-one-stripe-left",
+                                    tooltip: "To previous page"
+                                }' text="Back" @click="props.setPrevPage" :disabled="props.disabledPrevLink" />
+                            </div>
+                        </template>
+                    </CmdMultistepFormWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end multistep-form-wrapper --------------------------------------------------------------------------------------------------->
+
+                <!-- begin newsletter-subscription --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-newsletter-subscription">
+                        <span>Newsletter Subscription</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdNewsletterSubscription')"></a>
+                    </h2>
+                    <CmdForm :use-fieldset="false">
+                        <CmdNewsletterSubscription ref="CmdNewsletterSubscription"
+                            v-bind="cmdNewsletterSubscriptionSettingsData" v-model="newsletter"
+                            @buttonClick="submitNewsletterRegistration" />
+                    </CmdForm>
+                </CmdWidthLimitationWrapper>
+                <!-- end newsletter-subscription --------------------------------------------------------------------------------------------------->
+
+                <!-- begin opening-hours --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-opening-hours">
+                        <span>Opening Hours</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdOpeningHours')"></a>
+                    </h2>
+                    <CmdOpeningHours ref="CmdOpeningHours" v-bind="cmdOpeningHoursSettingsData"
+                        :openingHours="openingHoursData" :checkInterval="0" :use24HoursFormat="false" />
+                </CmdWidthLimitationWrapper>
+                <!-- end opening-hours --------------------------------------------------------------------------------------------------->
+
+                <!-- begin page-footer --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-page-footer">
+                        <span>Page Footer</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdPageFooter')"></a>
+                    </h2>
+                    <CmdPageFooter ref="CmdPageFooter" v-bind="cmdPageFooterSettingsData"
+                        :button-print-view="{ text: 'Print this page' }" :cmdSocialNetworks="socialNetworksData">
+                        <button class="button primary" title="Button given by slot">
+                            <span class="icon-mail"></span>
+                            <span>Contact</span>
+                        </button>
+                    </CmdPageFooter>
+                </CmdWidthLimitationWrapper>
+                <!-- end page-footer --------------------------------------------------------------------------------------------------->
+
+                <!-- begin page-header --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-page-header">
+                        <span>Page Header</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdPageHeader')"></a>
+                    </h2>
+                    <CmdPageHeader ref="CmdPageHeader" :cmdBreadcrumbs="breadcrumbsData"
+                        :cmdHeadline="{ headlineText: 'Main headline for page', headlineLevel: 1 }">
+                        <a href="#" title="Link given by slot">
+                            <span class="icon-user-profile"></span>
+                            <span>You are logged in</span>
+                        </a>
+                    </CmdPageHeader>
+                </CmdWidthLimitationWrapper>
+                <!-- end page-header --------------------------------------------------------------------------------------------------->
+
+                <!-- begin pagination --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-pagination">
+                        <span>Pagination</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdPagination')"></a>
+                    </h2>
+                    <div>
+                        <p>Page {{ showPagePager }}</p>
+                    </div>
+                    <CmdPagination ref="CmdPagination" v-bind="cmdPaginationSettingsData"
+                        @click="showPagePager = $event" />
+                </CmdWidthLimitationWrapper>
+                <!-- end pagination --------------------------------------------------------------------------------------------------->
+
+                <!-- begin paragraph --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-paragraph">
+                        <span>Paragraph</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdParagraph')"></a>
+                    </h2>
+                    <CmdParagraph ref="CmdParagraph" v-bind="cmdParagraphSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end paragraph --------------------------------------------------------------------------------------------------->
+
+                <!-- begin section --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-section">
+                        <span>Section</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSection')"></a>
+                    </h2>
+                    <h3>Section with content provided by properties</h3>
+                    <CmdSection style="border: 1px dashed var(--color-medium-gray);"
+                        :cmdHeadline="{ headlineText: 'Headline for section provided by property', headlineLevel: 4 }"
+                        content="Content for section provided by property." />
+                    <h3>Section with content provided by slot</h3>
+                    <CmdSection :useSlot="true" style="border: 1px dashed var(--color-medium-gray);">
+                        <h4>Headline for section provided by slot</h4>
+                        <p>Content for section provided by slot.</p>
+                    </CmdSection>
+                    <h3>Section styled as box</h3>
+                    <CmdSection :useSlot="true" :styleAsBox="true">
+                        <h4>Headline for section styled as box</h4>
+                        <p>Content for section styled as box.</p>
+                    </CmdSection>
+                </CmdWidthLimitationWrapper>
+                <!-- end section --------------------------------------------------------------------------------------------------->
+
+                <!-- begin site-footer --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-site-footer">Site Footer</h2>
+                    <h3>Site Footer with content provided by properties</h3>
+                    <CmdSiteFooter :cmdList="{ items: listData }" />
+                    <h3>Site Footer with content provided by slot</h3>
+                    <CmdSiteFooter>
+                        <CmdLink linkType="href" ref="CmdLink" v-bind="cmdLinkSettingsData"
+                            :icon="{ iconClass: 'icon-chevron-one-stripe-right', position: 'left', tooltip: 'Tooltip for hyperlink' }"
+                            @click="cmdLinkOutput" />
+                    </CmdSiteFooter>
+                </CmdWidthLimitationWrapper>
+                <!-- end site-footer --------------------------------------------------------------------------------------------------->
+
+                <!-- begin site-header --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-site-header">
+                        <span>Site Header</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSiteHeader')"></a>
+                    </h2>
+                    <CmdSiteHeader ref="CmdSiteHeader" v-bind="cmdSiteHeaderSettingsData"
+                        :cmdMainNavigation="{ ...cmdSiteHeaderSettingsData?.cmdMainNavigation, ariaLabel: 'Main navigation (site header demo)' }"
+                        :cmdCompanyLogo="companyLogoData">
+                        <template v-slot:topheader>
+                            <CmdList :items="listData" orientation="horizontal" align="right" />
+                        </template>
+                    </CmdSiteHeader>
+                </CmdWidthLimitationWrapper>
+                <!-- end site-header --------------------------------------------------------------------------------------------------->
+
+                <!-- begin site-search --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-site-search">
+                        <span>Site Search</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSiteSearch')"></a>
+                    </h2>
+                    <CmdSiteSearch ref="CmdSiteSearch" v-bind="cmdSiteSearchSettingsData"
+                        v-model:modelValueInput1="siteSearchInput1" v-model:modelValueInput2="siteSearchInput2"
+                        v-model:modelValueRadius="radius" v-model:modelValueSearchFilters="filters"
+                        @search="siteSearchOutput" :cmdFakeSelect="siteSearchFilters" />
+                </CmdWidthLimitationWrapper>
+                <!-- end site-search --------------------------------------------------------------------------------------------------->
+
+                <!-- begin site-wrapper --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-site-wrapper">
+                        <span>Site Wrapper</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSiteWrapper')"></a>
+                    </h2>
+                    <h3>Site Wrapper with content provided by properties</h3>
+                    <CmdSiteWrapper class="demo-border" :nestedInPage="true" ref="CmdSiteWrapper" :pageContent="siteWrapperData.pageContent"
+                        :cmdSiteHeader="siteWrapperData.cmdSiteHeader" :cmdSiteFooter="siteWrapperData.cmdSiteFooter" />
+                    <h3>Site Wrapper with content (in three columns) provided by slot</h3>
+                    <CmdSiteWrapper class="demo-border" :nestedInPage="true"
+                        :aside="{ leftColumn: { show: true }, rightColumn: { show: true } }" :useHeroSection="true">
+                        <template v-slot:topheader>
+                            <CmdList :items="listData" orientation="horizontal" align="right" />
+                        </template>
+                        <template v-slot:logo>
+                            <CmdCompanyLogo v-bind="companyLogoData" />
+                        </template>
+                        <template v-slot:hero-section-content>
+                            <div class="demo-border">
+                                Slot content for hero section
+                            </div>
+                        </template>
+                        <template v-slot:left-column>
+                            <div class="demo-border">
+                                Slot content for left column
+                            </div>
+                        </template>
+                        <template v-slot:page-content>
+                            <div class="demo-border">
+                                <h2>Headline for page-content-slot</h2>
+                                <p>Content for page-content-slot</p>
+                            </div>
+                        </template>
+                        <template v-slot:right-column>
+                            <div class="demo-border">
+                                Slot content for right column
+                            </div>
+                        </template>
+                        <template v-slot:site-footer>
+                            <div class="demo-border">
+                                Slot content for site-footer-slot
+                            </div>
+                        </template>
+                    </CmdSiteWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end site-wrapper --------------------------------------------------------------------------------------------------->
+
+                <!-- begin slideshow --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-slideshow">
+                        <span>Slideshow</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSlideshow')"></a>
+                    </h2>
+                    <CmdSlideshow ref="CmdSlideshow" v-bind="cmdSlideshowSettingsData" :slideshow-items="slideshowData">
+                        Slot-Content
+                    </CmdSlideshow>
+                </CmdWidthLimitationWrapper>
+                <!-- end slideshow --------------------------------------------------------------------------------------------------->
+
+
+                <!-- begin smart-search --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-smart-search">
+                        <span>Smart Search</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSmartSearch')"></a>
+                    </h2>
+                    <CmdSmartSearch ref="CmdSmartSearch" v-bind="smartSearchSettingsData"
+                        :listOfRecommendations="smartSearchData.listOfRecommendations" v-model="smartSearchString"
+                        :maxNumberOfRecommendations="5" />
+                    <output>
+                        smartSearchString: {{ smartSearchString }}
+                    </output>
+                    <CmdSmartSearch :listOfRecommendations="smartSearchData.listOfRecommendations"
+                        v-model="smartSearchObject" :maxNumberOfRecommendations="5" :openListToTop="true" />
+                    <output>
+                        smartSearchObject: {{ smartSearchObject }}
+                    </output>
+                </CmdWidthLimitationWrapper>
+                <!-- end smart-search --------------------------------------------------------------------------------------------------->
+
+                <!-- begin social-networks --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-social-networks">
+                        <span>Social Networks</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSocialNetworks')"></a>
+                    </h2>
+                    <CmdSocialNetworks ref="CmdSocialNetworks"
+                        v-bind="{ ...cmdSocialNetworksSettingsData, ...socialNetworksData }" />
+                </CmdWidthLimitationWrapper>
+                <!-- end social-networks --------------------------------------------------------------------------------------------------->
+
+                <!-- begin switch-language --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-switch-language">Switch Language</h2>
+                    <CmdSwitchLanguage :pathFlags="switchLanguage.pathFlags" :languages="switchLanguage.languages"
+                        @click="updateLanguage" />
+                    <output>Selected language: {{ selectedLanguage }} </output>
+                </CmdWidthLimitationWrapper>
+                <!-- end switch-language --------------------------------------------------------------------------------------------------->
+
+                <!-- begin system-message --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-system-message">
+                        <span>System Message</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdSystemMessage')"></a>
+                    </h2>
+                    <CmdSystemMessage ref="CmdSystemMessage" v-bind="cmdSystemMessageSettingsData" />
+                    <CmdSystemMessage validationStatus="warning" :allowUserToCloseMessage="false">
+                        <h4>This is a system message with slot-content. (that cannot be closed)</h4>
+                    </CmdSystemMessage>
+                </CmdWidthLimitationWrapper>
+                <!-- end system-message --------------------------------------------------------------------------------------------------->
+
+                <!-- begin tables --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-tables">
+                        <span>Tables</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdTable')"></a>
+                    </h2>
+                    <h3>Table as wide as its content (with caption)</h3>
+                    <CmdTable ref="CmdTable" v-bind="cmdTableSettingsData" :table-data="tableDataLarge" />
+                    <h3>Table as wide as possible</h3>
+                    <CmdTable :collapsible="true" :fullWidthOnDefault="false" :userCanToggleWidth="true"
+                        :table-data="tableDataLarge" />
+                </CmdWidthLimitationWrapper>
+                <!-- end tables --------------------------------------------------------------------------------------------------->
+
+                <!-- begin tabs --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-tabs">
+                        <span>Tabs</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdTabs')"></a>
+                    </h2>
+                    <CmdTabs ref="CmdTabs" v-bind="cmdTabsSettingsData" :tabs="tabsData">
+                        <template v-slot:tab-content-0>
+                            <h4>Tab 1 headline</h4>
+                            <p>Slot-Content Tab 1</p>
+                        </template>
+                        <template v-slot:tab-content-1>
+                            <h4>Tab 2 headline</h4>
+                            <p>Slot-Content Tab 2</p>
+                        </template>
+                        <template v-slot:tab-content-2>
+                            <h4>Tab 3 headline</h4>
+                            <p>Slot-Content Tab 3</p>
+                        </template>
+                    </CmdTabs>
+                </CmdWidthLimitationWrapper>
+                <!-- end tabs --------------------------------------------------------------------------------------------------->
+
+                <!-- begin tags --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-tag">
+                        <span>Tag</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdTag')">
+                        </a>
+                    </h2>
+                    <CmdTag ref="CmdTag" v-bind="cmdTagSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end tags --------------------------------------------------------------------------------------------------->
+
+                <!-- begin text-image-block --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-text-image-block">
+                        <span>Text-Image-Block</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdTextImageBlock')"></a>
+                    </h2>
+                    <div class="flex-container">
+                        <CmdTextImageBlock
+                            :cmdHeadline="{ headlineText: 'Text-Image-Block (with html-text)', headlineLevel: 3 }"
+                            :cmdParagraph="{ content: 'This text is given as html-text and show below an optional image.'}" />
+                        <CmdTextImageBlock ref="CmdTextImageBlock" v-bind="cmdTextImageBlockSettingsData"
+                            :cmdHeadline="{ headlineText: 'Text-Image-Block (with image and plain text)', headlineLevel: 3 }"
+                            :cmdParagraph="{ content: 'This text is given as html-text and show below an optional image.'}"
+                            :cmdImage='{
+                                "image": {
+                                    "src": "/media/images/demo-images/large/landscape-01.jpg",
+                                    "alt": "alternative text",
+                                    "tooltip": "tooltip"
+                                },
+                                "figcaption": {
+                                    "text": "figcaption",
+                                    "position": "bottom",
+                                    "textAlign": "center",
+                                    "show": true
+                                }
+                            }' />
+                        <CmdTextImageBlock
+                            :cmdHeadline="{ headlineText: 'Text-Image-Block (with image and html-text)', headlineLevel: 3 }"
+                            :cmdParagraph="{ content: 'This text is given as html-text and show below an optional image.'}"
+                            :cmdImage='{
+                                "image": {
+                                    "src": "/media/images/demo-images/large/landscape-02.jpg",
+                                    "alt": "alternative text",
+                                    "tooltip": "tooltip"
+                                },
+                                "figcaption": {
+                                    "text": "figcaption",
+                                    "position": "bottom",
+                                    "textAlign": "center",
+                                    "show": true
+                                }
+                            }' />
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end text-image-block --------------------------------------------------------------------------------------------------->
+
+                <!-- begin thumbnail-scroller --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-thumbnail-scroller">
+                        <span>Thumbnail-Scroller</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdThumbnailScroller')"></a>
+                    </h2>
+                    <p> date (YMD/default): {{ formatDate('2025-01-28', "", "-") }}</p>
+                    <p> date (DMY): {{ formatDate('2025-01-28', "dmy") }}</p>
+                    <p> date (MDY): {{ formatDate('2025-01-28', "mdy", "/") }}</p>
+                    <p> date (invalid): {{ formatDate('invalid') }}</p>
+                    <div class="inline-size">
+                        <CmdThumbnailScroller ref="CmdThumbnailScroller" v-bind="cmdThumbnailScrollerSettingsData"
+                            :thumbnailScrollerItems="thumbnailScrollerData" />
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end thumbnail-scroller --------------------------------------------------------------------------------------------------->
+
+                <!-- begin toast --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-toast">
+                        <span>Toast</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdToast')">
+                        </a>
+                    </h2>
+                    <CmdToast message="This is a message!" ref="CmdToast" />
+                    <div class="button-wrapper">
+                        <button type="button" class="button" @click="$refs.CmdToast.toggleToast()">
+                            <span>Toggle Toast</span>
+                        </button>
+                    </div>
+                </CmdWidthLimitationWrapper>
+                <!-- end toast --------------------------------------------------------------------------------------------------->
+
+                <!-- begin toggle-darkmode --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-toggle-dark-mode">
+                        <span>Toggle Dark-Mode</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdToggleDarkMode')"></a>
+                    </h2>
+                    <CmdToggleDarkMode ref="CmdToggleDarkMode" v-bind="cmdToggleDarkModeSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end toggle-darkmode --------------------------------------------------------------------------------------------------->
+
+                <!-- begin tooltip --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-tooltip">
+                        <span>Tooltip</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdTooltip')"></a>
+                    </h2>
+                    <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover;" id="show-on-hover">Show
+                        tooltip on
+                        hover!</a><br />
+                    <CmdTooltip id="tooltip-target-hover" positionAnchor="--tooltip-anchor-for-hover"
+                        relatedId="show-on-hover" tooltipText="This is text for a tooltip by hover!" />
+
+                    <a href="#" @click.prevent style="anchor-name: --tooltip-anchor-for-hover-on-delay"
+                        id="show-with-delay">Show
+                        tooltip on hover with delay!</a><br />
+                    <CmdTooltip id="tooltip-target-hover-on-delay" positionAnchor="--tooltip-anchor-for-hover-on-delay"
+                        relatedId="show-with-delay" :delayToShowTooltip="2000">
+                        Tooltip on hover with delay
+                    </CmdTooltip>
+
+                    <button type="button" class="button" style="anchor-name: --tooltip-anchor-for-click;"
+                        positionAnchor="--tooltip-anchor-for-click" title="Click to open tooltip"
+                        popovertarget="tooltip-target-click" aria-describedby="tooltip-target-click">
+                        <span class="icon-questionmark"></span>
+                        <span>Toggle Tooltip</span>
+                    </button>
+                    <CmdTooltip ref="CmdTooltip" :popoverTargetName="'tooltip-target-click'" :showCloseIcon="true"
+                        positionAnchor="--tooltip-anchor-for-click" tooltipText="This is text for a tooltip by click!"
+                        v-bind="cmdTooltipSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end tooltip --------------------------------------------------------------------------------------------------->
+
+                <!-- begin upload-form --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-upload-form">
+                        <span>Upload-Form</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdUploadForm')"></a>
+                    </h2>
+                    <CmdUploadForm ref="CmdUploadForm" v-bind="cmdUploadFormSettingsData" />
+                </CmdWidthLimitationWrapper>
+                <!-- end upload-form --------------------------------------------------------------------------------------------------->
+
+                <!-- begin upload-form --------------------------------------------------------------------------------------------------->
+                <CmdWidthLimitationWrapper>
+                    <h2 class="headline-demopage" id="section-width-limitation-wrapper">
+                        <span>Width Limitation Wrapper</span>
+                        <a href="#" class="button small icon-cog" title="Open Component Settings"
+                            @click.prevent="openSettingsSidebar('CmdWidthLimitationWrapper')"></a>
+                    </h2>
+                    <CmdWidthLimitationWrapper style="border: 1px  dashed var(--color-gray-30)"
+                        ref="CmdWidthLimitationWrapper" v-bind="cmdWidthLimitationWrapperSettingsData">
+                        <h3>Slot-Content</h3>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                        <p>Slot-content</p>
+                    </CmdWidthLimitationWrapper>
+                </CmdWidthLimitationWrapper>
+                <!-- end upload-form --------------------------------------------------------------------------------------------------->
+            </div>
+
+            <!-- begin page view -->
+            <div v-else id="content">
+                <CmdWidthLimitationWrapper>
+                    <h1 class="headline-demopage">Page Overview</h1>
+                </CmdWidthLimitationWrapper>
+                <!-- begin page-overview -->
+                <PageOverview />
+                <!-- end page-overview -->
+            </div>
+            <!-- end page view -->
+
+            <!-- begin cmd-site-footer -->
+            <CmdSiteFooter>
+                <!-- begin slot-content -->
+                Slot-Content for Site-Footer
+                <!-- end slot-content -->
+            </CmdSiteFooter>
+            <!-- end cmd-site-footer -->
+
+            <!-- begin fancy-box --------------------------------------------------------------------------------------------------->
+            <CmdFancyBox :show="fancyBoxCookieDisclaimer" :fancyBoxOptions="{ 'closeIcon': { show: false } }"
+                :allowEscapeKey="false"
+                :cmdHeadline="{ show: true, headlineText: 'Cookie Disclaimer', headlineLevel: 2 }"
+                defaultAriaLabelText="Cookie Disclaimer">
+                <!-- begin cookie-disclaimer --------------------------------------------------------------------------------------------------->
+                <CmdCookieDisclaimer :cookieOptions="cookieDisclaimerData"
+                    @closeCookieDisclaimer="closeCookieDisclaimer" v-model="acceptedCookies"
+                    :cmdHeadlineCookieDisclaimer="{ show: false }"
+                    privacyText="By browsing this website you accept the usage and saving of anonymous data!">
+                </CmdCookieDisclaimer>
+                <!-- end cookie-disclaimer --------------------------------------------------------------------------------------------------->
+            </CmdFancyBox>
+            <!-- end fancy-box --------------------------------------------------------------------------------------------------->
+
+            <!-- begin component-settings-sidebar --------------------------------------------------------------------------------------------------->
+            <CmdSidebar v-if="showSettingsSidebar" id="component-settings"
+                :cmdHeadline="{ headlineText: 'Component Settings', headlineLevel: 5, textAlign: 'center' }"
+                :openSidebar="openRightSidebar" @toggle-sidebar="setOpenStatusRightSidebar" :collapseToLeft="false">
+                <template #open>
+                    <ComponentSettings :componentName="componentName" :componentProps="componentProps"
+                        :componentSettings="componentSettings" :componentControls="componentControls" />
+                </template>
+            </CmdSidebar>
+            <!-- end component-settings-sidebar --------------------------------------------------------------------------------------------------->
+        </template>
+        <template v-slot:below-site-footer>
+            <!-- begin copyright-information --------------------------------------------------------------------------------------------------->
+            <CmdCopyrightInformation />
+            <!-- end copyright-information --------------------------------------------------------------------------------------------------->
+        </template>
+    </CmdSiteWrapper>
 </template>
 
 <script>
 // import example data
+import { applyTemplate } from "@/utils/template"
 import accordionData from '@/assets/data/accordion-data.json'
 import addressData from '@/assets/data/address-data.json'
 import bankAccountData from '@/assets/data/bank-account-data.json'
@@ -1919,6 +2001,7 @@ import multistepFormWrapperPage1Data from '@/assets/data/multistep-form-wrapper-
 import navigationData from '@/assets/data/main-navigation.json'
 import openingHoursData from '@/assets/data/opening-hours.json'
 import selectOptionsData from '@/assets/data/select-options.json'
+import siteWrapperData from '@/assets/data/site-wrapper.json'
 import slideshowData from '@/assets/data/slideshow.json'
 import smartSearchData from '@/assets/data/smart-search.json'
 import socialNetworksData from '@/assets/data/social-networks-page-by-json.json'
@@ -2136,6 +2219,7 @@ export default {
             navigationData,
             openingHoursData,
             selectOptionsData,
+            siteWrapperData,
             slideshowData,
             smartSearchData,
             socialNetworksData,
@@ -2425,20 +2509,8 @@ export default {
             immediate: true
         },
         selectedTemplate() {
-            // change stylesheet
-            let linkTag = document.querySelector('link')
-
-            if (linkTag) {
-                linkTag.parentNode.removeChild(linkTag)
-            }
-
-            if (this.selectedTemplate !== "blank") {
-                let newLink = document.createElement('link');
-                newLink.rel = 'stylesheet';
-                newLink.href = 'https://cdn.jsdelivr.net/npm/comand-frontend-framework/dist/templates/' + this.selectedTemplate + '.css';
-
-                document.head.appendChild(newLink);
-            }
+            // change stylesheet (template-css is loaded from the installed comand-frontend-framework)
+            applyTemplate(this.selectedTemplate)
 
             if (this.selectedTemplate === "blank") {
                 this.companyLogoData =
@@ -2482,13 +2554,15 @@ export default {
         }
     }
 
-    main .cmd-width-limitation-wrapper:not(:last-child) {
+    main {
+        .cmd-width-limitation-wrapper:not(:last-child) {
         border-bottom: var(--default-border);
         border-style: dashed;
 
-        section {
-            padding-top: calc(var(--default-padding) * 6);
-            padding-bottom: calc(var(--default-padding) * 6);
+            section {
+                padding-top: calc(var(--default-padding) * 6);
+                padding-bottom: calc(var(--default-padding) * 6);
+            }
         }
     }
 
@@ -2497,7 +2571,7 @@ export default {
         align-items: center;
 
         [class*="icon-"] {
-            color: var(--color-white);
+            color: var(--primary-color-contrast-text);
             margin: 0;
         }
 
@@ -2505,6 +2579,7 @@ export default {
             background: none;
             border-color: var(--color-white);
             align-self: center;
+            aspect-ratio: 1/1;
 
             &:hover,
             &:active,
@@ -2545,8 +2620,12 @@ export default {
 
             &#list-of-components {
                 .box-body {
-                    max-height: 70rem;
+                    min-height: 0;
                     overflow: auto;
+
+                    ul {
+                        margin: 0;
+                    }
                 }
             }
         }
@@ -2557,9 +2636,19 @@ export default {
             justify-content: space-between;
             height: 100%;
 
+            > .cmd-box-wrapper {
+                height: inherit;
+
+                > .inner-box-wrapper {
+                    height: inherit;
+                    flex-direction: column;
+                }
+            }
+
             .comand-versions {
+                font-size: 1.2rem;
                 margin: 0;
-                background: var(--color-scheme-background-color);
+                background: var(--color-scheme-background);
 
                 dd {
                     white-space: nowrap;
@@ -2583,12 +2672,16 @@ export default {
             left: auto;
             right: 0;
         }
-    }
 
-    #component-settings {
-        .open-slot-wrapper {
-            display: block;
+        &#component-settings {
+            left: auto;
+            right: 0;
+
+            .open-slot-wrapper {
+                display: block;
+            }
         }
+
     }
 
     output {

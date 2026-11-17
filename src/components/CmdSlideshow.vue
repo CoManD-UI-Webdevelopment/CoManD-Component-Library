@@ -92,6 +92,11 @@ import {createUuid} from "../utils/common.js"
 export default {
     name: "CmdSlideshow",
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             index: 0,
@@ -356,7 +361,7 @@ export default {
         padding: var(--default-padding);
         line-height: 100%;
         font-size: 3rem;
-        color: var(--color-white);
+        color: var(--primary-color-contrast-text);
         background: var(--primary-color);
     }
 
@@ -384,7 +389,7 @@ export default {
                 border: var(--primary-border);
 
                 &:hover, &:active, &:focus {
-                    background: var(--color-white);
+                    background: var(--color-scheme-background);
                     color: var(--hyperlink-color);
                 }
             }

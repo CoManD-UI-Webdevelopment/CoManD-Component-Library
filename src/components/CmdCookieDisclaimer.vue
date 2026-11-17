@@ -1,7 +1,7 @@
 <template>
     <transition :name="transition">
         <!-- begin CmdCookieDisclaimer ---------------------------------------------------------------------------------------- -->
-        <div class="cmd-cookie-disclaimer flex-container vertical">
+        <div class="cmd-cookie-disclaimer flex-container flex-direction-column">
             <!-- begin slot -->
             <template v-if="useSlot">
                 <slot></slot>
@@ -20,7 +20,7 @@
                 <!-- begin slot for cookie-options -->
                 <slot name="cookie-options">
                     <!-- begin required cookies -->
-                    <div v-if="cookieOptions?.required" class="flex-container vertical">
+                    <div v-if="cookieOptions?.required" class="flex-container flex-direction-column">
                         <!-- begin CmdHeadline -->
                         <CmdHeadline
                             v-if="defaultCmdBoxRequiredCookies().showHeadline && defaultCmdBoxRequiredCookies().headlineText"
@@ -53,7 +53,7 @@
                                 <!-- end icon to toggle box-body -->
                             </header>
                             <div v-show="boxIsOpen(cookie.id)" class="collapsible-box-body">
-                                <p v-if="cookie.description">{{ cookie.description }}</p>
+                                <CmdParagraph v-if="cookie.description" :content="cookie.description"/>
                                 <p v-if="cookie.linkDataPrivacy">
                                     {{ cookie.linkDataPrivacy.label }}
                                     <a @click="openDataPrivacy"
@@ -71,7 +71,7 @@
                     <hr/>
 
                     <!-- begin optional cookies -->
-                    <div v-if="cookieOptions?.optional" class="flex-container vertical">
+                    <div v-if="cookieOptions?.optional" class="flex-container flex-direction-column">
                         <!-- begin CmdHeadline -->
                         <CmdHeadline
                             v-if="defaultCmdBoxOptionalCookies().showHeadline && defaultCmdBoxOptionalCookies().headlineText"
@@ -104,7 +104,7 @@
                                 <!-- end icon to toggle box-body -->
                             </header>
                             <div v-show="boxIsOpen(cookie.id)" class="collapsible-box-body">
-                                <p v-if="cookie.description">{{ cookie.description }}</p>
+                                <CmdParagraph v-if="cookie.description" :content="cookie.description "/>
                                 <p v-if="cookie.linkDataPrivacy">
                                     {{ cookie.linkDataPrivacy.label }}
                                     <a @click="openDataPrivacy"
@@ -126,12 +126,14 @@
 
                 <!-- begin button-wrapper for 'accept'-buttons -->
                 <div class="button-wrapper align-center">
-                    <button type="button" @click="acceptCurrentCookies">
-                        <span>{{ getMessage('cookie_disclaimer.button.accept_current_settings') }}</span>
-                    </button>
-                    <button type="button" class="primary" @click="acceptAllCookies">
-                        <span>{{ getMessage('cookie_disclaimer.button.accept_all_cookies') }}</span>
-                    </button>
+                    <CmdLink
+                        v-bind="cmdLinkAcceptRequiredCookiesProperties" 
+                        @click="acceptRequiredCookies"
+                    />
+                    <CmdLink
+                        v-bind="cmdLinkAcceptAllCookiesProperties" 
+                        @click="acceptAllCookies"
+                    />
                 </div>
                 <!-- end button-wrapper for 'accept'-buttons -->
             </div>
@@ -144,6 +146,7 @@
 // import mixins
 import I18n from "../mixins/I18n"
 import DefaultMessageProperties from "../mixins/CmdCookieDisclaimer/DefaultMessageProperties"
+import CmdLink from "./CmdLink.vue";
 
 export default {
     name: "CmdCookieDisclaimer",
@@ -218,9 +221,39 @@ export default {
         showPrivacyText: {
             type: Boolean,
             default: true
+        },
+        /**
+         * properties for CmdLink-compnent for "accept required cookies"-button
+         */
+        cmdLinkAcceptRequiredCookies: {
+            type: Object,
+            required: false
+        },
+        /**
+         * properties for CmdLink-compnent for "accept all cookies"-button
+         */
+         cmdLinkAcceptAllCookies: {
+            type: Object,
+            required: false
         }
     },
     computed: {
+        cmdLinkAcceptRequiredCookiesProperties() {
+            return {
+                linkType: "button",
+                highlightLevel: null,
+                text: this.getMessage("cookie_disclaimer.button.accept_required_cookies"),
+                ...this.cmdLinkAcceptRequiredCookies
+            }
+        },
+        cmdLinkAcceptAllCookiesProperties() {
+            return {
+                linkType: "button",
+                highlightLevel: "primary",
+                text: this.getMessage("cookie_disclaimer.button.accept_all_cookies"),
+                ...this.cmdLinkAcceptAllCookies
+            }
+        },
         acceptedCookies: {
             get() {
                 const cookies = this.modelValue ? [...this.modelValue] : []
@@ -270,7 +303,7 @@ export default {
                 this.openBoxes.splice(index, 1);
             }
         },
-        acceptCurrentCookies() {
+        acceptRequiredCookies() {
             this.$emit("close-cookie-disclaimer", this.acceptedCookies)
         },
         acceptAllCookies() {
@@ -338,7 +371,7 @@ export default {
             }
 
             &:has(input:checked) {
-                background: var(--color-white);
+                background: var(--color-scheme-background);
 
                 span[class*="icon-"] {
                     color: var(--hyperlink-color);

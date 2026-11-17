@@ -11,15 +11,15 @@
                 'off-canvas-right': offcanvasPosition === 'right'
             }
         ]">
-        <nav>
+        <nav :aria-label="ariaLabel">
             <!-- begin main-level -->
             <ul :class="{'stretch-items' : stretchMainItems}">
                 <li class="close-nav" v-if="showOffcanvas">
-                    <a href="#" id="close-offcanvas" role="button" @click.prevent="closeOffcanvasNavigation">
+                    <a href="#" :id="'close-offcanvas-' + uid" ref="closeOffcanvas" role="button" @click.prevent="closeOffcanvasNavigation">
                         <!-- begin CmdIcon -->
                         <CmdIcon v-if="closeOffcanvas.iconClass" :iconClass="closeOffcanvas.iconClass" :type="closeOffcanvas.iconType" />
                         <!-- end CmdIcon -->
-                        <span :class="{'hidden': !closeOffcanvas.showText}">{{ closeOffcanvas.text }}</span>
+                        <span :class="{'visually-hidden': !closeOffcanvas.showText}">{{ closeOffcanvas.text }}</span>
                     </a>
                 </li>
                 <li v-for="(navigationEntry, index) in navigationEntries" :key="index"
@@ -144,11 +144,11 @@
             <!-- end main-level -->
         </nav>
         <!-- begin off-canvas-button -->
-        <a v-if="persistOnMobile === false" href="#" class="button" id="toggle-offcanvas" @click.prevent="toggleOffcanvasNavigation">
+        <a v-if="persistOnMobile === false" href="#" class="button" :id="'toggle-offcanvas-' + uid" ref="toggleOffcanvas" @click.prevent="toggleOffcanvasNavigation">
             <!-- begin CmdIcon -->
             <CmdIcon :iconClass="buttonOffcanvas.iconClass" :type="buttonOffcanvas.iconType" />
             <!-- end CmdIcon -->
-            <span :class="{'hidden' : !buttonOffcanvas.showText}">{{ buttonOffcanvas.text }}</span>
+            <span :class="{'visually-hidden' : !buttonOffcanvas.showText}">{{ buttonOffcanvas.text }}</span>
         </a>
         <!-- end off-canvas-button -->
     </div>
@@ -158,11 +158,13 @@
 <script>
 // import functions
 import {getRoute} from "../utilities.js"
+import {createUuid} from "../utils/common.js"
 
 export default {
     name: "CmdMainNavigation",
     data() {
         return {
+            uid: createUuid(),
             showOffcanvas: false,
             showSubNavigations: true,
             openEntry: -1,
@@ -171,6 +173,13 @@ export default {
     },
     emits: ["offcanvas"],
     props: {
+        /**
+         * accessible name of the navigation-landmark (must be unique if there are several navigations on a page)
+         */
+        ariaLabel: {
+            type: String,
+            default: "Main navigation"
+        },
         /**
          * toggle if main-entries (on first-level) should be (horizontally) stretched equally
          */
@@ -304,7 +313,7 @@ export default {
         },
         closeOffcanvasNavigation() {
             this.showOffcanvas = false
-            document.getElementById("toggle-offcanvas")?.focus()
+            this.$refs.toggleOffcanvas?.focus()
         },
         toggleOffcanvasNavigation() {
             if (this.showOffcanvas) {
@@ -313,7 +322,7 @@ export default {
             } else {
                 // open offcanvas
                 this.showOffcanvas = true
-                this.$nextTick(() => document.getElementById("close-offcanvas")?.focus())
+                this.$nextTick(() => this.$refs.closeOffcanvas?.focus())
             }
         }
     },
@@ -385,13 +394,13 @@ export default {
 
 /* keep outside of .cmd-main-navigation to keep specificity */
 .off-canvas-right {
-    #toggle-offcanvas {
+    :is(#toggle-offcanvas, [id^="toggle-offcanvas-"]) {
         margin-right: 0;
         margin-left: auto;
     }
 }
 
-#toggle-offcanvas {
+:is(#toggle-offcanvas, [id^="toggle-offcanvas-"]) {
     margin-left: 0;
     display: none;
     aspect-ratio: 1/1;
@@ -414,7 +423,7 @@ export default {
             padding: 0 var(--default-padding);
             transition: var(--nav-transition);
 
-            #toggle-offcanvas {
+            :is(#toggle-offcanvas, [id^="toggle-offcanvas-"]) {
                 display: flex;
                 margin-bottom: 0;
                 width: auto;

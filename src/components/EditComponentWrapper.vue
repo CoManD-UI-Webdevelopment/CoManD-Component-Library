@@ -459,7 +459,7 @@ function buildComponentPath(component) {
 
     .edit-items {
         .action-buttons {
-            gap: var(--default-gap-third);
+            gap: calc(var(--default-gap) / 3);
             top: -2.3rem;
             left: 0;
             right: auto; /* avoids container to be stretched */
@@ -480,19 +480,19 @@ function buildComponentPath(component) {
                 }
 
                 &:nth-child(4) {
-                    right: var(--icon-font-size);
+                    right: var(--default-icon-size);
                 }
 
                 &:nth-child(3) {
-                    right: calc(var(--icon-font-size) * 2);
+                    right: calc(var(--default-icon-size) * 2);
                 }
 
                 &:nth-child(2) {
-                    right: calc(var(--icon-font-size) * 3);
+                    right: calc(var(--default-icon-size) * 3);
                 }
 
                 &:nth-child(1) {
-                    right: calc(var(--icon-font-size) * 4);
+                    right: calc(var(--default-icon-size) * 4);
                 }
 
                 a.button {

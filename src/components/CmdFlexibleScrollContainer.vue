@@ -6,7 +6,7 @@
             <slot name="fixed-wrapper"></slot>
             <!-- end slot for fixed-wrapper -->
         </div>
-        <div class="scroll-wrapper">
+        <div class="scroll-wrapper" tabindex="0">
             <!-- begin slot for scroll-wrapper -->
             <slot name="scroll-wrapper"></slot>
             <!-- end slot for scroll-wrapper -->

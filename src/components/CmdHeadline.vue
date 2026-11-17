@@ -1,8 +1,8 @@
 <template>
     <!-- begin CmdHeadline ---------------------------------------------------------------------------------------- -->
     <!-- begin default-view -->
-    <div v-if="!editModeContext || settingsContext || mainSidebarContext || headlineText"
-         :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}]">
+    <HeadlineWrapper v-if="(!editModeContext && (headlineText || $slots.default)) || settingsContext || mainSidebarContext || headlineText"
+         :without-wrapper="withoutWrapper" :wrapper-attributes="wrapperAttributes">
         <!-- begin headline with pre-headline-text -->
         <template v-if="preHeadlineText">
             <component v-if="headlineText" :is="headlineTag" :class="[highlightLevel, headlineTextAlign]">
@@ -50,12 +50,12 @@
             <!-- end headline-text with slot -->
         </component>
         <!-- end headline without pre-headline-text -->
-    </div>
+    </HeadlineWrapper>
     <!-- end default-view -->
 
     <!-- begin edit-mode -->
     <EditComponentWrapper
-        v-else
+        v-else-if="editModeContext"
         ref="editComponentWrapper"
         class="edit-items"
         :showComponentName="false"
@@ -80,16 +80,12 @@
             <!-- end CmdFormElement -->
 
             <template v-else-if="headlineText"
-                      :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">
-                <!-- begin CmdIcon -->
+                      :class="['cmd-headline', {'has-pre-headline-text': preHeadlineText, 'has-icon': cmdIcon?.iconClass}, headlineTextAlign]">>
                 <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
-                <!-- end CmdIcon -->
 
                 <template v-if="preHeadlineText">
                     <component v-if="headlineText" :is="headlineTag">
-                        <!-- begin CmdIcon -->
                         <CmdIcon v-if="cmdIcon" v-bind="cmdIcon"/>
-                        <!-- end CmdIcon -->
 
                         <span :class="['pre-headline-text-wrapper', 'text-align-' + textAlign]">
                             <!-- begin pre-headline-text -->
@@ -122,12 +118,23 @@
 </template>
 
 <script>
+import {h} from "vue"
 import EditMode from "../mixins/EditMode.vue"
 import {buildComponentPath, findEditComponentWrapper, updateHandlerProvider} from "../utils/editmode.js"
 
+// renders its content with or without the surrounding div (a Fragment cannot be used as dynamic component: it ignores slots)
+const HeadlineWrapper = (props, {slots}) => props.withoutWrapper ? slots.default?.() : h("div", props.wrapperAttributes, slots.default?.())
+HeadlineWrapper.props = ["withoutWrapper", "wrapperAttributes"]
+
 export default {
     name: "CmdHeadline",
+    components: {HeadlineWrapper},
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             editableHeadlineText: null,
@@ -152,13 +159,13 @@ export default {
         /**
          * set highlight-level for headline
          * 
-         * @allowedValues: "", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
          highlightLevel: {
             type: String,
-            default: "",
+            default: null,
             validator(value) {
-                return value === "" ||
+                return value === null ||
                     value === "primary" ||
                     value === "secondary" ||
                     value === "tertiary"
@@ -188,14 +195,25 @@ export default {
             }
         },
         /**
-         * properties for CmdIcon-component to show icon left/before headline
+         * properties for CmdIcon-component to show icon before headline
          */
         cmdIcon: {
             type: Object,
             required: false
+        },
+        /**
+         * renders the headline-tag without the surrounding div.cmd-headline (needed where a div is not allowed as parent,
+         * i.e. inside <summary>, which only permits phrasing content and headings as children)
+         */
+        withoutWrapper: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
+        wrapperAttributes() {
+            return this.withoutWrapper ? undefined : {class: ['cmd-headline', {'has-pre-headline-text': this.preHeadlineText, 'has-icon': this.cmdIcon?.iconClass}]}
+        },
         componentActive() {
             return this.editModeContext?.system.isActiveComponent(buildComponentPath(findEditComponentWrapper(this)))
         },

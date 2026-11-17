@@ -115,7 +115,7 @@ export default {
          */
         useFlexbox: {
             type: Boolean,
-            default: false
+            default: true
         },
         /**
          * define the number of boxes per row (if view is grid-view)
@@ -282,6 +282,10 @@ export default {
             .box {
                 align-self: stretch;
                 height: auto; /* must be set to auto if inner boxes have als stretchVertically-property activated */
+
+                &.collapsible:not(.open) {
+                    align-self: flex-start;
+                }
             }
 
             &.box {
@@ -300,6 +304,18 @@ export default {
     }
 
     .row-view {
+        flex-direction: column;
+
+        .box.product {
+            .box-header {
+                border-top-right-radius: 0;
+                
+                img {
+                    border-top-right-radius: 0;
+                }
+            }
+        }
+
         p.cutoff-text {
             height: auto;
 
@@ -312,6 +328,10 @@ export default {
             flex-direction: row;
             padding: var(--default-padding);
             align-items: center;
+
+            .box-footer {
+                align-self: flex-start;
+            }
 
             img {
                 margin-bottom: 0;

@@ -1,18 +1,13 @@
 <template>
     <!-- begin CmdAccordion ---------------------------------------------------------------------------------------- -->
-    <details ref="cmdAccordion" :class="['cmd-accordion', highlightLevel, { 'flex-container no-gap' : rowView }]" :name="accordionName">
-        <summary>
-            <!--
-            <span :class="[cmdIconClosed.iconClass, 'closed']" :title="cmdIconClosed.tooltip"></span>
-            <span :class="[cmdIconOpen.iconClass, 'open']" :title="cmdIconOpen.tooltip"></span>
-        -->
-            <CmdIcon :iconClass="toggleIconIconClass" :class="toggleIconStatus" :tooltip="toggleIconTooltip" />
-            <CmdHeadline v-bind="cmdHeadlineProperties" />
-            <!--
-            toggleIconStatus: {{ toggleIconStatus }}<br />
-            this.$refs.cmdAccordion?.open: {{ $refs.cmdAccordion?.open }}<br />
-            isOpen: {{ isOpen() }}
-        -->
+    <details ref="cmdAccordion" 
+        :class="['cmd-accordion', highlightLevel, { 'flex-container no-gap' : rowView, 'stretch-to-full-width': openAccordionHasFullWidth }]" 
+        :name="generateAccordionName"
+    >
+        <summary :class="{'writing-mode-vertical' : summaryWritingMode === 'vertical'}">
+            <CmdIcon :iconClass="toggleIconIconClassClosed" class="closed" :tooltip="cmdIconClosedRowView.tooltip" />
+            <CmdIcon :iconClass="toggleIconIconClassOpen" class="open" :tooltip="cmdIconOpenRowView.tooltip" />
+            <CmdHeadline v-bind="cmdHeadlineProperties" :without-wrapper="true" />
         </summary>
         <div class="accordion-body">
             <!-- begin slot-content -->
@@ -26,14 +21,13 @@
 </template>
 
 <script>
+import {createUuid} from "../utils/common.js"
+
 export default {
     name: "CmdAccordion",
-    mounted() {
-  console.log("this.$refs.cmdAccordion.open:", this.$refs.cmdAccordion?.open)
-},
     props: {
         /**
-         * arranges box-content in a row
+         * arranges accordion-content in a row
          *
          * @affectsStyling: true
          */
@@ -42,9 +36,24 @@ export default {
             default: false
         },
         /**
+         * set direction of text for summary
+         * 
+         * rowView-property must be true
+         * 
+         * @allowedValues: "horizontal", "vertical"
+         */
+         summaryWritingMode: {
+            type: String,
+            default: "horizontal",
+            validator(value) {
+                return value === "horizontal" ||
+                value === "vertical"
+            }
+        },
+        /**
          * set highlight-level for headline
          * 
-         * @allowedValues: "", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
         highlightLevel: {
             type: String,
@@ -64,6 +73,15 @@ export default {
             required: false
         },
         /**
+         * open accordion uses remaining space in accordions-wrapper
+         * 
+         * rowView must be false 
+         */
+         openAccordionHasFullWidth: {
+            type: Boolean,
+            default: true
+         },
+        /**
          * properties for CmdIcon-component if accordion is collapsed/closed
          */
         cmdIconClosedRowView: {
@@ -82,7 +100,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    iconClass: "icon-chevron-one-stripe-right",
+                    iconClass: "icon-chevron-one-stripe-left",
                     tooltip: "Collapse accordion"
                 }
             }
@@ -115,9 +133,18 @@ export default {
         * accordion-name is required if multiple-accrdion-boxes should be connect (name must be identical)
         */
         accordionName: {
-            type: Object,
+            type: String,
             required: false
         },
+        /**
+         * multiple boxes can be expanded if activated
+         * 
+         * accordionName-property must have different value or kept empty for each accordion-box in wrapper
+         */
+         allowMultipleExpandedBoxes: {
+            type: Boolean,
+            default: false
+         },
         /**
          * properties for CmdHeadline-component
          */
@@ -127,40 +154,28 @@ export default {
         }
     },
     computed: {
+        generateAccordionName() {
+            return this.allowMultipleExpandedBoxes ? this.accordionName + "-" + createUuid() : this.accordionName
+        },
         cmdHeadlineProperties() {
             return {
                 headlineLevel: 4,
                 ...this.cmdHeadline
             }
         },
-        toggleIconIconClass() {
-            if(this.rowView) {
-                return this.isOpen ? this.cmdIconOpenRowView?.iconClass : this.cmdIconClosedRowView?.iconClass
-            } else {
-                return this.isOpen ? this.cmdIconOpenColumnView?.iconClass : this.cmdIconClosedColumnView?.iconClass
-            }
+        toggleIconIconClassOpen() {
+            return this.rowView ? this.cmdIconOpenRowView?.iconClass : this.cmdIconOpenColumnView?.iconClass
         },
-        toggleIconStatus() {
-            return this.isOpen ? 'open' : 'closed'
-        },
-        toggleIconTooltip() {
-            if(this.rowView) {
-                return this.isOpen ? this.cmdIconOpenRowView?.tooltip : this.cmdIconClosedRowView?.tooltip
-            } else {
-                return this.isOpen ? this.cmdIconOpenColumnView?.tooltip : this.cmdIconClosedColumnView?.tooltip
-            }
-        }
-    },
-    methods: {
-        isOpen() {
-            return this.$refs.cmdAccordion?.open + "test"
-        }
+        toggleIconIconClassClosed() {
+            return this.rowView ? this.cmdIconClosedRowView?.iconClass : this.cmdIconClosedColumnView?.iconClass
+        } 
     }
 }
 </script>
 
 <style>
 .cmd-accordion {
+    /* begin rowView */
     &.flex-container {
         flex-wrap: nowrap;
         align-items: center;
@@ -173,13 +188,18 @@ export default {
             summary {
                 border: 0;
             }
+
+            &.stretch-to-full-width {
+                flex: 1; /* stretch accordion-body over remaining (horizontal) space in accordion-wrapper */
+            }    
         }
 
-        summary {
+        summary.writing-mode-vertical {
             writing-mode: vertical-rl;
             transform: rotate(180deg);
-        }
+        } 
     }
+    /* end rowView */
 
     summary {
         .cmd-headline {

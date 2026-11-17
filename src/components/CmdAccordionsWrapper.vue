@@ -2,30 +2,28 @@
     <!-- begin CmdBoxWrapper ---------------------------------------------------------------------------------------- -->
     <div class="cmd-accordions-wrapper">
         <div v-if="cmdHeadline.headlineText || allowUserToToggleOrientation" class="flex-container headline-wrapper">
-            <!-- begin CmdHeadline -->
             <CmdHeadline v-if="cmdHeadline.headlineText" v-bind="cmdHeadline" />
-            <!-- end CmdHeadline -->
 
+            <!-- begin toggle orientation TODO: replace by CmdLink -->
             <div v-if="allowUserToToggleOrientation" class="options-wrapper">
-                <a href="#" @click.prevent="toggleOrientation" :title="rowView ? iconRowView.tooltip : iconColumnView.tooltip">
-                    <!-- begin CmdIcon -->
+                <a href="#" @click.prevent="toggleOrientation" class="toggle-orientation" :title="rowView ? iconRowView.tooltip : iconColumnView.tooltip">
                     <CmdIcon :iconClass="rowView ? iconColumnView.iconClass : iconRowView.iconClass" :type="rowView ? iconColumnView.iconType : iconRowView.iconType" />
-                    <!-- end CmdIcon -->
                 </a>
             </div>
+            <!-- begin end orientation -->
         </div>
-        <div :class="['inner-accordions-wrapper',
+        <div :class="['inner-accordions-wrapper flex-container',
             {
                 'no-gap': !useGap,
-                'flex-container' : rowView 
+                'flex-direction-column' : !rowView 
             }
             ]">
             <slot
                 :collapsingBoxesOpen="collapsingBoxesOpen"
-                :boxToggled="boxToggled"
-                :boxIsOpen="boxIsOpen"
                 :rowView="rowView"
-                @toggleCollapse="boxIsToggled"
+                :openAccordionHasFullWidth="fullWidth"
+                :summaryWritingMode="summaryWritingMode"
+                :allowMultipleExpandedBoxes="allowMultipleExpandedBoxes"
             >
             </slot>
         </div>
@@ -54,7 +52,6 @@ export default {
             type: Array,
             required: false
         },
-    
         /**
          * activate if a gap between boxes should be used
          */
@@ -68,6 +65,30 @@ export default {
         useRowViewAsDefault: {
             type: Boolean,
             default: false
+        },
+        /**
+         * open accordion uses remaining space in accordions-wrapper
+         * 
+         * rowView must be false 
+         */
+        fullWidth: {
+            type: Boolean,
+            default: true
+        },
+        /**
+         * set direction of text for summary
+         * 
+         * rowView-property must be true
+         * 
+         * @allowedValues: "horizontal", "vertical"
+         */
+        summaryWritingMode: {
+            type: String,
+            default: "horizontal",
+            validator(value) {
+                return value === "horizontal" ||
+                value === "vertical"
+            }
         },
         /**
          * activate if user can toggle grid- and row-orientation by himself
@@ -115,7 +136,7 @@ export default {
             default
                 () {
                 return {
-                    iconClass: 'icon-blocks-small',
+                    iconClass: 'icon-columns',
                     tooltip: 'Toggle to row view'
                 }
             }
@@ -149,40 +170,9 @@ export default {
     methods: {
         toggleOrientation() {
             this.rowView = !this.rowView
-            this.oneBoxPerRow = this.rowView
-        },
-        boxIsOpen(index) {
-            return this.currentOpenBox.includes(index)
-        },
-        toggleCollapsingBoxes() {
-            this.collapsingBoxesOpen = !this.collapsingBoxesOpen
-        },
-        boxToggled(boxIndex, open) {
-            if(this.allowMultipleExpandedBoxes) {
-                if(open) {
-                    this.currentOpenBox.push(boxIndex)
-                } else {
-                    // remove boxIndex from array to close specific box
-                    let position = this.currentOpenBox.indexOf(boxIndex)
-                    this.currentOpenBox.splice(position, 1)
-                }
-            } else {
-                this.currentOpenBox  = []
-
-                // add current boxIndex to array to open specific box
-                if(open) {
-                    this.currentOpenBox.push(boxIndex)
-                }
-            }
         }
     },
     watch: {
-        openBoxesByDefault: {
-            handler() {
-                this.currentOpenBox = [...this.openBoxesByDefault || []]
-            },
-            immediate: true
-        },
         useRowViewAsDefault: {
             handler() {
                 this.oneBoxPerRow = this.useRowViewAsDefault
@@ -194,8 +184,17 @@ export default {
 </script>
 
 <style>
-/* begin cmd-box-wrapper ---------------------------------------------------------------------------------------- */
+/* begin cmd-accordions-wrapper ---------------------------------------------------------------------------------------- */
 .cmd-accordions-wrapper {
+    .headline-wrapper {
+        align-items: center;
+
+        .options-wrapper {
+            flex: none;
+
+        }
+    }
+
     .inner-accordions-wrapper {
         .cmd-accordion {
             flex: none;
@@ -204,6 +203,20 @@ export default {
 }
 </style>
 
-<style>
-/* end cmd-box-wrapper ---------------------------------------------------------------------------------------- */
+<style lang="scss">
+@import '../assets/styles/variables';
+
+@media only screen and (max-width: $medium-max-width) {
+    .cmd-accordions-wrapper {
+        .toggle-orientation {
+            display: none; /* hide button, because accordions are displayed vertically only at this screen-resolution */
+        }
+
+        .inner-accordions-wrapper {
+            flex-direction: column; /* force accordions to be displayed vertically */
+        }
+    }
+}
+/* end cmd-accordions-wrapper ---------------------------------------------------------------------------------------- */
 </style>
+

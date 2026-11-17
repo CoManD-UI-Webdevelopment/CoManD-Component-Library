@@ -1,8 +1,8 @@
 <template>
     <!-- begin CmdContainer ---------------------------------------------------------------------------------------- -->
-    <div class="cmd-container">
+    <div :class="['cmd-container', {box: styleAsBox}]">
         <!-- begin CmdHeadline -->
-        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <CmdHeadline v-if="cmdHeadlineProperties.show" v-bind="cmdHeadlineProperties" />
         <!-- end CmdHeadline -->
 
         <div :class="htmlClasses">
@@ -18,6 +18,13 @@
 export default {
     name: "CmdContainer",
     props: {
+        /**
+         * style component as a box
+         */
+        styleAsBox: {
+            type: Boolean,
+            default: false
+        },
         /** define container-type
          *
          * @affectsStyling: true
@@ -66,6 +73,13 @@ export default {
         flexNone: {
             type: Boolean,
             default: false
+        },
+        /**
+         * define classes for inner container
+         */
+        innerClasses: {
+            type: [String, Array],
+            required: false
         },
         /**
          * activate if items should not behave like flex-items (they are now shrunk to their content)
@@ -125,8 +139,20 @@ export default {
         }
     },
     computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 2,
+                ...this.cmdHeadline
+            }
+        },
         htmlClasses() {
-            const htmlClasses = []
+            let htmlClasses = [];
+
+            if (this.innerClasses !== undefined) {
+                // assign innerClasses (dpeending on type (array or string)) to htmlClasses-array
+                htmlClasses = Array.isArray(this.innerClasses) ? [...htmlClasses, ...this.innerClasses] : [...htmlClasses, this.innerClasses];
+            }
 
             if (this.containerType !== 'default') {
                 if (this.containerType === "flex") {

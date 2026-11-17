@@ -92,23 +92,21 @@
                             v-if="entry.descriptionTerm?.cmdIcon?.iconClass" 
                             v-bind="entry.descriptionTerm.cmdIcon"
                         />
-                        <span v-if="entry.descriptionTerm?.text">{{ entry.descriptionTerm?.text }}</span>
+                        <span v-if="entry.descriptionTerm?.text" v-html="entry.descriptionTerm?.text"></span>
                     </dt>
                     <dd>
                         <CmdLink 
                             v-if="entry.descriptionData.cmdLink !== undefined" 
                             v-bind="entry.descriptionData.cmdLink">
                         </CmdLink>
-                        <template v-else>
-                            {{ entry.descriptionData.text }}
-                        </template>
+                        <span v-else v-html="entry.descriptionData.text"></span>
                     </dd>
                     <dt v-if="alignDescriptionTermRight">
                         <CmdIcon 
                             v-if="entry.descriptionTerm?.cmdIcon?.iconClass" 
                             v-bind="entry.descriptionTerm.cmdIcon"
                         />
-                        <span v-if="entry.descriptionTerm?.text">{{ entry.descriptionTerm?.text }}</span>
+                        <span v-if="entry.descriptionTerm?.text" v-html="entry.descriptionTerm?.text"></span>
                     </dt>
                 </template>
             </dl>
@@ -129,6 +127,11 @@ export default {
     name: "CmdListOfLinks",
     emits: ["click"],
     mixins: [EditMode],
+    inject: {
+        editModeContext: {
+            default: null
+        }
+    },
     data() {
         return {
             listOfTagItems: [...(this.items || [])]
@@ -147,7 +150,7 @@ export default {
         /**
          * define the highlight-level
          * 
-         * @allowedValues: "", "primary", "secondary", "tertiary"
+         * @allowedValues: null, "primary", "secondary", "tertiary"
          */
         highlightLevel: {
             type: String,
@@ -394,7 +397,7 @@ export default {
 .cmd-list {
     > ul {
         flex-direction: column;
-        gap: var(--default-gap-half);
+        gap: var(--gap-small);
         margin: 0;
 
         li {
@@ -404,11 +407,11 @@ export default {
 
             &:has(.tag) {
                 .tag {
-                    gap: var(--default-gap-half);
+                    gap: var(--gap-small);
 
                     &.primary, &.secondary, &.tertiary {
                         [class*="icon-"] {
-                            color: var(--color-white);
+                            color: var(--tag-text-color);
                         }
                     }
                 }

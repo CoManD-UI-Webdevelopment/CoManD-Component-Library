@@ -1,8 +1,41 @@
-{
-    "name": "accordion-name",
-    "cmdHeadline": {
-        "headlineText": "Summary",
-        "headlineLevel": 4
+[
+    {
+        "name": "accordion-name",
+        "cmdHeadline": {
+            "headlineText": "Summary #1",
+            "headlineLevel": 4
+        },
+        "textAccordionBody": "This is text for accordion body #1!"
     },
-    "textAccordionBody": "This is text for accordion body!"
-}
+    {
+        "name": "accordion-name",
+        "cmdHeadline": {
+            "headlineText": "Summary #2",
+            "headlineLevel": 4
+        },
+        "textAccordionBody": "This is text for accordion body #2!"
+    },
+    {
+        "name": "accordion-name",
+        "cmdHeadline": {
+            "headlineText": "Summary #3",
+            "headlineLevel": 4
+        },
+        "textAccordionBody": "This is text for accordion body #3!"
+    },
+    {
+        "name": "accordion-name",
+        "cmdHeadline": {
+            "headlineText": "Summary #4",
+            "headlineLevel": 4
+        },
+        "textAccordionBody": "This is text for accordion body #4!"
+    },    {
+        "name": "accordion-name",
+        "cmdHeadline": {
+            "headlineText": "Summary #5",
+            "headlineLevel": 4
+        },
+        "textAccordionBody": "This is text for accordion body #5!"
+    }
+]

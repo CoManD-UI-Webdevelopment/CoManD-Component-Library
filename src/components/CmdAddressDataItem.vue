@@ -25,7 +25,7 @@
                :target="addressEntry.name === 'url' ? '_blank' : null"
                :title="addressEntry.tooltip"
                :data-type="addressEntry.name">
-                {{ addressEntry.data || addressEntry.href }}
+                {{ displayText(addressEntry) }}
             </a>
             <span v-else v-html="addressEntry.data"></span>
         </template>
@@ -251,6 +251,11 @@ export default {
         },
         locateAddress(entry) {
             return "https://www.google.com/maps/place/" + entry.streetNo + ", " + entry.zip + " " + entry.city
+        },
+        displayText(entry) {
+            // telephone numbers: non-breaking spaces (valid HTML, number is not wrapped)
+            const text = entry.data || entry.href
+            return entry.name === "phone" && typeof text === "string" ? text.replace(/ /g, " ") : text
         },
         getHref(entry) {
             if (entry.name === "phone") {

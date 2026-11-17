@@ -1,4 +1,62 @@
 /* demopage-only.css - STYLES FOR DEMOPAGE ONLY - IT IS NOT RECOMMENDED TO EDIT THIS FILE (TO AVOID TROUBLESHOOTING AFTER UPDATING) */
 #component-library {
+    .cmd-width-limitation-wrapper .cmd-width-limitation-wrapper>section {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 
+    
+    .page-wrapper {
+        > .cmd-sidebar {
+            .inner-sidebar-wrapper {
+                .box {
+                    box-shadow: none !important;
+
+                    .box-header {
+                        border-radius: 0;
+                        background: var(--primary-color);
+                        
+                        h4 > span {
+                            font-size: 1.6rem;
+                        }
+
+                        span, span[class*="icon-"] {
+                            color: var(--primary-color-contrast-text);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* the settings sidebar is position: fixed: keep the demo content next to it (not below it) */
+    @media (min-width: 768px) {
+        .page-wrapper:has(> .cmd-sidebar.open) > #content {
+            margin-left: 30rem;
+        }
+
+        .page-wrapper:has(> .cmd-sidebar:not(.open)) > #content {
+            margin-left: 3rem;
+        }
+    }
+
+    section:has(h1.headline-demopage) {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .main-content-wrapper {
+        .site-header {
+            z-index: 1;
+        }
+
+        .cmd-sidebar {
+            left: 0;
+            right: auto;
+
+            &.open {
+                width: 30rem;
+            }
+        }
+    }
 }

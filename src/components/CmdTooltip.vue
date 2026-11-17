@@ -1,34 +1,39 @@
 <template>
     <!-- begin CmdTooltip ---------------------------------------------------------------------------------------- -->
-    <div :class="['cmd-tooltip', validationStatus]" popover="manual" ref="tooltip" role="tooltip"
+    <!-- teleported to body: tooltip is a popover (top-layer) and its block content (headline, list, close-button) must not be nested in phrasing content or inside a <label> -->
+    <Teleport to="body">
+    <div :class="['cmd-tooltip', validationStatus]" popover="manual" ref="tooltip" role="tooltip" v-bind="$attrs"
         :id="popoverTargetName" @mouseenter="handleTooltipEnter" @mouseleave="handleTooltipLeave"
-        :style="'position-anchor:' + positionAnchor"
+        :style="positionAnchor ? 'position-anchor:' + positionAnchor : null"
     >
         <!-- begin CmdHeadline -->
-        <CmdHeadline v-if="cmdHeadline" v-bind="cmdHeadline" />
+        <CmdHeadline v-if="cmdHeadlineProperties.show && cmdHeadlineProperties.headlineText" v-bind="cmdHeadlineProperties" />
         <!-- end CmdHeadline -->
 
-        <!-- begin icon to close tooltip -->
-        <button v-if="showCloseIcon" type="button" class="close-tooltip no-style"
-            popovertargetaction="hide" :popovertarget="popoverTargetName" :title="iconClose.tooltip">
-            <!-- begin CmdIcon -->
-            <CmdIcon :iconClass="iconClose.iconClass" :type="iconClose.iconType" />
-            <!-- end CmdIcon -->
-        </button>
-        <!-- end icon to close tooltip -->
+        <!-- begin button to close tooltip -->
+        <CmdLink 
+            v-if="cmdLinkCloseButtonProperties.show"
+            v-bind="cmdLinkCloseButtonProperties" 
+            class="close-tooltip no-style" 
+            popovertargetaction="hide" 
+            :popovertarget="popoverTargetName"
+        />
+        <!-- end button to close tooltip -->
 
         <!-- begin slot-content -->
         <slot>
-            <div v-html="tooltipText"></div>
+            <span v-html="tooltipText"></span>
         </slot>
         <!-- end slot-content -->
         <!-- end CmdTooltip ---------------------------------------------------------------------------------------- -->
     </div>
+    </Teleport>
 </template>
 
 <script>
 export default {
     name: "CmdTooltip",
+    inheritAttrs: false,
     data() {
         return {
             triggerElement: null,
@@ -116,22 +121,14 @@ export default {
          */
         scrollContainer: {
             type: String,
-            default: ".page-wrapper"
+            default: ".site-wrapper"
         },
         /**
-         * icon 'close'
-         *
-         * @requiredForAccessibility: partial
+         * properties for CmdLink-compoentnfor close-button
          */
-        iconClose: {
+        cmdLinkCloseButton: {
             type: Object,
-            default() {
-                return {
-                    show: true,
-                    iconClass: "icon-cancel-circle",
-                    tooltip: "Close this tooltip!"
-                }
-            }
+            required: false
         },
         /**
          * enable toggling tooltip-visibility by click
@@ -146,6 +143,26 @@ export default {
          cmdHeadline: {
             type: Object,
             requiured: false
+        }
+    },
+    computed: {
+        cmdHeadlineProperties() {
+            return {
+                show: true,
+                headlineLevel: 6,
+                ...this.cmdHeadline
+            }
+        },
+        cmdLinkCloseButtonProperties() {
+            return {
+                show: true,
+                linkType: "button",
+                icon: {
+                    iconClass: "icon-cancel-circle",
+                    tooltip: "Close this tooltip!"
+                },
+                ...this.cmdLinkCloseButton
+            }
         }
     },
     mounted() {
@@ -242,19 +259,19 @@ export default {
     }
 
     &.error {
-        --status-color: var(--error-color);
+        --status-color: var(--error-color-text);
     }
 
     &.warning {
-        --status-color: var(--warning-color);
+        --status-color: var(--warning-color-text);
     }
 
     &.success {
-        --status-color: var(--success-color);
+        --status-color: var(--success-color-text);
     }
 
     &.info {
-        --status-color: var(--info-color);
+        --status-color: var(--info-color-text);
     }
 
     .headline-wrapper {
