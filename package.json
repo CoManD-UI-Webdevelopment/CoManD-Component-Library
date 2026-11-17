@@ -28,7 +28,7 @@
     "./us-cities.json": "./src/assets/lists-of-data/us-cities.json"
   },
   "dependencies": {
-    "comand-frontend-framework": "^4.5.4",
+    "comand-frontend-framework": "^5.0.0",
     "comand-ui-iconfonts": "^1.0.21",
     "vue": "^3.5.25",
     "vue-router": "^4.0.12"
