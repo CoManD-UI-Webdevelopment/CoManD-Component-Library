@@ -4,8 +4,8 @@
         <li v-if="breadcrumbLabel" class="breadcrumb-label">{{ breadcrumbLabel }}</li>
         <li v-for="(link, index) in breadcrumbLinks || []" :key="index">
              <CmdLink 
-                v-if="!link.type || link.type === 'href' || link.type === 'router'"
-                :linkType="link.type"
+                v-if="link.type === undefined || link.type === null || link.type === 'href' || link.type === 'router'"
+                :linkType="link.type || undefined"
                 :path="link.type === 'href' ? link.path : getRoute(link)"
                 :icon="{ iconClass: link.iconClass, type: link.iconType }"
                 :text="link.text" 

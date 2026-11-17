@@ -33,6 +33,10 @@ _Add every new change here before it is released._
 - White text on primary/secondary/tertiary backgrounds replaced by the framework contrast tokens in `CmdBox`, `CmdMultistepFormProgressBar`, `CmdTag`, `CmdList`, `CmdTable`, demo page (`ComponentLibrary.vue`, `public/styles/demopage-only.css`). **Requires the framework version with `--*-color-contrast-text` tokens.**
 - Result (demo page, 4 templates x light/dark x 3 widths): color-contrast violations 2212 -> 357; `type="phone"`/`<div>` in `<summary>`/`target=""` findings gone.
 
+### Removed / Changed (cleanup)
+- `gulpfile.js` removed (dead code, `gulp` is no longer a dependency).
+- `index.html` (demo): the CDN import of `demopage-only.css` (an older published version) is removed; `src/main.js` imports the one of the installed/local framework.
+
 ### Added (exports)
 - `src/index.js` now exports `CmdListOfRequirements`, `CmdMailTool`, `CmdTag`, `CmdToast` (public components, documented). Internal components are listed in `docs/README.md`.
 
@@ -51,6 +55,9 @@ _Add every new change here before it is released._
 ### Fixed (Demo-Seite)
 - `public/styles/demopage-only.css`: the demo content is placed next to the (position: fixed) settings sidebar instead of below it (at 1280px wide viewports the left 300px of every section, including accordion headlines and login form, were hidden behind the sidebar).
 - Hover backgrounds that were hard `--color-white` while the text uses `--hyperlink-color` (light blue in dark mode) are scheme-aware (`CmdBox`, `CmdCookieDisclaimer`, `CmdFakeSelect`, `CmdSlideshow`, `CmdTabs`, `CmdFormFilters`).
+
+### Fixed (CmdBreadcrumbs)
+- Crumbs with `type: ""`/other non-link types are rendered as plain text; only `undefined`/`href`/`router` render a `CmdLink` (an empty type produced an invalid `linkType` and an empty list item).
 
 ### Fixed (web-ui findings)
 - `CmdParagraph`: renders a `<div>` instead of `<p>` when the content contains block elements (stray `</p>`, "p implicitly closed").
