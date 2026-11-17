@@ -4,6 +4,8 @@ All notable changes are documented here, newest first. Versioning follows `packa
 
 ## [Unreleased]
 
+## [5.0.0] – 2026-11-17
+
 _Add every new change here before it is released._
 
 ### Added
@@ -119,7 +121,7 @@ Stand HEAD `51b335b` (2026-02-26, package.json dort 4.3.20). Ohne Whitespace/CRL
 - Nicht definierte CSS-Variablen: `--border-color` (`CmdFakeSelect`, `CmdMultistepFormProgressBar`), `--default-gap-third`, `--icon-font-size` (`EditComponentWrapper`).
 - `gulpfile.js` wird nicht mehr benutzt.
 
-## [4.3.28] – current `package.json` version
+## [4.3.28]
 - Depends on `comand-frontend-framework ^4.5.4`, `vue ^3.5.25`, build with `vite ^7`.
 - Components added in recent history: `CmdMultistepFormWrapper`, `CmdMultistepFormProgressBar` (improved), `CmdCodeOutput`, `CmdTag` (from git log) and further new components ("add new components"; not itemized).
 - Refactoring of `CmdFormElement`/`CmdInputGroup` validation; refactoring of `CmdBox` and `CmdList`.
